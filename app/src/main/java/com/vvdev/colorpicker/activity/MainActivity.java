@@ -3,13 +3,10 @@ package com.vvdev.colorpicker.activity;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.ImageView;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 
-import java.util.Arrays;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
