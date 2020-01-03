@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_camera"
+        android:icon="@drawable/camera"
+        android:title="@string/nav_menu_Camera" />
+
+    <item
+        android:id="@+id/navigation_import"
+        android:icon="@drawable/importimgvideo"
+        android:title="@string/nav_menu_Import" />
+
+    <item
+        android:id="@+id/navigation_phonepicker"
+        android:icon="@drawable/phonepicker"
+        android:title="@string/nav_menu_PhonePicker" />
+    <item
+        android:id="@+id/navigation_editcolor"
+        android:icon="@drawable/editcolor"
+        android:title="@string/nav_menu_EditColor" />
+
+</menu>

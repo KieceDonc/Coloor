@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#80757575">
+
+    <ImageButton
+        android:id="@+id/SwitchCamera"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="56dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerInside"
+        android:tint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/getpicture"
+        app:layout_constraintStart_toEndOf="@+id/getpicture"
+        app:layout_constraintTop_toTopOf="@+id/getpicture"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/camera_switching" />
+
+    <ImageButton
+        android:id="@+id/info"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="56dp"
+        android:background="@drawable/roundcorner"
+        android:scaleType="centerInside"
+        android:tint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/getpicture"
+        app:layout_constraintEnd_toStartOf="@+id/getpicture"
+        app:layout_constraintTop_toTopOf="@+id/getpicture"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/settings" />
+
+    <Button
+        android:id="@+id/getpicture"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/takephoto"
+        android:backgroundTint="#ffffff"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>
