@@ -15,7 +15,7 @@ import androidx.navigation.ui.NavigationUI;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final ColorUtility CallColorUtils = new ColorUtility();
+    public static final ColorUtility CallColorUtility = new ColorUtility();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-        CallColorUtils.setCirclePx(this); // use to delete the px of circle
+        CallColorUtility.setCirclePx(this); // use to delete the px of circle
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
