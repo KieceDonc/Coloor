@@ -1,7 +1,6 @@
-package com.vvdev.colorpicker.ui.EditColor;
+package com.vvdev.colorpicker.fragment.PhonePicker;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +13,17 @@ import android.arch.lifecycle.ViewModelProviders;
 
 import com.vvdev.colorpicker.R;
 
-public class EditColorFragment extends Fragment {
+public class PhonePickerFragment extends Fragment {
 
-    private EditColorViewModel editColorViewModel;
+    private PhonePickerViewModel phonePickerViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-        editColorViewModel =
-                ViewModelProviders.of(this).get(EditColorViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_editcolor, container, false);
-        final TextView textView = root.findViewById(R.id.text_editcolor);
-        editColorViewModel.getText().observe(this, new Observer<String>() {
+        phonePickerViewModel =
+                ViewModelProviders.of(this).get(PhonePickerViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_phonepicker, container, false);
+        final TextView textView = root.findViewById(R.id.text_phonepicker);
+        phonePickerViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

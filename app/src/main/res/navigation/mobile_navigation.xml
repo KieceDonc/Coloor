@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_camera"
-        android:name="com.vvdev.colorpicker.ui.Camera.CameraFragment"
+        android:name="com.vvdev.colorpicker.fragment.Camera.CameraFragment"
         android:label="@string/nav_menu_Camera"
         tools:layout="@layout/fragment_camera">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_import"
-        android:name="com.vvdev.colorpicker.ui.ImportImgVid.ImportImgVidFragment"
+        android:name="com.vvdev.colorpicker.fragment.Import.ImportFragment"
         android:label="@string/nav_menu_Import"
         tools:layout="@layout/fragment_import">
         <action
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/navigation_editcolor"
-        android:name="com.vvdev.colorpicker.ui.EditColor.EditColorFragment"
+        android:name="com.vvdev.colorpicker.fragment.EditColor.EditColorFragment"
         android:label="@string/nav_menu_EditColor"
         tools:layout="@layout/fragment_editcolor">
         <action
@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/navigation_phonepicker"
-        android:name="com.vvdev.colorpicker.ui.PhonePicker.PhonePickerFragment"
+        android:name="com.vvdev.colorpicker.fragment.PhonePicker.PhonePickerFragment"
         android:label="@string/nav_menu_PhonePicker"
         tools:layout="@layout/fragment_phonepicker">
         <action

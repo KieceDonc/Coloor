@@ -1,6 +1,7 @@
-package com.vvdev.colorpicker.ui.ImportImgVid;
+package com.vvdev.colorpicker.fragment.EditColor;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,18 @@ import android.arch.lifecycle.ViewModelProviders;
 
 import com.vvdev.colorpicker.R;
 
-public class ImportImgVidFragment extends Fragment {
+public class EditColorFragment extends Fragment {
 
-    private ImportImgVidViewModel importImgVidViewModel;
+    private EditColorViewModel editColorViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        importImgVidViewModel =
-                ViewModelProviders.of(this).get(ImportImgVidViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_import, container, false);
-        final TextView textView = root.findViewById(R.id.text_import);
-        importImgVidViewModel.getText().observe(this, new Observer<String>() {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        editColorViewModel =
+                ViewModelProviders.of(this).get(EditColorViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_editcolor, container, false);
+        final TextView textView = root.findViewById(R.id.text_editcolor);
+        editColorViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

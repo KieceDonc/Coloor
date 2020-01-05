@@ -6,12 +6,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.vvdev.colorpicker.ui.Camera.AutoFitTextureView
+    <com.vvdev.colorpicker.fragment.Camera.AutoFitTextureView
         android:id="@+id/TextureViewCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/BottomBar"
         android:layout_below="@id/TopBar" />
+
+    <FrameLayout
+        android:id="@+id/ZoomControl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/BottomBar"
+        android:layout_below="@id/TopBar"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/CameraCircle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:background="@drawable/white_rounded_area"
+            app:srcCompat="@android:color/transparent" />
+
+    </FrameLayout>
 
     <include
         android:id="@+id/TopBar"
@@ -41,37 +60,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|end"
-        android:orientation="vertical">
-
-        <include
-            layout="@layout/camera_middle_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/BottomBar"
-        android:layout_below="@id/TopBar"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/CameraCircle"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:background="@drawable/white_rounded_area"
-            app:srcCompat="@android:color/transparent" />
-
-    </FrameLayout>
 
 
 </RelativeLayout>

@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
-import com.vvdev.colorpicker.ui.Camera.AutoFitTextureView;
+import com.vvdev.colorpicker.fragment.Camera.AutoFitTextureView;
 
 public class ColorUtility {
 

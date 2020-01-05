@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.ui.Camera;
+package com.vvdev.colorpicker.fragment.Camera;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.TextureView;

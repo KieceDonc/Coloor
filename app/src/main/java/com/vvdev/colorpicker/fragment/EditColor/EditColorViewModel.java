@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.ui.EditColor;
+package com.vvdev.colorpicker.fragment.EditColor;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

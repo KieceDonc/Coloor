@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.ui.PhonePicker;
+package com.vvdev.colorpicker.fragment.PhonePicker;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
