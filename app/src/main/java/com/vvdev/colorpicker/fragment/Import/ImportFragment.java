@@ -16,9 +16,12 @@ import com.vvdev.colorpicker.R;
 public class ImportFragment extends Fragment {
 
     //https://viewerjs.org/
-    //https://www.leadtools.com/sdk/document/document-viewer-html5
+    // load from internet
+    // http://bumptech.github.io/glide/doc/getting-started.html
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_import, container, false);
     }
+
+    public void
 }

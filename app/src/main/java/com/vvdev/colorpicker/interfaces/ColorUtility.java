@@ -101,7 +101,7 @@ public class ColorUtility {
                     moyGREEN+=Color.green(CurrentPixel);
                 }
             }
-        }
+        } // TODO when it's completely dark return rgb(1,1,1). Need to fix this
         return new int[]{moyRED/cmptPixel,moyGREEN/cmptPixel,moyBLUE/cmptPixel};
     }
 
