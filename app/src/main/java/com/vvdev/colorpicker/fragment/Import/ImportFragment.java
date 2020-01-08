@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.support.annotation.Nullable;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 
 import com.vvdev.colorpicker.R;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 public class ImportFragment extends Fragment {
 
@@ -23,5 +20,9 @@ public class ImportFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_import, container, false);
     }
 
-    public void
+    @Override
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+
+    }
+
 }

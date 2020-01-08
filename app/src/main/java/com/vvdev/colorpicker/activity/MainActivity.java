@@ -1,13 +1,13 @@
 package com.vvdev.colorpicker.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
