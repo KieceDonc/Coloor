@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.vvdev.colorpicker.fragment.Camera.AutoFitTextureView
+    <com.vvdev.colorpicker.ui.AutoFitTextureView
         android:id="@+id/TextureViewCamera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

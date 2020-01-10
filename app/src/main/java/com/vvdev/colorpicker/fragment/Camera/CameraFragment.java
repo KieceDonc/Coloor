@@ -45,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.ui.AutoFitTextureView;
 
 import java.io.File;
 import java.io.FileOutputStream;

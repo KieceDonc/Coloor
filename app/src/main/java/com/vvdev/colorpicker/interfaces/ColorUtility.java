@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
-import com.vvdev.colorpicker.fragment.Camera.AutoFitTextureView;
+import com.vvdev.colorpicker.ui.AutoFitTextureView;
+
+import static java.lang.Integer.parseInt;
 
 public class ColorUtility {
 
@@ -125,7 +127,18 @@ public class ColorUtility {
         if(Color.substring(0,1).equals("#")){
             Color=Color.substring(1);
         }
-        return new int[]{Integer.parseInt(Color.substring(0,2),16),Integer.parseInt(Color.substring(2,4),16),Integer.parseInt(Color.substring(4,6),16)};
+        return new int[]{parseInt(Color.substring(0,2),16), parseInt(Color.substring(2,4),16), parseInt(Color.substring(4,6),16)};
+    }
+
+    /**
+     * Decide if the text color should be black or white depending on background color
+     * @param TextColor Hex background color in String ( automatically handle if #000000 or 000000 )
+     * @return String Hex value of the best color
+     */
+
+    public int pickTextColorBasedOnBackgroundColor(String TextColor) {
+        int[] TextColorRGB = getRGBFromHex(TextColor);
+        return (((TextColorRGB[0] * 0.299) + (TextColorRGB[1] * 0.587) + (TextColorRGB[2] * 0.114)) > 186) ? Color.BLACK : Color.WHITE;
     }
 
     public int[] getHsvFromRGB(int[] RGB){
