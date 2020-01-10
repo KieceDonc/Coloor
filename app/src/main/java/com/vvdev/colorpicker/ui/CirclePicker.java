@@ -418,15 +418,57 @@ public class CirclePicker extends ImageView {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        float dX = 0, dY = 0;
+
         if (mDisableCircularTransformation) {
             return super.onTouchEvent(event);
+        }
+        if(inTouchableArea(event.getX(),event.getY())){
+            switch (event.getAction()) {
+
+                case MotionEvent.ACTION_DOWN:
+
+                    dX = getX() - event.getRawX();
+                    dY = getY() - event.getRawY();
+                    break;
+
+                case MotionEvent.ACTION_MOVE:
+
+
+                    animate()
+                            .x(event.getRawX() + dX)
+                            .y(event.getRawY() + dY)
+                            .setDuration(0)
+                            .start();
+                    break;
+            }
+            return true;
+
         }
 
         return inTouchableArea(event.getX(), event.getY()) && super.onTouchEvent(event);
     }
+
+
+    /*private boolean isOut() { // TODO make this working https://stackoverflow.com/questions/46778920/android-move-an-imageview-on-screen-like-dragging
+        // Check to see if the view is out of bounds by calculating how many pixels
+        // of the view must be out of bounds to and checking that at least that many
+        // pixels are out.
+        float percentageOut = 0.50f;
+        int viewPctWidth = (int) (getWidth() * percentageOut);
+        int viewPctHeight = (int) (getHeight() * percentageOut);
+
+
+        return ((-getLeft() >= viewPctWidth) ||
+                (getRight() - windowwidth) > viewPctWidth ||
+                (-getTop() >= viewPctHeight) ||
+                (getBottom() - windowheight) > viewPctHeight);
+    }*/
 
     private boolean inTouchableArea(float x, float y) {
         if (mBorderRect.isEmpty()) {
@@ -448,15 +490,11 @@ public class CirclePicker extends ImageView {
 
     }
 
-    public RectF getBorderRectF(){
-        return mBorderRect;
-    }
-
-    public float getBorderRadius(){
-        return mBorderRadius;
-    }
-
     private float getDpFromPx(float p){
         return p / getResources().getDisplayMetrics().density;
+    }
+
+    public void _Invalidate(){
+        invalidate();
     }
 }
