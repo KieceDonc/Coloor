@@ -82,7 +82,6 @@ public class CirclePicker extends ImageView {
 
     public CirclePicker(Context context) {
         super(context);
-
         init();
     }
 
@@ -419,56 +418,69 @@ public class CirclePicker extends ImageView {
     }
 
 
+    float dX = 0, dY = 0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float dX = 0, dY = 0;
+
+        float newX=0,newY=0;
 
         if (mDisableCircularTransformation) {
             return super.onTouchEvent(event);
         }
-        if(inTouchableArea(event.getX(),event.getY())){
+
+        if(inTouchableArea(event.getX(),event.getY())&&mMovableDimension!=null){
             switch (event.getAction()) {
 
-                case MotionEvent.ACTION_DOWN:
+                case MotionEvent.ACTION_DOWN: {
 
                     dX = getX() - event.getRawX();
                     dY = getY() - event.getRawY();
                     break;
+                }
 
-                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_MOVE: {
+
+                    newX = event.getRawX() + dX;
+                    newY = event.getRawY() + dY;
 
 
-                    animate()
-                            .x(event.getRawX() + dX)
-                            .y(event.getRawY() + dY)
-                            .setDuration(0)
-                            .start();
+                    if(!(newX <= 0 || newX >= mMovableDimension.width() - getWidth())){
+                        animate().x(event.getRawX() + dX).setDuration(0).start();
+                    }else if(newX >= mMovableDimension.width() - getWidth()){
+                        animate().x(mMovableDimension.width() - getWidth()).setDuration(0).start();
+                    }else{
+                        animate().x(0).setDuration(0).start();
+                    }
+
+                    if(!(newY <= 0 || newY >= mMovableDimension.height() - getHeight())){
+                        animate().y(event.getRawY() + dY).setDuration(0).start();
+                    }else if(newY >= mMovableDimension.height()-getHeight()
+
+                    ){
+                        animate().y(mMovableDimension.height() - getHeight()).setDuration(0).start();
+                    }else{
+                        animate().y(0).setDuration(0).start();
+                    }
+
                     break;
+                }
+                default: {
+                    return false;
+                }
             }
             return true;
-
         }
 
         return inTouchableArea(event.getX(), event.getY()) && super.onTouchEvent(event);
     }
 
+    Rect mMovableDimension = new Rect();
 
-    /*private boolean isOut() { // TODO make this working https://stackoverflow.com/questions/46778920/android-move-an-imageview-on-screen-like-dragging
-        // Check to see if the view is out of bounds by calculating how many pixels
-        // of the view must be out of bounds to and checking that at least that many
-        // pixels are out.
-        float percentageOut = 0.50f;
-        int viewPctWidth = (int) (getWidth() * percentageOut);
-        int viewPctHeight = (int) (getHeight() * percentageOut);
-
-
-        return ((-getLeft() >= viewPctWidth) ||
-                (getRight() - windowwidth) > viewPctWidth ||
-                (-getTop() >= viewPctHeight) ||
-                (getBottom() - windowheight) > viewPctHeight);
-    }*/
+    public void setMovableDimension(Rect MovableDimension){
+        mMovableDimension = MovableDimension;
+    }
 
     private boolean inTouchableArea(float x, float y) {
         if (mBorderRect.isEmpty()) {
