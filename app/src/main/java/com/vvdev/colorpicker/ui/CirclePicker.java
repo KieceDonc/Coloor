@@ -20,19 +20,29 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.interfaces.ColorUtility;
+
+import java.math.BigInteger;
+import java.util.Arrays;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
+import androidx.constraintlayout.solver.widgets.Rectangle;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static com.vvdev.colorpicker.activity.MainActivity.CallColorUtility;
 
@@ -51,6 +61,14 @@ public class CirclePicker extends ImageView {
 
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
+
+    private Bitmap mScreenBitmap=null; // custom
+    private Rect mMovableDimension = new Rect(); // custom
+    private String TextOnBorder=""; // custom
+    private float tdX = 0;// custom
+    private float tdY = 0; // custom
+    private boolean inUpdateScreenBitmap=false; // custom
+
 
     private final Matrix mShaderMatrix = new Matrix();
     private final Paint mBitmapPaint = new Paint();
@@ -155,8 +173,7 @@ public class CirclePicker extends ImageView {
         canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
         if (mBorderWidth > 0) {
             canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
-            canvas.drawTextOnPath("#FFFFFF", mCircle, 550f, getDpFromPx(mBorderWidth), PaintText); // CUSTOM
-
+            canvas.drawTextOnPath(TextOnBorder, mCircle, 0f, getDpFromPx(mBorderWidth), PaintText); // CUSTOM
         }
     }
 
@@ -347,6 +364,7 @@ public class CirclePicker extends ImageView {
 
         mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
+
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setShader(mBitmapShader);
 
@@ -374,14 +392,14 @@ public class CirclePicker extends ImageView {
         PaintText = new Paint(Paint.ANTI_ALIAS_FLAG); // CUSTOM
         mCircle = new Path(); // CUSTOM
         PaintText.setStyle(Paint.Style.FILL_AND_STROKE); // CUSTOM
-        PaintText.setColor(CallColorUtility.pickTextColorBasedOnBackgroundColor(String.valueOf(mBorderColor))); // CUSTOM
-
+        PaintText.setColor(CallColorUtility.pickTextColorBasedOnBackgroundColor(mBorderColor)); // CUSTOM
         PaintText.setTextSize(mBorderWidth); //  CUSTOM in px
         mCircle.addCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, Path.Direction.CW); // CUSTOM
 
         applyColorFilter();
         updateShaderMatrix();
         invalidate();
+        initPicker();
     }
 
     private RectF calculateBounds() {
@@ -413,12 +431,10 @@ public class CirclePicker extends ImageView {
 
         mShaderMatrix.setScale(scale, scale);
         mShaderMatrix.postTranslate((int) (dx + 0.5f) + mDrawableRect.left, (int) (dy + 0.5f) + mDrawableRect.top);
-
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
 
-    float dX = 0, dY = 0;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -435,19 +451,20 @@ public class CirclePicker extends ImageView {
 
                 case MotionEvent.ACTION_DOWN: {
 
-                    dX = getX() - event.getRawX();
-                    dY = getY() - event.getRawY();
+                    //Log.e("test",mScreenBitmap.getWidth()+"   "+getX()+"    "+getWidth());
+                    UpdateScreenBitmap();
+                    tdX = getX() - event.getRawX();
+                    tdY = getY() - event.getRawY();
                     break;
                 }
 
                 case MotionEvent.ACTION_MOVE: {
 
-                    newX = event.getRawX() + dX;
-                    newY = event.getRawY() + dY;
-
+                    newX = event.getRawX() + tdX;
+                    newY = event.getRawY() + tdY;
 
                     if(!(newX <= 0 || newX >= mMovableDimension.width() - getWidth())){
-                        animate().x(event.getRawX() + dX).setDuration(0).start();
+                        animate().x(event.getRawX() + tdX).setDuration(0).start();
                     }else if(newX >= mMovableDimension.width() - getWidth()){
                         animate().x(mMovableDimension.width() - getWidth()).setDuration(0).start();
                     }else{
@@ -455,7 +472,7 @@ public class CirclePicker extends ImageView {
                     }
 
                     if(!(newY <= 0 || newY >= mMovableDimension.height() - getHeight())){
-                        animate().y(event.getRawY() + dY).setDuration(0).start();
+                        animate().y(event.getRawY() + tdY).setDuration(0).start();
                     }else if(newY >= mMovableDimension.height()-getHeight()
 
                     ){
@@ -463,6 +480,8 @@ public class CirclePicker extends ImageView {
                     }else{
                         animate().y(0).setDuration(0).start();
                     }
+
+                    ShowBitmapWithZoomFactor();
 
                     break;
                 }
@@ -476,14 +495,13 @@ public class CirclePicker extends ImageView {
         return inTouchableArea(event.getX(), event.getY()) && super.onTouchEvent(event);
     }
 
-    Rect mMovableDimension = new Rect();
+
 
     public void setMovableDimension(Rect MovableDimension){
         mMovableDimension = MovableDimension;
     }
 
-    private boolean inTouchableArea(float x, float y) {
-        if (mBorderRect.isEmpty()) {
+    private boolean inTouchableArea(float x, float y) { if (mBorderRect.isEmpty()) {
             return true;
         }
 
@@ -506,7 +524,75 @@ public class CirclePicker extends ImageView {
         return p / getResources().getDisplayMetrics().density;
     }
 
-    public void _Invalidate(){
-        invalidate();
+    private void UpdateScreenBitmap(){
+        if(!inUpdateScreenBitmap) {
+            inUpdateScreenBitmap=true;
+            setVisibility(INVISIBLE);
+            mScreenBitmap = getScreenBitmap(getRootView());
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setVisibility(VISIBLE);
+                    inUpdateScreenBitmap=false;
+                    ShowBitmapWithZoomFactor();
+                }
+            }, 100); // TODO make parameters to let user choose the frequency
+        }
     }
+
+    public Bitmap getScreenBitmap(View view) {
+        view.setDrawingCacheEnabled(true);
+        view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        view.buildDrawingCache();
+
+        if(view.getDrawingCache() == null) return null; // Verificamos antes de que no sea null
+
+        Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
+        view.setDrawingCacheEnabled(false);
+        view.destroyDrawingCache();
+
+        return snapshot;
+    }
+
+    float scaleFactor = 0.05f; // for scaleFactor = 1; if scaleFactor -> 0+ it zoom to pixel lvl
+    private void ShowBitmapWithZoomFactor(){ // TODO fix coord bug
+        if(mScreenBitmap!=null){
+            int x = (int) ((1 - scaleFactor)/2 * getWidth());
+            int y = (int) ((1 - scaleFactor)/2 * getHeight());
+            int DesireWidth = getWidth() - 2 * x;
+            int DesireHeight = getHeight() - 2 * y;
+            int DesireX = (int)(getX()+x);
+            int DesireY = (int)(getY()+DesireWidth*(2-scaleFactor)+mBorderWidth+y);
+            Matrix matrix = new Matrix();
+            matrix.postScale(1, 1);
+            Bitmap bitmapInCirclePicker = Bitmap.createBitmap(mScreenBitmap, DesireX, DesireY, DesireWidth, DesireHeight, matrix, true);
+            UpdateBorder(bitmapInCirclePicker);
+            mBitmap = bitmapInCirclePicker;
+            setup();
+        }else{
+            UpdateScreenBitmap();
+        }
+
+    }
+
+    private void UpdateBorder(Bitmap CurrentBitmap){
+        int pixel = CurrentBitmap.getPixel((CurrentBitmap.getWidth()/2),(CurrentBitmap.getHeight()/2));
+        int[] RGB = new int[]{Color.red(pixel), Color.blue(pixel), Color.green(pixel)};
+        TextOnBorder = CallColorUtility.getHexFromRGB(RGB);
+        mBorderColor= pixel;
+    }
+
+    private void initPicker(){
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if(getWidth()>0&&getHeight()>0){
+                    UpdateScreenBitmap();
+                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+    }
+
 }

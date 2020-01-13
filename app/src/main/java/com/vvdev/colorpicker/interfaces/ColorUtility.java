@@ -3,10 +3,13 @@ package com.vvdev.colorpicker.interfaces;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
+
+import org.w3c.dom.Text;
 
 import static java.lang.Integer.parseInt;
 
@@ -119,26 +122,27 @@ public class ColorUtility {
 
     /**
      * return RGB value From hexadecimal
-     * @param Color Hexadecimal of the color ( automatically delete # so you can give #001122 or 001122 )
+     * @param ReceiveColor Hexadecimal of the color
      * @return int[0] = red value [0:255], int[1] = blue value [0:255], int[2] = green value [0:255]
      */
 
-    public int[] getRGBFromHex(String Color){
-        if(Color.substring(0,1).equals("#")){
-            Color=Color.substring(1);
+    public int[] getRGBFromHex(String ReceiveColor){
+        if(ReceiveColor.length()==7) {
+            return new int[]{parseInt(ReceiveColor.substring(0, 2), 16), parseInt(ReceiveColor.substring(2, 4), 16), parseInt(ReceiveColor.substring(4, 6), 16)};
+        }else{
+            Log.e("getRGBFromHex","Unable to parse this color : "+ReceiveColor);
+            return new int[]{0,0,0};
         }
-        return new int[]{parseInt(Color.substring(0,2),16), parseInt(Color.substring(2,4),16), parseInt(Color.substring(4,6),16)};
     }
 
     /**
-     * Decide if the text color should be black or white depending on background color
+     * Decide if the text color should be black or white depending on background color. Dedicate to Circle picker view
      * @param TextColor Hex background color in String ( automatically handle if #000000 or 000000 )
      * @return String Hex value of the best color
      */
 
-    public int pickTextColorBasedOnBackgroundColor(String TextColor) {
-        int[] TextColorRGB = getRGBFromHex(TextColor);
-        return (((TextColorRGB[0] * 0.299) + (TextColorRGB[1] * 0.587) + (TextColorRGB[2] * 0.114)) > 186) ? Color.BLACK : Color.WHITE;
+    public int pickTextColorBasedOnBackgroundColor(int TextColor) {
+        return (((Color.red(TextColor) * 0.299) + (Color.green(TextColor) * 0.587) + (Color.blue(TextColor)* 0.114)) > 186) ? Color.BLACK : Color.WHITE;
     }
 
     public int[] getHsvFromRGB(int[] RGB){

@@ -18,6 +18,7 @@ import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 
@@ -86,7 +87,6 @@ public class PhonePickerFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CirclePicker mCirclePicker= view.findViewById(R.id.CirclePicker);
-                mCirclePicker._Invalidate();
             }
         });
 
