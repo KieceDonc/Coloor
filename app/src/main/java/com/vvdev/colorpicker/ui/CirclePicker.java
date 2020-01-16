@@ -12,6 +12,7 @@ import android.graphics.Matrix;
 import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
@@ -26,28 +27,21 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorUtility;
-
-import java.math.BigInteger;
-import java.util.Arrays;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
-import androidx.constraintlayout.solver.widgets.Rectangle;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static com.vvdev.colorpicker.activity.MainActivity.CallColorUtility;
 
 @SuppressLint("AppCompatCustomView")
-public class CirclePicker extends ImageView {
+public class CirclePicker extends ImageView implements View.OnTouchListener {
 
     private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
 
@@ -122,6 +116,7 @@ public class CirclePicker extends ImageView {
         init();
     }
 
+    private ScaleGestureDetector mScaleDetector;
     private void init() {
         super.setScaleType(SCALE_TYPE);
         mReady = true;
@@ -132,6 +127,9 @@ public class CirclePicker extends ImageView {
 
         if (mSetupPending) {
             setup();
+            initPicker();
+            getRootView().setOnTouchListener(this);
+            mScaleDetector = new ScaleGestureDetector(getContext(),new ScaleListener());
             mSetupPending = false;
         }
 
@@ -399,7 +397,6 @@ public class CirclePicker extends ImageView {
         applyColorFilter();
         updateShaderMatrix();
         invalidate();
-        initPicker();
     }
 
     private RectF calculateBounds() {
@@ -434,68 +431,85 @@ public class CirclePicker extends ImageView {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
+    boolean FingStartInCircleView = false;
+    boolean FingDragging = false;
 
-
-    @SuppressLint("ClickableViewAccessibility")
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-
+    public boolean onTouch(View v, MotionEvent event) { // TODO switch to https://stackoverflow.com/questions/5790503/can-we-use-scale-gesture-detector-for-pinch-zoom-in-android
         float newX=0,newY=0;
+        mScaleDetector.onTouchEvent(event);
 
-        if (mDisableCircularTransformation) {
-            return super.onTouchEvent(event);
-        }
 
-        if(inTouchableArea(event.getX(),event.getY())&&mMovableDimension!=null){
+        if(v==this&&inTouchableArea(event.getX(),event.getY())&&mMovableDimension!=null){
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_UP:{
+                        FingStartInCircleView=false;
+                        FingDragging=false;
+                    }
+                    case MotionEvent.ACTION_DOWN: {
+
+                        UpdateScreenBitmap();
+                        tdX = getX() - event.getRawX();
+                        tdY = getY() - event.getRawY();
+                        FingStartInCircleView=true;
+                        break;
+                    }
+
+                    case MotionEvent.ACTION_MOVE: {
+
+                        if (event.getPointerCount() == 1&&!FingDragging){ // if one finger detect we move layout
+
+                            newX = event.getRawX() + tdX;
+                            newY = event.getRawY() + tdY;
+
+                            if (!(newX <= 0 || newX >= mMovableDimension.width() - getWidth())) {
+                                animate().x(event.getRawX() + tdX).setDuration(0).start();
+                            } else if (newX >= mMovableDimension.width() - getWidth()) {
+                                animate().x(mMovableDimension.width() - getWidth()).setDuration(0).start();
+                            } else {
+                                animate().x(0).setDuration(0).start();
+                            }
+
+                            if (!(newY <= 0 || newY >= mMovableDimension.height() - getHeight())) {
+                                animate().y(event.getRawY() + tdY).setDuration(0).start();
+                            } else if (newY >= mMovableDimension.height() - getHeight()
+
+                            ) {
+                                animate().y(mMovableDimension.height() - getHeight()).setDuration(0).start();
+                            } else {
+                                animate().y(0).setDuration(0).start();
+                            }
+
+                            ShowBitmapWithScaleFactor();
+
+                            break;
+                        }else if(event.getPointerCount()>1){ // if 2 fingers detected
+
+                            ShowBitmapWithScaleFactor();
+                        }
+                    }
+                    default: {
+                        return false;
+                    }
+                }
+                return true;
+        }else if(FingDragging && FingStartInCircleView){ // we use this code to keep dragging out of circleview area
             switch (event.getAction()) {
-
-                case MotionEvent.ACTION_DOWN: {
-
-                    //Log.e("test",mScreenBitmap.getWidth()+"   "+getX()+"    "+getWidth());
-                    UpdateScreenBitmap();
-                    tdX = getX() - event.getRawX();
-                    tdY = getY() - event.getRawY();
+                case MotionEvent.ACTION_UP:{
+                    FingStartInCircleView=false;
+                    FingDragging=false;
                     break;
                 }
-
                 case MotionEvent.ACTION_MOVE: {
 
-                    newX = event.getRawX() + tdX;
-                    newY = event.getRawY() + tdY;
-
-                    if(!(newX <= 0 || newX >= mMovableDimension.width() - getWidth())){
-                        animate().x(event.getRawX() + tdX).setDuration(0).start();
-                    }else if(newX >= mMovableDimension.width() - getWidth()){
-                        animate().x(mMovableDimension.width() - getWidth()).setDuration(0).start();
-                    }else{
-                        animate().x(0).setDuration(0).start();
-                    }
-
-                    if(!(newY <= 0 || newY >= mMovableDimension.height() - getHeight())){
-                        animate().y(event.getRawY() + tdY).setDuration(0).start();
-                    }else if(newY >= mMovableDimension.height()-getHeight()
-
-                    ){
-                        animate().y(mMovableDimension.height() - getHeight()).setDuration(0).start();
-                    }else{
-                        animate().y(0).setDuration(0).start();
-                    }
-
-                    ShowBitmapWithZoomFactor();
-
-                    break;
-                }
-                default: {
-                    return false;
+                    ShowBitmapWithScaleFactor();
                 }
             }
             return true;
         }
-
-        return inTouchableArea(event.getX(), event.getY()) && super.onTouchEvent(event);
+        return false;
     }
-
-
 
     public void setMovableDimension(Rect MovableDimension){
         mMovableDimension = MovableDimension;
@@ -524,24 +538,32 @@ public class CirclePicker extends ImageView {
         return p / getResources().getDisplayMetrics().density;
     }
 
+    /**
+     * update phone bitmap
+     */
     private void UpdateScreenBitmap(){
         if(!inUpdateScreenBitmap) {
             inUpdateScreenBitmap=true;
-            setVisibility(INVISIBLE);
-            mScreenBitmap = getScreenBitmap(getRootView());
-            final Handler handler = new Handler();
+            setVisibility(INVISIBLE); // set this view invisible so we won't get it in bitmap. It give a basis to work on.
+            mScreenBitmap = getBitmapOfView(getRootView()); // we are sending phone view to get all the phone bitmap
+            final Handler handler = new Handler(); // we call the code 100 ms later time to get the phone bitmap
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     setVisibility(VISIBLE);
                     inUpdateScreenBitmap=false;
-                    ShowBitmapWithZoomFactor();
+                    ShowBitmapWithScaleFactor();
                 }
             }, 100); // TODO make parameters to let user choose the frequency
         }
     }
 
-    public Bitmap getScreenBitmap(View view) {
+    /**
+     * get bitmap of particular view
+     * @param view of which you want bitmap
+     * @return bitmap of view
+     */
+    public Bitmap getBitmapOfView(View view) {
         view.setDrawingCacheEnabled(true);
         view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         view.buildDrawingCache();
@@ -555,18 +577,22 @@ public class CirclePicker extends ImageView {
         return snapshot;
     }
 
-    float scaleFactor = 0.05f; // for scaleFactor = 1; if scaleFactor -> 0+ it zoom to pixel lvl
-    private void ShowBitmapWithZoomFactor(){ // TODO fix coord bug
+    double scaleFactor = 0.5; // for scaleFactor = 1; if scaleFactor -> 0+ it zoom to pixel lvl
+
+    /**
+     * Show zoomed screen with desired scale factor
+     */
+    private void ShowBitmapWithScaleFactor(){
         if(mScreenBitmap!=null){
-            int x = (int) ((1 - scaleFactor)/2 * getWidth());
-            int y = (int) ((1 - scaleFactor)/2 * getHeight());
-            int DesireWidth = getWidth() - 2 * x;
-            int DesireHeight = getHeight() - 2 * y;
-            int DesireX = (int)(getX()+x);
-            int DesireY = (int)(getY()+DesireWidth*(2-scaleFactor)+mBorderWidth+y);
+            int DesireX= (int) (getWidth()-getWidth()*scaleFactor)/2;
+            int DesireY= (int) (getHeight()-getHeight()*scaleFactor)/2;
+            int DesireWidth= (int) (getWidth()*scaleFactor);
+            int DesireHeight= (int) (getHeight()*scaleFactor);
             Matrix matrix = new Matrix();
             matrix.postScale(1, 1);
-            Bitmap bitmapInCirclePicker = Bitmap.createBitmap(mScreenBitmap, DesireX, DesireY, DesireWidth, DesireHeight, matrix, true);
+            int[] locationOnScreen = new int[2];
+            getLocationOnScreen(locationOnScreen);
+            Bitmap bitmapInCirclePicker = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
             UpdateBorder(bitmapInCirclePicker);
             mBitmap = bitmapInCirclePicker;
             setup();
@@ -593,6 +619,16 @@ public class CirclePicker extends ImageView {
                 }
             }
         });
+    }
+
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor *= detector.getScaleFactor();
+            scaleFactor = Math.max(0.05f, Math.min(0.50,scaleFactor));
+            return true;
+        }
     }
 
 }

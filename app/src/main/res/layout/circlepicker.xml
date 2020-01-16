@@ -7,8 +7,8 @@
 
     <com.vvdev.colorpicker.ui.CirclePicker
         android:id="@+id/CirclePicker"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
         android:src="@android:color/transparent"
         app:civ_border_color="#000000"
         app:civ_border_width="12dp"
