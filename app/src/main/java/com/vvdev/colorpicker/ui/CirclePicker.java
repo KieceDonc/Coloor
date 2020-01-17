@@ -24,6 +24,8 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -41,7 +43,7 @@ import androidx.annotation.RequiresApi;
 import static com.vvdev.colorpicker.activity.MainActivity.CallColorUtility;
 
 @SuppressLint("AppCompatCustomView")
-public class CirclePicker extends ImageView implements View.OnTouchListener {
+public class CirclePicker extends ImageView {
 
     private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
 
@@ -56,11 +58,18 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
     private final RectF mDrawableRect = new RectF();
     private final RectF mBorderRect = new RectF();
 
+    private Paint mCenterRectPaint = new Paint();
     private Bitmap mScreenBitmap=null; // custom
     private Rect mMovableDimension = new Rect(); // custom
     private String TextOnBorder=""; // custom
     private float tdX = 0;// custom
     private float tdY = 0; // custom
+    private int mBitmapRectDim;
+    private int mBitmapRectLineDim;
+    private int mCenterRectLineDim;
+    private int mBitmapnumColumns, mBitmapnumRows;
+    private Paint mBitmapRectPaint = new Paint();
+    private boolean[][] mBitmapCellChecked;
     private boolean inUpdateScreenBitmap=false; // custom
 
 
@@ -116,7 +125,8 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
         init();
     }
 
-    private ScaleGestureDetector mScaleDetector;
+    private UserInteractionHandler mUserInteractionHandler;
+
     private void init() {
         super.setScaleType(SCALE_TYPE);
         mReady = true;
@@ -128,8 +138,7 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
         if (mSetupPending) {
             setup();
             initPicker();
-            getRootView().setOnTouchListener(this);
-            mScaleDetector = new ScaleGestureDetector(getContext(),new ScaleListener());
+            mUserInteractionHandler = new UserInteractionHandler(getContext(),this);
             mSetupPending = false;
         }
 
@@ -172,6 +181,35 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
         if (mBorderWidth > 0) {
             canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
             canvas.drawTextOnPath(TextOnBorder, mCircle, 0f, getDpFromPx(mBorderWidth), PaintText); // CUSTOM
+            canvas.drawLine(mDrawableRect.centerX()+mBitmapRectDim,mDrawableRect.centerY()+mBitmapRectDim,mDrawableRect.centerX()-mBitmapRectDim,mDrawableRect.centerY()+mBitmapRectDim,mCenterRectPaint);
+            canvas.drawLine(mDrawableRect.centerX()+mBitmapRectDim,mDrawableRect.centerY()+mBitmapRectDim,mDrawableRect.centerX()+mBitmapRectDim,mDrawableRect.centerY()-mBitmapRectDim,mCenterRectPaint);
+            canvas.drawLine(mDrawableRect.centerX()-mBitmapRectDim,mDrawableRect.centerY()-mBitmapRectDim,mDrawableRect.centerX()+mBitmapRectDim,mDrawableRect.centerY()-mBitmapRectDim,mCenterRectPaint);
+            canvas.drawLine(mDrawableRect.centerX()-mBitmapRectDim,mDrawableRect.centerY()-mBitmapRectDim,mDrawableRect.centerX()-mBitmapRectDim,mDrawableRect.centerY()+mBitmapRectDim,mCenterRectPaint);
+            /*if(scaleFactor<0.2){
+
+                for (int i = 0; i < mBitmapnumColumns; i++) {
+                    for (int j = 0; j < mBitmapnumRows; j++) {
+                        if (mBitmapCellChecked[i][j]) {
+                            canvas.drawRect(i * mBitmapRectDim, j * mBitmapRectDim,
+                                    (i + 1) * mBitmapRectDim, (j + 1) * mBitmapRectDim,
+                                    mBitmapRectPaint);
+                        }
+
+                    }
+                }
+
+                for (int x = 1; x < mBitmapnumColumns; x++) {
+                    for (int i = 1; i < mBitmapnumColumns; i++) {
+                        canvas.drawLine(i * mBitmapRectDim, mBitmapRectDim*x, i * mBitmapRectDim, mBitmapRectDim, mBitmapRectPaint);
+                    }
+                }
+
+                for (int i = 1; i < mBitmapnumRows; i++) {
+                    canvas.drawLine(0, i * mBitmapRectDim, mBitmapRectDim, i * mBitmapRectDim, mBitmapRectPaint);
+                }
+
+            }*/
+
         }
     }
 
@@ -389,10 +427,25 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
 
         PaintText = new Paint(Paint.ANTI_ALIAS_FLAG); // CUSTOM
         mCircle = new Path(); // CUSTOM
+
         PaintText.setStyle(Paint.Style.FILL_AND_STROKE); // CUSTOM
         PaintText.setColor(CallColorUtility.pickTextColorBasedOnBackgroundColor(mBorderColor)); // CUSTOM
         PaintText.setTextSize(mBorderWidth); //  CUSTOM in px
+
         mCircle.addCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, Path.Direction.CW); // CUSTOM
+
+        int pixel = mBitmap.getPixel((mBitmap.getWidth()/2),(mBitmap.getHeight()/2)); // middle pixel of mBitmap 
+        mCenterRectPaint.setColor(CallColorUtility.pickTextColorBasedOnBackgroundColor(pixel)); // set appropriate color of center rect
+        mCenterRectLineDim= (int)(0.5*(1/scaleFactor)); // calculate center line rect  width / height
+        mCenterRectPaint.setStrokeWidth(mCenterRectLineDim); // set center rect width / height
+
+        mBitmapRectDim = (int)(1*(1/scaleFactor)); // calculate rect width / height on mBitmap
+        mBitmapRectLineDim =  (int)(0.4*(1/scaleFactor)); // calculate line rect width / height
+        mBitmapRectPaint.setColor(Color.BLACK); // set color of grid
+        mBitmapRectPaint.setStrokeWidth(mBitmapRectLineDim); // set dim grid
+        mBitmapnumColumns =(int) mDrawableRadius/mBitmapRectDim; // calculate number of columms. Refer to https://stackoverflow.com/questions/24842550/2d-array-grid-on-drawing-canvas/24844534
+        mBitmapnumRows = (int) mDrawableRadius/mBitmapRectDim; // calculate number of rows. Refer to https://stackoverflow.com/questions/24842550/2d-array-grid-on-drawing-canvas/24844534
+
 
         applyColorFilter();
         updateShaderMatrix();
@@ -431,95 +484,8 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
-    boolean FingStartInCircleView = false;
-    boolean FingDragging = false;
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) { // TODO switch to https://stackoverflow.com/questions/5790503/can-we-use-scale-gesture-detector-for-pinch-zoom-in-android
-        float newX=0,newY=0;
-        mScaleDetector.onTouchEvent(event);
-
-
-        if(v==this&&inTouchableArea(event.getX(),event.getY())&&mMovableDimension!=null){
-                switch (event.getAction()) {
-
-                    case MotionEvent.ACTION_UP:{
-                        FingStartInCircleView=false;
-                        FingDragging=false;
-                    }
-                    case MotionEvent.ACTION_DOWN: {
-
-                        UpdateScreenBitmap();
-                        tdX = getX() - event.getRawX();
-                        tdY = getY() - event.getRawY();
-                        FingStartInCircleView=true;
-                        break;
-                    }
-
-                    case MotionEvent.ACTION_MOVE: {
-
-                        if (event.getPointerCount() == 1&&!FingDragging){ // if one finger detect we move layout
-
-                            newX = event.getRawX() + tdX;
-                            newY = event.getRawY() + tdY;
-
-                            if (!(newX <= 0 || newX >= mMovableDimension.width() - getWidth())) {
-                                animate().x(event.getRawX() + tdX).setDuration(0).start();
-                            } else if (newX >= mMovableDimension.width() - getWidth()) {
-                                animate().x(mMovableDimension.width() - getWidth()).setDuration(0).start();
-                            } else {
-                                animate().x(0).setDuration(0).start();
-                            }
-
-                            if (!(newY <= 0 || newY >= mMovableDimension.height() - getHeight())) {
-                                animate().y(event.getRawY() + tdY).setDuration(0).start();
-                            } else if (newY >= mMovableDimension.height() - getHeight()
-
-                            ) {
-                                animate().y(mMovableDimension.height() - getHeight()).setDuration(0).start();
-                            } else {
-                                animate().y(0).setDuration(0).start();
-                            }
-
-                            ShowBitmapWithScaleFactor();
-
-                            break;
-                        }else if(event.getPointerCount()>1){ // if 2 fingers detected
-
-                            ShowBitmapWithScaleFactor();
-                        }
-                    }
-                    default: {
-                        return false;
-                    }
-                }
-                return true;
-        }else if(FingDragging && FingStartInCircleView){ // we use this code to keep dragging out of circleview area
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_UP:{
-                    FingStartInCircleView=false;
-                    FingDragging=false;
-                    break;
-                }
-                case MotionEvent.ACTION_MOVE: {
-
-                    ShowBitmapWithScaleFactor();
-                }
-            }
-            return true;
-        }
-        return false;
-    }
-
     public void setMovableDimension(Rect MovableDimension){
         mMovableDimension = MovableDimension;
-    }
-
-    private boolean inTouchableArea(float x, float y) { if (mBorderRect.isEmpty()) {
-            return true;
-        }
-
-        return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -603,7 +569,7 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
     }
 
     private void UpdateBorder(Bitmap CurrentBitmap){
-        int pixel = CurrentBitmap.getPixel((CurrentBitmap.getWidth()/2),(CurrentBitmap.getHeight()/2));
+        int pixel = CurrentBitmap.getPixel((CurrentBitmap.getWidth()/2),(CurrentBitmap.getHeight()/2)); // TODO take all pixels inside rectangle
         int[] RGB = new int[]{Color.red(pixel), Color.blue(pixel), Color.green(pixel)};
         TextOnBorder = CallColorUtility.getHexFromRGB(RGB);
         mBorderColor= pixel;
@@ -621,13 +587,161 @@ public class CirclePicker extends ImageView implements View.OnTouchListener {
         });
     }
 
-    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+    private class UserInteractionHandler implements OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, OnDragListener {
+
+        private View mCirclePickerView;
+        private GestureDetector gesture;
+        private ScaleGestureDetector gestureScale;
+
+        private boolean inScale =false;
+
+        public UserInteractionHandler(Context c, View v){
+            gesture = new GestureDetector(c, this);
+            gestureScale = new ScaleGestureDetector(c, this);
+            mCirclePickerView = v;
+            mCirclePickerView.setOnTouchListener(this);
+            mCirclePickerView.setOnDragListener(this);
+        }
+
 
         @Override
         public boolean onScale(ScaleGestureDetector detector) {
             scaleFactor *= detector.getScaleFactor();
             scaleFactor = Math.max(0.05f, Math.min(0.50,scaleFactor));
+            ShowBitmapWithScaleFactor();
             return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            inScale=true;
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    inScale=false;
+                }
+            }, 250);
+        }
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public void onShowPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent event1, MotionEvent event2, float x, float y) {
+            return true;
+        }
+
+        @Override
+        public void onLongPress(MotionEvent e) {
+
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            return false;
+        }
+
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onDoubleTapEvent(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            gesture.onTouchEvent(event);
+            gestureScale.onTouchEvent(event);
+            float newX,newY;
+            onTouchEvent(event);
+
+
+            if(inTouchableArea(event.getX(),event.getY())&&mMovableDimension!=null){
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        UpdateScreenBitmap();
+                        tdX = getX() - event.getRawX();
+                        tdY = getY() - event.getRawY();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:{
+
+                    }
+                    case MotionEvent.ACTION_MOVE: {
+
+                        if (event.getPointerCount() == 1&&!inScale){ // if one finger detect we move layout
+
+                            newX = event.getRawX() + tdX;
+                            newY = event.getRawY() + tdY;
+
+                            if (!(newX <= 0 || newX >= mMovableDimension.width() - getWidth())) {
+                                animate().x(event.getRawX() + tdX).setDuration(0).start();
+                            } else if (newX >= mMovableDimension.width() - getWidth()) {
+                                animate().x(mMovableDimension.width() - getWidth()).setDuration(0).start();
+                            } else {
+                                animate().x(0).setDuration(0).start();
+                            }
+
+                            if (!(newY <= 0 || newY >= mMovableDimension.height() - getHeight())) {
+                                animate().y(event.getRawY() + tdY).setDuration(0).start();
+                            } else if (newY >= mMovableDimension.height() - getHeight()
+
+                            ) {
+                                animate().y(mMovableDimension.height() - getHeight()).setDuration(0).start();
+                            } else {
+                                animate().y(0).setDuration(0).start();
+                            }
+
+                            ShowBitmapWithScaleFactor();
+                            break;
+                        }
+                    }
+                    default: {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onDrag(View v, DragEvent event) { // https://www.vogella.com/tutorials/AndroidDragAndDrop/article.html
+            return true;
+
+        }
+
+        private boolean inTouchableArea(float x, float y) {
+            if (mBorderRect.isEmpty()) {
+                return true;
+            }
+            return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
         }
     }
 
