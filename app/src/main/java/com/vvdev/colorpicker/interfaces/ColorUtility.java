@@ -134,7 +134,7 @@ public class ColorUtility {
      */
 
     public String getHexFromRGB(int[] RGB){
-        return String.format("#%02x%02x%02x", RGB[0], RGB[1], RGB[2]);
+        return String.format("#%02x%02x%02x", RGB[0], RGB[1], RGB[2]).toUpperCase();
     }
 
     /**
