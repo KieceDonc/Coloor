@@ -1147,7 +1147,7 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Vi
      * Function who's refreshing value of camera_top.xml
      */
     public void CameraTopRefresh() {
-        int[] RGBAverage = CallColorUtility.getRGBAverage(mTextureView, CameraCircle);
+        int[] RGBAverage = CallColorUtility.getRGBAverageFromTextureView(mTextureView, CameraCircle);
         String ToDisplayRGB = SRGB+" "+RGBAverage[0]+", "+RGBAverage[1]+", "+RGBAverage[2];
         TVRGBValue.setText(ToDisplayRGB);
 

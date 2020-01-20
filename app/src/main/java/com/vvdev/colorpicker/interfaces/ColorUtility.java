@@ -66,9 +66,8 @@ public class ColorUtility {
 
     }
 
-
     /**
-     * use to delete the px of circle in getRGBAverage
+     * use to delete the px of circle in getRGBAverageFromTextureView
      * @return float
      */
     private float getCirclePx(){
@@ -83,7 +82,7 @@ public class ColorUtility {
      * @return int[0] = Average red value [0:255], int[1] = Average blue value [0:255], int[2] = Average green value [0:255]
      */
 
-    public int[] getRGBAverage(AutoFitTextureView CameraView, ImageView AverageLayout){
+    public int[] getRGBAverageFromTextureView(AutoFitTextureView CameraView, ImageView AverageLayout){
         int CircleHeight = AverageLayout.getHeight();
         int CircleWidth = AverageLayout.getWidth();
         Bitmap mTextViewBitmap = Bitmap.createBitmap(CameraView.getBitmap(),(int)AverageLayout.getX(),(int)AverageLayout.getY(),CircleWidth,CircleHeight);
@@ -92,8 +91,8 @@ public class ColorUtility {
 
         int m1 = (int) (CircleHeight/2-getCirclePx()); // x middle
         int m2= (int) (CircleWidth/2-getCirclePx()); // y middle
-        for (int x = 0; x < CircleHeight; x++) { // refer to https://stackoverflow.com/questions/14487322/get-all-pixel-array-inside-circle
-            for (int y = 0; y < CircleWidth; y++) {
+        for (int x = 0; x < CircleWidth; x++) { // refer to https://stackoverflow.com/questions/14487322/get-all-pixel-array-inside-circle
+            for (int y = 0; y < CircleHeight; y++) {
                 double dx = x - m1;
                 double dy = y - m2;
                 double distanceSquared = dx * dx + dy * dy;
@@ -107,6 +106,24 @@ public class ColorUtility {
                 }
             }
         } // TODO when it's completely dark return rgb(1,1,1). Need to fix this
+        return new int[]{moyRED/cmptPixel,moyGREEN/cmptPixel,moyBLUE/cmptPixel};
+    }
+
+    public int[] getRGBAverageFromBitmap(Bitmap mBitmap){
+        int Height = mBitmap.getHeight();
+        int Width = mBitmap.getWidth();
+
+        int moyRED = 0, moyBLUE=0, moyGREEN=0, cmptPixel = 0;
+
+        for(int x=0;x<Width;x++){
+            for(int y=0;y<Height;y++){
+                int CurrentPixel = mBitmap.getPixel(x,y);
+                cmptPixel++;
+                moyRED+= Color.red(CurrentPixel);
+                moyBLUE+= Color.blue(CurrentPixel);
+                moyGREEN+=Color.green(CurrentPixel);
+            }
+        }
         return new int[]{moyRED/cmptPixel,moyGREEN/cmptPixel,moyBLUE/cmptPixel};
     }
 
@@ -128,7 +145,9 @@ public class ColorUtility {
 
     public int[] getRGBFromHex(String ReceiveColor){
         if(ReceiveColor.length()==7) {
-            return new int[]{parseInt(ReceiveColor.substring(0, 2), 16), parseInt(ReceiveColor.substring(2, 4), 16), parseInt(ReceiveColor.substring(4, 6), 16)};
+            return new int[]{parseInt(ReceiveColor.substring(1, 2), 16), parseInt(ReceiveColor.substring(3, 4), 16), parseInt(ReceiveColor.substring(5, 6), 16)};
+        }else if(ReceiveColor.length()==6){
+            return new int[]{parseInt(ReceiveColor.substring(0, 1), 16), parseInt(ReceiveColor.substring(2, 3), 16), parseInt(ReceiveColor.substring(4, 5), 16)};
         }else{
             Log.e("getRGBFromHex","Unable to parse this color : "+ReceiveColor);
             return new int[]{0,0,0};
