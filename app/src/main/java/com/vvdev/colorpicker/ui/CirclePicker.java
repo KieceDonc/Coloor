@@ -51,7 +51,7 @@ public class CirclePicker extends ImageView {
     private static final int COLORDRAWABLE_DIMENSION = 2;
 
     private static final int DEFAULT_BORDER_WIDTH = 0;
-    private static final int DEFAULT_BORDER_COLOR = Color.BLACK;
+    private static final int DEFAULT_BORDER_COLOR = Color.TRANSPARENT;
     private static final int DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT;
     private static final boolean DEFAULT_BORDER_OVERLAY = false;
 
@@ -178,25 +178,23 @@ public class CirclePicker extends ImageView {
             canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mCircleBackgroundPaint);
         }
         canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
-        if (mBorderWidth > 0) {
-            /**
-             * first part = we divide the circle in 8 part. we want the position at 7/8. 7/8 = 0.875 * circle perimeter.
-             * After that the first part give the starting point but we want to center our text.
-             * second part = we get width of text and we divide by 2 to get the offset to delete
-             */
+        canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
+        /**
+         * first part = we divide the circle in 8 part. we want the position at 7/8. 7/8 = 0.875 * circle perimeter.
+         * After that the first part give the starting point but we want to center our text.
+         * second part = we get width of text and we divide by 2 to get the offset to delete
+         */
 
-            mBorderPaintText.getTextBounds(mTextOnBorderColorName,0,mTextOnBorderColorName.length(),ColorNameDim);
-            mBorderPaintText.getTextBounds(mTextOnBorderHex,0,mTextOnBorderHex.length(),ColorHexDim);
-            float offset1 = ColorNameDim.width()/2;
-            float offset2 = ColorHexDim.width()/2;
-            float positionOnBorderName = (float)(2*Math.PI*mBorderRadius*0.875)-offset1;
-            float positionOnBorderHex = (float)(2*Math.PI*mBorderRadius*0.615)-offset2; //
+        mBorderPaintText.getTextBounds(mTextOnBorderColorName,0,mTextOnBorderColorName.length(),ColorNameDim);
+        mBorderPaintText.getTextBounds(mTextOnBorderHex,0,mTextOnBorderHex.length(),ColorHexDim);
+        float offset1 = ColorNameDim.width()/2;
+        float offset2 = ColorHexDim.width()/2;
+        float positionOnBorderName = (float)(2*Math.PI*mBorderRadius*0.875)-offset1;
+        float positionOnBorderHex = (float)(2*Math.PI*mBorderRadius*0.615)-offset2;
+        canvas.drawTextOnPath(mTextOnBorderHex, mCircle, positionOnBorderHex, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
+        canvas.drawTextOnPath(mTextOnBorderColorName, mCircle, positionOnBorderName, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
+        canvas.drawRect(mDrawableRect.centerX()+gridSquareDim,mDrawableRect.centerY()+gridSquareDim,mDrawableRect.centerX()-gridSquareDim,mDrawableRect.centerY()-gridSquareDim,gridSquarePaint);
 
-            canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
-            canvas.drawTextOnPath(mTextOnBorderHex, mCircle, positionOnBorderHex, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
-            canvas.drawTextOnPath(mTextOnBorderColorName, mCircle, positionOnBorderName, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
-            canvas.drawRect(mDrawableRect.centerX()+gridSquareDim,mDrawableRect.centerY()+gridSquareDim,mDrawableRect.centerX()-gridSquareDim,mDrawableRect.centerY()-gridSquareDim,gridSquarePaint);
-        }
     }
 
     @Override
@@ -364,10 +362,11 @@ public class CirclePicker extends ImageView {
         if (mDisableCircularTransformation) {
             mBitmap = null;
         } else {
-            mBitmap = getBitmapFromDrawable(getDrawable());
+            updatePhoneBitmap(); // TODO make something more cleaner
         }
         setup();
     }
+
 
     private void setup() {
         if (!mReady) {
@@ -518,8 +517,7 @@ public class CirclePicker extends ImageView {
             int[] locationOnScreen = new int[2];
             getLocationOnScreen(locationOnScreen);
 
-            Bitmap PickerBitmap = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
-            mBitmap = PickerBitmap;
+            mBitmap = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
             setup();
             if(!inScale){
                 updatePickerBorder();

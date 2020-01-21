@@ -1,5 +1,6 @@
 package com.vvdev.colorpicker.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -18,60 +19,58 @@ import com.vvdev.colorpicker.ui.CirclePicker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraImgPath;
 
 public class ImportImg extends AppCompatActivity {
 
-    private boolean canGoToNormalScreen = true;
     private View CirclePickerView;
     private CirclePicker mCirclePicker;
     private ConstraintLayout importImgConstraintLayout;
     private ImageView Img;
+    private boolean circlePickerAlreadyAdded = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        //makeActivityFullScreen();
+        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.import_img);
 
         importImgConstraintLayout= findViewById(R.id.importImgConstraint); // get root constraint layout
-        /*importImgConstraintLayout.setOnClickListener(new View.OnClickListener() { // set on click listener for animation effect
-            @Override
-            public void onClick(View v) {
-                makeActivityNormalScreen();
-                canGoToNormalScreen=false;
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        canGoToNormalScreen=true;
-                    }
-                }, 2000);
-                tryToReturnToNormalScreen();
-            }
-        });*/
+
 
         Intent receiveData = getIntent(); // get intent
         String imgPath = receiveData.getStringExtra(IntentExtraImgPath); // get img path from intent
 
         Img = findViewById(R.id.importImg_ImageView); // get view of img
-        Glide.with(this).load(imgPath).into(Img); // set img
+        Glide.with(this).load(imgPath).fitCenter().into(Img); // set img
 
-        /**
-         * Start circle picker
-         */
-        LayoutInflater inflater = LayoutInflater.from(this);
-        CirclePickerView = inflater.inflate(R.layout.circlepicker,importImgConstraintLayout);
-        importImgConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
-        mCirclePicker = findViewById(R.id.CirclePicker);
+        //TODO request both permission ( write / read external storage )
 
-        mCirclePicker.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        final Context c = this;
+        findViewById(R.id.startCirclePicker).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onGlobalLayout() {
-                Rect PhonePickerRect = new Rect();
-                importImgConstraintLayout.getGlobalVisibleRect(PhonePickerRect);
-                mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
+            public void onClick(View v) {
+                /**
+                 * Start circle picker
+                 */
+                if(!circlePickerAlreadyAdded){
+                    circlePickerAlreadyAdded=true;
+                    CirclePickerView = inflate(c,R.layout.circlepicker,importImgConstraintLayout);
+                    importImgConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
+                    mCirclePicker = findViewById(R.id.CirclePicker);
+
+                    mCirclePicker.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                        @Override
+                        public void onGlobalLayout() {
+                            Rect PhonePickerRect = new Rect();
+                            importImgConstraintLayout.getGlobalVisibleRect(PhonePickerRect);
+                            mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
+                        }
+                    });
+                }
             }
         });
     }
@@ -81,31 +80,4 @@ public class ImportImg extends AppCompatActivity {
         super.onResume();
     }
 
-    public void makeActivityFullScreen(){
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-    }
-/*
-    public void makeActivityNormalScreen(){
-        //requestWindowFeature(Window.);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-    }
-
-    public void tryToReturnToNormalScreen(){
-        if(canGoToNormalScreen){
-            makeActivityNormalScreen();
-        }else{
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tryToReturnToNormalScreen();
-                }
-            }, 500);
-        }
-    }*/
 }
