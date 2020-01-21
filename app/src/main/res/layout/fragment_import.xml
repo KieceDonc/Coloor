@@ -24,7 +24,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/bordertest"
+        android:background="@drawable/black_border"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -39,7 +39,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/frameLayoutImg"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bordertest">
+            android:background="@drawable/black_border">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -68,7 +68,8 @@
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_mapmode" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -98,7 +99,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayout2"
+        android:id="@+id/frameLayoutVid"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,12 +112,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout">
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutImg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bordertest">
+            android:background="@drawable/black_border">
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -127,7 +128,8 @@
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/video_icon" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -157,7 +159,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayout3"
+        android:id="@+id/frameLayoutDoc"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -170,12 +172,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutVid">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bordertest">
+            android:background="@drawable/black_border">
 
             <ImageView
                 android:id="@+id/imageView4"
@@ -186,7 +188,8 @@
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/document_icon" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -206,7 +209,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
-                android:text="PDF, ODT, ODP, ODS"
+                android:text="PDF"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -216,7 +219,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayout5"
+        android:id="@+id/frameLayoutGoogleDrive"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -226,15 +229,16 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:elevation="16dp"
         android:orientation="horizontal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout3">
+        app:layout_constraintTop_toBottomOf="@+id/frameLayoutDoc">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bordertest">
+            android:background="@drawable/black_border">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -297,10 +301,10 @@
         android:layout_height="2dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:background="#000000"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/textView11"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent">
@@ -315,7 +319,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/bordertest"
+        android:background="@drawable/black_border"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -329,16 +333,4 @@
             android:text="TextView" />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:text='If you have .ppt, .pptx, .xls or .xlsx files files, just save as "OpenDocument Format" in your office suite to be able to use it in document'
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

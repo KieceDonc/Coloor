@@ -47,34 +47,6 @@ public class ColorUtility {
         return ToReturn;
     }
 
-
-    /**
-     * use to delete the px of circle
-     */
-    float CirclePx=0;
-
-    /**
-     * use to setup variable CirclePx to avoid to call mActivity.getResources().getDisplayMetrics()
-     * @param mActivity need to give an activity
-     */
-    public void setCirclePx(Activity mActivity){
-        CirclePx = TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                8f, // = 8dip, 8dp
-                mActivity.getResources().getDisplayMetrics()
-        );
-
-    }
-
-    /**
-     * use to delete the px of circle in getRGBAverageFromTextureView
-     * @return float
-     */
-    private float getCirclePx(){
-        return CirclePx;
-    }
-
-
     /**
      * return Average RGB value
      * @param CameraView ( layout )camera view ( TextureView )
@@ -85,24 +57,25 @@ public class ColorUtility {
     public int[] getRGBAverageFromTextureView(AutoFitTextureView CameraView, ImageView AverageLayout){
         int CircleHeight = AverageLayout.getHeight();
         int CircleWidth = AverageLayout.getWidth();
-        Bitmap mTextViewBitmap = Bitmap.createBitmap(CameraView.getBitmap(),(int)AverageLayout.getX(),(int)AverageLayout.getY(),CircleWidth,CircleHeight);
+        Bitmap mTextViewBitmap = Bitmap.createBitmap(CameraView.getBitmap(),CameraView.getWidth()/2-CircleWidth/2,CameraView.getHeight()/2-CircleHeight/2,CircleWidth,CircleHeight);
 
         int moyRED = 0, moyBLUE=0, moyGREEN=0, cmptPixel = 0;
 
-        int m1 = (int) (CircleHeight/2-getCirclePx()); // x middle
-        int m2= (int) (CircleWidth/2-getCirclePx()); // y middle
+        int m1 = (CircleHeight/2); // x middle
+        int m2= (CircleWidth/2); // y middle
         for (int x = 0; x < CircleWidth; x++) { // refer to https://stackoverflow.com/questions/14487322/get-all-pixel-array-inside-circle
             for (int y = 0; y < CircleHeight; y++) {
                 double dx = x - m1;
                 double dy = y - m2;
-                double distanceSquared = dx * dx + dy * dy;
+                double distanceSquared = dx * dx + dy * dy-2*(AverageLayout.getDrawable().getIntrinsicWidth());
 
                 if (distanceSquared <= m1){
                     int CurrentPixel = mTextViewBitmap.getPixel(x,y);
                     cmptPixel++;
-                    moyRED+= Color.red(CurrentPixel);
-                    moyBLUE+= Color.blue(CurrentPixel);
-                    moyGREEN+=Color.green(CurrentPixel);
+                    moyRED+= Color.red(CurrentPixel)>5?Color.red(CurrentPixel):0;
+                    moyBLUE+= Color.blue(CurrentPixel)>5?Color.blue(CurrentPixel):0;
+                    moyGREEN+=Color.green(CurrentPixel)>5?Color.green(CurrentPixel):0;
+                    Log.e("test",Color.red(CurrentPixel)+" "+Color.green(CurrentPixel)+" "+Color.blue(CurrentPixel));
                 }
             }
         } // TODO when it's completely dark return rgb(1,1,1). Need to fix this

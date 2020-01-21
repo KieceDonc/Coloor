@@ -613,7 +613,7 @@ public class CirclePicker extends ImageView {
         view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
         view.buildDrawingCache();
 
-        if(view.getDrawingCache() == null) return null; // Verificamos antes de que no sea null
+        if(view.getDrawingCache() == null) return null;
 
         Bitmap snapshot = Bitmap.createBitmap(view.getDrawingCache());
         view.setDrawingCacheEnabled(false);

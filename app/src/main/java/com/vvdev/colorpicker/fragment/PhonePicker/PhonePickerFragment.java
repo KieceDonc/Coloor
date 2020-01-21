@@ -27,7 +27,6 @@ public class PhonePickerFragment extends Fragment {
     private RelativeLayout PhonePickerRelativeView;
     private Button StartCirclePicker;
     private Button StopCirclePicker;
-    private Button InvalidateCirclePicker;
     private boolean CirclePickerAlreadyAdded = false;
     private View CirclePickerView;
 
@@ -50,7 +49,6 @@ public class PhonePickerFragment extends Fragment {
         PhonePickerRelativeView = view.findViewById(R.id.PhonePickerRelativeView);
         StartCirclePicker = view.findViewById(R.id.StartCirclePicker);
         StopCirclePicker = view.findViewById(R.id.StopCirclePicker);
-        InvalidateCirclePicker = view.findViewById(R.id.InvalidateCirclePicker);
 
         StartCirclePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,13 +81,5 @@ public class PhonePickerFragment extends Fragment {
                 }
             }
         });
-        InvalidateCirclePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CirclePicker mCirclePicker= view.findViewById(R.id.CirclePicker);
-            }
-        });
-
-
     }
 }
