@@ -486,7 +486,7 @@ public class CirclePicker extends ImageView {
     private float getDpFromPx(float p){
         return p / getResources().getDisplayMetrics().density;
     }
-    
+
     private void initPicker(){
         getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -519,12 +519,11 @@ public class CirclePicker extends ImageView {
             getLocationOnScreen(locationOnScreen);
 
             Bitmap PickerBitmap = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
+            mBitmap = PickerBitmap;
+            setup();
             if(!inScale){
                 updatePickerBorder();
             }
-            mBitmap = PickerBitmap;
-            setup();
-
         }else{
             updatePhoneBitmap();
         }
@@ -533,7 +532,7 @@ public class CirclePicker extends ImageView {
     /**
      * update phone bitmap
      */
-    private void updatePhoneBitmap(){
+    public void updatePhoneBitmap(){
         if(!inupdatePhoneBitmap) {
             inupdatePhoneBitmap=true;
 
@@ -553,8 +552,6 @@ public class CirclePicker extends ImageView {
         }
     }
 
-
-
     /*float a;
     float b;
     int gridSquareDim;
@@ -562,7 +559,7 @@ public class CirclePicker extends ImageView {
 
     Paint c = new Paint();
     Paint gridSquarePaint = new Paint();
-    
+
     private void updatePickerBitmapWithGrid(){
 
         a = (float) (0.1*(1/scaleFactor));
@@ -585,8 +582,7 @@ public class CirclePicker extends ImageView {
         }
     }*/
 
-
-    private void updatePickerBorder() {
+    public void updatePickerBorder() {
 
         Bitmap mBitmapScreenWithPicker = getBitmapOfView(this);
 
