@@ -39,7 +39,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayoutImg"
+        android:id="@+id/ImportImg"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -99,25 +99,25 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayoutVid"
+        android:id="@+id/ImportVid"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/black_border"
         android:elevation="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutImg">
+        app:layout_constraintTop_toBottomOf="@+id/ImportImg">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/black_border">
+            android:background="?attr/selectableItemBackgroundBorderless">
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -159,7 +159,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayoutDoc"
+        android:id="@+id/ImportDoc"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutVid">
+        app:layout_constraintTop_toBottomOf="@+id/ImportVid">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -219,7 +219,7 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/frameLayoutGoogleDrive"
+        android:id="@+id/ImportInternet"
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -229,16 +229,74 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:elevation="16dp"
         android:orientation="horizontal"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutDoc">
+        app:layout_constraintTop_toBottomOf="@+id/ImportDoc">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/black_border">
+
+            <ImageView
+                android:id="@+id/imageView04"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/te0xtView8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="Internet"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView04"
+                app:layout_constraintTop_toTopOf="@+id/imageView04" />
+
+            <TextView
+                android:id="@+id/tex0tView9"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView04"
+                app:layout_constraintTop_toBottomOf="@+id/te0xtView8" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/ImportGoogleDrive"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/black_border"
+        android:elevation="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ImportDoc">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless">
 
             <ImageView
                 android:id="@+id/imageView"

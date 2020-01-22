@@ -4,12 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraImgPath;
 
-public class ImportImg extends AppCompatActivity {
+public class Import_DefaultViewer extends AppCompatActivity {
 
     private View CirclePickerView;
     private CirclePicker mCirclePicker;
@@ -36,7 +32,7 @@ public class ImportImg extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.import_img);
+        setContentView(R.layout.import_defaultviewer);
 
         importImgConstraintLayout= findViewById(R.id.importImgConstraint); // get root constraint layout
 
