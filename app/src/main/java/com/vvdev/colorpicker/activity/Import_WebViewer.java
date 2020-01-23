@@ -49,7 +49,7 @@ public class Import_WebViewer extends AppCompatActivity {
         settings.setAllowUniversalAccessFromFileURLs(true);
         settings.setBuiltInZoomControls(true);
         webview.setWebChromeClient(new WebChromeClient());
-        webview.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + file.getAbsolutePath() + "#zoom=page-width");
+        webview.loadUrl("file:///android_asset/pdfjs/web/viewer.html?file=" + file.getAbsolutePath() + "#zoom="+webview.getWidth());
     }
 
 }
