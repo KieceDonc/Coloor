@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.Import_DefaultViewer"></activity>
+        <activity android:name=".activity.Import_WebViewer"></activity>
     </application>
 
 </manifest>

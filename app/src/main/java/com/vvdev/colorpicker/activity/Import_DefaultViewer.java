@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -34,14 +35,14 @@ public class Import_DefaultViewer extends AppCompatActivity {
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.import_defaultviewer);
 
-        importImgConstraintLayout= findViewById(R.id.importImgConstraint); // get root constraint layout
+        importImgConstraintLayout= findViewById(R.id.import_DefaultViewerConstraint); // get root constraint layout
 
 
         Intent receiveData = getIntent(); // get intent
-        String imgPath = receiveData.getStringExtra(IntentExtraImgPath); // get img path from intent
+        String path = receiveData.getStringExtra(IntentExtraImgPath); // get img path from intent
 
-        Img = findViewById(R.id.importImg_ImageView); // get view of img
-        Glide.with(this).load(imgPath).fitCenter().into(Img); // set img
+        Img = findViewById(R.id.import_ImageView); // get view of img
+        Glide.with(this).load(path).fitCenter().into(Img); // set img
 
         //TODO request both permission ( write / read external storage )
 
