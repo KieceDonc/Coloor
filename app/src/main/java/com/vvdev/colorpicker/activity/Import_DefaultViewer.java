@@ -17,7 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.inflate;
-import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraImgPath;
+import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
 
 public class Import_DefaultViewer extends AppCompatActivity {
 
@@ -26,7 +26,6 @@ public class Import_DefaultViewer extends AppCompatActivity {
     private ConstraintLayout importImgConstraintLayout;
     private ImageView Img;
     private boolean circlePickerAlreadyAdded = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +38,7 @@ public class Import_DefaultViewer extends AppCompatActivity {
 
 
         Intent receiveData = getIntent(); // get intent
-        String path = receiveData.getStringExtra(IntentExtraImgPath); // get img path from intent
+        String path = receiveData.getStringExtra(IntentExtraPath); // get img path from intent
 
         Img = findViewById(R.id.import_ImageView); // get view of img
         Glide.with(this).load(path).fitCenter().into(Img); // set img

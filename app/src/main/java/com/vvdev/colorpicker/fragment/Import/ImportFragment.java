@@ -14,7 +14,11 @@ import android.widget.FrameLayout;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.Import_DefaultViewer;
 import com.vvdev.colorpicker.activity.Import_WebViewer;
+import com.vvdev.colorpicker.interfaces.FilePath;
+import com.vvdev.colorpicker.interfaces.FileUtils;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -31,7 +35,7 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     private FrameLayout mImportDoc;
     private FrameLayout mImportInternet;
 
-    public final static String IntentExtraImgPath = "path";
+    public final static String IntentExtraPath = "path";
     public static final int REQUEST_CODE_IMG = 15085;
     public static final int REQUEST_CODE_VID = 15086;
     public static final int REQUEST_CODE_DOC = 15087;
@@ -60,7 +64,15 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(data!=null){
             if(data.getData()!=null){
-                String path = getRealPathFromURI(data.getData());
+                Log.e("test",data.getData()+" ");
+                String path= FileUtils.getPath(getContext(),data.getData());
+                /*try{
+                    path = FilePath.getPath(getContext(),data.getData());
+                }catch (Exception e){
+                    Log.e("test",""+e);
+                    path = getRealPathFromURI(data.getData());
+                }*/
+
                 switch (requestCode) {
                     case REQUEST_CODE_IMG: {
                         loadDefaultViewer(path);
@@ -172,14 +184,14 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
 
     private void loadDefaultViewer(String path){
         Intent startPreview = new Intent(getActivity(), Import_DefaultViewer.class);
-        startPreview.putExtra(IntentExtraImgPath, path);
+        startPreview.putExtra(IntentExtraPath, path);
         startActivity(startPreview);
         Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
     private void loadWebViewer(String path){
         Intent startPreview = new Intent(getActivity(), Import_WebViewer.class);
-        startPreview.putExtra(IntentExtraImgPath, path);
+        startPreview.putExtra(IntentExtraPath, path);
         startActivity(startPreview);
         Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
