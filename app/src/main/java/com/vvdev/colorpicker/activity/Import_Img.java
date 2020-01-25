@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -18,6 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
+import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
 
 public class Import_Img extends AppCompatActivity {
 
@@ -26,6 +28,8 @@ public class Import_Img extends AppCompatActivity {
     private ConstraintLayout importImgConstraintLayout;
     private ImageView Img;
     private boolean circlePickerAlreadyAdded = false;
+    private boolean circleViewVisibility=true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +67,20 @@ public class Import_Img extends AppCompatActivity {
                             mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
                         }
                     });
+                }else if(circleViewVisibility){
+                    circleViewVisibility=false;
+                    mCirclePicker.setVisibility(View.GONE);
                 }else{
-                    importImgConstraintLayout.removeView(mCirclePicker);
-                    circlePickerAlreadyAdded=false;
+                    mCirclePicker.setVisibility(View.INVISIBLE);
+                    mCirclePicker.updatePhoneBitmap();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mCirclePicker.setVisibility(View.VISIBLE);
+                        }
+                    }, timeUpdateCirclePicker+50);
+                    circleViewVisibility=true;
                 }
             }
         });

@@ -71,6 +71,7 @@ public class CirclePicker extends ImageView {
     private Paint gridSquarePaint;
     private int gridSquareDim;
     private int gridSquareBorderDim;
+    public static int timeUpdateCirclePicker = 50;
 
 
     private final Matrix mShaderMatrix = new Matrix();
@@ -545,7 +546,7 @@ public class CirclePicker extends ImageView {
                     inupdatePhoneBitmap=false;
                     showPickerBitmap();
                 }
-            }, 100); // TODO make parameters to let user choose the frequency
+            }, timeUpdateCirclePicker); // TODO make parameters to let user choose the frequency
 
         }
     }

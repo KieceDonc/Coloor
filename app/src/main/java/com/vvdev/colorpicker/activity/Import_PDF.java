@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
@@ -14,6 +15,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,6 +41,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
+import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
 
 public class Import_PDF extends AppCompatActivity {
 
@@ -180,6 +184,8 @@ public class Import_PDF extends AppCompatActivity {
             inputDesirePage.setCursorVisible(false);
         }
     }
+
+    boolean circleViewVisibility=true;
     public void setupCirclePicker(){
         final Context c = this;
         findViewById(R.id.startCirclePicker).setOnClickListener(new View.OnClickListener() {
@@ -202,9 +208,20 @@ public class Import_PDF extends AppCompatActivity {
                             mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
                         }
                     });
+                }else if(circleViewVisibility){
+                    circleViewVisibility=false;
+                    mCirclePicker.setVisibility(View.GONE);
                 }else{
-                    import_WebViewConstraintLayout.removeView(mCirclePicker);
-                    circlePickerAlreadyAdded=false;
+                    mCirclePicker.setVisibility(View.INVISIBLE);
+                    mCirclePicker.updatePhoneBitmap();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mCirclePicker.setVisibility(View.VISIBLE);
+                        }
+                    }, timeUpdateCirclePicker+50);
+                    circleViewVisibility=true;
                 }
             }
         });
