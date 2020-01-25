@@ -19,7 +19,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
 
-public class Import_DefaultViewer extends AppCompatActivity {
+public class Import_Img extends AppCompatActivity {
 
     private View CirclePickerView;
     private CirclePicker mCirclePicker;
@@ -31,11 +31,8 @@ public class Import_DefaultViewer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.import_defaultviewer);
-
         importImgConstraintLayout= findViewById(R.id.import_DefaultViewerConstraint); // get root constraint layout
-
 
         Intent receiveData = getIntent(); // get intent
         String path = receiveData.getStringExtra(IntentExtraPath); // get img path from intent
@@ -66,6 +63,9 @@ public class Import_DefaultViewer extends AppCompatActivity {
                             mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
                         }
                     });
+                }else{
+                    importImgConstraintLayout.removeView(mCirclePicker);
+                    circlePickerAlreadyAdded=false;
                 }
             }
         });

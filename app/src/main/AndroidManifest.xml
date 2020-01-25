@@ -36,8 +36,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Import_DefaultViewer"></activity>
-        <activity android:name=".activity.Import_WebViewer"></activity>
+        <activity android:name=".activity.Import_Img"></activity>
+        <activity android:name=".activity.Import_PDF"></activity>
     </application>
 
 </manifest>

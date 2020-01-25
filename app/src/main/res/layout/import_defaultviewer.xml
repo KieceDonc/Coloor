@@ -20,34 +20,15 @@
         app:layout_constraintTop_toBottomOf="@+id/button2"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/button"
+    <include
+        layout="@layout/button_startcirclepicker"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/white_rounded_area"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1">
-
-        <ImageButton
-            android:id="@+id/startCirclePicker"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:scaleType="fitCenter"
-            android:src="@drawable/pipette_icon_icons_com_65005"
-            android:tint="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintVertical_bias="0.975" />
 
     <Button
         android:id="@+id/button2"

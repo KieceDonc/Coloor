@@ -1,10 +1,8 @@
 package com.vvdev.colorpicker.fragment.Import;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +10,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.activity.Import_DefaultViewer;
-import com.vvdev.colorpicker.activity.Import_WebViewer;
-import com.vvdev.colorpicker.interfaces.FilePath;
+import com.vvdev.colorpicker.activity.Import_Img;
+import com.vvdev.colorpicker.activity.Import_PDF;
 import com.vvdev.colorpicker.interfaces.FileUtils;
 
-import java.io.IOError;
-import java.io.IOException;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -64,15 +59,7 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(data!=null){
             if(data.getData()!=null){
-                Log.e("test",data.getData()+" ");
-                String path= FileUtils.getPath(getContext(),data.getData());
-                /*try{
-                    path = FilePath.getPath(getContext(),data.getData());
-                }catch (Exception e){
-                    Log.e("test",""+e);
-                    path = getRealPathFromURI(data.getData());
-                }*/
-
+                String path = FileUtils.getPath(getContext(),data.getData());
                 switch (requestCode) {
                     case REQUEST_CODE_IMG: {
                         loadDefaultViewer(path);
@@ -83,7 +70,7 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                         break;
                     }
                     case REQUEST_CODE_DOC: {
-                        loadWebViewer(path);
+                        loadWebViewer(data.getData());
                         break;
                     }
                     case REQUEST_CODE_INTERNET: {
@@ -102,18 +89,6 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private String getRealPathFromURI(Uri contentUri) { // https://stackoverflow.com/questions/12714701/deprecated-managedquery-issue
-        String res = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = Objects.requireNonNull(getContext()).getContentResolver().query(contentUri, proj, null, null, null);
-        if(Objects.requireNonNull(cursor).moveToFirst()){
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -130,7 +105,7 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                 break;
             }
             case R.id.ImportInternet:{
-                choosenByInternet();
+                chosenByInternet();
                 break;
             }
         }
@@ -178,20 +153,20 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
         startActivityForResult(chooserIntent, REQUEST_CODE_DOC);
     }
 
-    private void choosenByInternet(){
+    private void chosenByInternet(){
 
     }
 
     private void loadDefaultViewer(String path){
-        Intent startPreview = new Intent(getActivity(), Import_DefaultViewer.class);
+        Intent startPreview = new Intent(getActivity(), Import_Img.class);
         startPreview.putExtra(IntentExtraPath, path);
         startActivity(startPreview);
         Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
-    private void loadWebViewer(String path){
-        Intent startPreview = new Intent(getActivity(), Import_WebViewer.class);
-        startPreview.putExtra(IntentExtraPath, path);
+    private void loadWebViewer(Uri path){
+        Intent startPreview = new Intent(getActivity(), Import_PDF.class);
+        startPreview.putExtra(IntentExtraPath, path.toString());
         startActivity(startPreview);
         Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
