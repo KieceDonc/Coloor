@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -35,7 +34,7 @@ public class Import_Img extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.import_defaultviewer);
+        setContentView(R.layout.import_img);
         importImgConstraintLayout= findViewById(R.id.import_DefaultViewerConstraint); // get root constraint layout
 
         Intent receiveData = getIntent(); // get intent
@@ -84,11 +83,6 @@ public class Import_Img extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
 }

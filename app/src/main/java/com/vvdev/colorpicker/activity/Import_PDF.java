@@ -9,15 +9,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -45,33 +43,49 @@ import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
 
 public class Import_PDF extends AppCompatActivity {
 
-    private ConstraintLayout import_WebViewConstraintLayout;
+    private ConstraintLayout rootConstraintLayout;
     private PDFView pdfView;
     private View CirclePickerView;
-    private CirclePicker mCirclePicker;
     private EditText inputDesirePage;
     private TextView numberOfPage;
+    private CirclePicker mCirclePicker;
     private boolean circlePickerAlreadyAdded = false;
-
+    private boolean circleViewVisibility=true;
 
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.import_pdf);
         getSupportActionBar().hide();
-        setContentView(R.layout.import_webviewer);
+
         pdfView = findViewById(R.id.pdfView);
         inputDesirePage = findViewById(R.id.input_desire_page);
-        inputDesirePage.clearFocus();
-        inputDesirePage.setCursorVisible(false);
         numberOfPage = findViewById(R.id.numberOfPage);
-        import_WebViewConstraintLayout = findViewById(R.id.import_WebViewConstraintLayout);
+        rootConstraintLayout = findViewById(R.id.import_WebViewConstraintLayout);
 
+
+        setupPdfView();
+        setupCirclePicker();
+        setupInputDesirePage();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(inputDesirePage.isCursorVisible()){
+            inputDesirePage.clearFocus();
+            inputDesirePage.setCursorVisible(false);
+        }
+    }
+
+    private void setupPdfView(){
         Intent receiveData = getIntent(); // get intent
         Uri path = Uri.parse(receiveData.getStringExtra(IntentExtraPath)); // get img path from intent
 
         DefaultLinkHandler mDefaultLinkHandler = new DefaultLinkHandler(pdfView);
+
         pdfView.fromUri(path)
                 .enableSwipe(true) // allows to block changing pages using swipe
                 .swipeHorizontal(false)
@@ -156,55 +170,24 @@ public class Import_PDF extends AppCompatActivity {
                 .pageFling(false) // make a fling change only a single page like ViewPager
                 .nightMode(false) // toggle night mode
                 .load();
-
-        setupCirclePicker();
-        setupDesirePageWatcher();
-
-        inputDesirePage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                inputDesirePage.setCursorVisible(true);
-
-            }
-        });
     }
 
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if(inputDesirePage.isCursorVisible()){
-            inputDesirePage.clearFocus();
-            inputDesirePage.setCursorVisible(false);
-        }
-    }
-
-    boolean circleViewVisibility=true;
-    public void setupCirclePicker(){
+    private void setupCirclePicker(){
         final Context c = this;
         findViewById(R.id.startCirclePicker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * Start circle picker
-                 */
                 if(!circlePickerAlreadyAdded){
                     circlePickerAlreadyAdded=true;
-                    CirclePickerView = inflate(c,R.layout.circlepicker,import_WebViewConstraintLayout);
-                    import_WebViewConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
+                    CirclePickerView = inflate(c,R.layout.circlepicker,rootConstraintLayout);
+                    rootConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
                     mCirclePicker = findViewById(R.id.CirclePicker);
 
                     mCirclePicker.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                         @Override
                         public void onGlobalLayout() {
                             Rect PhonePickerRect = new Rect();
-                            import_WebViewConstraintLayout.getGlobalVisibleRect(PhonePickerRect);
+                            rootConstraintLayout.getGlobalVisibleRect(PhonePickerRect);
                             mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
                         }
                     });
@@ -227,8 +210,11 @@ public class Import_PDF extends AppCompatActivity {
         });
     }
 
-    public void setupDesirePageWatcher(){
+    private void setupInputDesirePage(){
+        inputDesirePage.clearFocus();
+        inputDesirePage.setCursorVisible(false);
         inputDesirePage.addTextChangedListener(new TextWatcher() {
+
             boolean inModification=false;
             boolean allowTextChange=false;
             CharSequence oldCharSequence;
@@ -258,6 +244,28 @@ public class Import_PDF extends AppCompatActivity {
                     inputDesirePage.setText(oldCharSequence);
                     inModification=false;
                 }
+            }
+        });
+
+        inputDesirePage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+
+                if(actionId == EditorInfo.IME_ACTION_SEND&&inputDesirePage.getText().toString().length()>0&&inputDesirePage.getText().toString().length()<=pdfView.getPageCount()){
+                    pdfView.jumpTo((Integer.parseInt(inputDesirePage.getText().toString())-1),true);
+                    handled=true;
+                }
+
+                return handled;
+            }
+        });
+
+
+        inputDesirePage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputDesirePage.setCursorVisible(true);
             }
         });
     }
