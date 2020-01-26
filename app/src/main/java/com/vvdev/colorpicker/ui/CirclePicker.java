@@ -71,7 +71,7 @@ public class CirclePicker extends ImageView {
     private Paint gridSquarePaint;
     private int gridSquareDim;
     private int gridSquareBorderDim;
-    public static int timeUpdateCirclePicker = 50;
+    public static int timeUpdateCirclePicker = 10;
 
 
     private final Matrix mShaderMatrix = new Matrix();

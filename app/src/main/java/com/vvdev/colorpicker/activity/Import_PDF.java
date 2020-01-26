@@ -43,6 +43,9 @@ import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
 
 public class Import_PDF extends AppCompatActivity {
 
+
+    // https://github.com/yeokm1/docs-to-pdf-converter#library-usage
+    // https://github.com/alaeddinejebali/Android-ConvertToPDF
     private ConstraintLayout rootConstraintLayout;
     private PDFView pdfView;
     private View CirclePickerView;
@@ -203,7 +206,7 @@ public class Import_PDF extends AppCompatActivity {
                         public void run() {
                             mCirclePicker.setVisibility(View.VISIBLE);
                         }
-                    }, timeUpdateCirclePicker+50);
+                    }, timeUpdateCirclePicker+10);
                     circleViewVisibility=true;
                 }
             }
