@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFF">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:id="@+id/scrollView110"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_marginBottom="110dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@android:color/white"
                     android:padding="5dp"
                     android:text="Image"
                     android:textColor="@android:color/background_dark" />
@@ -148,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@android:color/white"
                     android:padding="5dp"
                     android:text="Video"
                     android:textColor="@android:color/background_dark" />
@@ -203,7 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@android:color/white"
                     android:padding="5dp"
                     android:text="Document"
                     android:textColor="@android:color/background_dark" />
@@ -214,6 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/importDoc">
@@ -257,7 +257,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@android:color/white"
                     android:padding="5dp"
                     android:text="Google drive"
                     android:textColor="@android:color/background_dark" />
@@ -269,6 +269,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@android:color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/importGD">
@@ -312,7 +313,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@android:color/white"
                     android:padding="5dp"
                     android:text="Internet"
                     android:textColor="@android:color/background_dark" />
@@ -332,7 +333,7 @@
         android:layout_marginEnd="16dp"
         android:background="#000000"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -350,7 +351,7 @@
         android:layout_marginEnd="24dp"
         android:background="@drawable/gray_border_rounded"
         android:orientation="horizontal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"

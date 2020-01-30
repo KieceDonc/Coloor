@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/importInternet"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@android:color/white">
@@ -18,34 +19,36 @@
         android:padding="20dp">
 
         <ImageView
-            android:id="@+id/imageView7"
+            android:id="@+id/importInternetImg"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/document_icon" />
+            app:srcCompat="@drawable/internet_icon" />
 
         <TextView
+            android:id="@+id/importInternetDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="PDF"
+            android:text="Import any file compatible "
             android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintStart_toEndOf="@+id/importInternetImg"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--  This is the title label -->
     <TextView
+        android:id="@+id/importInternetTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:background="@android:color/white"
         android:padding="5dp"
-        android:text="Document"
-        android:textColor="@android:color/darker_gray" />
+        android:text="Internet"
+        android:textColor="@android:color/background_dark" />
 
 </RelativeLayout>

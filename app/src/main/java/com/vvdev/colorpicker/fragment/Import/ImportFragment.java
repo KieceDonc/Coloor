@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.Import_Img;
@@ -17,6 +18,7 @@ import com.vvdev.colorpicker.interfaces.FileUtils;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 public class ImportFragment extends Fragment implements View.OnClickListener {
@@ -25,10 +27,10 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     // load from internet
     // http://bumptech.github.io/glide/doc/getting-started.html
 
-    private FrameLayout mImportImg;
-    private FrameLayout mImportVid;
-    private FrameLayout mImportDoc;
-    private FrameLayout mImportInternet;
+    private RelativeLayout mImportImg;
+    private RelativeLayout mImportVid;
+    private RelativeLayout mImportDoc;
+    private RelativeLayout mImportInternet;
 
     public final static String IntentExtraPath = "path";
     public static final int REQUEST_CODE_IMG = 15085;
@@ -44,10 +46,12 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        mImportImg = view.findViewById(R.id.ImportImg);
-        mImportVid = view.findViewById(R.id.ImportVid);
-        mImportDoc = view.findViewById(R.id.ImportDoc);
-        mImportInternet = view.findViewById(R.id.ImportInternet);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        mImportImg = view.findViewById(R.id.importImg);
+        mImportVid = view.findViewById(R.id.importVid);
+        mImportDoc = view.findViewById(R.id.importDoc);
+        mImportInternet = view.findViewById(R.id.importInternet);
 
         mImportImg.setOnClickListener(this);
         mImportVid.setOnClickListener(this);
@@ -92,19 +96,19 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ImportImg:{
+            case R.id.importImg:{
                 chooseImg();
                 break;
             }
-            case R.id.ImportVid:{
+            case R.id.importVid:{
                 chooseVid();
                 break;
             }
-            case R.id.ImportDoc:{
+            case R.id.importDoc:{
                 chooseDoc();
                 break;
             }
-            case R.id.ImportInternet:{
+            case R.id.importInternet:{
                 chosenByInternet();
                 break;
             }
