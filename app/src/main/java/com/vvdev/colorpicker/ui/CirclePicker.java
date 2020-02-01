@@ -34,6 +34,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -61,7 +62,6 @@ public class CirclePicker extends ImageView {
     private Rect ColorNameDim = new Rect();
     private Rect ColorHexDim = new Rect();
     private Bitmap mScreenBitmap=null; // custom
-    private Bitmap mScreenBitmapWithGrid=null;
     private Rect mMovableDimension = new Rect(); // custom
     private String mTextOnBorderHex=""; // custom
     private String mTextOnBorderColorName="";
@@ -195,7 +195,6 @@ public class CirclePicker extends ImageView {
         canvas.drawTextOnPath(mTextOnBorderHex, mCircle, positionOnBorderHex, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
         canvas.drawTextOnPath(mTextOnBorderColorName, mCircle, positionOnBorderName, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
         canvas.drawRect(mDrawableRect.centerX()+gridSquareDim,mDrawableRect.centerY()+gridSquareDim,mDrawableRect.centerX()-gridSquareDim,mDrawableRect.centerY()-gridSquareDim,gridSquarePaint);
-
     }
 
     @Override
@@ -214,77 +213,6 @@ public class CirclePicker extends ImageView {
     public void setPaddingRelative(int start, int top, int end, int bottom) {
         super.setPaddingRelative(start, top, end, bottom);
         setup();
-    }
-
-    public int getBorderColor() {
-        return mBorderColor;
-    }
-
-    public void setBorderColor(@ColorInt int borderColor) {
-        if (borderColor == mBorderColor) {
-            return;
-        }
-
-        mBorderColor = borderColor;
-        mBorderPaint.setColor(mBorderColor);
-        invalidate();
-    }
-
-    public int getCircleBackgroundColor() {
-        return mCircleBackgroundColor;
-    }
-
-    public void setCircleBackgroundColor(@ColorInt int circleBackgroundColor) {
-        if (circleBackgroundColor == mCircleBackgroundColor) {
-            return;
-        }
-
-        mCircleBackgroundColor = circleBackgroundColor;
-        mCircleBackgroundPaint.setColor(circleBackgroundColor);
-        invalidate();
-    }
-
-    public void setCircleBackgroundColorResource(@ColorRes int circleBackgroundRes) {
-        setCircleBackgroundColor(getContext().getResources().getColor(circleBackgroundRes));
-    }
-
-    public int getBorderWidth() {
-        return mBorderWidth;
-    }
-
-    public void setBorderWidth(int borderWidth) {
-        if (borderWidth == mBorderWidth) {
-            return;
-        }
-
-        mBorderWidth = borderWidth;
-        setup();
-    }
-
-    public boolean isBorderOverlay() {
-        return mBorderOverlay;
-    }
-
-    public void setBorderOverlay(boolean borderOverlay) {
-        if (borderOverlay == mBorderOverlay) {
-            return;
-        }
-
-        mBorderOverlay = borderOverlay;
-        setup();
-    }
-
-    public boolean isDisableCircularTransformation() {
-        return mDisableCircularTransformation;
-    }
-
-    public void setDisableCircularTransformation(boolean disableCircularTransformation) {
-        if (mDisableCircularTransformation == disableCircularTransformation) {
-            return;
-        }
-
-        mDisableCircularTransformation = disableCircularTransformation;
-        initializeBitmap();
     }
 
     @Override
@@ -329,34 +257,6 @@ public class CirclePicker extends ImageView {
 
     private void applyColorFilter() {
         mBitmapPaint.setColorFilter(mColorFilter);
-    }
-
-    private Bitmap getBitmapFromDrawable(Drawable drawable) {
-        if (drawable == null) {
-            return null;
-        }
-
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable) drawable).getBitmap();
-        }
-
-        try {
-            Bitmap bitmap;
-
-            if (drawable instanceof ColorDrawable) {
-                bitmap = Bitmap.createBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
-            } else {
-                bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), BITMAP_CONFIG);
-            }
-
-            Canvas canvas = new Canvas(bitmap);
-            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-            drawable.draw(canvas);
-            return bitmap;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     private void initializeBitmap() {
@@ -430,6 +330,7 @@ public class CirclePicker extends ImageView {
         int pixel = mBitmap.getPixel(mBitmap.getWidth()/2,mBitmap.getHeight()/2);
         gridSquarePaint.setColor(CallColorUtility.pickTextColorBasedOnBackgroundColor(pixel));
 
+        setMovableDimension();
         applyColorFilter();
         updateShaderMatrix();
         invalidate();
@@ -467,8 +368,8 @@ public class CirclePicker extends ImageView {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
-    public void setMovableDimension(Rect MovableDimension){
-        mMovableDimension = MovableDimension;
+    public void setMovableDimension(){
+        getRootView().getGlobalVisibleRect(mMovableDimension);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -483,7 +384,7 @@ public class CirclePicker extends ImageView {
 
     }
 
-    private float getDpFromPx(float p){
+    public float getDpFromPx(float p){
         return p / getResources().getDisplayMetrics().density;
     }
 
@@ -517,7 +418,7 @@ public class CirclePicker extends ImageView {
 
             int[] locationOnScreen = new int[2];
             getLocationOnScreen(locationOnScreen);
-
+            Log.e("test",DesireX+" "+DesireWidth+" "+mScreenBitmap.getWidth());
             mBitmap = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
             setup();
             if(!inScale){
@@ -550,36 +451,6 @@ public class CirclePicker extends ImageView {
 
         }
     }
-
-    /*float a;
-    float b;
-    int gridSquareDim;
-    int gridSquareBorderDim;
-
-    Paint c = new Paint();
-    Paint gridSquarePaint = new Paint();
-
-    private void updatePickerBitmapWithGrid(){
-
-        a = (float) (0.1*(1/scaleFactor));
-        b = (float) (0.005*(1/scaleFactor));
-        gridSquareDim = (int) (a*4);
-        gridSquareBorderDim = (int) (b*4);
-        mScreenBitmapWithGrid = Bitmap.createBitmap(mScreenBitmap);
-
-        c.setStyle(Paint.Style.FILL);
-        c.setStrokeWidth(b);
-        c.setColor(Color.WHITE);
-
-        Log.e("test", String.valueOf(scaleFactor));
-        int numColumms = (int) (mScreenBitmapWithGrid.getWidth()/(a+b));
-        int numRows = (int) (mScreenBitmapWithGrid.getHeight()/a);
-        Canvas DrawGrid = new Canvas(mScreenBitmapWithGrid);
-
-        for(int x=0;x<numColumms;x++){
-            DrawGrid.drawLine(a*x,0,(a*x),mScreenBitmap.getHeight()-1,c);
-        }
-    }*/
 
     public void updatePickerBorder() {
 

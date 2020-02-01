@@ -44,28 +44,19 @@ public class Import_Img extends AppCompatActivity {
         Glide.with(this).load(path).fitCenter().into(Img); // set img
 
         //TODO request both permission ( write / read external storage )
+        setupCirclePicker();
+    }
 
+    private void setupCirclePicker(){
         final Context c = this;
         findViewById(R.id.startCirclePicker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * Start circle picker
-                 */
                 if(!circlePickerAlreadyAdded){
                     circlePickerAlreadyAdded=true;
                     CirclePickerView = inflate(c,R.layout.circlepicker,importImgConstraintLayout);
                     importImgConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
                     mCirclePicker = findViewById(R.id.CirclePicker);
-
-                    mCirclePicker.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            Rect PhonePickerRect = new Rect();
-                            importImgConstraintLayout.getGlobalVisibleRect(PhonePickerRect);
-                            mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
-                        }
-                    });
                 }else if(circleViewVisibility){
                     circleViewVisibility=false;
                     mCirclePicker.setVisibility(View.GONE);

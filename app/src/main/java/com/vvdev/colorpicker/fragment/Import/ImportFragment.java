@@ -15,6 +15,15 @@ import com.vvdev.colorpicker.activity.Import_Img;
 import com.vvdev.colorpicker.activity.Import_PDF;
 import com.vvdev.colorpicker.interfaces.FileUtils;
 
+import org.w3c.dom.Document;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Date;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -66,15 +75,17 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                 String path = FileUtils.getPath(getContext(),data.getData());
                 switch (requestCode) {
                     case REQUEST_CODE_IMG: {
-                        loadDefaultViewer(path);
+                        loadImgView(path);
                         break;
                     }
                     case REQUEST_CODE_VID: {// TODO check .mp4 etc ..
-                        loadDefaultViewer(path);
+                        loadImgView(path);
                         break;
                     }
                     case REQUEST_CODE_DOC: {
-                        loadWebViewer(data.getData());
+                        //loadPDFView(data.getData());
+                        loadPDFView(data.getData());
+
                         break;
                     }
                     case REQUEST_CODE_INTERNET: {
@@ -161,16 +172,16 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void loadDefaultViewer(String path){
+    private void loadImgView(String path){
         Intent startPreview = new Intent(getActivity(), Import_Img.class);
         startPreview.putExtra(IntentExtraPath, path);
         startActivity(startPreview);
         Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
-    private void loadWebViewer(Uri path){
+    private void loadPDFView(Uri path){
         Intent startPreview = new Intent(getActivity(), Import_PDF.class);
-        startPreview.putExtra(IntentExtraPath, path.toString());
+        startPreview.putExtra(IntentExtraPath, path);
         startActivity(startPreview);
         Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }

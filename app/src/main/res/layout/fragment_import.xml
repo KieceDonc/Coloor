@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFF">
+    android:background="@color/Theme1_Primary">
 
     <ScrollView
         android:id="@+id/scrollView110"
@@ -26,6 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Import a file :"
+                android:textColor="@color/Theme1_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -68,10 +69,11 @@
                         android:id="@+id/importImgImgView"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:tint="@color/Theme1_Secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@android:drawable/ic_menu_mapmode" />
+                        app:srcCompat="@drawable/img_icon" />
 
                     <TextView
                         android:id="@+id/importImgDesc"
@@ -79,7 +81,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="PNG, JPEG, GIF"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/importImgImgView"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -92,10 +94,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@color/Theme1_Primary"
                     android:padding="5dp"
                     android:text="Image"
-                    android:textColor="@android:color/background_dark" />
+                    android:textColor="@color/Theme1_text" />
 
             </RelativeLayout>
 
@@ -124,6 +126,7 @@
                         android:id="@+id/importVidImg"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:tint="@color/Theme1_Secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -135,7 +138,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="MP4"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/importVidImg"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -148,10 +151,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@color/Theme1_Primary"
                     android:padding="5dp"
                     android:text="Video"
-                    android:textColor="@android:color/background_dark" />
+                    android:textColor="@color/Theme1_text" />
 
             </RelativeLayout>
 
@@ -180,6 +183,7 @@
                         android:id="@+id/imageDocImg"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:tint="@color/Theme1_Secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -190,8 +194,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="PDF, Docx, Doc"
-                        android:textColor="@android:color/black"
+                        android:text="PDF"
+                        android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/imageDocImg"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -203,10 +207,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@color/Theme1_Primary"
                     android:padding="5dp"
                     android:text="Document"
-                    android:textColor="@android:color/background_dark" />
+                    android:textColor="@color/Theme1_text" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -233,6 +237,7 @@
                         android:id="@+id/importGDImg"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:tint="@color/Theme1_Secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -244,7 +249,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Import any file compatible "
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/importGDImg"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -257,10 +262,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@color/Theme1_Primary"
                     android:padding="5dp"
                     android:text="Google drive"
-                    android:textColor="@android:color/background_dark" />
+                    android:textColor="@color/Theme1_text" />
 
             </RelativeLayout>
 
@@ -288,6 +293,7 @@
                         android:id="@+id/importInternetImg"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
+                        android:tint="@color/Theme1_Secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -299,7 +305,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
                         android:text="Import any file compatible "
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/importInternetImg"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -312,10 +318,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:background="#FFFF"
+                    android:background="@color/Theme1_Primary"
                     android:padding="5dp"
                     android:text="Internet"
-                    android:textColor="@android:color/background_dark" />
+                    android:textColor="@color/Theme1_text" />
 
             </RelativeLayout>
 

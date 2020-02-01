@@ -185,15 +185,6 @@ public class Import_PDF extends AppCompatActivity {
                     CirclePickerView = inflate(c,R.layout.circlepicker,rootConstraintLayout);
                     rootConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
                     mCirclePicker = findViewById(R.id.CirclePicker);
-
-                    mCirclePicker.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override
-                        public void onGlobalLayout() {
-                            Rect PhonePickerRect = new Rect();
-                            rootConstraintLayout.getGlobalVisibleRect(PhonePickerRect);
-                            mCirclePicker.setMovableDimension(PhonePickerRect); // give dimension
-                        }
-                    });
                 }else if(circleViewVisibility){
                     circleViewVisibility=false;
                     mCirclePicker.setVisibility(View.GONE);

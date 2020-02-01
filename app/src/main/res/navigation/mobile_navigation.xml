@@ -21,8 +21,8 @@
         android:label="@string/nav_menu_Import"
         tools:layout="@layout/fragment_import">
         <action
-            android:id="@+id/action_navigation_import_to_navigation_phonepicker"
-            app:destination="@id/navigation_phonepicker" />
+            android:id="@+id/action_navigation_import_to_navigation_editcolor"
+            app:destination="@id/navigation_editcolor" />
     </fragment>
 
     <fragment
@@ -35,13 +35,4 @@
             app:destination="@id/navigation_camera" />
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_phonepicker"
-        android:name="com.vvdev.colorpicker.fragment.PhonePicker.PhonePickerFragment"
-        android:label="@string/nav_menu_PhonePicker"
-        tools:layout="@layout/fragment_phonepicker">
-        <action
-            android:id="@+id/action_navigation_phonepicker_to_navigation_editcolor"
-            app:destination="@id/navigation_editcolor" />
-    </fragment>
 </navigation>
