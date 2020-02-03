@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.fragment.EditColor;
+package com.vvdev.colorpicker.fragment.Palette;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,6 +18,6 @@ public class EditColorFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
-        return inflater.inflate(R.layout.fragment_editcolor, container, false);
+        return inflater.inflate(R.layout.fragment_palette, container, false);
     }
 }

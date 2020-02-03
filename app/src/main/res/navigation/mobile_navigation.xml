@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_editcolor">
+    app:startDestination="@id/navigation_palette">
 
     <fragment
         android:id="@+id/navigation_camera"
@@ -22,14 +22,14 @@
         tools:layout="@layout/fragment_import">
         <action
             android:id="@+id/action_navigation_import_to_navigation_editcolor"
-            app:destination="@id/navigation_editcolor" />
+            app:destination="@id/navigation_palette" />
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_editcolor"
-        android:name="com.vvdev.colorpicker.fragment.EditColor.EditColorFragment"
-        android:label="@string/nav_menu_EditColor"
-        tools:layout="@layout/fragment_editcolor">
+        android:id="@+id/navigation_palette"
+        android:name="com.vvdev.colorpicker.fragment.Palette.EditColorFragment"
+        android:label="@string/nav_menu_Palette"
+        tools:layout="@layout/fragment_palette">
         <action
             android:id="@+id/action_navigation_editcolor_to_navigation_camera"
             app:destination="@id/navigation_camera" />

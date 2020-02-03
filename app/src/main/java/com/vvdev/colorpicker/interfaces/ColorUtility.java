@@ -1,15 +1,11 @@
 package com.vvdev.colorpicker.interfaces;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.ImageView;
 
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
-
-import org.w3c.dom.Text;
 
 import static java.lang.Integer.parseInt;
 
@@ -21,7 +17,7 @@ public class ColorUtility {
      * @return int[0] = Nearest color name, int[1] return true if ColorToCompare equals to a saved value else return false
      */
 
-    public String[] NearestColor(String ColorToCompare){ // Delete automatically if #001122
+    public static String[] nearestColor(String ColorToCompare){ // Delete automatically if #001122
         if(ColorToCompare.substring(0,1).equals("#")){
             ColorToCompare=ColorToCompare.substring(1);
         }
@@ -54,7 +50,7 @@ public class ColorUtility {
      * @return int[0] = Average red value [0:255], int[1] = Average blue value [0:255], int[2] = Average green value [0:255]
      */
 
-    public int[] getRGBAverageFromTextureView(AutoFitTextureView CameraView, ImageView AverageLayout){
+    public static int[] getRGBAverageFromTextureView(AutoFitTextureView CameraView, ImageView AverageLayout){
         int CircleHeight = AverageLayout.getHeight();
         int CircleWidth = AverageLayout.getWidth();
         Bitmap mTextViewBitmap = Bitmap.createBitmap(CameraView.getBitmap(),CameraView.getWidth()/2-CircleWidth/2,CameraView.getHeight()/2-CircleHeight/2,CircleWidth,CircleHeight);
@@ -82,7 +78,7 @@ public class ColorUtility {
         return new int[]{moyRED/cmptPixel,moyGREEN/cmptPixel,moyBLUE/cmptPixel};
     }
 
-    public int[] getRGBAverageFromBitmap(Bitmap mBitmap){
+    public static int[] getRGBAverageFromBitmap(Bitmap mBitmap){
         int Height = mBitmap.getHeight();
         int Width = mBitmap.getWidth();
 
@@ -106,7 +102,7 @@ public class ColorUtility {
      * @return String
      */
 
-    public String getHexFromRGB(int[] RGB){
+    public static String getHexFromRGB(int[] RGB){
         return String.format("#%02x%02x%02x", RGB[0], RGB[1], RGB[2]).toUpperCase();
     }
 
@@ -116,7 +112,7 @@ public class ColorUtility {
      * @return int[0] = red value [0:255], int[1] = blue value [0:255], int[2] = green value [0:255]
      */
 
-    public int[] getRGBFromHex(String ReceiveColor){
+    public static int[] getRGBFromHex(String ReceiveColor){
         if(ReceiveColor.length()==7) {
             return new int[]{parseInt(ReceiveColor.substring(1, 2), 16), parseInt(ReceiveColor.substring(3, 4), 16), parseInt(ReceiveColor.substring(5, 6), 16)};
         }else if(ReceiveColor.length()==6){
@@ -133,11 +129,11 @@ public class ColorUtility {
      * @return String Hex value of the best color
      */
 
-    public int pickTextColorBasedOnBackgroundColor(int TextColor) {
+    public static int pickTextColorBasedOnBackgroundColor(int TextColor) {
         return (((Color.red(TextColor) * 0.299) + (Color.green(TextColor) * 0.587) + (Color.blue(TextColor)* 0.114)) > 186) ? Color.BLACK : Color.WHITE;
     }
 
-    public int[] getHsvFromRGB(int[] RGB){
+    public static int[] getHsvFromRGB(int[] RGB){
         float[] hsv = new float[3];
         Color.RGBToHSV(RGB[0],RGB[1],RGB[2],hsv);
         hsv[1]*=100;

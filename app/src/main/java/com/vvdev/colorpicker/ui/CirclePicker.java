@@ -35,13 +35,12 @@ import android.widget.ImageView;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.MainActivity;
+import com.vvdev.colorpicker.interfaces.ColorUtility;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;
-
-import static com.vvdev.colorpicker.activity.MainActivity.CallColorUtility;
 
 @SuppressLint("AppCompatCustomView")
 public class CirclePicker extends ImageView {
@@ -315,7 +314,7 @@ public class CirclePicker extends ImageView {
         mCircle = new Path(); // CUSTOM
 
         mBorderPaintText.setStyle(Paint.Style.FILL_AND_STROKE); // CUSTOM
-        mBorderPaintText.setColor(CallColorUtility.pickTextColorBasedOnBackgroundColor(mBorderColor)); // CUSTOM
+        mBorderPaintText.setColor(ColorUtility.pickTextColorBasedOnBackgroundColor(mBorderColor)); // CUSTOM
         mBorderPaintText.setTextSize(mBorderWidth); //  CUSTOM in px
 
         mCircle.addCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, Path.Direction.CW); // CUSTOM
@@ -328,7 +327,7 @@ public class CirclePicker extends ImageView {
         gridSquarePaint.setStyle(Paint.Style.STROKE);
         gridSquarePaint.setStrokeWidth(gridSquareBorderDim);
         int pixel = mBitmap.getPixel(mBitmap.getWidth()/2,mBitmap.getHeight()/2);
-        gridSquarePaint.setColor(CallColorUtility.pickTextColorBasedOnBackgroundColor(pixel));
+        gridSquarePaint.setColor(ColorUtility.pickTextColorBasedOnBackgroundColor(pixel));
 
         setMovableDimension();
         applyColorFilter();
@@ -463,9 +462,9 @@ public class CirclePicker extends ImageView {
 
         Bitmap AllPixel =Bitmap.createBitmap(mBitmapScreenWithPicker, DesireX, DesireY,DesireWidth,DesireHeight);
 
-        int[] RGB =CallColorUtility.getRGBAverageFromBitmap(AllPixel);
-        mTextOnBorderHex = CallColorUtility.getHexFromRGB(RGB);
-        mTextOnBorderColorName=CallColorUtility.NearestColor(mTextOnBorderHex)[0];
+        int[] RGB =ColorUtility.getRGBAverageFromBitmap(AllPixel);
+        mTextOnBorderHex = ColorUtility.getHexFromRGB(RGB);
+        mTextOnBorderColorName=ColorUtility.nearestColor(mTextOnBorderHex)[0];
         mBorderColor = Color.parseColor(mTextOnBorderHex);
     }
 

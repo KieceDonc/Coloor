@@ -221,11 +221,7 @@ public class Import_PDF extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(count>0){
-                    if(pdfView.getPageCount()>=Integer.parseInt(s.toString())&&Integer.parseInt(s.toString())>0){
-                        allowTextChange=true;
-                    }else{
-                        allowTextChange=false;
-                    }
+                    allowTextChange=pdfView.getPageCount() >= Integer.parseInt(s.toString()) && Integer.parseInt(s.toString()) > 0;
                 }else{
                     oldCharSequence="";
                 }

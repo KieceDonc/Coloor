@@ -3,7 +3,7 @@
 
     <string name="nav_menu_Camera">Camera</string>
     <string name="nav_menu_Import">Import</string>
-    <string name="nav_menu_EditColor">Edit</string>
+    <string name="nav_menu_Palette">Palette</string>
     <string name="nav_menu_PhonePicker">Phone picker</string>
 
     <string name="request_permission">This sample needs camera permission.</string>
@@ -22,4 +22,5 @@
     <string name="Hex">Hex:</string>
     <string name="Hsv">Hsv:</string>
     <string name="RGB">RGB:</string>
+    <string name="paletteItemMore"><![CDATA[<]]></string>
 </resources>

@@ -45,6 +45,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
 
 import java.io.File;
@@ -66,8 +67,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-
-import static com.vvdev.colorpicker.activity.MainActivity.CallColorUtility;
 
 public class CameraFragment extends Fragment implements View.OnClickListener, View.OnTouchListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -1146,19 +1145,19 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Vi
     /**
      * Function who's refreshing value of camera_top.xml
      */
-    public void CameraTopRefresh() {
-        int[] RGBAverage = CallColorUtility.getRGBAverageFromTextureView(mTextureView, CameraCircle);
+    public void CameraTopRefresh() { // TODO replace by ColorSpec object
+        int[] RGBAverage = ColorUtility.getRGBAverageFromTextureView(mTextureView, CameraCircle);
         String ToDisplayRGB = SRGB+" "+RGBAverage[0]+", "+RGBAverage[1]+", "+RGBAverage[2];
         TVRGBValue.setText(ToDisplayRGB);
 
-        String HexValue = CallColorUtility.getHexFromRGB(RGBAverage);
+        String HexValue = ColorUtility.getHexFromRGB(RGBAverage);
         String ToDisplayHex = SHex+" "+HexValue;
         TVHexValue.setText(ToDisplayHex);
 
-        String[] NearestColor = CallColorUtility.NearestColor(HexValue);
+        String[] NearestColor = ColorUtility.nearestColor(HexValue);
         TVColorName.setText(NearestColor[0]);
 
-        int[] Hsv = CallColorUtility.getHsvFromRGB(RGBAverage);
+        int[] Hsv = ColorUtility.getHsvFromRGB(RGBAverage);
         String ToDisplayHsv = SHsv+" "+Hsv[0]+"°, "+Hsv[1]+"%, "+Hsv[2]+"%";
         TVHsvValue.setText(ToDisplayHsv);
 

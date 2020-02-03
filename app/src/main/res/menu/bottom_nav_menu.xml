@@ -12,8 +12,8 @@
         android:title="@string/nav_menu_Import" />
 
     <item
-        android:id="@+id/navigation_editcolor"
+        android:id="@+id/navigation_palette"
         android:icon="@drawable/editcolor"
-        android:title="@string/nav_menu_EditColor" />
+        android:title="@string/nav_menu_Palette" />
 
 </menu>
