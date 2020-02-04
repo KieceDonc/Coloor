@@ -42,7 +42,7 @@ public class EditColorFragment extends Fragment {
         c[4] = getView().findViewById(R.id.color4);
         c[5] = getView().findViewById(R.id.color5);
 
-        ColorSpec blue = new ColorSpec("#26c1c8");
+        ColorSpec blue = new ColorSpec("#26C1C8");
 
         for(int x =0;x<c.length;x++){
             c[x].setBackgroundColor(Color.parseColor(blue.getShades()[x]));

@@ -91,9 +91,10 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         int greenDistanceBlack = (int) (getRGB()[1]/5.5);
         int blueDistanceBlack = (int) (getRGB()[2]/5.5);
 
+        shades[0]=ColorUtility.getHexFromRGB(getRGB());
         rgbShades[0]=getRGB();
         for(int x=1;x<shades.length;x++){ // x=1 cuz shades[0] = this.hexa
-            for(int y = 0;y<rgb.length-1;y++){
+            for(int y = 0;y<3;y++){
                 switch (y){
                     case 0:{
                         rgbShades[x][y]=getRGB()[y]-redDistanceBlack*x;
@@ -105,16 +106,14 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
                     }
                     case 2:{
                         rgbShades[x][y]=getRGB()[y]-blueDistanceBlack*x;
+                        break;
                     }
                     default:{
                         Log.e("ColorSpec","Error, setShades, out of bound y. ColorSpec = "+toString());
                     }
                 }
+                shades[x]=ColorUtility.getHexFromRGB(rgbShades[x]);
             }
-        }
-
-        for(int x =0;x<rgbShades.length;x++){
-            shades[x]=ColorUtility.getHexFromRGB(rgbShades[x]);
         }
     }
 
