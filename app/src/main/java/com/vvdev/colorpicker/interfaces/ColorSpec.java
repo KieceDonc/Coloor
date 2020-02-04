@@ -1,14 +1,18 @@
 package com.vvdev.colorpicker.interfaces;
 
+import android.util.Log;
+
 public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
     private String hexa;
     private int[] hsv = new int[3];
     private int[] rgb = new int[3];
 
-    private int[] complementary = new int[2];
-    private int[] triadic = new int[3];
-    private int[] tone = new int[6];
+    private String complementary ="";
+    private String[] triadic = new String[3];
+    private String[] tone = new String[6];
+    private int[][] rgbShades = new int[6][3];
+    private String[] shades = new String[6];
 
 
 
@@ -39,18 +43,80 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         setComplementary();
         setTriadic();
         setTone();
+        setShades();
     }
 
-    private void setComplementary() {
+    private void setComplementary() { // Complémentaire
+        int[] complementaryRGB = new int[3];
+
+        complementaryRGB[0] = 255-getRGB()[0];
+        complementaryRGB[1] = 255-getRGB()[1];
+        complementaryRGB[2] = 255-getRGB()[2];
+
+        complementary=ColorUtility.getHexFromRGB(complementaryRGB);
     }
 
-    private void setTriadic() {
+    /**
+     * triadic[0] = this.hexa
+     * triadic[ 1 / 2 ] = generate
+     */
+    private void setTriadic() { // Triadique
+        int triadic1[] = new int[3];
+        int triadic2[] = new int[3];
+
+        triadic1[1]=getRGB()[0];
+        triadic2[2]=getRGB()[0];
+        triadic1[2]=getRGB()[1];
+        triadic2[0]=getRGB()[1];
+        triadic1[0]=getRGB()[2];
+        triadic1[1]=getRGB()[2];
+
+        triadic[0]=getHexa();
+        triadic[1]=ColorUtility.getHexFromRGB(triadic1);
+        triadic[2]=ColorUtility.getHexFromRGB(triadic2);
     }
 
 
-    private void setTone() {
+    private void setTone() { // Tonalités
+
     }
 
+    /**
+     * shades[0] = this.hexa
+     * triadic[ 1 / 2 /3 / 4 / 5 ] = generate
+     */
+
+    private void setShades(){ // Nuances
+        int redDistanceBlack = (int) (getRGB()[0]/5.5);
+        int greenDistanceBlack = (int) (getRGB()[1]/5.5);
+        int blueDistanceBlack = (int) (getRGB()[2]/5.5);
+
+        rgbShades[0]=getRGB();
+        for(int x=1;x<shades.length;x++){ // x=1 cuz shades[0] = this.hexa
+            for(int y = 0;y<rgb.length-1;y++){
+                switch (y){
+                    case 0:{
+                        rgbShades[x][y]=getRGB()[y]-redDistanceBlack*x;
+                        break;
+                    }
+                    case 1:{
+                        rgbShades[x][y]=getRGB()[y]-greenDistanceBlack*x;
+                        break;
+                    }
+                    case 2:{
+                        rgbShades[x][y]=getRGB()[y]-blueDistanceBlack*x;
+                    }
+                    default:{
+                        Log.e("ColorSpec","Error, setShades, out of bound y. ColorSpec = "+toString());
+                    }
+                }
+            }
+        }
+
+        for(int x =0;x<rgbShades.length;x++){
+            shades[x]=ColorUtility.getHexFromRGB(rgbShades[x]);
+        }
+    }
 
 
     public String getHexa() {
@@ -77,15 +143,36 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         this.rgb = RGB;
     }
 
-    public int[] getComplementary() {
+    public String getComplementary() {
         return complementary;
     }
 
-    public int[] getTriadic() {
+    public String[] getTriadic() {
         return triadic;
     }
 
-    public int[] getTone() {
+    public String[] getTone() {
         return tone;
+    }
+
+    public String[] getShades(){
+        return shades;
+    }
+
+    public int[][] getRgbShades(){
+        return rgbShades;
+    }
+
+    public String toString(){
+        return "Hexadecimal = "+hexa+"\n" +
+                "RGB = RGB("+getRGB()[0]+", "+getRGB()[1]+", "+getRGB()[2]+")\n" +
+                "HSV = HSV("+getHSV()[0]+", "+getHSV()[1]+", "+getHSV()[2]+")\n" +
+                "Complementary = "+complementary+"\n" +
+                "Triadic = "+getTriadic()[0]+", "+getTriadic()[1]+", "+getTriadic()[2]+"\n" +
+                "Tone = TODO\n" +
+                "Shades = "+getShades()[0]+", "+getShades()[1]+", "+getShades()[2]+", "+getShades()[3]+", "+getShades()[4]+", "+getShades()[5];
+
+
+        //TODO make toString() of ColorSpec
     }
 }

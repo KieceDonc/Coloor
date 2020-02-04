@@ -114,9 +114,9 @@ public class ColorUtility {
 
     public static int[] getRGBFromHex(String ReceiveColor){
         if(ReceiveColor.length()==7) {
-            return new int[]{parseInt(ReceiveColor.substring(1, 2), 16), parseInt(ReceiveColor.substring(3, 4), 16), parseInt(ReceiveColor.substring(5, 6), 16)};
+            return new int[]{parseInt(ReceiveColor.substring(1, 3), 16), parseInt(ReceiveColor.substring(3, 5), 16), parseInt(ReceiveColor.substring(5), 16)};
         }else if(ReceiveColor.length()==6){
-            return new int[]{parseInt(ReceiveColor.substring(0, 1), 16), parseInt(ReceiveColor.substring(2, 3), 16), parseInt(ReceiveColor.substring(4, 5), 16)};
+            return new int[]{parseInt(ReceiveColor.substring(0, 2), 16), parseInt(ReceiveColor.substring(2, 4), 16), parseInt(ReceiveColor.substring(4), 16)};
         }else{
             Log.e("getRGBFromHex","Unable to parse this color : "+ReceiveColor);
             return new int[]{0,0,0};
