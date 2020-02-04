@@ -83,7 +83,6 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                         break;
                     }
                     case REQUEST_CODE_DOC: {
-                        //loadPDFView(data.getData());
                         loadPDFView(data.getData());
 
                         break;
@@ -181,7 +180,7 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
 
     private void loadPDFView(Uri path){
         Intent startPreview = new Intent(getActivity(), Import_PDF.class);
-        startPreview.putExtra(IntentExtraPath, path);
+        startPreview.putExtra(IntentExtraPath, path.toString());
         startActivity(startPreview);
         Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
