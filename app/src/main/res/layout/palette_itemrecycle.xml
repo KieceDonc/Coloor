@@ -10,15 +10,16 @@
         android:id="@+id/piColorPreview"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:src="@color/Theme1_Third"
+        android:src="@android:color/transparent"
         app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp"
+        app:civ_border_width="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/piColorName"
@@ -63,7 +64,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:text="Hex : #000000"
+        android:text="Hexa : #000000"
         android:textColor="@android:color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
@@ -107,8 +108,9 @@
         android:layout_height="16dp"
         android:background="#FF808080"
         app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate3"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0" />
+        app:layout_constraintStart_toEndOf="@+id/piGenerate1"
+        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/piGenerate3"
@@ -116,8 +118,9 @@
         android:layout_height="16dp"
         android:background="#FF606060"
         app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate4"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0" />
+        app:layout_constraintStart_toEndOf="@+id/piGenerate2"
+        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/piGenerate4"
@@ -125,7 +128,18 @@
         android:layout_height="16dp"
         android:background="#FF404040"
         app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate1"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0" />
+        app:layout_constraintStart_toEndOf="@+id/piGenerate3"
+        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/piGenerate5"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="#FFA0A0A0"
+        app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+        app:layout_constraintStart_toEndOf="@+id/piGenerate4"
+        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

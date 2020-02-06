@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/navigation_palette"
-        android:name="com.vvdev.colorpicker.fragment.Palette.EditColorFragment"
+        android:name="com.vvdev.colorpicker.fragment.Palette.PaletteFragment"
         android:label="@string/nav_menu_Palette"
         tools:layout="@layout/fragment_palette">
         <action

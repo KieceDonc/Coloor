@@ -6,60 +6,26 @@
     android:layout_height="match_parent"
     android:background="#aaaaaa">
 
-    <Button
-        android:id="@+id/color0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="2dp"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="@+id/color4"
-        app:layout_constraintTop_toTopOf="@+id/color1" />
-
-    <Button
-        android:id="@+id/color1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="3dp"
-        android:text="Button"
-        app:layout_constraintStart_toEndOf="@+id/color0"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/color2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:text="Button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/color1"
-        app:layout_constraintEnd_toStartOf="@+id/color3" />
-
-    <Button
-        android:id="@+id/color3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="52dp"
-        android:text="Button"
-        app:layout_constraintBaseline_toBaselineOf="@+id/color2"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/color4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:text="Button"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/color0" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/color5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="6dp"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="@+id/color1"
-        app:layout_constraintTop_toBottomOf="@+id/color1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
