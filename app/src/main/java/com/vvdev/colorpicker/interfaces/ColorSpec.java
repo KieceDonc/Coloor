@@ -123,7 +123,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     }
 
     private void setHexa(String hexa) {
-        this.hexa = hexa;
+        this.hexa = hexa.toUpperCase();
     }
 
     public int[] getHSV() {

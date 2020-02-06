@@ -1,7 +1,9 @@
 package com.vvdev.colorpicker.ui;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,9 @@ import android.widget.TextView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
+import com.vvdev.colorpicker.interfaces.ColorsData;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -17,15 +22,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHolder> {
 
-    private ColorSpec[] colorSpecs;
+    private ArrayList<ColorSpec> colors;
 
-    public PaletteAdapter(ColorSpec[] colorsSpec){
-        this.colorSpecs=colorsSpec;
+    public PaletteAdapter(ArrayList<ColorSpec> colors){
+        this.colors=colors;
     }
 
     @Override
     public int getItemCount() {
-        return colorSpecs.length;
+        return colors.size();
     }
 
     @Override
@@ -37,7 +42,7 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        ColorSpec currentColorSpec = colorSpecs[position];
+        ColorSpec currentColorSpec = colors.get(position);
         holder.display(currentColorSpec);
     }
 

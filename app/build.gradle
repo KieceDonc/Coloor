@@ -30,6 +30,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0' // glide
     implementation 'de.hdodenhof:circleimageview:3.0.2' // circle image view
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1' // android pdf view
+    implementation 'com.google.code.gson:gson:2.8.5' // save object Shared Preferences
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     testImplementation 'org.testng:testng:6.9.6'
