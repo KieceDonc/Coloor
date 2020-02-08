@@ -36,6 +36,11 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         saveColors();
     }
 
+    public void removeColor(int position){
+        colors.remove(position);
+        saveColors();
+    }
+
     public void clearColors(){
         colors.clear();
         saveColors();
@@ -79,11 +84,5 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         public ArrayList<ColorSpec> colorsSP;
     }
 
-    /*public void LogENewList(){
-        Gson gson = new Gson();
-        String json = mPrefs.getString("colorsArrayList", "");
-        String s = Arrays.toString(gson.fromJson(json, Copy.class).colorsSP.toArray());
-        Log.e("test",s);
-    }*/
 
 }

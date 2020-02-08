@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.MainActivity;
@@ -582,6 +583,8 @@ public class CirclePicker extends ImageView {
         public boolean onDoubleTap(MotionEvent e) {
             ColorsData colorsData = new ColorsData((Activity) getContext());
             colorsData.addColor(new ColorSpec(mTextOnBorderHex));
+            Toast.makeText(getContext(), mTextOnBorderHex+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
+
             return false;
         }
 

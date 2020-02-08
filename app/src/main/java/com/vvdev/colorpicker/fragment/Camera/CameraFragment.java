@@ -45,7 +45,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
+import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
 
 import java.io.File;
@@ -978,7 +980,11 @@ public class CameraFragment extends Fragment implements View.OnClickListener, Vi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.getpicture: {
-                takePicture();
+                String rawHexValue = TVHexValue.getText().toString();
+                String hexValue = rawHexValue.substring(5);
+                ColorSpec CurrentColor = new ColorSpec(hexValue);
+                new ColorsData(getActivity()).addColor(CurrentColor);
+                Toast.makeText(getActivity(), hexValue+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
                 break;
             }
             case R.id.info: {
