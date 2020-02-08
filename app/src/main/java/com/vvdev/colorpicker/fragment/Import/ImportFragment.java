@@ -1,7 +1,11 @@
 package com.vvdev.colorpicker.fragment.Import;
 
+import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,18 +19,8 @@ import com.vvdev.colorpicker.activity.Import_Img;
 import com.vvdev.colorpicker.activity.Import_PDF;
 import com.vvdev.colorpicker.interfaces.FileUtils;
 
-import org.w3c.dom.Document;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Date;
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -66,7 +60,19 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
         mImportVid.setOnClickListener(this);
         mImportDoc.setOnClickListener(this);
         mImportInternet.setOnClickListener(this);
+        askPermissions();
     }
+
+    @TargetApi(23)
+    protected void askPermissions() {
+        String[] permissions = {
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+        };
+        int requestCode = 200;
+        requestPermissions(permissions, requestCode);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,20 +174,19 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
     }
 
     private void chosenByInternet(){
-
     }
 
     private void loadImgView(String path){
         Intent startPreview = new Intent(getActivity(), Import_Img.class);
         startPreview.putExtra(IntentExtraPath, path);
         startActivity(startPreview);
-        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
 
     private void loadPDFView(Uri path){
         Intent startPreview = new Intent(getActivity(), Import_PDF.class);
         startPreview.putExtra(IntentExtraPath, path.toString());
         startActivity(startPreview);
-        Objects.requireNonNull(getActivity()).overridePendingTransition(R.anim.slide_up,R.anim.slide_down);
     }
+
+
 }

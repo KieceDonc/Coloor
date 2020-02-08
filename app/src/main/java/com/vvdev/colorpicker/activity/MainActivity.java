@@ -4,10 +4,6 @@ import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorSpec;
-import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.ColorsData;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;

@@ -1,6 +1,7 @@
 package com.vvdev.colorpicker.fragment.Palette;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.ui.PaletteAdapter;
 import com.vvdev.colorpicker.ui.PaletteSwipeController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
@@ -32,21 +35,12 @@ public class PaletteFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ColorsData colorsData = new ColorsData(getActivity());
-        colorsData.addColor(new ColorSpec("#050505"));
-        colorsData.addColor(new ColorSpec("#26c1c8"));
-        colorsData.addColor(new ColorSpec("#a326c8"));
-        colorsData.addColor(new ColorSpec("#c82683"));
-        colorsData.addColor(new ColorSpec("#c3c826"));
-        colorsData.addColor(new ColorSpec("#c82626"));
-        colorsData.addColor(new ColorSpec("#26c89c"));
-        colorsData.addColor(new ColorSpec("#5cc826"));
         super.onViewCreated(view, savedInstanceState);
 
+        ColorsData colorsData = new ColorsData(getActivity());
         RecyclerView rv = view.findViewById(R.id.pRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         rv.setAdapter(new PaletteAdapter(colorsData.getColors(),getActivity()));
-
         PaletteSwipeController paletteSwipeController = new PaletteSwipeController();
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(paletteSwipeController);
         itemTouchhelper.attachToRecyclerView(rv);
@@ -59,8 +53,6 @@ public class PaletteFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        ColorsData colorsData = new ColorsData(Objects.requireNonNull(getActivity()));
-        colorsData.clearColors();
         super.onDestroy();
     }
 }

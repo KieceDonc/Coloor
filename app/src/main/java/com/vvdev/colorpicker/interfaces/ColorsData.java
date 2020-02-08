@@ -1,23 +1,30 @@
 package com.vvdev.colorpicker.interfaces;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-
-import static android.content.Context.MODE_PRIVATE;
+import java.util.Arrays;
 
 public class ColorsData { // https://stackoverflow.com/questions/7145606/how-android-sharedpreferences-save-store-object
 
     private ArrayList<ColorSpec> colors;
     private SharedPreferences mPrefs;
+    private static final String PREFS_TAG = "SharedPrefs";
 
     public ColorsData(Activity activity){
-        mPrefs = activity.getPreferences(MODE_PRIVATE);
-        colors = new ArrayList<>();
+        mPrefs = activity.getApplicationContext().getSharedPreferences(PREFS_TAG, Context.MODE_PRIVATE);
+        colors = getColors();
     }
+
+    /*public ColorsData(Context context){
+        mPrefs = context.getSharedPreferences(MODE_PRIVATE);
+        colors = new ArrayList<>();
+    }*/
 
     public void addColor(ColorSpec color){
         colors.add(color);
@@ -45,10 +52,10 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
         Copy copy = new Copy();
-        copy.colorsSP=colors;
+        copy.colorsSP = new ArrayList<>(colors);
         String json = gson.toJson(copy);
         prefsEditor.putString("colorsArrayList", json);
-        prefsEditor.apply();
+        prefsEditor.commit();
     }
 
     /**
@@ -57,14 +64,26 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
     public ArrayList<ColorSpec> getColors(){
         Gson gson = new Gson();
         String json = mPrefs.getString("colorsArrayList", "");
-        return gson.fromJson(json,Copy.class).colorsSP;
+        Copy copy = gson.fromJson(json,Copy.class);
+        if(copy==null){
+            return new ArrayList<>();
+        }else{
+            return copy.colorsSP;
+        }
     }
 
     /**
      * Just used to copy / past variable colors
      */
     private class Copy {
-        private ArrayList<ColorSpec> colorsSP;
+        public ArrayList<ColorSpec> colorsSP;
     }
+
+    /*public void LogENewList(){
+        Gson gson = new Gson();
+        String json = mPrefs.getString("colorsArrayList", "");
+        String s = Arrays.toString(gson.fromJson(json, Copy.class).colorsSP.toArray());
+        Log.e("test",s);
+    }*/
 
 }

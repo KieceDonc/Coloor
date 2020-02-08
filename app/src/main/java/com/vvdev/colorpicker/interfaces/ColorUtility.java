@@ -133,6 +133,46 @@ public class ColorUtility {
         return (((Color.red(TextColor) * 0.299) + (Color.green(TextColor) * 0.587) + (Color.blue(TextColor)* 0.114)) > 186) ? Color.BLACK : Color.WHITE;
     }
 
+    /**
+     * create a gradient from colors given in parameters
+     * @param fromColor
+     * @param toColor
+     * @param numGrandient
+     * @return
+     */
+    public static String[] gradientApproximatlyGenerator(String fromColor,String toColor,int numGrandient){
+        String[] toReturn = new String[numGrandient];
+        int[][] rgbGradient = new int[6][3];
+        int[] rgbFromColor = ColorUtility.getRGBFromHex(fromColor);
+        int[] rgbToColor = ColorUtility.getRGBFromHex(toColor);
+        int redDistance = (rgbFromColor[0]-rgbToColor[0])/numGrandient;
+        int greenDistance = (rgbFromColor[1]-rgbToColor[1])/numGrandient;
+        int blueDistance = (rgbFromColor[2]-rgbToColor[2])/numGrandient;
+
+        toReturn[0]=ColorUtility.getHexFromRGB(rgbFromColor);
+        rgbGradient[0]=rgbFromColor;
+        for(int x=1;x<numGrandient;x++){
+            for(int y = 0;y<3;y++){
+                switch (y){
+                    case 0:{
+                        rgbGradient[x][y]=rgbFromColor[y]-redDistance*x;
+                        break;
+                    }
+                    case 1:{
+                        rgbGradient[x][y]=rgbFromColor[y]-greenDistance*x;
+                        break;
+                    }
+                    case 2:{
+                        rgbGradient[x][y]=rgbFromColor[y]-blueDistance*x;
+                        break;
+                    }
+                }
+                toReturn[x]=ColorUtility.getHexFromRGB(rgbGradient[x]);
+            }
+        }
+        return toReturn;
+    }
+
     public static int[] getHsvFromRGB(int[] RGB){
         float[] hsv = new float[3];
         Color.RGBToHSV(RGB[0],RGB[1],RGB[2],hsv);

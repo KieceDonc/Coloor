@@ -32,6 +32,7 @@ import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.ui.CirclePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,6 +73,7 @@ public class Import_PDF extends AppCompatActivity {
         setupPdfView();
         setupCirclePicker();
         setupInputDesirePage();
+        new ColorsData(this).getColors();
     }
 
     @Override

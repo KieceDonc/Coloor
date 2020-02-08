@@ -1,6 +1,7 @@
 package com.vvdev.colorpicker.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -35,7 +36,9 @@ import android.widget.ImageView;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.MainActivity;
+import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
+import com.vvdev.colorpicker.interfaces.ColorsData;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -417,7 +420,6 @@ public class CirclePicker extends ImageView {
 
             int[] locationOnScreen = new int[2];
             getLocationOnScreen(locationOnScreen);
-            Log.e("test",DesireX+" "+DesireWidth+" "+mScreenBitmap.getWidth());
             mBitmap = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
             setup();
             if(!inScale){
@@ -494,6 +496,7 @@ public class CirclePicker extends ImageView {
         private View mCirclePickerView;
         private GestureDetector gesture;
         private ScaleGestureDetector gestureScale;
+        private boolean startInCircleArea=false;// use to continue moving even if user isn't in touchable area
         private boolean zeroFingerSinceScale = true; // use to decked circle picker teleports bug
         private int numFinger = 0;  // use to decked circle picker teleports bug
 
@@ -577,6 +580,8 @@ public class CirclePicker extends ImageView {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+            ColorsData colorsData = new ColorsData((Activity) getContext());
+            colorsData.addColor(new ColorSpec(mTextOnBorderHex));
             return false;
         }
 
@@ -591,11 +596,15 @@ public class CirclePicker extends ImageView {
             gestureScale.onTouchEvent(event);
 
             numFinger=event.getPointerCount();  // use to decked circle picker teleports bug
+
             float newX,newY;
             onTouchEvent(event);
 
             if(event.getAction()==MotionEvent.ACTION_UP){  // use to decked circle picker teleports bug
                 numFinger--;
+                if(numFinger==0){// use to stop moving even if user isn't in touchable area
+                    startInCircleArea=false;
+                }
                 if(numFinger==0&&!zeroFingerSinceScale){
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -606,7 +615,13 @@ public class CirclePicker extends ImageView {
                     }, 100);
                 }
             }
-            if(inTouchableArea(event.getX(),event.getY())&&mMovableDimension!=null&&zeroFingerSinceScale&&!inScale){
+            if(event.getAction()==MotionEvent.ACTION_DOWN){ // use to continue moving even if user isn't in touchable area
+                if(inTouchableArea(event.getX(),event.getY())){
+                    startInCircleArea=true;
+                }
+            }
+
+            if(allowToMove(event)){
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
                         updatePhoneBitmap();
@@ -619,7 +634,7 @@ public class CirclePicker extends ImageView {
                     }
                     case MotionEvent.ACTION_MOVE: {
 
-                        if (event.getPointerCount() == 1){ // if one finger detect we move layout
+                       if (event.getPointerCount() == 1){ // if one finger detect we move layout
 
                             newX = event.getRawX() + tdX;
                             newY = event.getRawY() + tdY;
@@ -657,8 +672,18 @@ public class CirclePicker extends ImageView {
 
         @Override
         public boolean onDrag(View v, DragEvent event) { // https://www.vogella.com/tutorials/AndroidDragAndDrop/article.html
-            return true;
+                return true;
 
+        }
+
+        private boolean allowToMove(MotionEvent event){
+            return (startInCircleArea||inTouchableArea(event.getX(),event.getY())) // (startInCircleArea||inTouchableArea(event.getX(),event.getY())) used to move circle
+                    &&
+                    mMovableDimension!=null
+                    &&
+                    zeroFingerSinceScale
+                    &&
+                    !inScale;
         }
 
         private boolean inTouchableArea(float x, float y) {

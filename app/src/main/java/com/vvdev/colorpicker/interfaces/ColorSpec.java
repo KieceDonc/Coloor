@@ -1,5 +1,6 @@
 package com.vvdev.colorpicker.interfaces;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -11,11 +12,11 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     private int[] hsv = new int[3];
     private int[] rgb = new int[3];
 
-    private ArrayList<String> allGeneratedColors = new ArrayList<>(Arrays.asList("Shades","Triadic","Tone","Complementary"));
-    private String[] complementary =new String[1];
+    private ArrayList<String> allGeneratedColors = new ArrayList<>(Arrays.asList("Shades","Tones","Tints","Triadic","Complementary"));
+    private String[] complementary =new String[2];
     private String[] triadic = new String[3];
-    private String[] tone = new String[6];
-    private int[][] rgbShades = new int[6][3];
+    private String[] tines = new String[6];
+    private String[] tones = new String[6];
     private String[] shades = new String[6];
 
     public ColorSpec(int[] rgb) {
@@ -46,7 +47,9 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         setTriadic();
         setTone();
         setShades();
+        setTines();
     }
+
 
     private void setComplementary() { // Complémentaire
         int[] complementaryRGB = new int[3];
@@ -55,7 +58,8 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         complementaryRGB[1] = 255-getRGB()[1];
         complementaryRGB[2] = 255-getRGB()[2];
 
-        complementary[0]=ColorUtility.getHexFromRGB(complementaryRGB);
+        complementary[0]=getHexa();
+        complementary[1]=ColorUtility.getHexFromRGB(complementaryRGB);
     }
 
     /**
@@ -80,7 +84,12 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
 
     private void setTone() { // Tonalités
+        tones=ColorUtility.gradientApproximatlyGenerator(getHexa(),"707070",6);
+    }
 
+
+    private void setTines() {
+        tines=ColorUtility.gradientApproximatlyGenerator(getHexa(),"#f7f7f7",6);
     }
 
     /**
@@ -89,34 +98,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
      */
 
     private void setShades(){ // Nuances
-        int redDistanceBlack = (int) (getRGB()[0]/5.5);
-        int greenDistanceBlack = (int) (getRGB()[1]/5.5);
-        int blueDistanceBlack = (int) (getRGB()[2]/5.5);
-
-        shades[0]=ColorUtility.getHexFromRGB(getRGB());
-        rgbShades[0]=getRGB();
-        for(int x=1;x<shades.length;x++){ // x=1 cuz shades[0] = this.hexa
-            for(int y = 0;y<3;y++){
-                switch (y){
-                    case 0:{
-                        rgbShades[x][y]=getRGB()[y]-redDistanceBlack*x;
-                        break;
-                    }
-                    case 1:{
-                        rgbShades[x][y]=getRGB()[y]-greenDistanceBlack*x;
-                        break;
-                    }
-                    case 2:{
-                        rgbShades[x][y]=getRGB()[y]-blueDistanceBlack*x;
-                        break;
-                    }
-                    default:{
-                        Log.e("ColorSpec","Error, setShades, out of bound y. ColorSpec = "+toString());
-                    }
-                }
-                shades[x]=ColorUtility.getHexFromRGB(rgbShades[x]);
-            }
-        }
+        shades=ColorUtility.gradientApproximatlyGenerator(getHexa(),"#000000",6);
     }
 
 
@@ -152,19 +134,20 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         return triadic;
     }
 
-    public String[] getTone() {
-        return tone;
+    public String[] getTones() {
+        return tones;
+    }
+
+    public String[] getTines() {
+        return tines;
     }
 
     public String[] getShades(){
         return shades;
     }
-    public ArrayList<String[]> getAllGeneratedColors(){
-        return new ArrayList<>(Arrays.asList(getShades(),getTriadic(),getTone(),getComplementary()));
-    }
 
-    public int[][] getRgbShades(){
-        return rgbShades;
+    public ArrayList<String[]> getAllGeneratedColors(){
+        return new ArrayList<>(Arrays.asList(getShades(),getTones(),getTines(),getTriadic(),getComplementary()));
     }
 
     public ArrayList<String> getGenerateMethod() {
