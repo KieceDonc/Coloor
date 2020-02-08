@@ -2,19 +2,21 @@ package com.vvdev.colorpicker.interfaces;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
     private String hexa;
     private int[] hsv = new int[3];
     private int[] rgb = new int[3];
 
-    private String complementary ="";
+    private ArrayList<String> allGeneratedColors = new ArrayList<>(Arrays.asList("Shades","Triadic","Tone","Complementary"));
+    private String[] complementary =new String[1];
     private String[] triadic = new String[3];
     private String[] tone = new String[6];
     private int[][] rgbShades = new int[6][3];
     private String[] shades = new String[6];
-
-
 
     public ColorSpec(int[] rgb) {
         setRGB(rgb);
@@ -53,7 +55,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         complementaryRGB[1] = 255-getRGB()[1];
         complementaryRGB[2] = 255-getRGB()[2];
 
-        complementary=ColorUtility.getHexFromRGB(complementaryRGB);
+        complementary[0]=ColorUtility.getHexFromRGB(complementaryRGB);
     }
 
     /**
@@ -142,7 +144,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         this.rgb = RGB;
     }
 
-    public String getComplementary() {
+    public String[] getComplementary() {
         return complementary;
     }
 
@@ -157,16 +159,23 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     public String[] getShades(){
         return shades;
     }
+    public ArrayList<String[]> getAllGeneratedColors(){
+        return new ArrayList<>(Arrays.asList(getShades(),getTriadic(),getTone(),getComplementary()));
+    }
 
     public int[][] getRgbShades(){
         return rgbShades;
+    }
+
+    public ArrayList<String> getGenerateMethod() {
+        return allGeneratedColors;
     }
 
     public String toString(){
         return "Hexadecimal = "+hexa+"\n" +
                 "RGB = RGB("+getRGB()[0]+", "+getRGB()[1]+", "+getRGB()[2]+")\n" +
                 "HSV = HSV("+getHSV()[0]+", "+getHSV()[1]+", "+getHSV()[2]+")\n" +
-                "Complementary = "+complementary+"\n" +
+                "Complementary = "+complementary[0]+"\n" +
                 "Triadic = "+getTriadic()[0]+", "+getTriadic()[1]+", "+getTriadic()[2]+"\n" +
                 "Tone = TODO\n" +
                 "Shades = "+getShades()[0]+", "+getShades()[1]+", "+getShades()[2]+", "+getShades()[3]+", "+getShades()[4]+", "+getShades()[5];

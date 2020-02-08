@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.vvdev.colorpicker.R;
@@ -14,8 +17,12 @@ import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 
-import java.util.ArrayList;
+import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,9 +30,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHolder> {
 
     private ArrayList<ColorSpec> colors;
+    private final Activity activity;
 
-    public PaletteAdapter(ArrayList<ColorSpec> colors){
+    public PaletteAdapter(ArrayList<ColorSpec> colors,Activity activity){
         this.colors=colors;
+        this.activity=activity;
     }
 
     @Override
@@ -48,48 +57,99 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private ColorSpec colorSpec;
+        private ArrayList<String[]> allGeneratedColors;
+
         private CircleImageView colorPreview;
         private TextView colorName;
         private TextView hsv;
         private TextView rgb;
         private TextView hexa;
         private TextView more;
-        private View generate0;
-        private View generate1;
-        private View generate2;
-        private View generate3;
-        private View generate4;
-        private View generate5;
+        private ConstraintLayout piExtend;
 
-        public MyViewHolder(final View itemView) {
+        private ArrayList<View> generate = new ArrayList<>();
+
+        private Spinner extendSpinner;
+        private ArrayList<ConstraintLayout> extendInclude = new ArrayList<>();
+        private ArrayList<View> extendView = new ArrayList<>();
+        private ArrayList<TextView> extendHex = new ArrayList<>();
+        private ArrayList<TextView> extendRGB = new ArrayList<>();
+
+        public MyViewHolder(final View itemView) { //
             super(itemView);
 
             colorPreview = itemView.findViewById(R.id.piColorPreview);
+
             colorName = itemView.findViewById(R.id.piColorName);
             hsv = itemView.findViewById(R.id.piHSV);
             rgb = itemView.findViewById(R.id.piRGB);
             hexa = itemView.findViewById(R.id.piHex);
             more = itemView.findViewById(R.id.piMore);
-            generate0 = itemView.findViewById(R.id.piGenerate0);
-            generate1 = itemView.findViewById(R.id.piGenerate1);
-            generate2 = itemView.findViewById(R.id.piGenerate2);
-            generate3 = itemView.findViewById(R.id.piGenerate3);
-            generate4 = itemView.findViewById(R.id.piGenerate4);
-            generate5 = itemView.findViewById(R.id.piGenerate5);
 
+            generate.add(itemView.findViewById(R.id.piGenerate0));
+            generate.add(itemView.findViewById(R.id.piGenerate1));
+            generate.add(itemView.findViewById(R.id.piGenerate2));
+            generate.add(itemView.findViewById(R.id.piGenerate3));
+            generate.add(itemView.findViewById(R.id.piGenerate4));
+            generate.add(itemView.findViewById(R.id.piGenerate5));
+
+            piExtend = itemView.findViewById(R.id.piExtend);
+
+            extendSpinner = itemView.findViewById(R.id.piSpinner);
+            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate0));
+            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate1));
+            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate2));
+            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate3));
+            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate4));
+            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate5));
+
+            for(int x=0;x<extendInclude.size();x++){
+                extendView.add(extendInclude.get(x).findViewById(R.id.piExtendView));
+                extendHex.add((TextView)extendInclude.get(x).findViewById(R.id.piExtendHex));
+                extendRGB.add((TextView)extendInclude.get(x).findViewById(R.id.piExtendRGB));
+            }
+
+            more.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(piExtend.getVisibility()==View.VISIBLE){
+                        piExtend.setVisibility(View.GONE);
+                    }else{
+                        piExtend.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            // set the extend spinner on item click listener and change each extend include to the colors propriety of selected item
+            extendSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    int selectedItem = parentView.getSelectedItemPosition();
+                    String[] colorsOfItem = allGeneratedColors.get(selectedItem);
+                    showNumberExtendInclude(colorsOfItem.length);
+                    changeExtendInclude(colorsOfItem);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    // your code here
+                }
+            });
         }
 
         public void display(ColorSpec colorSpec) {
-            this.colorSpec=colorSpec;
 
+            // get hexa, hsv, rgb of color
             String hexaFromColorSpec = colorSpec.getHexa();
             int[] hsvFromColorSpec = colorSpec.getHSV();
             int[] rgbFromColorSpec = colorSpec.getRGB();
 
+            // setup preview of color
             Bitmap bitmapOfPreview = Bitmap.createBitmap(250, 250, Bitmap.Config.ARGB_8888);
             bitmapOfPreview.eraseColor(Color.parseColor(hexaFromColorSpec));
             colorPreview.setImageBitmap(bitmapOfPreview);
+
+            // setup text
             colorName.setText(ColorUtility.nearestColor(hexaFromColorSpec)[0]);
             String toHSV = "HSV : "+hsvFromColorSpec[0]+", "+hsvFromColorSpec[1]+", "+hsvFromColorSpec[2];
             hsv.setText(toHSV);
@@ -98,13 +158,50 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
             String toHexa = "Hexa : "+hexaFromColorSpec;
             hexa.setText(toHexa);
 
+            // setup all generated colors
+            allGeneratedColors=colorSpec.getAllGeneratedColors();
+
+            // setup preview generated colors by the method of generation shades
             String[] shades = colorSpec.getShades();
-            generate0.setBackgroundColor(Color.parseColor(shades[0]));
-            generate1.setBackgroundColor(Color.parseColor(shades[1]));
-            generate2.setBackgroundColor(Color.parseColor(shades[2]));
-            generate3.setBackgroundColor(Color.parseColor(shades[3]));
-            generate4.setBackgroundColor(Color.parseColor(shades[4]));
-            generate5.setBackgroundColor(Color.parseColor(shades[5]));
+            for(int x=0;x<generate.size();x++){
+                generate.get(x).setBackgroundColor(Color.parseColor(shades[x]));
+            }
+
+            // setup extend spinner
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,colorSpec.getGenerateMethod());
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            extendSpinner.setAdapter(spinnerAdapter);
+
+            showNumberExtendInclude(6); // set the good number of include for generated colors method shades
+            changeExtendInclude(allGeneratedColors.get(0)); // get all first generated colors ( shades )
+        }
+
+        /**
+         * Change the visibility of extend include depending of generated colors length
+         * @param number generated colors length
+         */
+        private void showNumberExtendInclude(int number){
+            for(int x=0;x<number;x++){
+                extendInclude.get(x).setVisibility(View.VISIBLE);
+            }
+            for(int x=number;x<extendInclude.size();x++){
+                extendInclude.get(x).setVisibility(View.INVISIBLE);
+            }
+            //piExtend.setLayoutParams(new ConstraintLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
+        /**
+         * Change each extend view to the proper colors of generated colors
+         * @param colors generated colors
+         */
+        private void changeExtendInclude(String[] colors){
+            for(int x=0;x<colors.length;x++){
+                extendView.get(x).setBackgroundColor(Color.parseColor(colors[x]));
+                extendHex.get(x).setText(colors[x]);
+                int[] rgbOfColor = ColorUtility.getRGBFromHex(colors[x]);
+                String rgbText = rgbOfColor[0]+", "+rgbOfColor[1]+","+rgbOfColor[2];
+                extendRGB.get(x).setText(rgbText);
+            }
         }
     }
 

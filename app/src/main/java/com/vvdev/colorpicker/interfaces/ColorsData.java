@@ -1,13 +1,9 @@
 package com.vvdev.colorpicker.interfaces;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.google.gson.Gson;
-import com.vvdev.colorpicker.activity.MainActivity;
 
 import java.util.ArrayList;
 

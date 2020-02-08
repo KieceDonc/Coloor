@@ -4,141 +4,254 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:elevation="8dp"
     android:orientation="vertical">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/piColorPreview"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@android:color/transparent"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/piColorName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Black"
-        android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
-        app:layout_constraintStart_toEndOf="@+id/piColorPreview"
-        app:layout_constraintTop_toTopOf="@+id/piColorPreview"
-        app:layout_constraintVertical_bias="0.05" />
-
-    <TextView
-        android:id="@+id/piHSV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="HSV : 255, 255, 255"
-        android:textColor="@android:color/black"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
-        app:layout_constraintStart_toEndOf="@+id/piColorPreview"
-        app:layout_constraintTop_toTopOf="@+id/piColorPreview"
-        app:layout_constraintVertical_bias="0.576" />
-
-    <TextView
-        android:id="@+id/piRGB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:text="RGB : 255, 255, 255"
-        android:textColor="@android:color/black"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
-        app:layout_constraintStart_toEndOf="@+id/piColorPreview"
-        app:layout_constraintTop_toTopOf="@+id/piColorPreview"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <TextView
-        android:id="@+id/piHex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:text="Hexa : #000000"
-        android:textColor="@android:color/black"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
-        app:layout_constraintStart_toEndOf="@+id/piColorPreview"
-        app:layout_constraintTop_toTopOf="@+id/piColorPreview"
-        app:layout_constraintVertical_bias="0.576" />
-
-    <TextView
-        android:id="@+id/piMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:text="@string/paletteItemMore"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/itemMain"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintGuide_begin="77dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/itemMain" />
 
-    <View
-        android:id="@+id/piGenerate0"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/piRGB"
-        app:layout_constraintStart_toStartOf="@+id/piHex"
-        app:layout_constraintTop_toTopOf="@+id/piRGB" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/piExtend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/palette_ir_background"
+        android:paddingTop="5dp"
+        android:paddingBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline">
 
-    <View
-        android:id="@+id/piGenerate1"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="#FF202020"
-        app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate0"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0" />
+        <Spinner
+            android:id="@+id/piSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/piGenerate2"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="#FF808080"
-        app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate1"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
-        app:layout_constraintVertical_bias="0.0" />
+        <include
+            android:id="@+id/piExtendGenerate0"
+            layout="@layout/palette_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
 
-    <View
-        android:id="@+id/piGenerate3"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="#FF606060"
-        app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate2"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
-        app:layout_constraintVertical_bias="0.0" />
+        <include
+            android:id="@+id/piExtendGenerate1"
+            layout="@layout/palette_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
 
-    <View
-        android:id="@+id/piGenerate4"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="#FF404040"
-        app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate3"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
-        app:layout_constraintVertical_bias="0.0" />
+        <include
+            android:id="@+id/piExtendGenerate2"
+            layout="@layout/palette_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
 
-    <View
-        android:id="@+id/piGenerate5"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:background="#FFA0A0A0"
-        app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-        app:layout_constraintStart_toEndOf="@+id/piGenerate4"
-        app:layout_constraintTop_toTopOf="@+id/piGenerate0"
-        app:layout_constraintVertical_bias="0.0" />
+        <include
+            android:id="@+id/piExtendGenerate3"
+            layout="@layout/palette_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate0" />
+
+        <include
+            android:id="@+id/piExtendGenerate4"
+            layout="@layout/palette_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate1" />
+
+        <include
+            android:id="@+id/piExtendGenerate5"
+            layout="@layout/palette_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemMain"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/palette_ir_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/piColorPreview"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@android:color/transparent"
+            app:civ_border_color="#FF000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/piColorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Black"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="@+id/piColorPreview"
+            app:layout_constraintVertical_bias="0.05" />
+
+        <TextView
+            android:id="@+id/piHSV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="HSV : 255, 255, 255"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="@+id/piColorPreview"
+            app:layout_constraintVertical_bias="0.576" />
+
+        <TextView
+            android:id="@+id/piRGB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="RGB : 255, 255, 255"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="@+id/piColorPreview"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/piHex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:text="Hexa : #000000"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="@+id/piColorPreview"
+            app:layout_constraintVertical_bias="0.576" />
+
+        <TextView
+            android:id="@+id/piMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/paletteItemMore"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/piGenerate0"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/piRGB"
+            app:layout_constraintStart_toStartOf="@+id/piHex"
+            app:layout_constraintTop_toTopOf="@+id/piRGB" />
+
+        <View
+            android:id="@+id/piGenerate1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF202020"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate0"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0" />
+
+        <View
+            android:id="@+id/piGenerate2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF808080"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate1"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/piGenerate3"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF606060"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate2"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/piGenerate4"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF404040"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate3"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/piGenerate5"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FFA0A0A0"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate4"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
