@@ -84,12 +84,12 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
 
     private void setTone() { // Tonalités
-        tones=ColorUtility.gradientApproximatlyGenerator(getHexa(),"707070",6);
+        tones=ColorUtility.gradientApproximatelyGenerator(getHexa(),"707070",6);
     }
 
 
     private void setTines() {
-        tines=ColorUtility.gradientApproximatlyGenerator(getHexa(),"#f7f7f7",6);
+        tines=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#f7f7f7",6);
     }
 
     /**
@@ -98,7 +98,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
      */
 
     private void setShades(){ // Nuances
-        shades=ColorUtility.gradientApproximatlyGenerator(getHexa(),"#000000",6);
+        shades=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#000000",6);
     }
 
 

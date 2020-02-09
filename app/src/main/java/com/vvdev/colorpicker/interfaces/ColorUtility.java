@@ -139,7 +139,7 @@ public class ColorUtility {
      * @param numGrandient
      * @return
      */
-    public static String[] gradientApproximatlyGenerator(String fromColor,String toColor,int numGrandient){
+    public static String[] gradientApproximatelyGenerator(String fromColor,String toColor,int numGrandient){
         String[] toReturn = new String[numGrandient];
         int[][] rgbGradient = new int[6][3];
         int[] rgbFromColor = ColorUtility.getRGBFromHex(fromColor);
@@ -170,6 +170,17 @@ public class ColorUtility {
             }
         }
         return toReturn;
+    }
+
+    /**
+     * Give a color to this function and it will return true if the color is closer to black than white and false for the contrary
+     * @param color String
+     * @return boolean
+     */
+
+    public static boolean isNearestFromBlackThanWhite(String color){
+        int intColor = Color.parseColor(color);
+        return ((Color.red(intColor) * 0.299) + (Color.green(intColor) * 0.587) + (Color.blue(intColor) * 0.114)) < 186;
     }
 
     public static int[] getHsvFromRGB(int[] RGB){

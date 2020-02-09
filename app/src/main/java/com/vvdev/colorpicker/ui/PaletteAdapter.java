@@ -161,11 +161,6 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
             // setup all generated colors
             allGeneratedColors=colorSpec.getAllGeneratedColors();
 
-            // setup preview generated colors by the method of generation shades
-            String[] shades = colorSpec.getShades();
-            for(int x=0;x<generate.size();x++){
-                generate.get(x).setBackgroundColor(Color.parseColor(shades[x]));
-            }
 
             // setup extend spinner
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,colorSpec.getGenerateMethod());
@@ -173,7 +168,23 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
             extendSpinner.setAdapter(spinnerAdapter);
 
             showNumberExtendInclude(6); // set the good number of include for generated colors method shades
-            changeExtendInclude(allGeneratedColors.get(0)); // get all first generated colors ( shades )
+            String[] toShow; // setup preview generated colors by the method of generation shades
+            if(ColorUtility.isNearestFromBlackThanWhite(colorSpec.getHexa())){ // check if the color is closer to black than white
+                extendSpinner.setSelection(2); // set spinner to position of Tints ( it will also set extendInclude to Tints mode )
+                toShow = colorSpec.getTines(); // setup preview generated colors by the method of generation Tints
+
+            }else{
+                extendSpinner.setSelection(0); // set spinner to position of Shades ( it will also set extendInclude to Shades mode )
+                toShow = colorSpec.getShades(); // setup preview generated colors by the method of generation Shades
+                int totalRGB = rgbFromColorSpec[0]+rgbFromColorSpec[1]+rgbFromColorSpec[2];
+                if(totalRGB>720){ // if color is very close to white, we had black border
+                    colorPreview.setBorderColor(Color.BLACK);
+                    colorPreview.setBorderWidth(4);
+                }
+            }
+            for(int x=0;x<generate.size();x++){ // setup preview generated colors by the method of generation ( Shades / Tints )
+                generate.get(x).setBackgroundColor(Color.parseColor(toShow[x]));
+            }
         }
 
         /**

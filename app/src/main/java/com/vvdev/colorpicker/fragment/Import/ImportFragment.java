@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.Import_Img;
 import com.vvdev.colorpicker.activity.Import_PDF;
+import com.vvdev.colorpicker.activity.Import_Vid;
 import com.vvdev.colorpicker.interfaces.FileUtils;
 
 import androidx.annotation.NonNull;
@@ -85,12 +86,11 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
                         break;
                     }
                     case REQUEST_CODE_VID: {// TODO check .mp4 etc ..
-                        loadImgView(path);
+                        loadVidView(data.getData());
                         break;
                     }
                     case REQUEST_CODE_DOC: {
                         loadPDFView(data.getData());
-
                         break;
                     }
                     case REQUEST_CODE_INTERNET: {
@@ -182,11 +182,18 @@ public class ImportFragment extends Fragment implements View.OnClickListener {
         startActivity(startPreview);
     }
 
+    private void loadVidView(Uri path){
+        Intent startPreview = new Intent(getActivity(), Import_Vid.class);
+        startPreview.putExtra(IntentExtraPath, path.toString());
+        startActivity(startPreview);
+    }
+
     private void loadPDFView(Uri path){
         Intent startPreview = new Intent(getActivity(), Import_PDF.class);
         startPreview.putExtra(IntentExtraPath, path.toString());
         startActivity(startPreview);
     }
+
 
 
 }

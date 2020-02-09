@@ -3,12 +3,13 @@ package com.vvdev.colorpicker.interfaces;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.graphics.Color;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ColorsData { // https://stackoverflow.com/questions/7145606/how-android-sharedpreferences-save-store-object
 
@@ -64,7 +65,7 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
     }
 
     /**
-     * @return ArrayList<ColorSpec> in memory
+     * @return ArrayList<ColorSpec> from memory
      */
     public ArrayList<ColorSpec> getColors(){
         Gson gson = new Gson();
@@ -75,6 +76,21 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         }else{
             return copy.colorsSP;
         }
+    }
+
+    public ArrayList<ColorSpec> getShortedColors(){
+        ArrayList<ColorSpec> colors = getColors();
+        Collections.sort(colors, new Comparator<ColorSpec>() {
+            @Override
+            public int compare(ColorSpec o1, ColorSpec o2) {
+                int androido1 = Color.parseColor(o1.getHexa());
+                int androido2 = Color.parseColor(o2.getHexa());
+                double calculo1 = ((Color.red(androido1) * 0.299) + (Color.green(androido1) * 0.587) + (Color.blue(androido1) * 0.114));
+                double calculo2 = ((Color.red(androido2) * 0.299) + (Color.green(androido2) * 0.587) + (Color.blue(androido2) * 0.114));
+                return Double.compare(calculo1, calculo2);
+            }
+        });
+        return colors;
     }
 
     /**
