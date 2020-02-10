@@ -36,7 +36,7 @@ import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
-import com.vvdev.colorpicker.interfaces.ScreenCapture;
+import com.vvdev.colorpicker.Service.ScreenCapture;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.RequiresApi;

@@ -1,7 +1,8 @@
-package com.vvdev.colorpicker.interfaces;
+package com.vvdev.colorpicker.Service;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,12 +40,12 @@ import androidx.core.content.ContextCompat;
  * Created by panj on 2017/5/22.
  */
 
-public class ScreenCapture {
+public class ScreenCapture extends Service {
 
     private static String TAG = ScreenCapture.class.getName();
-    private AppCompatActivity mActivity;
+    private Activity mActivity;
 
-    private final int REQUEST_CODE_SAVE_IMAGE_FILE = 1110;
+    public static final int REQUEST_CODE_SAVE_IMAGE_FILE = 1110;
 
     private int mWindowWidth;
     private int mWindowHeight;
@@ -62,7 +63,7 @@ public class ScreenCapture {
 
     private int mResultCode;
     private Intent mResultData;
-    private static final int REQUEST_MEDIA_PROJECTION = 16544;
+    public static final int REQUEST_MEDIA_PROJECTION = 16544;
     private Bitmap mBitmap;
     private boolean isSaveImageEnable = true;
 

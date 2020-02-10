@@ -16,6 +16,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.DragEvent;
@@ -26,15 +27,56 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.vvdev.colorpicker.activity.CirclePickerActivity;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.Service.ScreenCapture;
 
 @SuppressLint("AppCompatCustomView")
 public class CirclePicker extends ImageView {
 
     public static final int timeUpdateCirclePicker =50;
     private static final String TAG ="CirclePicker";
+
+    private ScreenCapture mScreenCapture = CirclePickerActivity.mScreenCapture;
+    private ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
+        @Override
+        public void onScreenCaptureSuccess(Bitmap bitmap, String savePath) {
+            Log.d(TAG, "onScreenCaptureSuccess savePath:" + savePath);
+
+            mScreenBitmap = bitmap;
+            setVisibility(VISIBLE);
+            inUpdatePhoneBitmap=false;
+            showPickerBitmap();
+
+        }
+
+        @Override
+        public void onScreenCaptureFailed(String errorMsg) {
+            Log.d(TAG, "onScreenCaptureFailed errorMsg:" + errorMsg);
+        }
+
+        @Override
+        public void onScreenRecordStart() {
+            Log.d(TAG, "onScreenRecordStart");
+        }
+
+        @Override
+        public void onScreenRecordStop() {
+            Log.d(TAG, "onScreenRecordStop");
+        }
+
+        @Override
+        public void onScreenRecordSuccess(String savePath) {
+            Log.d(TAG, "onScreenRecordSuccess savePath:" + savePath);
+        }
+
+        @Override
+        public void onScreenRecordFailed(String errorMsg) {
+            Log.d(TAG, "onScreenRecordFailed errorMsg:" + errorMsg);
+        }
+    };
 
     private BitmapShader mBitmapShader;
 
@@ -133,6 +175,7 @@ public class CirclePicker extends ImageView {
         mReady=true;
 
         if (mSetupPending) {
+            mScreenCapture.setCaptureListener(mCaptureListener);
             Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
             Point size = new Point();
             display.getSize(size);
@@ -286,7 +329,7 @@ public class CirclePicker extends ImageView {
             inUpdatePhoneBitmap=true;
 
             setVisibility(INVISIBLE); // set this view invisible so we won't get it in bitmap. It give a basis to work on.
-            mScreenBitmap = getBitmapOfView(getRootView()); // we are sending phone view to get all the phone bitmap
+           /* mScreenBitmap = getBitmapOfView(getRootView()); // we are sending phone view to get all the phone bitmap
             Handler handler = new Handler(); // we call the code 100 ms later time to get the phone bitmap
             handler.postDelayed(new Runnable() {
                 @Override
@@ -295,7 +338,8 @@ public class CirclePicker extends ImageView {
                     inUpdatePhoneBitmap=false;
                     showPickerBitmap();
                 }
-            }, timeUpdateCirclePicker); // TODO make parameters to let user choose the frequency
+            }, timeUpdateCirclePicker); // TODO make parameters to let user choose the frequency*/
+           mScreenCapture.screenCapture();
 
         }
     }
