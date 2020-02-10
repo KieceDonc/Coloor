@@ -16,9 +16,11 @@
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2" />
+        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:useDefaultControls="true" />
 
     <include
+        android:id="@+id/include2"
         layout="@layout/button_startcirclepicker"
         android:layout_width="50dp"
         android:layout_height="50dp"

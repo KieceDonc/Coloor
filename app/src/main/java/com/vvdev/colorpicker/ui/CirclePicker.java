@@ -3,107 +3,83 @@ package com.vvdev.colorpicker.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Matrix;
-import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewOutlineProvider;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.RequiresApi;
-
 @SuppressLint("AppCompatCustomView")
 public class CirclePicker extends ImageView {
 
-    private static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.CENTER_CROP;
+    public static final int timeUpdateCirclePicker =50;
+    private static final String TAG ="CirclePicker";
 
-    private static final Bitmap.Config BITMAP_CONFIG = Bitmap.Config.ARGB_8888;
-    private static final int COLORDRAWABLE_DIMENSION = 2;
+    private BitmapShader mBitmapShader;
 
-    private static final int DEFAULT_BORDER_WIDTH = 0;
-    private static final int DEFAULT_BORDER_COLOR = Color.TRANSPARENT;
-    private static final int DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.TRANSPARENT;
-    private static final boolean DEFAULT_BORDER_OVERLAY = false;
+    private Bitmap mScreenBitmap;
+    private Bitmap mBitmap;
 
-    private final RectF mDrawableRect = new RectF();
-    private final RectF mBorderRect = new RectF();
+    private Path mBorderCircle;
 
-    private Rect ColorNameDim = new Rect();
-    private Rect ColorHexDim = new Rect();
-    private Bitmap mScreenBitmap=null; // custom
-    private Rect mMovableDimension = new Rect(); // custom
-    private String mTextOnBorderHex=""; // custom
-    private String mTextOnBorderColorName="";
-    private float tdX = 0;// custom
-    private float tdY = 0; // custom
-    private boolean inupdatePhoneBitmap=false; // custom
-    private Paint gridSquarePaint;
-    private int gridSquareDim;
-    private int gridSquareBorderDim;
-    public static int timeUpdateCirclePicker = 10;
-
+    private Paint mBitmapPaint;
+    private Paint mBorderPaint;
+    private Paint mBorderPaintText;
+    private Paint mMiddleSquarePaint;
 
     private final Matrix mShaderMatrix = new Matrix();
-    private final Paint mBitmapPaint = new Paint();
-    private final Paint mBorderPaint = new Paint();
-    private final Paint mCircleBackgroundPaint = new Paint();
 
-    private int mBorderColor = DEFAULT_BORDER_COLOR;
-    private int mBorderWidth = DEFAULT_BORDER_WIDTH;
-    private int mCircleBackgroundColor = DEFAULT_CIRCLE_BACKGROUND_COLOR;
+    private RectF mDrawableRect;
+    private RectF mBorderRect;
 
-    private Bitmap mBitmap;
-    private BitmapShader mBitmapShader;
-    private int mBitmapWidth;
-    private int mBitmapHeight;
+    private Rect mBorderColorNameRect = new Rect();
+    private Rect mBorderColorHexRect = new Rect();
+
+    private String mColorName="";
+    private String mColorHexa="";
 
     private float mDrawableRadius;
     private float mBorderRadius;
+    private float mPositionBorderColorName;
+    private float mPositionBorderHex;
+    private float tdX;
+    private float tdY;
 
-    private ColorFilter mColorFilter;
+    private int mPhoneWidth;
+    private int mPhoneHeight;
+    private int mBitmapHeight;
+    private int mBitmapWidth;
+    private int mBorderWidthDp = 12;
+    private int mBorderWidthPx = convertDpToPx(mBorderWidthDp);
+    private int mBorderColor;
+    private int mMiddleSquareDim;
+    private int mMiddleBorderSquareDim;
 
     private boolean mReady;
-    private boolean mSetupPending;
-    private boolean mBorderOverlay;
-    private boolean mDisableCircularTransformation;
+    private boolean mSetupPending=true;
+    private boolean inUpdatePhoneBitmap;
 
-
-    private Path mCircle; // CUSTOM
-    private Paint mBorderPaintText; // CUSTOM
 
     public CirclePicker(Context context) {
         super(context);
@@ -116,71 +92,23 @@ public class CirclePicker extends ImageView {
 
     public CirclePicker(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
-
-        mBorderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_civ_border_width, DEFAULT_BORDER_WIDTH);
-        mBorderColor = a.getColor(R.styleable.CircleImageView_civ_border_color, DEFAULT_BORDER_COLOR);
-        mBorderOverlay = a.getBoolean(R.styleable.CircleImageView_civ_border_overlay, DEFAULT_BORDER_OVERLAY);
-        mCircleBackgroundColor = a.getColor(R.styleable.CircleImageView_civ_circle_background_color, DEFAULT_CIRCLE_BACKGROUND_COLOR);
-
-        a.recycle();
-
         init();
     }
 
-    private UserInteractionHandler mUserInteractionHandler;
-
-    private void init() {
-        super.setScaleType(SCALE_TYPE);
-        mReady = true;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            setOutlineProvider(new com.vvdev.colorpicker.ui.CirclePicker.OutlineProvider());
-        }
-
-        if (mSetupPending) {
-            setup();
-            initPicker();
-            mUserInteractionHandler = new UserInteractionHandler(getContext(),this);
-            mSetupPending = false;
-        }
-
-    }
-
-    @Override
-    public ImageView.ScaleType getScaleType() {
-        return SCALE_TYPE;
-    }
-
-    @Override
-    public void setScaleType(ImageView.ScaleType scaleType) {
-        if (scaleType != SCALE_TYPE) {
-            throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
-        }
-    }
-
-    @Override
-    public void setAdjustViewBounds(boolean adjustViewBounds) {
-        if (adjustViewBounds) {
-            throw new IllegalArgumentException("adjustViewBounds not supported.");
-        }
-    }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (mDisableCircularTransformation) {
-            super.onDraw(canvas);
-            return;
-        }
 
         if (mBitmap == null) {
+            updatePhoneBitmap();
             return;
         }
 
-        if (mCircleBackgroundColor != Color.TRANSPARENT) {
-            canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mCircleBackgroundPaint);
+        if(mBorderColor==Color.TRANSPARENT){
+            setup();
         }
+
+
         canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
         canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
         /**
@@ -189,90 +117,36 @@ public class CirclePicker extends ImageView {
          * second part = we get width of text and we divide by 2 to get the offset to delete
          */
 
-        mBorderPaintText.getTextBounds(mTextOnBorderColorName,0,mTextOnBorderColorName.length(),ColorNameDim);
-        mBorderPaintText.getTextBounds(mTextOnBorderHex,0,mTextOnBorderHex.length(),ColorHexDim);
-        float offset1 = ColorNameDim.width()/2;
-        float offset2 = ColorHexDim.width()/2;
-        float positionOnBorderName = (float)(2*Math.PI*mBorderRadius*0.875)-offset1;
-        float positionOnBorderHex = (float)(2*Math.PI*mBorderRadius*0.615)-offset2;
-        canvas.drawTextOnPath(mTextOnBorderHex, mCircle, positionOnBorderHex, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
-        canvas.drawTextOnPath(mTextOnBorderColorName, mCircle, positionOnBorderName, getDpFromPx(mBorderWidth), mBorderPaintText); // CUSTOM
-        canvas.drawRect(mDrawableRect.centerX()+gridSquareDim,mDrawableRect.centerY()+gridSquareDim,mDrawableRect.centerX()-gridSquareDim,mDrawableRect.centerY()-gridSquareDim,gridSquarePaint);
+        mBorderPaintText.getTextBounds(mColorName,0,mColorName.length(),mBorderColorNameRect);
+        mBorderPaintText.getTextBounds(mColorHexa,0,mColorHexa.length(),mBorderColorHexRect);
+
+        mPositionBorderColorName = (float)((2*Math.PI*mBorderRadius*0.875)-mBorderColorNameRect.width()/2);
+        mPositionBorderHex = (float)((2*Math.PI*mBorderRadius*0.615)- mBorderColorHexRect.width()/2);
+
+        canvas.drawTextOnPath(mColorName, mBorderCircle, mPositionBorderColorName, mBorderWidthDp, mBorderPaintText); // CUSTOM
+        canvas.drawTextOnPath(mColorHexa, mBorderCircle, mPositionBorderHex, mBorderWidthDp, mBorderPaintText); // CUSTOM
+
+        canvas.drawRect(mDrawableRect.centerX()+mMiddleSquareDim,mDrawableRect.centerY()+mMiddleSquareDim,mDrawableRect.centerX()-mMiddleSquareDim,mDrawableRect.centerY()-mMiddleSquareDim,mMiddleSquarePaint);
     }
 
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        setup();
-    }
+    private void init() {
+        mReady=true;
 
-    @Override
-    public void setPadding(int left, int top, int right, int bottom) {
-        super.setPadding(left, top, right, bottom);
-        setup();
-    }
+        if (mSetupPending) {
+            Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            mPhoneWidth = size.x;
+            mPhoneHeight= size.y;
 
-    @Override
-    public void setPaddingRelative(int start, int top, int end, int bottom) {
-        super.setPaddingRelative(start, top, end, bottom);
-        setup();
-    }
-
-    @Override
-    public void setImageBitmap(Bitmap bm) {
-        super.setImageBitmap(bm);
-        initializeBitmap();
-    }
-
-    @Override
-    public void setImageDrawable(Drawable drawable) {
-        super.setImageDrawable(drawable);
-        initializeBitmap();
-    }
-
-    @Override
-    public void setImageResource(@DrawableRes int resId) {
-        super.setImageResource(resId);
-        initializeBitmap();
-    }
-
-    @Override
-    public void setImageURI(Uri uri) {
-        super.setImageURI(uri);
-        initializeBitmap();
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        if (cf == mColorFilter) {
-            return;
+            updatePhoneBitmap();
+            setup();
+            new CirclePicker.UserInteractionHandler(getContext(), this);
+            mSetupPending = false;
         }
-
-        mColorFilter = cf;
-        applyColorFilter();
-        invalidate();
     }
 
-    @Override
-    public ColorFilter getColorFilter() {
-        return mColorFilter;
-    }
-
-    private void applyColorFilter() {
-        mBitmapPaint.setColorFilter(mColorFilter);
-    }
-
-    private void initializeBitmap() {
-        if (mDisableCircularTransformation) {
-            mBitmap = null;
-        } else {
-            updatePhoneBitmap(); // TODO make something more cleaner
-        }
-        setup();
-    }
-
-
-    private void setup() {
+    private void setup(){
         if (!mReady) {
             mSetupPending = true;
             return;
@@ -283,58 +157,71 @@ public class CirclePicker extends ImageView {
         }
 
         if (mBitmap == null) {
+            updatePhoneBitmap();
             invalidate();
             return;
         }
 
         mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 
-
+        mBitmapPaint = new Paint();
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setShader(mBitmapShader);
-
-        mBorderPaint.setStyle(Paint.Style.STROKE);
-        mBorderPaint.setAntiAlias(true);
-        mBorderPaint.setColor(mBorderColor);
-        mBorderPaint.setStrokeWidth(mBorderWidth);
-
-        mCircleBackgroundPaint.setStyle(Paint.Style.FILL);
-        mCircleBackgroundPaint.setAntiAlias(true);
-        mCircleBackgroundPaint.setColor(mCircleBackgroundColor);
 
         mBitmapHeight = mBitmap.getHeight();
         mBitmapWidth = mBitmap.getWidth();
 
+        mBorderRect = new RectF();
         mBorderRect.set(calculateBounds());
-        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidth) / 2.0f, (mBorderRect.width() - mBorderWidth) / 2.0f);
+        mBorderRadius = Math.min((mBorderRect.height() - mBorderWidthPx) / 2.0f, (mBorderRect.width() - mBorderWidthPx) / 2.0f);
 
+        mDrawableRect = new RectF();
         mDrawableRect.set(mBorderRect);
-        if (!mBorderOverlay && mBorderWidth > 0) {
-            mDrawableRect.inset(mBorderWidth - 1.0f, mBorderWidth - 1.0f);
-        }
+        mDrawableRect.inset(mBorderWidthPx - 1.0f, mBorderWidthPx - 1.0f);
+
         mDrawableRadius = Math.min(mDrawableRect.height() / 2.0f, mDrawableRect.width() / 2.0f);
 
-        mBorderPaintText = new Paint(Paint.ANTI_ALIAS_FLAG); // CUSTOM
-        mCircle = new Path(); // CUSTOM
-
-        mBorderPaintText.setStyle(Paint.Style.FILL_AND_STROKE); // CUSTOM
-        mBorderPaintText.setColor(ColorUtility.pickTextColorBasedOnBackgroundColor(mBorderColor)); // CUSTOM
-        mBorderPaintText.setTextSize(mBorderWidth); //  CUSTOM in px
-
-        mCircle.addCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, Path.Direction.CW); // CUSTOM
-
-        gridSquarePaint=new Paint();
+        mMiddleSquarePaint=new Paint();
         if(scaleFactor>0.075) {
-            gridSquareDim = (int) ((1 / scaleFactor));
-            gridSquareBorderDim = (int) (0.5 * (1 / scaleFactor));
+            mMiddleSquareDim = (int) ((1 / scaleFactor));
+            mMiddleBorderSquareDim = (int) (0.5 * (1 / scaleFactor));
         }
-        gridSquarePaint.setStyle(Paint.Style.STROKE);
-        gridSquarePaint.setStrokeWidth(gridSquareBorderDim);
+        mMiddleSquarePaint.setStyle(Paint.Style.STROKE);
+        mMiddleSquarePaint.setStrokeWidth(mMiddleBorderSquareDim);
         int pixel = mBitmap.getPixel(mBitmap.getWidth()/2,mBitmap.getHeight()/2);
-        gridSquarePaint.setColor(ColorUtility.pickTextColorBasedOnBackgroundColor(pixel));
+        mMiddleSquarePaint.setColor(ColorUtility.pickTextColorBasedOnBackgroundColor(pixel));
 
-        setMovableDimension();
-        applyColorFilter();
+
+        mBorderCircle = new Path();
+        mBorderCircle.addCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, Path.Direction.CW);
+
+        Bitmap allPixelInsideCenterSquare;
+        int centerDesireWidth= (mMiddleSquareDim*2-mMiddleBorderSquareDim);
+        int centerDesireHeight= (mMiddleSquareDim*2-mMiddleBorderSquareDim);
+        if(scaleFactor==0.5){
+            int centerDesireX= (int) (mBitmap.getWidth()/2+mMiddleSquareDim-mMiddleBorderSquareDim); // TODO replace mbitmap.get ... by location on screen etc ... mScreenBitmap.
+            int centerDesireY= (int) (mBitmap.getHeight()/2+mMiddleSquareDim-mMiddleBorderSquareDim);
+
+            allPixelInsideCenterSquare =Bitmap.createBitmap(mBitmap, centerDesireX, centerDesireY,centerDesireWidth,centerDesireHeight);
+            int[] RGB =ColorUtility.getRGBAverageFromBitmap(allPixelInsideCenterSquare);
+            mColorHexa = ColorUtility.getHexFromRGB(RGB);
+            mColorName=ColorUtility.nearestColor(mColorHexa)[0];
+            mBorderColor = Color.parseColor(mColorHexa);
+        }
+
+        mBorderPaint = new Paint();
+        mBorderPaint.setStyle(Paint.Style.STROKE);
+        mBorderPaint.setAntiAlias(true);
+        mBorderPaint.setColor(mBorderColor);
+        mBorderPaint.setStrokeWidth(mBorderWidthPx);
+
+        mBorderPaintText = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mBorderPaintText.setStyle(Paint.Style.FILL_AND_STROKE);
+        mBorderPaintText.setColor(ColorUtility.pickTextColorBasedOnBackgroundColor(mBorderColor));
+        mBorderPaintText.setTextSize(mBorderWidthPx);
+
+        //TODO put it in init()
+
         updateShaderMatrix();
         invalidate();
     }
@@ -371,39 +258,47 @@ public class CirclePicker extends ImageView {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
-    public void setMovableDimension(){
-        getRootView().getGlobalVisibleRect(mMovableDimension);
+    public static int convertDpToPx(int dp, Context context){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private class OutlineProvider extends ViewOutlineProvider {
-
-        @Override
-        public void getOutline(View view, Outline outline) {
-            Rect bounds = new Rect();
-            mBorderRect.roundOut(bounds);
-            outline.setRoundRect(bounds, bounds.width() / 2.0f);
-        }
-
+    public int convertDpToPx(int dp){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
 
-    public float getDpFromPx(float p){
-        return p / getResources().getDisplayMetrics().density;
+    public static int convertPxToDp(float pxValue,Context context) {
+        final float scale =  context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
     }
 
-    private void initPicker(){
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if(getWidth()>0&&getHeight()>0){
-                    updatePhoneBitmap();
-                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                }
-            }
-        });
+    public int convertPxToDp(float pxValue) {
+        final float scale =  getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
     }
 
     double scaleFactor = 0.5; // for scaleFactor = 1; if scaleFactor -> 0+ it zoom to pixel lvl
+
+    /**
+     * update phone bitmap
+     */
+    public void updatePhoneBitmap(){
+        if(!inUpdatePhoneBitmap) {
+            inUpdatePhoneBitmap=true;
+
+            setVisibility(INVISIBLE); // set this view invisible so we won't get it in bitmap. It give a basis to work on.
+            mScreenBitmap = getBitmapOfView(getRootView()); // we are sending phone view to get all the phone bitmap
+            Handler handler = new Handler(); // we call the code 100 ms later time to get the phone bitmap
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setVisibility(VISIBLE);
+                    inUpdatePhoneBitmap=false;
+                    showPickerBitmap();
+                }
+            }, timeUpdateCirclePicker); // TODO make parameters to let user choose the frequency
+
+        }
+    }
 
     /**
      * Show zoomed screen with desired scale factor
@@ -422,35 +317,12 @@ public class CirclePicker extends ImageView {
             int[] locationOnScreen = new int[2];
             getLocationOnScreen(locationOnScreen);
             mBitmap = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
-            setup();
-            if(!inScale){
+            if(!inScale&&scaleFactor!=0.5){
                 updatePickerBorder();
             }
+            setup();
         }else{
             updatePhoneBitmap();
-        }
-    }
-
-    /**
-     * update phone bitmap
-     */
-    public void updatePhoneBitmap(){
-        if(!inupdatePhoneBitmap) {
-            inupdatePhoneBitmap=true;
-
-            setVisibility(INVISIBLE); // set this view invisible so we won't get it in bitmap. It give a basis to work on.
-            mScreenBitmap = getBitmapOfView(getRootView()); // we are sending phone view to get all the phone bitmap
-            Handler handler = new Handler(); // we call the code 100 ms later time to get the phone bitmap
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //updatePickerBitmapWithGrid();
-                    setVisibility(VISIBLE);
-                    inupdatePhoneBitmap=false;
-                    showPickerBitmap();
-                }
-            }, timeUpdateCirclePicker); // TODO make parameters to let user choose the frequency
-
         }
     }
 
@@ -458,17 +330,17 @@ public class CirclePicker extends ImageView {
 
         Bitmap mBitmapScreenWithPicker = getBitmapOfView(this);
 
-        int DesireX=  (getWidth()/2+gridSquareDim/2-gridSquareBorderDim);
-        int DesireY= (getHeight()/2+gridSquareDim/2-gridSquareBorderDim);
-        int DesireWidth= (gridSquareDim-gridSquareBorderDim);
-        int DesireHeight= (gridSquareDim-gridSquareBorderDim);
+        int DesireX=  (getWidth()/2+mMiddleSquareDim/2-mMiddleBorderSquareDim);
+        int DesireY= (getHeight()/2+mMiddleSquareDim/2-mMiddleBorderSquareDim);
+        int DesireWidth= (mMiddleSquareDim-mMiddleBorderSquareDim);
+        int DesireHeight= (mMiddleSquareDim-mMiddleBorderSquareDim);
 
         Bitmap AllPixel =Bitmap.createBitmap(mBitmapScreenWithPicker, DesireX, DesireY,DesireWidth,DesireHeight);
 
         int[] RGB =ColorUtility.getRGBAverageFromBitmap(AllPixel);
-        mTextOnBorderHex = ColorUtility.getHexFromRGB(RGB);
-        mTextOnBorderColorName=ColorUtility.nearestColor(mTextOnBorderHex)[0];
-        mBorderColor = Color.parseColor(mTextOnBorderHex);
+        mColorHexa = ColorUtility.getHexFromRGB(RGB);
+        mColorName=ColorUtility.nearestColor(mColorHexa)[0];
+        mBorderColor = Color.parseColor(mColorHexa);
     }
 
     /**
@@ -491,7 +363,6 @@ public class CirclePicker extends ImageView {
     }
 
     private boolean inScale =false;
-
     private class UserInteractionHandler implements OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, OnDragListener {
 
         private View mCirclePickerView;
@@ -539,9 +410,9 @@ public class CirclePicker extends ImageView {
                 @Override
                 public void run() {
                     inScale=false;
+                    updatePickerBorder();
                 }
             }, 100);
-            updatePickerBorder();
         }
 
         @Override
@@ -582,8 +453,8 @@ public class CirclePicker extends ImageView {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             ColorsData colorsData = new ColorsData((Activity) getContext());
-            colorsData.addColor(new ColorSpec(mTextOnBorderHex));
-            Toast.makeText(getContext(), mTextOnBorderHex+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
+            colorsData.addColor(new ColorSpec(mColorHexa));
+            Toast.makeText(getContext(), mColorHexa+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
 
             return false;
         }
@@ -599,7 +470,11 @@ public class CirclePicker extends ImageView {
             gestureScale.onTouchEvent(event);
 
             numFinger=event.getPointerCount();  // use to decked circle picker teleports bug
-
+            if(event.getAction()==MotionEvent.ACTION_DOWN||numFinger>0){ // use to continue moving even if user isn't in touchable area
+                if(inTouchableArea(event.getX(),event.getY())){
+                    startInCircleArea=true;
+                }
+            }
             float newX,newY;
             onTouchEvent(event);
 
@@ -618,12 +493,6 @@ public class CirclePicker extends ImageView {
                     }, 100);
                 }
             }
-            if(event.getAction()==MotionEvent.ACTION_DOWN){ // use to continue moving even if user isn't in touchable area
-                if(inTouchableArea(event.getX(),event.getY())){
-                    startInCircleArea=true;
-                }
-            }
-
             if(allowToMove(event)){
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
@@ -637,25 +506,25 @@ public class CirclePicker extends ImageView {
                     }
                     case MotionEvent.ACTION_MOVE: {
 
-                       if (event.getPointerCount() == 1){ // if one finger detect we move layout
+                        if (event.getPointerCount() == 1){ // if one finger detect we move layout
 
                             newX = event.getRawX() + tdX;
                             newY = event.getRawY() + tdY;
 
-                            if (!(newX <= 0 || newX >= mMovableDimension.width() - getWidth())) {
+                            if (!(newX <= 0 || newX >= mPhoneWidth - getWidth())) {
                                 animate().x(event.getRawX() + tdX).setDuration(0).start();
-                            } else if (newX >= mMovableDimension.width() - getWidth()) {
-                                animate().x(mMovableDimension.width() - getWidth()).setDuration(0).start();
+                            } else if (newX >= mPhoneWidth - getWidth()) {
+                                animate().x(mPhoneWidth - getWidth()).setDuration(0).start();
                             } else {
                                 animate().x(0).setDuration(0).start();
                             }
 
-                            if (!(newY <= 0 || newY >= mMovableDimension.height() - getHeight())) {
+                            if (!(newY <= 0 || newY >= mPhoneHeight - getHeight())) {
                                 animate().y(event.getRawY() + tdY).setDuration(0).start();
-                            } else if (newY >= mMovableDimension.height() - getHeight()
+                            } else if (newY >= mPhoneHeight - getHeight()
 
                             ) {
-                                animate().y(mMovableDimension.height() - getHeight()).setDuration(0).start();
+                                animate().y(mPhoneHeight - getHeight()).setDuration(0).start();
                             } else {
                                 animate().y(0).setDuration(0).start();
                             }
@@ -675,18 +544,14 @@ public class CirclePicker extends ImageView {
 
         @Override
         public boolean onDrag(View v, DragEvent event) { // https://www.vogella.com/tutorials/AndroidDragAndDrop/article.html
-                return true;
+            return true;
 
         }
 
         private boolean allowToMove(MotionEvent event){
             return (startInCircleArea||inTouchableArea(event.getX(),event.getY())) // (startInCircleArea||inTouchableArea(event.getX(),event.getY())) used to move circle
                     &&
-                    mMovableDimension!=null
-                    &&
-                    zeroFingerSinceScale
-                    &&
-                    !inScale;
+                    zeroFingerSinceScale;
         }
 
         private boolean inTouchableArea(float x, float y) {
@@ -698,3 +563,5 @@ public class CirclePicker extends ImageView {
     }
 
 }
+
+

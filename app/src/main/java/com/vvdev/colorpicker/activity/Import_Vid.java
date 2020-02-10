@@ -7,23 +7,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 
-//import com.devbrackets.android.exomedia.ui.widget.VideoView;
+import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.ui.CirclePicker;
+import com.vvdev.colorpicker.ui.CirclePickerOld;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
-import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
+import static com.vvdev.colorpicker.ui.CirclePickerOld.timeUpdateCirclePicker;
+
 
 public class Import_Vid extends AppCompatActivity {
 
     private View CirclePickerView;
-    private CirclePicker mCirclePicker;
+    private CirclePickerOld mCirclePicker;
     private ConstraintLayout constraintLayout;
-    //private VideoView Vid;
+    private VideoView Vid;
     private boolean circlePickerAlreadyAdded = false;
     private boolean circleViewVisibility=true;
 
@@ -37,8 +38,9 @@ public class Import_Vid extends AppCompatActivity {
         Intent receiveData = getIntent(); // get intent
         Uri path = Uri.parse(receiveData.getStringExtra(IntentExtraPath)); // get img path from intent
 
-       /* Vid = findViewById(R.id.import_VidView); // get view of vid
-        Vid.setVideoURI(path);*/
+        Vid = findViewById(R.id.import_VidView); // get view of vid
+        Vid.setVideoURI(path);
+        Vid.getRootView().getContext();
 
         //TODO request both permission ( write / read external storage )
         setupCirclePicker();

@@ -1,15 +1,12 @@
 package com.vvdev.colorpicker.activity;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +23,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
-import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
+import static com.vvdev.colorpicker.ui.CirclePickerOld.timeUpdateCirclePicker;
 
 public class Import_Img extends AppCompatActivity {
 
@@ -57,7 +54,6 @@ public class Import_Img extends AppCompatActivity {
 
             @Override
             public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                Log.e("IMAGE_EXCEPTION","Sometimes the image is not loaded and this text is not displayed");
                 return false;
             }
         }).into(Img); // set img

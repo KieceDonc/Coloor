@@ -1,37 +1,23 @@
 package com.vvdev.colorpicker.fragment.PhonePicker;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
 import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
-import android.service.wallpaper.WallpaperService;
-import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.ui.CirclePicker;
-
-import java.io.ObjectStreamException;
-import java.util.Arrays;
+import com.vvdev.colorpicker.ui.CirclePickerOld;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
-import static android.content.Context.ACTIVITY_SERVICE;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
 
@@ -42,7 +28,7 @@ public class PhonePickerFragment extends Fragment {
     private Button StartCirclePicker;
     private Button StopCirclePicker;
     private boolean CirclePickerAlreadyAdded = false;
-    private CirclePicker CirclePickerView;
+    private CirclePickerOld CirclePickerView;
 
     private LayoutInflater mInflater = null;
     private ViewGroup mContainer = null;
@@ -66,7 +52,6 @@ public class PhonePickerFragment extends Fragment {
             public void onClick(View v) {
                 if(!CirclePickerAlreadyAdded){ // we use this to deny user to add too many view
                     CirclePickerAlreadyAdded=true;
-                    ActivityManager t = (ActivityManager) getActivity().getSystemService(ACTIVITY_SERVICE);
 
                     WindowManager wm = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE); // TODO ask permission to draw over other app
                     int LAYOUT_FLAG;
@@ -114,7 +99,4 @@ public class PhonePickerFragment extends Fragment {
         });
     }
 
-    public float convertDpToPx(Context context, float dp) {
-        return dp * context.getResources().getDisplayMetrics().density;
-    }
 }
