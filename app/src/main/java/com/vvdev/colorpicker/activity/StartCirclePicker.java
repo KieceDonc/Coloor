@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,15 +16,22 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.service.ScreenCapture;
+import com.vvdev.colorpicker.services.ScreenCapture;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.vvdev.colorpicker.service.ScreenCapture.REQUEST_MEDIA_PROJECTION;
+import static com.vvdev.colorpicker.services.ScreenCapture.REQUEST_MEDIA_PROJECTION;
 
+/**
+ * Life cycle :
+ *  0- TODO need to ask storage permission
+ *  1- request perm to draw over all app
+ *  2- request perm to recording screen
+ *  3- starting circle picker and finish this activity
+ */
 
 public class StartCirclePicker extends AppCompatActivity {
 
