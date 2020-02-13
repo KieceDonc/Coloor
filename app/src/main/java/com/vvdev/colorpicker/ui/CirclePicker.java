@@ -27,11 +27,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.vvdev.colorpicker.activity.CirclePickerActivity;
+import com.vvdev.colorpicker.activity.StartCirclePickerActivity;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
-import com.vvdev.colorpicker.Service.ScreenCapture;
+import com.vvdev.colorpicker.service.ScreenCapture;
 
 @SuppressLint("AppCompatCustomView")
 public class CirclePicker extends ImageView {
@@ -39,7 +39,7 @@ public class CirclePicker extends ImageView {
     public static final int timeUpdateCirclePicker =50;
     private static final String TAG ="CirclePicker";
 
-    private ScreenCapture mScreenCapture = CirclePickerActivity.mScreenCapture;
+    private ScreenCapture mScreenCapture = StartCirclePickerActivity.mScreenCapture;
     private ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
         @Override
         public void onScreenCaptureSuccess(Bitmap bitmap, String savePath) {

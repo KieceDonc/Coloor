@@ -24,25 +24,20 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
-import static com.vvdev.colorpicker.ui.CirclePickerOld.timeUpdateCirclePicker;
+import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
 
 public class Import_Img extends AppCompatActivity {
 
     private static int LAUNCH_SECOND_ACTIVITY = 1546;
-
-    private View CirclePickerView;
-    private CirclePicker mCirclePicker;
-    private ConstraintLayout importImgConstraintLayout;
+    private View rootView;
     private ImageView Img;
-    private boolean circlePickerAlreadyAdded = false;
-    private boolean circleViewVisibility=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.import_img);
-        importImgConstraintLayout= findViewById(R.id.import_DefaultViewerConstraint); // get root constraint layout
+        rootView = findViewById(R.id.import_DefaultViewerConstraint).getRootView();
 
         Intent receiveData = getIntent(); // get intent
         String path = receiveData.getStringExtra(IntentExtraPath); // get img path from intent
@@ -62,23 +57,20 @@ public class Import_Img extends AppCompatActivity {
         }).into(Img); // set img
 
         //TODO request both permission ( write / read external storage )
-        setupCirclePicker();
-
     }
 
-    private void setupCirclePicker(){
+    private boolean circlePickerAlreadyAdded = false;
+    private void handleButtonCirclePicker(){
         final AppCompatActivity activity = this;
         findViewById(R.id.startCirclePicker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
 
                 if(!circlePickerAlreadyAdded){
                     circlePickerAlreadyAdded=true;
-                    CirclePickerView = inflate(c,R.layout.circlepicker,importImgConstraintLayout);
-                    importImgConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
-                    mCirclePicker = findViewById(R.id.CirclePicker);
-                }else if(circleViewVisibility){
+                    Intent i = new Intent(activity, StartCirclePickerActivity.class);
+                    startActivityForResult(i, LAUNCH_SECOND_ACTIVITY);
+                }else if(rootView.findViewById(R.layout.circlepicker)){
                     circleViewVisibility=false;
                     mCirclePicker.setVisibility(View.GONE);
                 }else{
@@ -93,45 +85,21 @@ public class Import_Img extends AppCompatActivity {
                     }, timeUpdateCirclePicker+50);
                     circleViewVisibility=true;
                 }
-                */
-
-                Intent i = new Intent(activity, CirclePickerActivity.class);
-                startActivityForResult(i, LAUNCH_SECOND_ACTIVITY);
             }
         });
     }
 
-    /*private final Context c = this;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
-                if(!circlePickerAlreadyAdded){
-                    circlePickerAlreadyAdded=true;
-                    CirclePickerView = inflate(c,R.layout.circlepicker,importImgConstraintLayout);
-                    importImgConstraintLayout.bringChildToFront(CirclePickerView);// make view to first plan
-                    mCirclePicker = findViewById(R.id.CirclePicker);
-                }else if(circleViewVisibility){
-                    circleViewVisibility=false;
-                    mCirclePicker.setVisibility(View.GONE);
-                }else{
-                    mCirclePicker.setVisibility(View.INVISIBLE);
-                    mCirclePicker.updatePhoneBitmap();
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mCirclePicker.setVisibility(View.VISIBLE);
-                        }
-                    }, timeUpdateCirclePicker+50);
-                    circleViewVisibility=true;
-                }
-            }else if (resultCode == Activity.RESULT_CANCELED) {
+                handleButtonCirclePicker();
+            } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
-    }//*/
-
+    }
 }

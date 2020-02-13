@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.Service;
+package com.vvdev.colorpicker.service;
 
 import android.Manifest;
 import android.app.Activity;
@@ -19,6 +19,7 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Handler;
+import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -32,13 +33,10 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
-/**
- * Created by panj on 2017/5/22.
- */
 
 public class ScreenCapture extends Service {
 
@@ -84,6 +82,12 @@ public class ScreenCapture extends Service {
     private OnCaptureListener mCaptureListener = null;
 
     private boolean isPermissionGiven = false;
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 
     public interface OnCaptureListener {
         void onScreenCaptureSuccess(Bitmap bitmap, String savePath);

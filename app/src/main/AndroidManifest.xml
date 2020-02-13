@@ -30,6 +30,8 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <service android:name=".service.ScreenCapture"></service>
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name">
@@ -42,7 +44,7 @@
         <activity android:name=".activity.Import_Img"></activity>
         <activity android:name=".activity.Import_PDF"></activity>
         <activity android:name=".activity.Import_Vid"></activity>
-        <activity android:name=".activity.CirclePickerActivity" android:theme="@style/Translucent"></activity>
+        <activity android:name=".activity.StartCirclePickerActivity" android:theme="@style/Translucent"></activity>
     </application>
 
 </manifest>
