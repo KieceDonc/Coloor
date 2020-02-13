@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.service;
+package com.vvdev.colorpicker.services;
 
 import android.Manifest;
 import android.app.Activity;
@@ -38,7 +38,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-public class ScreenCapture extends Service {
+public class ScreenCapture extends Service { // https://blog.csdn.net/qq_36332133/article/details/96485285
 
     private static String TAG = ScreenCapture.class.getName();
     private Activity mActivity;

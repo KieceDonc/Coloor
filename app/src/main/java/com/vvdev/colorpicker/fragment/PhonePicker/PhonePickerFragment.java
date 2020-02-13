@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.ui.CirclePickerOld;
+import com.vvdev.colorpicker.ui.CirclePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +28,7 @@ public class PhonePickerFragment extends Fragment {
     private Button StartCirclePicker;
     private Button StopCirclePicker;
     private boolean CirclePickerAlreadyAdded = false;
-    private CirclePickerOld CirclePickerView;
+    private CirclePicker CirclePickerView;
 
     private LayoutInflater mInflater = null;
     private ViewGroup mContainer = null;

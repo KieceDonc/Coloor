@@ -1,7 +1,6 @@
 package com.vvdev.colorpicker.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,13 +15,10 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.ui.CirclePicker;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
 import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
 
@@ -57,6 +53,7 @@ public class Import_Img extends AppCompatActivity {
         }).into(Img); // set img
 
         //TODO request both permission ( write / read external storage )
+        handleButtonCirclePicker();
     }
 
     private boolean circlePickerAlreadyAdded = false;
@@ -68,9 +65,9 @@ public class Import_Img extends AppCompatActivity {
 
                 if(!circlePickerAlreadyAdded){
                     circlePickerAlreadyAdded=true;
-                    Intent i = new Intent(activity, StartCirclePickerActivity.class);
+                    Intent i = new Intent(activity, StartCirclePicker.class);
                     startActivityForResult(i, LAUNCH_SECOND_ACTIVITY);
-                }else if(rootView.findViewById(R.layout.circlepicker)){
+                }/*else if(rootView.findViewById(R.layout.circlepicker)){
                     circleViewVisibility=false;
                     mCirclePicker.setVisibility(View.GONE);
                 }else{
@@ -84,7 +81,7 @@ public class Import_Img extends AppCompatActivity {
                         }
                     }, timeUpdateCirclePicker+50);
                     circleViewVisibility=true;
-                }
+                }*/
             }
         });
     }
@@ -93,10 +90,9 @@ public class Import_Img extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == LAUNCH_SECOND_ACTIVITY) {
             if (resultCode == Activity.RESULT_OK) {
-                handleButtonCirclePicker();
+                circlePickerAlreadyAdded=true;
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }

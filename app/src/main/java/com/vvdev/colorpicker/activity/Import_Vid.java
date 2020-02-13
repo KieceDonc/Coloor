@@ -9,20 +9,19 @@ import android.view.View;
 
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.ui.CirclePickerOld;
+import com.vvdev.colorpicker.ui.CirclePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import static android.view.View.inflate;
 import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
-import static com.vvdev.colorpicker.ui.CirclePickerOld.timeUpdateCirclePicker;
-
+import static com.vvdev.colorpicker.ui.CirclePicker.timeUpdateCirclePicker;
 
 public class Import_Vid extends AppCompatActivity {
 
     private View CirclePickerView;
-    private CirclePickerOld mCirclePicker;
+    private CirclePicker mCirclePicker;
     private ConstraintLayout constraintLayout;
     private VideoView Vid;
     private boolean circlePickerAlreadyAdded = false;

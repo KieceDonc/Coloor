@@ -1,6 +1,7 @@
 package com.vvdev.colorpicker.activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,68 +23,45 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import static com.vvdev.colorpicker.service.ScreenCapture.REQUEST_MEDIA_PROJECTION;
 
 
-public class StartCirclePickerActivity extends AppCompatActivity {
+public class StartCirclePicker extends AppCompatActivity {
 
     public static ScreenCapture mScreenCapture;
 
     private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
 
-    private AlertDialog.Builder builder = new AlertDialog.Builder(this)
-            //set icon
-            .setIcon(android.R.drawable.ic_dialog_alert)
-
-            //set title
-            .setTitle("Warning!")
-            //set message
-            .setMessage("You need to give the permission to draw over all application, also ColorPicker won't be able to work !")
-            //set positive button
-            .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    //set what would happen when positive button is clicked
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                    startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
-                    dialogInterface.dismiss();
-                }
-            })
-            //set negative button
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    //set what should happen when negative button is clicked
-                    dialogInterface.dismiss();
-                    permissionNotGiven();
-                }
-            });
+    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) { // TODO handle storage permission
         super.onCreate(savedInstanceState);
 
-        if ( ContextCompat.checkSelfPermission( this, Settings.ACTION_MANAGE_OVERLAY_PERMISSION ) != PackageManager.PERMISSION_GRANTED ) {
-            AlertDialog alertDialog = builder.create();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-            }else{
-                alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            if (!Settings.canDrawOverlays(this)) {
+                setupAlertDialog();
+                AlertDialog alertDialog = builder.create();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+                } else {
+                    alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                }
+                alertDialog.show();
+            } else {
+                startCapture();
             }
-            alertDialog.show();
-        }else{
-            startCapture();
         }
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == REQUEST_CODE_ACTION_MANAGE_OVERLAY){
-            if(resultCode == Activity.RESULT_OK){
+            if(!Settings.canDrawOverlays(this)){
                 startCapture();
             }else{
                 permissionNotGiven();
@@ -136,8 +114,8 @@ public class StartCirclePickerActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 LAYOUT_FLAG,
-                4656455,
-                PixelFormat.TRANSPARENT);
+                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
+                PixelFormat.TRANSLUCENT);
         params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -147,5 +125,35 @@ public class StartCirclePickerActivity extends AppCompatActivity {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
+    }
+
+    private void setupAlertDialog(){
+        builder = new AlertDialog.Builder(this)
+                //set icon
+                .setIcon(android.R.drawable.ic_dialog_alert)
+
+                //set title
+                .setTitle("Warning!")
+                //set message
+                .setMessage("You need to give the permission to draw over all application, also ColorPicker won't be able to work !")
+                //set positive button
+                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what would happen when positive button is clicked
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                        startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
+                        dialogInterface.dismiss();
+                    }
+                })
+                //set negative button
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //set what should happen when negative button is clicked
+                        dialogInterface.dismiss();
+                        permissionNotGiven();
+                    }
+                });
     }
 }

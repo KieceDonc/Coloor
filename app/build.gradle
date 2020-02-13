@@ -31,8 +31,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.2' // circle image view
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1' // android pdf view
     implementation 'com.google.code.gson:gson:2.8.5' // save object Shared Preferences
-    implementation 'com.devbrackets.android:exomedia:4.0.0' // video view library ( with controllers ) DO NOT UPDATE THIS LIBRARY, TRUST ME, YOU WILL REGRET THAT
-    // implementation 'com.github.tarek360:Instacapture:2.0.1'
+    implementation 'com.devbrackets.android:exomedia:4.0.0' // video view library ( with controllers ) DO NOT UPDATE THIS LIBRARY, TRUST ME, YOU WILL REGRET THAT.
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'org.testng:testng:6.9.6'

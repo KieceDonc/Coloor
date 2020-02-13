@@ -27,7 +27,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.vvdev.colorpicker.activity.StartCirclePickerActivity;
+import com.vvdev.colorpicker.activity.StartCirclePicker;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
@@ -39,7 +39,7 @@ public class CirclePicker extends ImageView {
     public static final int timeUpdateCirclePicker =50;
     private static final String TAG ="CirclePicker";
 
-    private ScreenCapture mScreenCapture = StartCirclePickerActivity.mScreenCapture;
+    private ScreenCapture mScreenCapture = StartCirclePicker.mScreenCapture;
     private ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
         @Override
         public void onScreenCaptureSuccess(Bitmap bitmap, String savePath) {
@@ -339,7 +339,7 @@ public class CirclePicker extends ImageView {
                     showPickerBitmap();
                 }
             }, timeUpdateCirclePicker); // TODO make parameters to let user choose the frequency*/
-           mScreenCapture.screenCapture();
+            mScreenCapture.screenCapture();
 
         }
     }
