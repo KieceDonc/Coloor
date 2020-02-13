@@ -26,7 +26,13 @@ import androidx.core.content.ContextCompat;
 
 import static com.vvdev.colorpicker.service.ScreenCapture.REQUEST_MEDIA_PROJECTION;
 
-
+/**
+ * Life cycle :
+ *  0- TODO need to ask storage permission
+ *  1- request perm to draw over all app
+ *  2- request perm to recording screen
+ *  3- starting circle picker and finish this activity
+ */
 public class StartCirclePickerActivity extends AppCompatActivity {
 
     public static ScreenCapture mScreenCapture;
@@ -62,7 +68,7 @@ public class StartCirclePickerActivity extends AppCompatActivity {
             });
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) { // TODO handle storage permission
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if ( ContextCompat.checkSelfPermission( this, Settings.ACTION_MANAGE_OVERLAY_PERMISSION ) != PackageManager.PERMISSION_GRANTED ) {
