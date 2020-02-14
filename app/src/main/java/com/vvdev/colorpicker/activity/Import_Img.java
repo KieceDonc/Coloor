@@ -1,8 +1,10 @@
 package com.vvdev.colorpicker.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -15,6 +17,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.services.CirclePickerService;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,14 +62,19 @@ public class Import_Img extends AppCompatActivity {
     private boolean circlePickerAlreadyAdded = false;
     private void handleButtonCirclePicker(){
         final AppCompatActivity activity = this;
+        final Context c = this;
         findViewById(R.id.startCirclePicker).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if(!circlePickerAlreadyAdded){
                     circlePickerAlreadyAdded=true;
-                    Intent i = new Intent(activity, StartCirclePicker.class);
-                    startActivityForResult(i, LAUNCH_SECOND_ACTIVITY);
+                    Intent CirclePickerServiceIntent = new Intent(activity, CirclePickerService.class);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        c.startForegroundService(CirclePickerServiceIntent);
+                    }else{
+                        startService(CirclePickerServiceIntent);
+                    }
                 }/*else if(rootView.findViewById(R.layout.circlepicker)){
                     circleViewVisibility=false;
                     mCirclePicker.setVisibility(View.GONE);

@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +18,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.services.ScreenCapture;
+import com.vvdev.colorpicker.interfaces.ScreenCapture;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import static com.vvdev.colorpicker.services.ScreenCapture.REQUEST_MEDIA_PROJECTION;
+import static com.vvdev.colorpicker.interfaces.ScreenCapture.mMediaProjectionManager;
+
 
 /**
  * Life cycle :
@@ -35,9 +37,8 @@ import static com.vvdev.colorpicker.services.ScreenCapture.REQUEST_MEDIA_PROJECT
 
 public class StartCirclePicker extends AppCompatActivity {
 
-    public static ScreenCapture mScreenCapture;
-
     private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
+    private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
 
     private AlertDialog.Builder builder;
 
@@ -74,26 +75,13 @@ public class StartCirclePicker extends AppCompatActivity {
             }
         }
 
-        if(requestCode == REQUEST_MEDIA_PROJECTION){
-            mScreenCapture.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_MEDIA_PROJECTION){
             if (resultCode == Activity.RESULT_OK) {
+                ScreenCapture.setUpMediaProjection(resultCode,data);// TODO make it more cleaner in ScreenCapture
                 startCirclePicker();
             }else if (resultCode == Activity.RESULT_CANCELED) {
                 permissionNotGiven();
             }
-        }
-    }
-
-    /**
-     * Handle permission here. Like Manifest.permission.WRITE_EXTERNAL_STORAGE
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (mScreenCapture != null) {
-            mScreenCapture.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -104,8 +92,8 @@ public class StartCirclePicker extends AppCompatActivity {
     }
 
     private void startCapture(){
-        mScreenCapture = ScreenCapture.newInstance(this);
-        mScreenCapture.screenCapture();
+        mMediaProjectionManager = (MediaProjectionManager)getSystemService(MEDIA_PROJECTION_SERVICE);
+        startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), REQUEST_CODE_MEDIA_PROJECTION);
     }
 
     private void startCirclePicker(){
@@ -116,6 +104,7 @@ public class StartCirclePicker extends AppCompatActivity {
         } else {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
+
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT,

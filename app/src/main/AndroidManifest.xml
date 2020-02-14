@@ -30,7 +30,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name=".services.ScreenCapture" android:foregroundServiceType="mediaProjection"></service>
+        <service android:name=".services.CirclePickerService" android:foregroundServiceType="mediaProjection"></service>
 
         <activity
             android:name=".activity.MainActivity"
