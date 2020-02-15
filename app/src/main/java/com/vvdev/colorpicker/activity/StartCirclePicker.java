@@ -24,6 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import static android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
+import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
 import static com.vvdev.colorpicker.interfaces.ScreenCapture.mMediaProjectionManager;
 
 
@@ -53,7 +55,7 @@ public class StartCirclePicker extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
                 } else {
-                    alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_PHONE);
                 }
                 alertDialog.show();
             } else {
@@ -85,9 +87,7 @@ public class StartCirclePicker extends AppCompatActivity {
         }
     }
 
-    private void permissionNotGiven(){
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_CANCELED, returnIntent);
+    private void permissionNotGiven(){ ;
         finish();
     }
 
@@ -106,19 +106,17 @@ public class StartCirclePicker extends AppCompatActivity {
         }
 
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
                 LAYOUT_FLAG,
-                WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
-                PixelFormat.TRANSLUCENT);
+                FLAG_HARDWARE_ACCELERATED|FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSPARENT);
         params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View myView = inflater.inflate(R.layout.circlepicker, null);
-        wm.addView(myView,params);
+        View circlePickerView = inflater.inflate(R.layout.circlepicker, null);
+        wm.addView(circlePickerView,params);
 
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 

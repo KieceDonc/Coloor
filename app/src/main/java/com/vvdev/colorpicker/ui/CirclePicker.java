@@ -25,9 +25,13 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
@@ -310,20 +314,8 @@ public class CirclePicker extends ImageView {
     public void updatePhoneBitmap(){
         if(!inUpdatePhoneBitmap) {
             inUpdatePhoneBitmap=true;
-
             setVisibility(INVISIBLE); // set this view invisible so we won't get it in bitmap. It give a basis to work on.
-           /* mScreenBitmap = getBitmapOfView(getRootView()); // we are sending phone view to get all the phone bitmap
-            Handler handler = new Handler(); // we call the code 100 ms later time to get the phone bitmap
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setVisibility(VISIBLE);
-                    inUpdatePhoneBitmap=false;
-                    showPickerBitmap();
-                }
-            }, timeUpdateCirclePicker); // TODO make parameters to let user choose the frequency*/
             mScreenCapture.screenCapture();
-
         }
     }
 
@@ -390,6 +382,7 @@ public class CirclePicker extends ImageView {
     }
 
     private boolean inScale =false;
+
     private class UserInteractionHandler implements OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, OnDragListener {
 
         private View mCirclePickerView;
@@ -528,6 +521,7 @@ public class CirclePicker extends ImageView {
                         break;
                     }
                     case MotionEvent.ACTION_UP:{
+                        performClick();
 
                     }
                     case MotionEvent.ACTION_MOVE: {
@@ -538,7 +532,7 @@ public class CirclePicker extends ImageView {
                             newY = event.getRawY() + tdY;
 
                             if (!(newX <= 0 || newX >= mPhoneWidth - getWidth())) {
-                                animate().x(event.getRawX() + tdX).setDuration(0).start();
+                                animate().x(event.getRawX() + tdX).setDuration(0).start(); // TODO USE MARGIN TOP LEFT TO MOVE LAYOUT CUZ THE VIEW ISN'T MOVING BY USING ANIMATE
                             } else if (newX >= mPhoneWidth - getWidth()) {
                                 animate().x(mPhoneWidth - getWidth()).setDuration(0).start();
                             } else {
@@ -547,9 +541,7 @@ public class CirclePicker extends ImageView {
 
                             if (!(newY <= 0 || newY >= mPhoneHeight - getHeight())) {
                                 animate().y(event.getRawY() + tdY).setDuration(0).start();
-                            } else if (newY >= mPhoneHeight - getHeight()
-
-                            ) {
+                            } else if (newY >= mPhoneHeight - getHeight()) {
                                 animate().y(mPhoneHeight - getHeight()).setDuration(0).start();
                             } else {
                                 animate().y(0).setDuration(0).start();

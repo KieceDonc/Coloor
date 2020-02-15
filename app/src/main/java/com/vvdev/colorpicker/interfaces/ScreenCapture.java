@@ -119,7 +119,6 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     }
 
     private void setUpVirtualDisplay() {
-        Log.e("test",mWindowWidth+"\n"+mWindowHeight+"\n"+mScreenDensity+"\n"+mImageReader.getSurface());
         mVirtualDisplay = mMediaProjection.createVirtualDisplay("ScreenCapture",
                 mWindowWidth, mWindowHeight, mScreenDensity,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
