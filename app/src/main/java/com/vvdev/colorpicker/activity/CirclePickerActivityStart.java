@@ -10,7 +10,6 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,9 +36,11 @@ import static com.vvdev.colorpicker.interfaces.ScreenCapture.mMediaProjectionMan
  *  3- starting circle picker and finish this activity
  */
 
-public class StartCirclePicker extends AppCompatActivity {
+public class CirclePickerActivityStart extends AppCompatActivity {
 
+    @SuppressLint("StaticFieldLeak")
     public static View wmCirclePickerView;
+    public static WindowManager.LayoutParams wmCirclePickerParams;
 
     private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
     private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
@@ -49,6 +50,8 @@ public class StartCirclePicker extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) { // TODO handle storage permission
         super.onCreate(savedInstanceState);
+        WindowManager.LayoutParams wp = getWindow().getAttributes();
+        wp.dimAmount = 0f;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
@@ -89,7 +92,7 @@ public class StartCirclePicker extends AppCompatActivity {
         }
     }
 
-    private void permissionNotGiven(){ ;
+    private void permissionNotGiven(){
         finish();
     }
 
@@ -107,17 +110,17 @@ public class StartCirclePicker extends AppCompatActivity {
             LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
         }
 
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+        wmCirclePickerParams = new WindowManager.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 LAYOUT_FLAG,
                 FLAG_HARDWARE_ACCELERATED|FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSPARENT);
-        params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
+        wmCirclePickerParams.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
-        wm.addView(wmCirclePickerView,params);
+        wm.addView(wmCirclePickerView,wmCirclePickerParams); // TODO solve dimmed problems
 
         finish();
     }

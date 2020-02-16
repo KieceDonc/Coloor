@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.fragment.Camera;
+package com.vvdev.colorpicker.fragment.ImportSelected;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -70,7 +70,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-public class CameraFragment extends Fragment implements View.OnClickListener, View.OnTouchListener, ActivityCompat.OnRequestPermissionsResultCallback {
+public class Camera extends Fragment implements View.OnClickListener, View.OnTouchListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
     /**
      * Conversion from screen rotation to JPEG orientation.

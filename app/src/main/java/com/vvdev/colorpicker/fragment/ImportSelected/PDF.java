@@ -1,6 +1,5 @@
-package com.vvdev.colorpicker.activity;
+package com.vvdev.colorpicker.fragment.ImportSelected;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -9,8 +8,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,38 +29,44 @@ import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorsData;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import static com.vvdev.colorpicker.fragment.Import.ImportFragment.IntentExtraPath;
+public class PDF extends Fragment {
 
-public class Import_PDF extends AppCompatActivity {
+    public static final String KEY_ARGUMENT_PDF_PATH ="PathToPDF";
 
-
-    // https://github.com/yeokm1/docs-to-pdf-converter#library-usage
-    // https://github.com/alaeddinejebali/Android-ConvertToPDF
     private PDFView pdfView;
     private EditText inputDesirePage;
     private TextView numberOfPage;
+    private String pathToPDF="";
 
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.import_pdf, container, false);
+    }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.import_pdf);
-        getSupportActionBar().hide();
+    public void onViewCreated(final View view, Bundle savedInstanceState) {
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-        pdfView = findViewById(R.id.pdfView);
-        inputDesirePage = findViewById(R.id.input_desire_page);
-        numberOfPage = findViewById(R.id.numberOfPage);
+        String toCheck = getArguments().getString(KEY_ARGUMENT_PDF_PATH);
+        if(toCheck==null){
+            Log.e("ImportSelected - PDF"," path to pdf file is null");
+        }else{
+            pathToPDF = toCheck;
+        }
+
+        pdfView = view.findViewById(R.id.pdfView);
+        inputDesirePage = view.findViewById(R.id.input_desire_page);
+        numberOfPage = view.findViewById(R.id.numberOfPage);
 
         setupPdfView();
-        setupCirclePicker();
         setupInputDesirePage();
-        new ColorsData(this).getColors();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -71,12 +78,9 @@ public class Import_PDF extends AppCompatActivity {
     }
 
     private void setupPdfView(){
-        Intent receiveData = getIntent(); // get intent
-        Uri path = Uri.parse(receiveData.getStringExtra(IntentExtraPath)); // get img path from intent
-
         DefaultLinkHandler mDefaultLinkHandler = new DefaultLinkHandler(pdfView);
 
-        pdfView.fromUri(path)
+        pdfView.fromAsset(pathToPDF)
                 .enableSwipe(true) // allows to block changing pages using swipe
                 .swipeHorizontal(false)
                 .enableDoubletap(true)
@@ -162,15 +166,6 @@ public class Import_PDF extends AppCompatActivity {
                 .load();
     }
 
-    private void setupCirclePicker(){
-        findViewById(R.id.startCirclePicker).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-    }
-
     private void setupInputDesirePage(){
         inputDesirePage.clearFocus();
         inputDesirePage.setCursorVisible(false);
@@ -226,4 +221,6 @@ public class Import_PDF extends AppCompatActivity {
             }
         });
     }
+
+
 }

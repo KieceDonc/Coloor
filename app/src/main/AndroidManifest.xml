@@ -44,7 +44,7 @@
         <activity android:name=".activity.Import_Img"></activity>
         <activity android:name=".activity.Import_PDF"></activity>
         <activity android:name=".activity.Import_Vid"></activity>
-        <activity android:name=".activity.StartCirclePicker" android:theme="@style/Translucent"></activity>
+        <activity android:name=".activity.CirclePickerActivityStart" android:theme="@style/Translucent" ></activity>
     </application>
 
 </manifest>

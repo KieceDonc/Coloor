@@ -6,18 +6,8 @@
     app:startDestination="@id/navigation_palette">
 
     <fragment
-        android:id="@+id/navigation_camera"
-        android:name="com.vvdev.colorpicker.fragment.Camera.CameraFragment"
-        android:label="@string/nav_menu_Camera"
-        tools:layout="@layout/fragment_camera">
-        <action
-            android:id="@+id/action_navigation_camera_to_navigation_dashboard"
-            app:destination="@id/navigation_import" />
-    </fragment>
-
-    <fragment
         android:id="@+id/navigation_import"
-        android:name="com.vvdev.colorpicker.fragment.Import.ImportFragment"
+        android:name="com.vvdev.colorpicker.fragment.BottomBar.Import"
         android:label="@string/nav_menu_Import"
         tools:layout="@layout/fragment_import">
         <action
@@ -27,12 +17,12 @@
 
     <fragment
         android:id="@+id/navigation_palette"
-        android:name="com.vvdev.colorpicker.fragment.Palette.PaletteFragment"
+        android:name="com.vvdev.colorpicker.fragment.BottomBar.Palette"
         android:label="@string/nav_menu_Palette"
         tools:layout="@layout/fragment_palette">
         <action
-            android:id="@+id/action_navigation_editcolor_to_navigation_camera"
-            app:destination="@id/navigation_camera" />
+            android:id="@+id/action_navigation_palette_to_navigation_import"
+            app:destination="@id/navigation_import" />
     </fragment>
 
 </navigation>

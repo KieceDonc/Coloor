@@ -9,10 +9,8 @@ import android.media.ImageReader;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Handler;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.WindowManager;
-;
+
 import java.nio.ByteBuffer;
 
 public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details/96485285
@@ -29,8 +27,6 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     public static MediaProjectionManager mMediaProjectionManager;
     private static MediaProjection mMediaProjection;
 
-    public int mResultCode;
-    public Intent mResultData;
     private Bitmap mBitmap;
 
     private OnCaptureListener mCaptureListener = null;
@@ -66,7 +62,7 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
                     Log.d(TAG, "start startCapture");
                     startCapture();
                 }
-            }, 200); // TODO NANI
+            }, 50);
         }
     }
 

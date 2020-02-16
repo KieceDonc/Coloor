@@ -1,24 +1,16 @@
-package com.vvdev.colorpicker.fragment.Palette;
+package com.vvdev.colorpicker.fragment.BottomBar;
 
 import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.ui.PaletteAdapter;
 import com.vvdev.colorpicker.ui.PaletteControllerActions;
 import com.vvdev.colorpicker.ui.PaletteSwipeController;
-import com.vvdev.colorpicker.ui.PaletteSwipeController.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,7 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PaletteFragment extends Fragment {
+public class Palette extends Fragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,

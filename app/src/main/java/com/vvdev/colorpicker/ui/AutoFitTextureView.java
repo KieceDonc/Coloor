@@ -1,4 +1,5 @@
 package com.vvdev.colorpicker.ui;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.TextureView;

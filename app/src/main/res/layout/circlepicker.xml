@@ -8,7 +8,7 @@
     android:gravity="center_horizontal|center_vertical">
 
 
-    <com.vvdev.colorpicker.ui.CirclePicker
+    <com.vvdev.colorpicker.ui.CirclePickerView
         android:id="@+id/CirclePicker"
         android:layout_width="220dp"
         android:layout_height="220dp"

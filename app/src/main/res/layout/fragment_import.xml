@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Import a file :"
+                android:text="Select a rectangle to import a color :"
                 android:textColor="@color/Theme1_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,13 +47,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/importTitleView" />
 
             <RelativeLayout
-                android:id="@+id/importImg"
+                android:id="@+id/importPDF"
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:elevation="8dp"
+                android:elevation="16dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/frameLayoutHistory">
+                app:layout_constraintTop_toBottomOf="@+id/importTitleView">
 
                 <!--  This is the main content -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,24 +68,88 @@
                     android:padding="20dp">
 
                     <ImageView
-                        android:id="@+id/importImgImgView"
+                        android:id="@+id/imagePDFImg"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:tint="@android:color/holo_orange_light"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/document_icon" />
+
+                    <TextView
+                        android:id="@+id/importPDFDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="From a PDF"
+                        android:textColor="@color/Theme1_text"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/imagePDFImg"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:tint="@android:color/holo_orange_light"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/premium_badge" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!--  This is the title label -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:background="@color/Theme1_Primary"
+                    android:padding="5dp"
+                    android:text="Prenium"
+                    android:textColor="@color/Theme1_text" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/importCamera"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginTop="8dp"
+                android:elevation="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/importPDF">
+
+                <!--  This is the main content -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/gray_border_rounded"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/importCameraImg"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:tint="@color/Theme1_Secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/img_icon" />
+                        app:srcCompat="@drawable/camera" />
 
                     <TextView
-                        android:id="@+id/importImgDesc"
+                        android:id="@+id/importCameraDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="PNG, JPEG, GIF"
+                        android:text="From your camera"
                         android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/importImgImgView"
+                        app:layout_constraintStart_toEndOf="@+id/importCameraImg"
                         app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -97,20 +162,20 @@
                     android:layout_marginLeft="30dp"
                     android:background="@color/Theme1_Primary"
                     android:padding="5dp"
-                    android:text="Image"
+                    android:text="Standard"
                     android:textColor="@color/Theme1_text" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/importVid"
+                android:id="@+id/importFile"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:elevation="16dp"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/importImg">
+                app:layout_constraintTop_toBottomOf="@id/importCamera">
 
                 <!--  This is the main content -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -124,24 +189,24 @@
                     android:padding="20dp">
 
                     <ImageView
-                        android:id="@+id/importVidImg"
+                        android:id="@+id/importFileImg"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:tint="@color/Theme1_Secondary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/video_icon" />
+                        app:srcCompat="@drawable/folder_icon" />
 
                     <TextView
-                        android:id="@+id/importVidDesc"
+                        android:id="@+id/importFileDesc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="MP4"
+                        android:text="From your files"
                         android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/importVidImg"
+                        app:layout_constraintStart_toEndOf="@+id/importFileImg"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -154,64 +219,9 @@
                     android:layout_marginLeft="30dp"
                     android:background="@color/Theme1_Primary"
                     android:padding="5dp"
-                    android:text="Video"
+                    android:text="Standard"
                     android:textColor="@color/Theme1_text" />
 
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/importDoc"
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:elevation="16dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/importVid">
-
-                <!--  This is the main content -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:background="@drawable/gray_border_rounded"
-                    android:padding="20dp">
-
-                    <ImageView
-                        android:id="@+id/imageDocImg"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:tint="@color/Theme1_Secondary"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/document_icon" />
-
-                    <TextView
-                        android:id="@+id/importDocDesc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="PDF"
-                        android:textColor="@color/Theme1_text"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/imageDocImg"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <!--  This is the title label -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:background="@color/Theme1_Primary"
-                    android:padding="5dp"
-                    android:text="Document"
-                    android:textColor="@color/Theme1_text" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -221,7 +231,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/importDoc">
+                app:layout_constraintTop_toBottomOf="@+id/importFile">
 
                 <!--  This is the main content -->
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -249,7 +259,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Import any file compatible "
+                        android:text="From your google drive "
                         android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/importGDImg"
@@ -265,7 +275,7 @@
                     android:layout_marginLeft="30dp"
                     android:background="@color/Theme1_Primary"
                     android:padding="5dp"
-                    android:text="Google drive"
+                    android:text="Standard"
                     android:textColor="@color/Theme1_text" />
 
             </RelativeLayout>
@@ -305,7 +315,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:text="Import any file compatible "
+                        android:text="From internet"
                         android:textColor="@color/Theme1_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/importInternetImg"
@@ -321,7 +331,7 @@
                     android:layout_marginLeft="30dp"
                     android:background="@color/Theme1_Primary"
                     android:padding="5dp"
-                    android:text="Internet"
+                    android:text="Standard"
                     android:textColor="@color/Theme1_text" />
 
             </RelativeLayout>

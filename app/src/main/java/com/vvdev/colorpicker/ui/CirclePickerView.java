@@ -10,12 +10,10 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -24,32 +22,25 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.DragEvent;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
 
 import static android.content.Context.WINDOW_SERVICE;
-import static android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
-import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-import static com.vvdev.colorpicker.activity.StartCirclePicker.wmCirclePickerView;
+import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerParams;
+import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 
 @SuppressLint("AppCompatCustomView")
-public class CirclePicker extends ImageView {
+public class CirclePickerView extends ImageView {
 
-    public static final int timeUpdateCirclePicker =50;
     private static final String TAG ="CirclePicker";
 
     private ScreenCapture mScreenCapture;
@@ -69,7 +60,6 @@ public class CirclePicker extends ImageView {
             Log.d(TAG, "onScreenCaptureFailed errorMsg:" + errorMsg);
         }
     };
-    private WindowManager.LayoutParams windowsManagerparams;
     private BitmapShader mBitmapShader;
 
     private Bitmap mScreenBitmap;
@@ -115,16 +105,16 @@ public class CirclePicker extends ImageView {
     private boolean inUpdatePhoneBitmap;
 
 
-    public CirclePicker(Context context) {
+    public CirclePickerView(Context context) {
         super(context);
         init();
     }
 
-    public CirclePicker(Context context, AttributeSet attrs) {
+    public CirclePickerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CirclePicker(Context context, AttributeSet attrs, int defStyle) {
+    public CirclePickerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
@@ -180,7 +170,7 @@ public class CirclePicker extends ImageView {
 
             updatePhoneBitmap();
             setup();
-            new CirclePicker.UserInteractionHandler(getContext(), this);
+            new CirclePickerView.UserInteractionHandler(getContext(), this);
             mSetupPending = false;
         }
     }
@@ -238,8 +228,8 @@ public class CirclePicker extends ImageView {
         int centerDesireWidth= (mMiddleSquareDim*2-mMiddleBorderSquareDim);
         int centerDesireHeight= (mMiddleSquareDim*2-mMiddleBorderSquareDim);
         if(scaleFactor==0.5){
-            int centerDesireX= (int) (mBitmap.getWidth()/2+mMiddleSquareDim-mMiddleBorderSquareDim); // TODO replace mbitmap.get ... by location on screen etc ... mScreenBitmap.
-            int centerDesireY= (int) (mBitmap.getHeight()/2+mMiddleSquareDim-mMiddleBorderSquareDim);
+            int centerDesireX= mBitmap.getWidth()/2+mMiddleSquareDim-mMiddleBorderSquareDim;
+            int centerDesireY= mBitmap.getHeight()/2+mMiddleSquareDim-mMiddleBorderSquareDim;
 
             allPixelInsideCenterSquare =Bitmap.createBitmap(mBitmap, centerDesireX, centerDesireY,centerDesireWidth,centerDesireHeight);
             int[] RGB =ColorUtility.getRGBAverageFromBitmap(allPixelInsideCenterSquare);
@@ -296,22 +286,8 @@ public class CirclePicker extends ImageView {
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
 
-    public static int convertDpToPx(int dp, Context context){
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
-    }
-
     public int convertDpToPx(int dp){
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
-    }
-
-    public static int convertPxToDp(float pxValue,Context context) {
-        final float scale =  context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
-
-    public int convertPxToDp(float pxValue) {
-        final float scale =  getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
     }
 
     double scaleFactor = 0.5; // for scaleFactor = 1; if scaleFactor -> 0+ it zoom to pixel lvl
@@ -406,20 +382,6 @@ public class CirclePicker extends ImageView {
             mCirclePickerView = v;
             mCirclePickerView.setOnTouchListener(this);
             mCirclePickerView.setOnDragListener(this);
-
-            int LAYOUT_FLAG;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-            } else {
-                LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
-            }
-            windowsManagerparams = new WindowManager.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    LAYOUT_FLAG,
-                    FLAG_HARDWARE_ACCELERATED|FLAG_NOT_TOUCH_MODAL,
-                    PixelFormat.TRANSPARENT);
-            windowsManagerparams.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
         }
 
 
@@ -556,17 +518,17 @@ public class CirclePicker extends ImageView {
                     }
                     case MotionEvent.ACTION_MOVE: {
 
-                        if (event.getPointerCount() == 1){ // if one finger detect we move layout
+                        if (event.getPointerCount() == 1){
 
                             int deltaX = (int) event.getRawX() - recViewLastX;
                             int deltaY = (int) event.getRawY() - recViewLastY;
                             recViewLastX = (int) event.getRawX();
                             recViewLastY = (int) event.getRawY();
-                            windowsManagerparams.x += deltaX;
-                            windowsManagerparams.y += deltaY;
-                            WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE); // TODO ask permission to draw over other app
+                            wmCirclePickerParams.x += deltaX;
+                            wmCirclePickerParams.y += deltaY;
+                            WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE);
 
-                            wm.updateViewLayout(wmCirclePickerView,windowsManagerparams);
+                            wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512
 
                             showPickerBitmap();
                             break;

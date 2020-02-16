@@ -13,7 +13,7 @@ import android.os.Build;
 import android.os.IBinder;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.activity.StartCirclePicker;
+import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -104,7 +104,7 @@ public class CirclePickerService extends Service {
     }
 
     private void startCirclePicker() {
-        Intent startCirclePickerIntent = new Intent(this, StartCirclePicker.class);
+        Intent startCirclePickerIntent = new Intent(this, CirclePickerActivityStart.class);
         startCirclePickerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startCirclePickerIntent);
     }
