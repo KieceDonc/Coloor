@@ -39,6 +39,8 @@ import static com.vvdev.colorpicker.interfaces.ScreenCapture.mMediaProjectionMan
 
 public class StartCirclePicker extends AppCompatActivity {
 
+    public static View wmCirclePickerView;
+
     private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
     private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
 
@@ -114,8 +116,8 @@ public class StartCirclePicker extends AppCompatActivity {
         params.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View circlePickerView = inflater.inflate(R.layout.circlepicker, null);
-        wm.addView(circlePickerView,params);
+        wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
+        wm.addView(wmCirclePickerView,params);
 
         finish();
     }

@@ -1,8 +1,5 @@
 package com.vvdev.colorpicker.interfaces;
 
-import android.graphics.Color;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,8 +36,6 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         setRGB(rgb);
         setup();
     }
-
-
 
     private void setup(){
         setComplementary();
