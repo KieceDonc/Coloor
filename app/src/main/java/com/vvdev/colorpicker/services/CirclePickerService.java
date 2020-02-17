@@ -11,15 +11,22 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 public class CirclePickerService extends Service {
+
+    public static boolean waitingForResult = true;
+    public static boolean circleStarted = false;
 
     @Override
     public void onCreate() {
@@ -35,6 +42,7 @@ public class CirclePickerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startCirclePicker();
+        setWaitingForResult();
         notificationHandler();
         return START_STICKY;
     }
@@ -107,6 +115,21 @@ public class CirclePickerService extends Service {
         Intent startCirclePickerIntent = new Intent(this, CirclePickerActivityStart.class);
         startCirclePickerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startCirclePickerIntent);
+    }
+
+    private void setWaitingForResult(){
+        final Timer t = new Timer();
+        t.schedule(new TimerTask() { // we check each 500 ms if user have finish with permission and if user hasn't give permission we stop the service
+            @Override
+            public void run() {
+                if(!waitingForResult){
+                    if(!circleStarted){
+                        stopSelf();
+                    }
+                    t.cancel();
+                }
+            }
+        }, 0, 500);
     }
 
 }

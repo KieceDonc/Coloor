@@ -7,8 +7,10 @@
         android:title="@string/nav_menu_Import" />
 
     <item
-        android:title="@null"
-        android:visible="true" />
+        android:checkable="false"
+        android:checked="false"
+        android:enabled="false"
+        android:title="@null" />
 
     <item
         android:id="@+id/navigation_palette"

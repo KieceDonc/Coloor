@@ -41,10 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Import_Img"></activity>
-        <activity android:name=".activity.Import_PDF"></activity>
-        <activity android:name=".activity.Import_Vid"></activity>
-        <activity android:name=".activity.CirclePickerActivityStart" android:theme="@style/Translucent" ></activity>
+        <activity android:name=".activity.CirclePickerActivityStart" android:theme="@style/Translucent" android:noHistory="true" ></activity>
     </application>
 
 </manifest>

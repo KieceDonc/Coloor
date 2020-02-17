@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
+import com.vvdev.colorpicker.interfaces.ColorsData;
 
 import java.util.ArrayList;
 
@@ -27,9 +28,10 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
     private ArrayList<ColorSpec> colors;
     private final Activity activity;
 
-    public PaletteAdapter(ArrayList<ColorSpec> colors,Activity activity){
-        this.colors=colors;
+    public PaletteAdapter(Activity activity){
         this.activity=activity;
+        ColorsData colorsData = new ColorsData(activity);
+        colors = colorsData.getShortedColors();
     }
 
     @Override

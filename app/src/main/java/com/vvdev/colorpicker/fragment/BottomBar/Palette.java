@@ -51,7 +51,7 @@ public class Palette extends Fragment {
 
         final RecyclerView rv = view.findViewById(R.id.pRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        PaletteAdapter PaletteAdapter = new PaletteAdapter(colorsData.getShortedColors(),getActivity());
+        PaletteAdapter PaletteAdapter = new PaletteAdapter(getActivity());
         rv.setAdapter(PaletteAdapter);
 
 
@@ -60,7 +60,7 @@ public class Palette extends Fragment {
             public void onRightClicked(int position) {
                 rv.removeViewAt(position);
                 colorsData.removeColor(position);
-                PaletteAdapter PaletteAdapter = new PaletteAdapter(colorsData.getShortedColors(),getActivity());
+                PaletteAdapter PaletteAdapter = new PaletteAdapter(getActivity());
                 rv.setAdapter(PaletteAdapter);
                 PaletteAdapter.notifyDataSetChanged();
             }

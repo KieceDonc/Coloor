@@ -10,6 +10,7 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
+import com.vvdev.colorpicker.services.CirclePickerService;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -45,8 +47,6 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
     private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
 
-    private AlertDialog.Builder builder;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) { // TODO handle storage permission
         super.onCreate(savedInstanceState);
@@ -55,14 +55,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                setupAlertDialog();
-                AlertDialog alertDialog = builder.create();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-                } else {
-                    alertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_PHONE);
-                }
-                alertDialog.show();
+                showAlertDialog();
             } else {
                 startCapture();
             }
@@ -122,20 +115,28 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
         wm.addView(wmCirclePickerView,wmCirclePickerParams); // TODO solve dimmed problems
 
+        CirclePickerService.waitingForResult=false;
+        CirclePickerService.circleStarted=true;
         finish();
     }
 
-    private void setupAlertDialog(){
-        builder = new AlertDialog.Builder(this)
+    private void showAlertDialog(){
+        //set icon
+        //set title
+        //set message
+        //set positive button
+        //set what would happen when positive button is clicked
+        //set negative button
+        //set what should happen when negative button is clicked
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 //set icon
                 .setIcon(android.R.drawable.ic_dialog_alert)
-
                 //set title
                 .setTitle("Warning!")
                 //set message
-                .setMessage("You need to give the permission to draw over all application, also ColorPicker won't be able to work !")
+                .setMessage("You need to give the permission to draw over all application, do you want to give the permission ?")
                 //set positive button
-                .setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what would happen when positive button is clicked
@@ -153,5 +154,15 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                         permissionNotGiven();
                     }
                 });
+        builder.create().show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(CirclePickerService.waitingForResult){
+            CirclePickerService.waitingForResult=false;
+            CirclePickerService.circleStarted=false;
+        }
     }
 }
