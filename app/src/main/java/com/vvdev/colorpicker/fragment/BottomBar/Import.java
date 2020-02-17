@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
+import com.vvdev.colorpicker.fragment.ImportSelected.Files_IS;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
 import com.vvdev.colorpicker.interfaces.FileUtils;
 
@@ -20,11 +22,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public class Import extends Fragment implements View.OnClickListener {
+import static com.vvdev.colorpicker.fragment.ImportSelected.Files_IS.KEY_ARGUMENT_FILES_PATH;
+import static com.vvdev.colorpicker.fragment.ImportSelected.PDF.KEY_ARGUMENT_PDF_PATH;
 
-    //https://viewerjs.org/
-    // load from internet
-    // http://bumptech.github.io/glide/doc/getting-started.html
+public class Import extends Fragment implements View.OnClickListener {
 
     private RelativeLayout mImportCamera;
     private RelativeLayout mImportFile;
@@ -70,16 +71,16 @@ public class Import extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()){
+            case R.id.importPDF:{
+                choosePDF();
+                break;
+            }
             case R.id.importCamera:{
                 loadCamera(); // TODO ask camera permission
                 break;
             }
             case R.id.importFile:{
                 chooseFile(); // TODO ask write / read external storage permission
-                break;
-            }
-            case R.id.importPDF:{
-                choosePDF();
                 break;
             }
             case R.id.importInternet:{
@@ -94,7 +95,7 @@ public class Import extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(data!=null){
             if(data.getData()!=null){
-                String path = FileUtils.getPath(getContext(),data.getData());
+                //String path = FileUtils.getPath(getContext(),data.getData());
                 switch (requestCode) {
                     case REQUEST_CODE_FILE: {// TODO check .mp4 etc ..
                         loadFile(data.getData());
@@ -136,14 +137,14 @@ public class Import extends Fragment implements View.OnClickListener {
     }
 
     private void chooseFile(){
-        String type="video/*, image/*";
+        String type="image/* video/*";
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType(type);
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType(type);
 
-        Intent chooserIntent = Intent.createChooser(getIntent, "Select a video");
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select a video / image");
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
 
         startActivityForResult(chooserIntent, REQUEST_CODE_FILE);
@@ -154,20 +155,36 @@ public class Import extends Fragment implements View.OnClickListener {
 
     private void loadPDF(Uri path){
         PDF pdfFragment= new PDF();
+
+        Bundle bundle  = new Bundle(); // use to send data to the fragment
+        bundle.putString(KEY_ARGUMENT_PDF_PATH,path.toString()); // plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
+        pdfFragment.setArguments(bundle);
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, pdfFragment, "findThisFragment")
                 .addToBackStack(null)
-                .commit();
+                .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
 
     private void loadCamera(){
-        PDF cameraFragment= new PDF();
+        Camera cameraFragment= new Camera();
+
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, cameraFragment, "findThisFragment")
                 .addToBackStack(null)
-                .commit();
+                .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
     private void loadFile(Uri path){
+        Files_IS filesFragment = new Files_IS();
+
+        Bundle bundle  = new Bundle(); // use to send data to the fragment
+        bundle.putString(KEY_ARGUMENT_FILES_PATH,path.toString()); // plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
+        filesFragment.setArguments(bundle);
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.nav_host_fragment, filesFragment, "findThisFragment")
+                .addToBackStack(null)
+                .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
 
     }
 

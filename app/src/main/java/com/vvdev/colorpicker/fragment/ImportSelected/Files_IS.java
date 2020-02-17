@@ -1,19 +1,20 @@
 package com.vvdev.colorpicker.fragment.ImportSelected;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.colorpicker.R;
 
 import androidx.annotation.NonNull;
@@ -21,13 +22,13 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-public class Files extends Fragment {
+public class Files_IS extends Fragment {
 
     public static final String KEY_ARGUMENT_FILES_PATH ="PathToAFile";
 
     private ImageView Img;
     private VideoView Vid;
-    private String pathToFile="";
+    private Uri pathToFile;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,14 +40,18 @@ public class Files extends Fragment {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         String toCheck = getArguments().getString(KEY_ARGUMENT_FILES_PATH);
-        if(toCheck==null){
-            Log.e("ImportSelected - PDF"," path to pdf file is null");
-        }else{
-            pathToFile = toCheck;
-        }
+        pathToFile = Uri.parse(toCheck);
 
         Img = view.findViewById(R.id.import_ImageView); // get view of img
         Vid = view.findViewById(R.id.import_VidView); // get view of img
+
+        if (pathToFile.toString().contains("image")) {
+            //handle image
+            setupImg();
+        } else  if (pathToFile.toString().contains("video")) {
+            //handle video
+            setupVid();
+        }
 
        /* Intent receiveData = getIntent(); // get intent
         String path = receiveData.getStringExtra(IntentExtraPath); // get img path from intent*/
@@ -74,6 +79,6 @@ public class Files extends Fragment {
         Vid.setVisibility(View.VISIBLE);
         Img.setVisibility(View.GONE);
 
-        Vid.setVideoPath(pathToFile);
+        Vid.setVideoURI(pathToFile);
     }
 }

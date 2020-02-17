@@ -7,10 +7,7 @@
         android:title="@string/nav_menu_Import" />
 
     <item
-        android:title="nop"
-        android:visible="true" />
-    <item
-        android:title="nop"
+        android:title="@null"
         android:visible="true" />
 
     <item

@@ -41,7 +41,7 @@ public class PDF extends Fragment {
     private PDFView pdfView;
     private EditText inputDesirePage;
     private TextView numberOfPage;
-    private String pathToPDF="";
+    private Uri pathToPDF;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,12 +52,9 @@ public class PDF extends Fragment {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-        String toCheck = getArguments().getString(KEY_ARGUMENT_PDF_PATH);
-        if(toCheck==null){
-            Log.e("ImportSelected - PDF"," path to pdf file is null");
-        }else{
-            pathToPDF = toCheck;
-        }
+        String toCheck = getArguments().getString(KEY_ARGUMENT_PDF_PATH); // get data send, plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
+        pathToPDF = Uri.parse(toCheck); // plz refer to https://stackoverflow.com/questions/17356312/converting-of-uri-to-string
+
 
         pdfView = view.findViewById(R.id.pdfView);
         inputDesirePage = view.findViewById(R.id.input_desire_page);
@@ -68,19 +65,19 @@ public class PDF extends Fragment {
     }
 
 
-    @Override
-    public void onBackPressed() {
+    /*@Override
+    public void onBackPressed() { // https://stackoverflow.com/questions/5448653/how-to-implement-onbackpressed-in-fragments
         super.onBackPressed();
         if(inputDesirePage.isCursorVisible()){
             inputDesirePage.clearFocus();
             inputDesirePage.setCursorVisible(false);
         }
-    }
+    }*/
 
     private void setupPdfView(){
         DefaultLinkHandler mDefaultLinkHandler = new DefaultLinkHandler(pdfView);
 
-        pdfView.fromAsset(pathToPDF)
+        pdfView.fromUri(pathToPDF)
                 .enableSwipe(true) // allows to block changing pages using swipe
                 .swipeHorizontal(false)
                 .enableDoubletap(true)

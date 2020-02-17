@@ -6,15 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <com.vvdev.colorpicker.ui.CurvedBottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
+        android:layout_height="50dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:menu="@menu/bottom_nav_menu">
+
+    </com.vvdev.colorpicker.ui.CurvedBottomNavigationView>
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -22,10 +24,46 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:layout_constraintBottom_toTopOf="@id/view"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/mobile_navigation" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/Theme1_Zero"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/nav_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backgroundPipette" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/backgroundPipette"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/blankcircle"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pipette"
+        app:layout_constraintEnd_toEndOf="@+id/pipette"
+        app:layout_constraintStart_toStartOf="@+id/pipette"
+        app:layout_constraintTop_toTopOf="@+id/pipette" />
+
+    <ImageView
+        android:id="@+id/pipette"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:tint="@color/Theme1_Zero"
+        app:layout_constraintBottom_toTopOf="@id/nav_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nav_view"
+        app:srcCompat="@drawable/pipette_icon_icons_com_65005" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
