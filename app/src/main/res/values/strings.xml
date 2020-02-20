@@ -23,4 +23,5 @@
     <string name="Hsv">Hsv:</string>
     <string name="RGB">RGB:</string>
     <string name="paletteItemMore"><![CDATA[<]]></string>
+    <string name="import_internet_url_text">Copy your url file</string>
 </resources>

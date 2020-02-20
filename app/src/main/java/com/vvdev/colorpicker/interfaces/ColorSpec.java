@@ -149,6 +149,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         return allGeneratedColors;
     }
 
+
     public String toString(){
         return "Hexadecimal = "+hexa+"\n" +
                 "RGB = RGB("+getRGB()[0]+", "+getRGB()[1]+", "+getRGB()[2]+")\n" +

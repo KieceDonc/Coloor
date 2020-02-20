@@ -62,7 +62,7 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
                     Log.d(TAG, "start startCapture");
                     startCapture();
                 }
-            }, 50);
+            }, 100);
         }
     }
 

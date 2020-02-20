@@ -8,12 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.RelativeLayout;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
 import com.vvdev.colorpicker.fragment.ImportSelected.Files_IS;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
+import com.vvdev.colorpicker.ui.DownloadFileAlertDialog;
+
+import java.io.File;
 
 import androidx.annotation.NonNull;
 
@@ -82,7 +86,7 @@ public class Import extends Fragment implements View.OnClickListener {
                 break;
             }
             case R.id.importInternet:{
-                chosenByInternet();
+                chosenByInternet(); // TODO ask write / read external storage permission
                 break;
             }
         }
@@ -149,6 +153,22 @@ public class Import extends Fragment implements View.OnClickListener {
     }
 
     private void chosenByInternet(){
+        new DownloadFileAlertDialog(getContext(), getActivity(), new DownloadFileAlertDialog.setOnListener() {
+            @Override
+            public void onFileDownloaded(String filePath) {
+                File downloadedFile = new File(filePath); // we get the file downloaded
+                Uri uriDownloadedFile = Uri.fromFile(downloadedFile); // we get his uri
+
+                String extension = MimeTypeMap.getFileExtensionFromUrl(filePath); // string extension of downloaded file
+                String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension); // get the type of the file
+
+                if (mimeType.contains("image")||mimeType.contains("video")) {
+                    loadFile(uriDownloadedFile);
+                }else if(mimeType.contains("pdf")){
+                    loadPDF(uriDownloadedFile);
+                }
+            }
+        }).show();
     }
 
     private void loadPDF(Uri path){

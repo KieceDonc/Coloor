@@ -1,17 +1,15 @@
 package com.vvdev.colorpicker.services;
 
-import android.app.LauncherActivity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
+import android.view.WindowManager;
+
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
@@ -21,12 +19,19 @@ import java.util.TimerTask;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
+import static com.vvdev.colorpicker.activity.MainActivity.isCPRunning;
 
 public class CirclePickerService extends Service {
 
     public static boolean waitingForResult = true;
     public static boolean circleStarted = false;
+
+    private NotificationCompat.Builder notificationBuilder; // use to update hexa value, plz refer to https://stackoverflow.com/questions/14885368/update-text-of-notification-not-entire-notification
+    private final static String CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID = "Circle_picker_channel_id";
 
     @Override
     public void onCreate() {
@@ -41,79 +46,62 @@ public class CirclePickerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startCirclePicker();
-        setWaitingForResult();
-        notificationHandler();
+        isCPRunning=true; // boolean use to say if service is running or not ( declare static in main activity )
+        if(intent!=null){
+            if(intent.getAction()!=null&&intent.getAction().equals("STOP")){
+                stopService();
+            }else{
+                Instance.set(this);
+                startCirclePicker();
+                setWaitingForResult();
+                notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID );
+                notificationFirstBuild();
+            }
+        }
         return START_STICKY;
     }
 
-    private void notificationHandler(){
+    private void notificationFirstBuild(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel1 = new NotificationChannel(
+                    CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID,
+                    "Circle picker channel",
+                    NotificationManager.IMPORTANCE_LOW // TODO check google document to find the good IMPORTANCE for notification manager
+            );
+            channel1.setDescription("This is Channel 1");
 
-        String idChannel = "ColorPickerChannel";
-        Intent mainIntent;
 
-        mainIntent = new Intent(this, LauncherActivity.class);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, mainIntent, 0);
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        NotificationChannel mChannel = null;
-        // The id of the channel.
-
-        int importance = 0;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel1);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, null);
-        builder.setContentTitle(getString(R.string.app_name))
-                .setSmallIcon(R.drawable.pipette_icon_icons_com_65005)
-                .setContentIntent(pendingIntent)
-                .setContentText("test desc");
+        String message = "Waiting for permission to be given";// TODO to translate
 
-        if (Build.VERSION.SDK_INT >= 26) {
-            String CHANNEL_ID = "my_channel_01";
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT);
 
-            ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
+        Notification notification = notificationBuilder.setSmallIcon(R.drawable.pipette_icon_icons_com_65005) // TODO replace by the application icon
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
 
-            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("")
-                    .setContentText("").build();
+        startForeground(1, notification);
+    }
 
-            startForeground(1, notification);
-        } else {
-            builder.setContentTitle(getString(R.string.app_name))
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setColor(ContextCompat.getColor(this, R.color.transparent))
-                    .setVibrate(new long[]{100, 250})
-                    .setLights(Color.YELLOW, 500, 5000)
-                    .setAutoCancel(true);
-        }
-        mNotificationManager.notify(1, builder.build());
-
-        /*NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("YOUR_CHANNEL_ID",
-                    "CirclePickerChannel",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("YOUR_NOTIFICATION_CHANNEL_DISCRIPTION");
-            mNotificationManager.createNotificationChannel(channel);
-        }
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)//TODO create a proper notification https://developer.android.com/training/notify-user/build-notification
-                .setSmallIcon(R.drawable.palette_ir_background)
-                .setContentTitle("Color picker")
-                .setContentText(" test")
-                .setPriority(NotificationCompat.PRIORITY_HIGH);*/
+    public void updateHexaValue(String Hexa){
+        notificationBuilder.mActions.clear(); // clear all past action ( you need to do that cuz you call addAction and not setAction ) plz refer https://stackoverflow.com/questions/24465587/change-notifications-action-icon-dynamically
+        Notification notification = notificationBuilder
+                .setContentTitle("Current hexadecimal value")// TODO to translate
+                .setContentText(Hexa)
+                .addAction(R.drawable.pipette_icon_icons_com_65005,"STOP",stopIntent())
+                .addAction(R.drawable.pipette_icon_icons_com_65005,"SHARE",shareIntent(Hexa)) // TODO to translate
+                .build();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(1, notification);
     }
 
     private void startCirclePicker() {
         Intent startCirclePickerIntent = new Intent(this, CirclePickerActivityStart.class);
-        startCirclePickerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startCirclePickerIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         startActivity(startCirclePickerIntent);
     }
 
@@ -124,12 +112,51 @@ public class CirclePickerService extends Service {
             public void run() {
                 if(!waitingForResult){
                     if(!circleStarted){
-                        stopSelf();
+                        stopService();
                     }
                     t.cancel();
                 }
             }
         }, 0, 500);
+    }
+
+    private PendingIntent shareIntent(String hexaValue){ // get sharing intent to share the color name TODO need to fix share or check if it's work on other devices, on samsung it doesn't work
+        String shareBody = "Hexadecimal: "+hexaValue+" #ColorPicker"; // TODO replace by application name and application https on play store
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+
+        Intent chooserIntent = Intent.createChooser(sharingIntent, "Share your color !");// TODO to translate
+        chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return PendingIntent.getActivity(getApplicationContext(), 0, chooserIntent, 0);
+    }
+
+    private PendingIntent stopIntent(){ // use to send a call in OnStartCommand
+        Intent mIntent = new Intent(getApplicationContext(), CirclePickerService.class);
+        mIntent.setAction("STOP");
+        return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
+    }
+
+    private void stopService(){
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE); // TODO ask permission to draw over other app
+        if(wmCirclePickerView!=null){
+            wm.removeView(wmCirclePickerView);
+        }
+        isCPRunning=false; // boolean use to say if service is running or not ( declare static in main activity )
+        stopForeground(true);
+    }
+
+    public static class Instance{
+        private static CirclePickerService instance;
+
+        public static void set(CirclePickerService inst) {
+            instance=inst;
+        }
+
+
+        public static CirclePickerService getInstance() {
+            return instance;
+        }
     }
 
 }

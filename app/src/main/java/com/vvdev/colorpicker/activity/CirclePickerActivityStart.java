@@ -9,6 +9,7 @@ import android.graphics.PixelFormat;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Gravity;
@@ -66,20 +67,11 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == REQUEST_CODE_ACTION_MANAGE_OVERLAY){
-            if(!Settings.canDrawOverlays(this)){
-                startCapture();
-            }else{
-                permissionNotGiven();
-            }
-        }
-
         if(requestCode == REQUEST_CODE_MEDIA_PROJECTION){
             if (resultCode == Activity.RESULT_OK) {
                 ScreenCapture.setUpMediaProjection(resultCode,data);// TODO make it more cleaner in ScreenCapture
                 startCirclePicker();
-            }else if (resultCode == Activity.RESULT_CANCELED) {
+            }else{
                 permissionNotGiven();
             }
         }
@@ -87,6 +79,8 @@ public class CirclePickerActivityStart extends AppCompatActivity {
 
     private void permissionNotGiven(){
         finish();
+        CirclePickerService.waitingForResult=false;
+        CirclePickerService.circleStarted=false;
     }
 
     private void startCapture(){
@@ -95,25 +89,32 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     }
 
     private void startCirclePicker(){
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE); // TODO ask permission to draw over other app
-        int LAYOUT_FLAG;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
-        }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() { // solve dimmed problems
+            @Override
+            public void run() {
+                //Do something after 100ms
+                WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+                int LAYOUT_FLAG;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+                } else {
+                    LAYOUT_FLAG = WindowManager.LayoutParams.TYPE_PHONE;
+                }
 
-        wmCirclePickerParams = new WindowManager.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                LAYOUT_FLAG,
-                FLAG_HARDWARE_ACCELERATED|FLAG_NOT_TOUCH_MODAL,
-                PixelFormat.TRANSPARENT);
-        wmCirclePickerParams.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
+                wmCirclePickerParams = new WindowManager.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        LAYOUT_FLAG,
+                        FLAG_HARDWARE_ACCELERATED|FLAG_NOT_TOUCH_MODAL,
+                        PixelFormat.TRANSPARENT);
+                wmCirclePickerParams.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
-        wm.addView(wmCirclePickerView,wmCirclePickerParams); // TODO solve dimmed problems
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
+                wm.addView(wmCirclePickerView,wmCirclePickerParams);
+            }
+        }, 250);
 
         CirclePickerService.waitingForResult=false;
         CirclePickerService.circleStarted=true;
@@ -143,6 +144,8 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                         startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
                         dialogInterface.dismiss();
+                        permissionNotGiven(); // used to fix a bug
+                        finish(); // used to fix a bug
                     }
                 })
                 //set negative button
@@ -153,16 +156,8 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                         dialogInterface.dismiss();
                         permissionNotGiven();
                     }
-                });
+                })
+                .setCancelable(false);
         builder.create().show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(CirclePickerService.waitingForResult){
-            CirclePickerService.waitingForResult=false;
-            CirclePickerService.circleStarted=false;
-        }
     }
 }

@@ -33,6 +33,7 @@ import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
+import com.vvdev.colorpicker.services.CirclePickerService;
 
 import static android.content.Context.WINDOW_SERVICE;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerParams;
@@ -236,6 +237,7 @@ public class CirclePickerView extends ImageView {
             mColorHexa = ColorUtility.getHexFromRGB(RGB);
             mColorName=ColorUtility.nearestColor(mColorHexa)[0];
             mBorderColor = Color.parseColor(mColorHexa);
+            updateNotificationHex();
         }
 
         mBorderPaint = new Paint();
@@ -330,7 +332,6 @@ public class CirclePickerView extends ImageView {
     }
 
     public void updatePickerBorder() {
-
         Bitmap mBitmapScreenWithPicker = getBitmapOfView(this);
 
         int DesireX=  (getWidth()/2+mMiddleSquareDim/2-mMiddleBorderSquareDim);
@@ -344,6 +345,7 @@ public class CirclePickerView extends ImageView {
         mColorHexa = ColorUtility.getHexFromRGB(RGB);
         mColorName=ColorUtility.nearestColor(mColorHexa)[0];
         mBorderColor = Color.parseColor(mColorHexa);
+        updateNotificationHex();
     }
 
     /**
@@ -363,6 +365,15 @@ public class CirclePickerView extends ImageView {
         view.destroyDrawingCache();
 
         return snapshot;
+    }
+
+    private void updateNotificationHex(){
+        CirclePickerService service = CirclePickerService.Instance.getInstance();
+        if(service!=null){
+            service.updateHexaValue(mColorHexa);
+        }else{
+            throw new RuntimeException("memory leak in CirclePickerView");
+        }
     }
 
     private boolean inScale =false;
@@ -440,7 +451,9 @@ public class CirclePickerView extends ImageView {
 
         @Override
         public void onLongPress(MotionEvent e) {
-
+            ColorsData colorsData = new ColorsData((Activity) getContext());
+            colorsData.addColor(new ColorSpec(mColorHexa));
+            Toast.makeText(getContext(), mColorHexa+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
         }
 
         @Override
@@ -455,10 +468,6 @@ public class CirclePickerView extends ImageView {
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            ColorsData colorsData = new ColorsData((Activity) getContext());
-            colorsData.addColor(new ColorSpec(mColorHexa));
-            Toast.makeText(getContext(), mColorHexa+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
-
             return false;
         }
 
@@ -544,7 +553,7 @@ public class CirclePickerView extends ImageView {
         }
 
         @Override
-        public boolean onDrag(View v, DragEvent event) { // https://www.vogella.com/tutorials/AndroidDragAndDrop/article.html
+        public boolean onDrag(View v, DragEvent event) {
             return true;
 
         }

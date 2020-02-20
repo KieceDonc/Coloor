@@ -22,6 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static boolean isCPRunning = false; // is circle picker running
 
     private ImageView startCirclePickerI;
     private CircleImageView startCirclePickerB;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         startCirclePickerB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isServiceRunning(CirclePickerService.class)){ // check if circle picker is not running. If not, we start it
+                if(!isCPRunning){ // check if circle picker is not running. If not, we start it
                     startCirclePickerService();
                 }
             }
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         startCirclePickerI.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isServiceRunning(CirclePickerService.class)){ // check if circle picker is not running. If not, we start it
+                if(!isCPRunning){ // check if circle picker is not running. If not, we start it
                     startCirclePickerService();
                 }
 
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         }
+
         return false;
     }
 
