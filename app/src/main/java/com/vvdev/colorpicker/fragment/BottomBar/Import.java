@@ -1,6 +1,7 @@
 package com.vvdev.colorpicker.fragment.BottomBar;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
@@ -153,21 +155,27 @@ public class Import extends Fragment implements View.OnClickListener {
     }
 
     private void chosenByInternet(){
+        final Context c = getContext();
         new DownloadFileAlertDialog(getContext(), getActivity(), new DownloadFileAlertDialog.setOnListener() {
             @Override
             public void onFileDownloaded(String filePath) {
-                File downloadedFile = new File(filePath); // we get the file downloaded
-                Uri uriDownloadedFile = Uri.fromFile(downloadedFile); // we get his uri
 
-                String extension = MimeTypeMap.getFileExtensionFromUrl(filePath); // string extension of downloaded file
-                String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension); // get the type of the file
+            File downloadedFile = new File(filePath); // we get the file downloaded
+            Uri uriDownloadedFile = Uri.fromFile(downloadedFile); // we get his uri
 
-                if (mimeType.contains("image")||mimeType.contains("video")) {
+            String extension = MimeTypeMap.getFileExtensionFromUrl(filePath); // string extension of downloaded file
+            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension); // get the type of the file
+            if(mimeType!=null) {
+                if (mimeType.contains("image") || mimeType.contains("video")) {
                     loadFile(uriDownloadedFile);
-                }else if(mimeType.contains("pdf")){
+                } else if (mimeType.contains("pdf")){
                     loadPDF(uriDownloadedFile);
                 }
+            }else{
+                Log.e("Import","onFileDownloaded extension error\nFile path : "+mimeType+"\nExtension : "+extension+"\nMimeType : "+mimeType);
+                Toast.makeText(c,"Error, invalid file",Toast.LENGTH_LONG).show();
             }
+        }
         }).show();
     }
 

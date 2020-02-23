@@ -51,6 +51,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) { // TODO handle storage permission
         super.onCreate(savedInstanceState);
+
         WindowManager.LayoutParams wp = getWindow().getAttributes();
         wp.dimAmount = 0f;
 
@@ -78,9 +79,9 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     }
 
     private void permissionNotGiven(){
-        finish();
         CirclePickerService.waitingForResult=false;
         CirclePickerService.circleStarted=false;
+        finish();
     }
 
     private void startCapture(){

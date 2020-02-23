@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -45,12 +46,16 @@ public class Files_IS extends Fragment {
         Img = view.findViewById(R.id.import_ImageView); // get view of img
         Vid = view.findViewById(R.id.import_VidView); // get view of img
 
-        if (pathToFile.toString().contains("image")) {
+        String extension = MimeTypeMap.getFileExtensionFromUrl(pathToFile.toString()); // string extension of the file
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension); // get the type of the file
+        if (mimeType.contains("image")) {
             //handle image
             setupImg();
-        } else  if (pathToFile.toString().contains("video")) {
+        }else  if(mimeType.contains("video")) {
             //handle video
             setupVid();
+        }else{
+            Log.e("Files_IS","Error trying to load an recognized type file. File path :"+pathToFile.toString()+"\nExtension : "+mimeType);
         }
 
        /* Intent receiveData = getIntent(); // get intent

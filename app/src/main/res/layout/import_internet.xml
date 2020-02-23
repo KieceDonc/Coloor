@@ -9,17 +9,18 @@
 
     <EditText
         android:id="@+id/internet_url"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
-        android:inputType="textLongMessage|text|textCapSentences"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:inputType="textLongMessage|text|textCapSentences|textUri"
         android:text="@string/import_internet_url_text"
         android:textColor="@color/import_internet_url_text"
+        android:textColorLink="@android:color/holo_blue_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,5 +84,19 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/internet_url" />
+
+    <ProgressBar
+        android:id="@+id/internet_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:progressTint="@color/Theme1_Secondary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/internet_resume"
+        app:layout_constraintEnd_toStartOf="@+id/internet_download"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/internet_resume" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
