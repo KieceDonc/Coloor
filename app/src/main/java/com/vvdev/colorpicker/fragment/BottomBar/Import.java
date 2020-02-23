@@ -17,6 +17,7 @@ import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
 import com.vvdev.colorpicker.fragment.ImportSelected.Files_IS;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
+import com.vvdev.colorpicker.interfaces.FilesExtensionType;
 import com.vvdev.colorpicker.ui.DownloadFileAlertDialog;
 
 import java.io.File;
@@ -163,7 +164,7 @@ public class Import extends Fragment implements View.OnClickListener {
             File downloadedFile = new File(filePath); // we get the file downloaded
             Uri uriDownloadedFile = Uri.fromFile(downloadedFile); // we get his uri
 
-            String extension = MimeTypeMap.getFileExtensionFromUrl(filePath); // string extension of downloaded file
+            String extension = FilesExtensionType.getFileExtension(getContext(),uriDownloadedFile); // string extension of downloaded file
             String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension); // get the type of the file
             if(mimeType!=null) {
                 if (mimeType.contains("image") || mimeType.contains("video")) {
@@ -172,7 +173,7 @@ public class Import extends Fragment implements View.OnClickListener {
                     loadPDF(uriDownloadedFile);
                 }
             }else{
-                Log.e("Import","onFileDownloaded extension error\nFile path : "+mimeType+"\nExtension : "+extension+"\nMimeType : "+mimeType);
+                Log.e("Import","onFileDownloaded extension error\nFile path : "+filePath+"\nExtension : "+extension+"\nMimeType : null of course");
                 Toast.makeText(c,"Error, invalid file",Toast.LENGTH_LONG).show();
             }
         }

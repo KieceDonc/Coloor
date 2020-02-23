@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorsData;
-import com.vvdev.colorpicker.ui.PaletteAdapter;
+import com.vvdev.colorpicker.ui.PaletteRVAdapter;
 import com.vvdev.colorpicker.ui.PaletteControllerActions;
 import com.vvdev.colorpicker.ui.PaletteSwipeController;
 
@@ -51,8 +51,8 @@ public class Palette extends Fragment {
 
         final RecyclerView rv = view.findViewById(R.id.pRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        PaletteAdapter PaletteAdapter = new PaletteAdapter(getActivity());
-        rv.setAdapter(PaletteAdapter);
+        PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(getActivity());
+        rv.setAdapter(PaletteRVAdapter);
 
 
         final PaletteSwipeController paletteSwipeController = new PaletteSwipeController(new PaletteControllerActions(){
@@ -60,9 +60,9 @@ public class Palette extends Fragment {
             public void onRightClicked(int position) {
                 rv.removeViewAt(position);
                 colorsData.removeColor(position);
-                PaletteAdapter PaletteAdapter = new PaletteAdapter(getActivity());
-                rv.setAdapter(PaletteAdapter);
-                PaletteAdapter.notifyDataSetChanged();
+                PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(getActivity());
+                rv.setAdapter(PaletteRVAdapter);
+                PaletteRVAdapter.notifyDataSetChanged();
             }
         });
 

@@ -203,6 +203,7 @@ public class PDF extends Fragment {
 
                 if(actionId == EditorInfo.IME_ACTION_SEND&&inputDesirePage.getText().toString().length()>0&&inputDesirePage.getText().toString().length()<=pdfView.getPageCount()){
                     pdfView.jumpTo((Integer.parseInt(inputDesirePage.getText().toString())-1),true);
+                    inputDesirePage.clearFocus();
                     handled=true;
                 }
 

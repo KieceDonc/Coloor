@@ -23,12 +23,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHolder> {
+public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyViewHolderPalette> {
 
     private ArrayList<ColorSpec> colors;
     private final Activity activity;
 
-    public PaletteAdapter(Activity activity){
+    public PaletteRVAdapter(Activity activity){
         this.activity=activity;
         ColorsData colorsData = new ColorsData(activity);
         colors = colorsData.getShortedColors();
@@ -40,19 +40,19 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolderPalette onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.palette_itemrecycle, parent, false);
-        return new MyViewHolder(view);
+        return new MyViewHolderPalette(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolderPalette holder, int position) {
         ColorSpec currentColorSpec = colors.get(position);
         holder.display(currentColorSpec);
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolderPalette extends RecyclerView.ViewHolder {
 
         private ArrayList<String[]> allGeneratedColors;
 
@@ -72,7 +72,7 @@ public class PaletteAdapter extends RecyclerView.Adapter<PaletteAdapter.MyViewHo
         private ArrayList<TextView> extendHex = new ArrayList<>();
         private ArrayList<TextView> extendRGB = new ArrayList<>();
 
-        public MyViewHolder(final View itemView) { //
+        public MyViewHolderPalette(final View itemView) { //
             super(itemView);
 
             colorPreview = itemView.findViewById(R.id.piColorPreview);

@@ -209,22 +209,6 @@ public class DownloadFileAlertDialog extends Dialog implements android.view.View
     }
 
     private void setupUrlListeners(){
-        url.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-
         url.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -244,7 +228,7 @@ public class DownloadFileAlertDialog extends Dialog implements android.view.View
         url.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(final View v) {
-                if (url.isEnabled() && url.isFocusable()) {
+                if (url.isEnabled() && url.isFocusable()) { // used to show keyboard
                     url.post(new Runnable() {
                         @Override
                         public void run() {

@@ -1,8 +1,10 @@
 package com.vvdev.colorpicker.fragment.ImportSelected;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +19,19 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.interfaces.ColorSpec;
+import com.vvdev.colorpicker.interfaces.ColorUtility;
+import com.vvdev.colorpicker.interfaces.FilesExtensionType;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class Files_IS extends Fragment {
 
@@ -46,8 +56,9 @@ public class Files_IS extends Fragment {
         Img = view.findViewById(R.id.import_ImageView); // get view of img
         Vid = view.findViewById(R.id.import_VidView); // get view of img
 
-        String extension = MimeTypeMap.getFileExtensionFromUrl(pathToFile.toString()); // string extension of the file
-        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension); // get the type of the file
+        String fileExtension = FilesExtensionType.getFileExtension(getContext(),pathToFile);
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension); // get the type of the file*/
+        Log.i("Files_IS","File extension : "+fileExtension);
         if (mimeType.contains("image")) {
             //handle image
             setupImg();
@@ -55,7 +66,7 @@ public class Files_IS extends Fragment {
             //handle video
             setupVid();
         }else{
-            Log.e("Files_IS","Error trying to load an recognized type file. File path :"+pathToFile.toString()+"\nExtension : "+mimeType);
+            Log.e("Files_IS","Error trying to load an recognized type file. File path :"+pathToFile.toString()+"\nExtension : "+fileExtension);
         }
 
        /* Intent receiveData = getIntent(); // get intent
