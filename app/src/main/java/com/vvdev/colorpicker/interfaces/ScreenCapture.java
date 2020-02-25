@@ -66,10 +66,17 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         }
     }
 
+    private int cmptAntiLoop=0;
     private void startCapture() {
         Image image = mImageReader.acquireLatestImage();
         if (image == null) {
             Log.e(TAG, "image is null.");
+            if(cmptAntiLoop<10){ // TODO check if it's fix something
+                cmptAntiLoop++;
+                screenCapture();
+            }else{
+                Log.e(TAG,"cmptAntiLoop = 10");
+            }
             return;
         }
         int width = image.getWidth();

@@ -75,7 +75,7 @@ public class CirclePickerService extends Service {
             manager.createNotificationChannel(channel1);
         }
 
-        String message = "Waiting for permission to be given";// TODO to translate
+        String message = getApplicationContext().getString(R.string.service_waiting_permission);
 
 
         Notification notification = notificationBuilder.setSmallIcon(R.drawable.pipette_icon_icons_com_65005) // TODO replace by the application icon
@@ -90,10 +90,10 @@ public class CirclePickerService extends Service {
     public void updateHexaValue(String Hexa){
         notificationBuilder.mActions.clear(); // clear all past action ( you need to do that cuz you call addAction and not setAction ) plz refer https://stackoverflow.com/questions/24465587/change-notifications-action-icon-dynamically
         Notification notification = notificationBuilder
-                .setContentTitle("Current hexadecimal value")// TODO to translate
+                .setContentTitle(getApplicationContext().getString(R.string.service_current_hexa))
                 .setContentText(Hexa)
-                .addAction(R.drawable.pipette_icon_icons_com_65005,"STOP",stopIntent())
-                .addAction(R.drawable.pipette_icon_icons_com_65005,"SHARE",shareIntent(Hexa)) // TODO to translate
+                .addAction(R.drawable.pipette_icon_icons_com_65005,getApplicationContext().getString(R.string.service_stop),stopIntent())
+                .addAction(R.drawable.pipette_icon_icons_com_65005,getApplicationContext().getString(R.string.service_share),shareIntent(Hexa))
                 .build();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(1, notification);

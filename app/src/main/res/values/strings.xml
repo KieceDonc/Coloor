@@ -23,5 +23,16 @@
     <string name="Hsv">Hsv:</string>
     <string name="RGB">RGB:</string>
     <string name="paletteItemMore"><![CDATA[<]]></string>
+
+    <string name="Toast_have_been_added">haven been added to the palette !</string> <!-- Example : #000000 haven been added to the palette-->
+
     <string name="import_internet_url_text">Copy your url file</string>
+    <string name="import_internet_unable_to_connect">Unable to connect to this address</string>
+    <string name="import_internet_invalid_url">Invalid url address</string>
+    <string name="import_internet_basic_error">Error while downloading, please retry</string>
+
+    <string name="service_current_hexa">Current hexadecimal value</string>
+    <string name="service_waiting_permission">Waiting for permission to be given</string>
+    <string name="service_stop">STOP</string>
+    <string name="service_share">SHARE</string>
 </resources>

@@ -984,7 +984,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
                 String hexValue = rawHexValue.substring(5);
                 ColorSpec CurrentColor = new ColorSpec(hexValue);
                 new ColorsData(getActivity()).addColor(CurrentColor);
-                Toast.makeText(getActivity(), hexValue+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
+                Toast.makeText(getActivity(), hexValue+" "+getContext().getString(R.string.Toast_have_been_added), Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
                 break;
             }
             case R.id.info: {
@@ -1151,8 +1151,10 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     /**
      * Function who's refreshing value of camera_top.xml
      */
-    public void CameraTopRefresh() { // TODO replace by ColorSpec object
+    public void CameraTopRefresh() {
         int[] RGBAverage = ColorUtility.getRGBAverageFromTextureView(mTextureView, CameraCircle);
+        ColorSpec currentColor = new ColorSpec(RGBAverage);
+
         String ToDisplayRGB = SRGB+" "+RGBAverage[0]+", "+RGBAverage[1]+", "+RGBAverage[2];
         TVRGBValue.setText(ToDisplayRGB);
 

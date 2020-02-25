@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
@@ -453,7 +454,7 @@ public class CirclePickerView extends ImageView {
         public void onLongPress(MotionEvent e) {
             ColorsData colorsData = new ColorsData((Activity) getContext());
             colorsData.addColor(new ColorSpec(mColorHexa));
-            Toast.makeText(getContext(), mColorHexa+" have been added to the palette !", Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
+            Toast.makeText(getContext(), mColorHexa+" "+getContext().getString(R.string.Toast_have_been_added), Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
         }
 
         @Override

@@ -148,14 +148,13 @@
             android:id="@+id/piHSV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="150dp"
             android:text="HSV : 255, 255, 255"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
+            app:layout_constraintBottom_toBottomOf="@+id/piHex"
             app:layout_constraintStart_toEndOf="@+id/piColorPreview"
-            app:layout_constraintTop_toTopOf="@+id/piColorPreview"
-            app:layout_constraintVertical_bias="0.576" />
+            app:layout_constraintTop_toTopOf="@+id/piHex" />
 
         <TextView
             android:id="@+id/piRGB"
@@ -174,7 +173,7 @@
             android:id="@+id/piHex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="150dp"
+            android:layout_marginStart="24dp"
             android:text="Hexa : #000000"
             android:textColor="@android:color/black"
             android:textSize="12sp"
@@ -200,7 +199,7 @@
             android:layout_height="16dp"
             android:background="#000000"
             app:layout_constraintBottom_toBottomOf="@+id/piRGB"
-            app:layout_constraintStart_toStartOf="@+id/piHex"
+            app:layout_constraintStart_toStartOf="@+id/piHSV"
             app:layout_constraintTop_toTopOf="@+id/piRGB" />
 
         <View

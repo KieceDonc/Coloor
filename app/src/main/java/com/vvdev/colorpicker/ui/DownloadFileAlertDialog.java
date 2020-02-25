@@ -1,17 +1,15 @@
 package com.vvdev.colorpicker.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,12 +24,10 @@ import com.downloader.PRDownloaderConfig;
 import com.downloader.Progress;
 import com.vvdev.colorpicker.R;
 
-import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.Constraints;
 
 public class DownloadFileAlertDialog extends Dialog implements android.view.View.OnClickListener {
@@ -121,7 +117,7 @@ public class DownloadFileAlertDialog extends Dialog implements android.view.View
             currentDownload = newDownload(urlText,pathFile,fileName);
         }else{
             url.setTextColor(activity.getResources().getColor(R.color.import_internet_url_text_error)); // red color to show an error to the user
-            url.setText("Unable to connect to this address"); // TODO to translate
+            url.setText(getContext().getString(R.string.import_internet_unable_to_connect));
         }
     }
 
@@ -177,9 +173,9 @@ public class DownloadFileAlertDialog extends Dialog implements android.view.View
                         url.setTextColor(activity.getResources().getColor(R.color.import_internet_url_text_error)); // red color to show an error to the user
 
                         if(error.getConnectionException().toString().contains("java.net.MalformedURLException")){
-                            url.setText("Url address invalid"); // TODO to translate
+                            url.setText(getContext().getString(R.string.import_internet_invalid_url));
                         }else{
-                            url.setText("Error while downloading, please retry"); // TODO to translate
+                            url.setText(getContext().getString(R.string.import_internet_basic_error));
                         }
 
                         currentDownload=-1;
@@ -244,7 +240,7 @@ public class DownloadFileAlertDialog extends Dialog implements android.view.View
 
     private String createFileName(){
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("MMddyyyyhhmmss");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("MMddyyyyhhmmss");
         return formatter.format(date);
     }
 

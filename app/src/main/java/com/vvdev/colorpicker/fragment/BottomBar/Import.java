@@ -1,8 +1,10 @@
 package com.vvdev.colorpicker.fragment.BottomBar;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
 import com.vvdev.colorpicker.fragment.ImportSelected.Files_IS;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
 import com.vvdev.colorpicker.interfaces.FilesExtensionType;
+import com.vvdev.colorpicker.interfaces.PermissionCustom;
 import com.vvdev.colorpicker.ui.DownloadFileAlertDialog;
 
 import java.io.File;
@@ -25,6 +28,8 @@ import java.io.File;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import static com.vvdev.colorpicker.fragment.ImportSelected.Files_IS.KEY_ARGUMENT_FILES_PATH;
@@ -32,15 +37,19 @@ import static com.vvdev.colorpicker.fragment.ImportSelected.PDF.KEY_ARGUMENT_PDF
 
 public class Import extends Fragment implements View.OnClickListener {
 
+    private static final int REQUEST_CODE_FILE = 15086;
+    private static final int REQUEST_CODE_PDF = 15087;
+    private static final int REQUEST_CODE_GDOC =  15089;
+
+    private static final int REQUEST_CODE_PERM_PDF = 535;
+    private static final int REQUEST_CODE_PERM_CAMERA = 536;
+    private static final int REQUEST_CODE_PERM_FILES = 567;
+    private static final int REQUEST_CODE_PERM_INTERNET = 568;
+
     private RelativeLayout mImportCamera;
     private RelativeLayout mImportFile;
     private RelativeLayout mImportPDF;
     private RelativeLayout mImportInternet;
-
-    private static final int REQUEST_CODE_FILE = 15086;
-    private static final int REQUEST_CODE_PDF = 15087;
-    private static final int REQUEST_CODE_INTERNET =15088;
-    private static final int REQUEST_CODE_GDOC =  15089;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,36 +69,41 @@ public class Import extends Fragment implements View.OnClickListener {
         mImportFile.setOnClickListener(this);
         mImportPDF.setOnClickListener(this);
         mImportInternet.setOnClickListener(this);
-        askPermissions();
-    }
-
-    @TargetApi(23)
-    private void askPermissions() {
-        String[] permissions = {
-                "android.permission.READ_EXTERNAL_STORAGE",
-                "android.permission.WRITE_EXTERNAL_STORAGE"
-        };
-        int requestCode = 200;
-        requestPermissions(permissions, requestCode);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.importPDF:{
-                choosePDF();
+                if(PermissionCustom.isWriteAndWritePermissionGiven(getContext())){
+                    choosePDF();
+                }else{
+                    PermissionCustom.askReadAndWritePermissions(getActivity(),REQUEST_CODE_PERM_PDF);
+                }
                 break;
             }
             case R.id.importCamera:{
-                loadCamera(); // TODO ask camera permission
+                if(PermissionCustom.isReadPermissionGiven(getContext())){
+                    loadCamera();
+                }else {
+                    PermissionCustom.askCameraPermission(getActivity(),REQUEST_CODE_PERM_CAMERA);
+                }
                 break;
             }
             case R.id.importFile:{
-                chooseFile(); // TODO ask write / read external storage permission
+                if(PermissionCustom.isWriteAndWritePermissionGiven(getContext())){
+                    chooseFile();
+                }else{
+                    PermissionCustom.askReadAndWritePermissions(getActivity(),REQUEST_CODE_PERM_FILES);
+                }
                 break;
             }
             case R.id.importInternet:{
-                chosenByInternet(); // TODO ask write / read external storage permission
+                if(PermissionCustom.isWriteAndWritePermissionGiven(getContext())){
+                    chooseInternet();
+                }else{
+                    PermissionCustom.askReadAndWritePermissions(getActivity(),REQUEST_CODE_PERM_INTERNET);
+                }
                 break;
             }
         }
@@ -102,7 +116,7 @@ public class Import extends Fragment implements View.OnClickListener {
             if(data.getData()!=null){
                 //String path = FileUtils.getPath(getContext(),data.getData());
                 switch (requestCode) {
-                    case REQUEST_CODE_FILE: {// TODO check .mp4 etc ..
+                    case REQUEST_CODE_FILE: {
                         loadFile(data.getData());
                         break;
                     }
@@ -110,18 +124,31 @@ public class Import extends Fragment implements View.OnClickListener {
                         loadPDF(data.getData());
                         break;
                     }
-                    case REQUEST_CODE_INTERNET: {
-                        break;
-                    }
                     case REQUEST_CODE_GDOC: {
                         break;
                     }
                 }
             }else{
-                Log.e("Import","Import fragment errort at onActivityResult, data.getData() null.\n data values : "+data);
+                Log.e("Import","Import fragment error at onActivityResult, data.getData() null.\nData values : "+data);
             }
-        }else{
-            Log.e("Import","Import fragment errort at onActivityResult, data null");
+        }else if(resultCode==PackageManager.PERMISSION_GRANTED){
+            switch (requestCode){
+                case REQUEST_CODE_PERM_PDF :{
+                    choosePDF();
+                    break;
+                }
+                case REQUEST_CODE_PERM_CAMERA:{
+                    loadCamera();
+                    break;
+                }
+                case REQUEST_CODE_PERM_FILES:{
+                    chooseFile();
+                    break;
+                }
+                case REQUEST_CODE_PERM_INTERNET:{
+                    chooseInternet();
+                }
+            }
         }
 
     }
@@ -155,7 +182,7 @@ public class Import extends Fragment implements View.OnClickListener {
         startActivityForResult(chooserIntent, REQUEST_CODE_FILE);
     }
 
-    private void chosenByInternet(){
+    private void chooseInternet(){
         final Context c = getContext();
         new DownloadFileAlertDialog(getContext(), getActivity(), new DownloadFileAlertDialog.setOnListener() {
             @Override
@@ -188,7 +215,7 @@ public class Import extends Fragment implements View.OnClickListener {
         pdfFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, pdfFragment, "findThisFragment")
+                .replace(R.id.nav_host_fragment, pdfFragment)
                 .addToBackStack(null)
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
@@ -197,7 +224,7 @@ public class Import extends Fragment implements View.OnClickListener {
         Camera cameraFragment= new Camera();
 
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, cameraFragment, "findThisFragment")
+                .replace(R.id.nav_host_fragment, cameraFragment)
                 .addToBackStack(null)
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
@@ -209,10 +236,8 @@ public class Import extends Fragment implements View.OnClickListener {
         filesFragment.setArguments(bundle);
 
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, filesFragment, "findThisFragment")
-                .addToBackStack(null)
+                .replace(R.id.nav_host_fragment, filesFragment)
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
-
     }
 
 

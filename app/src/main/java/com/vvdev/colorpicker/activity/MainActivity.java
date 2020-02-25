@@ -21,12 +21,16 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
+import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
+
 public class MainActivity extends AppCompatActivity {
 
     public static boolean isCPRunning = false; // is circle picker running
 
     private ImageView startCirclePickerI;
     private CircleImageView startCirclePickerB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(!isCPRunning){ // check if circle picker is not running. If not, we start it
                     startCirclePickerService();
+                }else if(isCPRunning&&wmCirclePickerView==null&&!isCirclePickerActivityRunning){
+                    isCPRunning=false;
+                    startCirclePickerService();
+                    Log.e("MainActivity","Bug detected, isCPRunning = true and isCirclePickerActivityRunning = false but no circle view attached.\nisCPRunning have been set to false and startCirPickerService have been started");
                 }
 
             }

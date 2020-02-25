@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.interfaces.PermissionCustom;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.services.CirclePickerService;
 
@@ -45,12 +46,16 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     public static View wmCirclePickerView;
     public static WindowManager.LayoutParams wmCirclePickerParams;
 
+    public static boolean isCirclePickerActivityRunning = false;
+
     private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
     private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) { // TODO handle storage permission
         super.onCreate(savedInstanceState);
+
+        isCirclePickerActivityRunning = true;
 
         WindowManager.LayoutParams wp = getWindow().getAttributes();
         wp.dimAmount = 0f;
@@ -81,6 +86,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     private void permissionNotGiven(){
         CirclePickerService.waitingForResult=false;
         CirclePickerService.circleStarted=false;
+        isCirclePickerActivityRunning=false;
         finish();
     }
 
@@ -119,6 +125,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
 
         CirclePickerService.waitingForResult=false;
         CirclePickerService.circleStarted=true;
+        isCirclePickerActivityRunning=false;
         finish();
     }
 
@@ -146,7 +153,6 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                         startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
                         dialogInterface.dismiss();
                         permissionNotGiven(); // used to fix a bug
-                        finish(); // used to fix a bug
                     }
                 })
                 //set negative button

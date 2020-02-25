@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CameraLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
 
     <com.vvdev.colorpicker.ui.AutoFitTextureView
         android:id="@+id/TextureViewCamera"
@@ -54,6 +55,7 @@
             android:rotation="270" />
 
     </FrameLayout>
+
     <include
         android:id="@+id/BottomBar"
         layout="@layout/camera_bottom"
