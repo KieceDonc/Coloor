@@ -216,7 +216,7 @@ public class Import extends Fragment implements View.OnClickListener {
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, pdfFragment)
-                .addToBackStack(null)
+                .disallowAddToBackStack()
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
 
@@ -225,7 +225,7 @@ public class Import extends Fragment implements View.OnClickListener {
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, cameraFragment)
-                .addToBackStack(null)
+                .disallowAddToBackStack()
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
     private void loadFile(Uri path){
@@ -237,6 +237,7 @@ public class Import extends Fragment implements View.OnClickListener {
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.nav_host_fragment, filesFragment)
+                .disallowAddToBackStack()
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
 

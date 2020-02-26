@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView startCirclePickerB;
 
 
+    public static int appNavigationBarHeight =0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        BottomNavigationView navView = findViewById(R.id.nav_view); // used in CirclePickerView
+        appNavigationBarHeight=navView.getHeight(); // used in CirclePickerView
     }
 
     private void startCirclePickerService(){

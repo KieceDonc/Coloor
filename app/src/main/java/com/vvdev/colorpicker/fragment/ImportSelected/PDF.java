@@ -38,6 +38,8 @@ public class PDF extends Fragment {
 
     public static final String KEY_ARGUMENT_PDF_PATH ="PathToPDF";
 
+    private static String TAG = PDF.class.getName();
+
     private PDFView pdfView;
     private EditText inputDesirePage;
     private TextView numberOfPage;
@@ -117,14 +119,14 @@ public class PDF extends Fragment {
                 .onError(new OnErrorListener() {
                     @Override
                     public void onError(Throwable t) {
-                        Log.e("Import_PDF","Error at onError. Trowable :\n"+t);
+                        Log.e(TAG,"Error at onError. Throwable :\n"+t);
 
                     }
                 })
                 .onPageError(new OnPageErrorListener() {
                     @Override
                     public void onPageError(int page, Throwable t) {
-                        Log.e("Import_PDF","Error at onPageError, page number "+page+". Trowable :\n"+t);
+                        Log.e(TAG,"Error at onPageError, page number "+page+". Throwable :\n"+t);
                     }
                 })
                 .onRender(new OnRenderListener() {

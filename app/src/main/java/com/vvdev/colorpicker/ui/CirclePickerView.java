@@ -3,17 +3,23 @@ package com.vvdev.colorpicker.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Picture;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -39,6 +45,7 @@ import com.vvdev.colorpicker.services.CirclePickerService;
 import static android.content.Context.WINDOW_SERVICE;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerParams;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
+import static com.vvdev.colorpicker.activity.MainActivity.appNavigationBarHeight;
 
 @SuppressLint("AppCompatCustomView")
 public class CirclePickerView extends ImageView {
@@ -53,7 +60,7 @@ public class CirclePickerView extends ImageView {
             mScreenBitmap = bitmap;
             setVisibility(VISIBLE);
             inUpdatePhoneBitmap=false;
-            showPickerBitmap();
+            setupFinalBitmap();
 
         }
 
@@ -64,6 +71,7 @@ public class CirclePickerView extends ImageView {
     };
     private BitmapShader mBitmapShader;
 
+    private Bitmap mFinalBitmap;
     private Bitmap mScreenBitmap;
     private Bitmap mBitmap;
 
@@ -101,6 +109,8 @@ public class CirclePickerView extends ImageView {
     private int mBorderColor;
     private int mMiddleSquareDim;
     private int mMiddleBorderSquareDim;
+    private int mStatusBarHeight;
+    private int mNavigationBarHeight; // /!\ it include app navigation bar height
 
     private boolean mReady;
     private boolean mSetupPending=true;
@@ -164,6 +174,9 @@ public class CirclePickerView extends ImageView {
             display.getSize(size);
             mPhoneWidth = size.x;
             mPhoneHeight= size.y;
+
+            mStatusBarHeight = getStatusBarHeight();
+            mNavigationBarHeight = getNavigationBarHeight();
 
             DisplayMetrics metrics = new DisplayMetrics();
             display.getMetrics(metrics);
@@ -306,11 +319,21 @@ public class CirclePickerView extends ImageView {
         }
     }
 
-    /**
-     * Show zoomed screen with desired scale factor
-     */
-    private void showPickerBitmap(){
-        if(mScreenBitmap!=null){
+    private void setupFinalBitmap(){
+        mFinalBitmap = Bitmap.createBitmap(mScreenBitmap.getWidth()+getWidth(), mScreenBitmap.getHeight()+getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas=new Canvas(mFinalBitmap);
+        canvas.drawColor(Color.BLACK);
+        int left = getWidth()/2;
+        int top = getHeight()/2;
+        canvas.drawBitmap(mScreenBitmap, left, top, null);
+
+        showPickerBitmapOutOfBorder(wmCirclePickerParams.x,wmCirclePickerParams.y);
+    }
+
+    private void showPickerBitmapOutOfBorder(int wmX,int wmY){
+        if(mFinalBitmap!=null){
+            int DesireXLocationOnScreen=mFinalBitmap.getWidth()/2+wmX;
+            int DesireYLocationOnScreen=mFinalBitmap.getHeight()/2+wmY;
 
             int DesireX= (int) (getWidth()-getWidth()*scaleFactor)/2;
             int DesireY= (int) (getHeight()-getHeight()*scaleFactor)/2;
@@ -320,9 +343,7 @@ public class CirclePickerView extends ImageView {
             Matrix matrix = new Matrix();
             matrix.postScale(1, 1);
 
-            int[] locationOnScreen = new int[2];
-            getLocationOnScreen(locationOnScreen);
-            mBitmap = Bitmap.createBitmap(mScreenBitmap, locationOnScreen[0]+DesireX, locationOnScreen[1]+DesireY,DesireWidth,DesireHeight, matrix, true);
+            mBitmap = Bitmap.createBitmap(mFinalBitmap, DesireXLocationOnScreen+DesireX, DesireYLocationOnScreen+DesireY,DesireWidth,DesireHeight, matrix, true); // TODO make test to know if you need mStatusBarHeight or not. In samsung galaxy s10 e if you must have it but in emulator you mustn't
             if(!inScale&&scaleFactor!=0.5){
                 updatePickerBorder();
             }
@@ -377,6 +398,22 @@ public class CirclePickerView extends ImageView {
         }
     }
 
+    public int getStatusBarHeight() {
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            return getResources().getDimensionPixelSize(resourceId);
+        }
+        return 0;
+    }
+
+    public int getNavigationBarHeight(){
+        int resourceId = getResources().getIdentifier(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? "navigation_bar_height" : "navigation_bar_height_landscape","dimen", "android");
+        if (resourceId > 0) {
+            return getResources().getDimensionPixelSize(resourceId);
+        }
+        return 0;
+    }
+
     private boolean inScale =false;
 
     private class UserInteractionHandler implements OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, OnDragListener {
@@ -407,7 +444,7 @@ public class CirclePickerView extends ImageView {
             }
             scaleFactor*=detectorScaleFactor;
             scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
-            showPickerBitmap();
+            showPickerBitmapOutOfBorder(wmCirclePickerParams.x,wmCirclePickerParams.y);
             zeroFingerSinceScale=false;
             return true;
         }
@@ -536,11 +573,29 @@ public class CirclePickerView extends ImageView {
                             recViewLastY = (int) event.getRawY();
                             wmCirclePickerParams.x += deltaX;
                             wmCirclePickerParams.y += deltaY;
+
+
+                            if(wmCirclePickerParams.x<(-1*mFinalBitmap.getWidth()/2)){
+                                wmCirclePickerParams.x=(-1*mFinalBitmap.getWidth()/2);
+                            }else if(wmCirclePickerParams.x>(mFinalBitmap.getWidth()/2)){
+                                wmCirclePickerParams.x=(mFinalBitmap.getWidth()/2);
+                            }
+
+                            if(wmCirclePickerParams.y<(-1*mFinalBitmap.getHeight()/2)){
+                                wmCirclePickerParams.y=(-1*mFinalBitmap.getHeight()/2);
+                            }
+                            if(wmCirclePickerParams.y>(mFinalBitmap.getHeight()/2)){
+                                wmCirclePickerParams.y=(mFinalBitmap.getHeight()/2);
+                            }
+
+                            Log.e("test","\nwmX ="+wmCirclePickerParams.x
+                                    +"\nwmY="+wmCirclePickerParams.y
+                                    +"\nmFinalBitmap width = "+(mFinalBitmap.getWidth())
+                                    +"\nmFinalBitmap height = "+(mFinalBitmap.getHeight()));
+
                             WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE);
-
-                            wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512
-
-                            showPickerBitmap();
+                            wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512 we move x and y
+                            showPickerBitmapOutOfBorder(wmCirclePickerParams.x,wmCirclePickerParams.y);
                             break;
                         }
                     }

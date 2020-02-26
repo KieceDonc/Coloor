@@ -1,10 +1,8 @@
 package com.vvdev.colorpicker.fragment.ImportSelected;
 
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,23 +17,20 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorSpec;
-import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.FilesExtensionType;
-
-import java.io.IOException;
-import java.util.ArrayList;
+import com.vvdev.colorpicker.interfaces.ScreenCapture;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class Files_IS extends Fragment {
 
     public static final String KEY_ARGUMENT_FILES_PATH ="PathToAFile";
+
+    private static String TAG = Files_IS.class.getName();
+
 
     private ImageView Img;
     private VideoView Vid;
@@ -58,7 +53,7 @@ public class Files_IS extends Fragment {
 
         String fileExtension = FilesExtensionType.getFileExtension(getContext(),pathToFile);
         String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension); // get the type of the file*/
-        Log.i("Files_IS","File extension : "+fileExtension);
+        Log.i(TAG,"File extension : "+fileExtension);
         if (mimeType.contains("image")) {
             //handle image
             setupImg();
@@ -66,7 +61,7 @@ public class Files_IS extends Fragment {
             //handle video
             setupVid();
         }else{
-            Log.e("Files_IS","Error trying to load an recognized type file. File path :"+pathToFile.toString()+"\nExtension : "+fileExtension);
+            Log.e(TAG,"Error trying to load an recognized type file. File path :"+pathToFile.toString()+"\nExtension : "+fileExtension);
         }
 
        /* Intent receiveData = getIntent(); // get intent
@@ -80,7 +75,7 @@ public class Files_IS extends Fragment {
         Glide.with(this).load(pathToFile).fitCenter().dontAnimate().listener(new RequestListener<Drawable>() {
             @Override
             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                Log.e("IMAGE_EXCEPTION", "Exception " + e.getMessage());
+                Log.e(TAG, "IMAGE_EXCEPTION, Exception " + e.getMessage());
                 return false;
             }
 

@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
 
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ import java.util.Comparator;
 import static java.lang.Integer.parseInt;
 
 public class ColorUtility {
+
+    private static String TAG = ColorUtility.class.getName();
+
 
     /**
      * return the nearest color of the given color
@@ -122,7 +126,7 @@ public class ColorUtility {
         }else if(ReceiveColor.length()==6){
             return new int[]{parseInt(ReceiveColor.substring(0, 2), 16), parseInt(ReceiveColor.substring(2, 4), 16), parseInt(ReceiveColor.substring(4), 16)};
         }else{
-            Log.e("getRGBFromHex","Unable to parse this color : "+ReceiveColor);
+            Log.e(TAG,"getRGBFromHex() Unable to parse this color : "+ReceiveColor);
             return new int[]{0,0,0};
         }
     }
