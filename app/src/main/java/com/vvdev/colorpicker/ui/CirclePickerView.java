@@ -97,8 +97,6 @@ public class CirclePickerView extends ImageView {
     private float mBorderRadius;
     private float mPositionBorderColorName;
     private float mPositionBorderHex;
-    private float tdX;
-    private float tdY;
 
     private int mPhoneWidth;
     private int mPhoneHeight;
@@ -320,11 +318,12 @@ public class CirclePickerView extends ImageView {
     }
 
     private void setupFinalBitmap(){
-        mFinalBitmap = Bitmap.createBitmap(mScreenBitmap.getWidth()+getWidth(), mScreenBitmap.getHeight()+getHeight(), Bitmap.Config.ARGB_8888);
+        mFinalBitmap = Bitmap.createBitmap(mScreenBitmap.getWidth()+getWidth()/2, mScreenBitmap.getHeight()+getHeight()/2, Bitmap.Config.ARGB_8888);
+        Log.e("test",mScreenBitmap.getHeight()+" "+mPhoneHeight+" "+getHeight());
         Canvas canvas=new Canvas(mFinalBitmap);
         canvas.drawColor(Color.BLACK);
-        int left = getWidth()/2;
-        int top = getHeight()/2;
+        int left = getWidth()/4;
+        int top = getHeight()/4;
         canvas.drawBitmap(mScreenBitmap, left, top, null);
 
         showPickerBitmapOutOfBorder(wmCirclePickerParams.x,wmCirclePickerParams.y);
@@ -332,13 +331,14 @@ public class CirclePickerView extends ImageView {
 
     private void showPickerBitmapOutOfBorder(int wmX,int wmY){
         if(mFinalBitmap!=null){
-            int DesireXLocationOnScreen=mFinalBitmap.getWidth()/2+wmX;
-            int DesireYLocationOnScreen=mFinalBitmap.getHeight()/2+wmY;
+            int DesireXLocationOnScreen=mFinalBitmap.getWidth()/2+wmX-getWidth()/2;
+            int DesireYLocationOnScreen=mFinalBitmap.getHeight()/2+wmY-getHeight()/2;
 
             int DesireX= (int) (getWidth()-getWidth()*scaleFactor)/2;
             int DesireY= (int) (getHeight()-getHeight()*scaleFactor)/2;
             int DesireWidth= (int) (getWidth()*scaleFactor);
             int DesireHeight= (int) (getHeight()*scaleFactor);
+            //Log.e("test","\n\nDesireXLocationOnScreen = "+DesireXLocationOnScreen+"\nDesireYLocationOnscreen"+DesireYLocationOnScreen+"\nDesireX = "+DesireX+"\nDesireY = "+DesireY);
 
             Matrix matrix = new Matrix();
             matrix.postScale(1, 1);
@@ -575,23 +575,28 @@ public class CirclePickerView extends ImageView {
                             wmCirclePickerParams.y += deltaY;
 
 
-                            if(wmCirclePickerParams.x<(-1*mFinalBitmap.getWidth()/2)){
-                                wmCirclePickerParams.x=(-1*mFinalBitmap.getWidth()/2);
-                            }else if(wmCirclePickerParams.x>(mFinalBitmap.getWidth()/2)){
-                                wmCirclePickerParams.x=(mFinalBitmap.getWidth()/2);
+                            int toDeductX= (int) (getWidth()-getWidth()*scaleFactor)/2; // due to zoom
+                            int toDeductY= (int) (getHeight()-getHeight()*scaleFactor)/2; // due to zoom
+
+                            int maxWidth = mFinalBitmap.getWidth()/2-mBorderWidthPx-toDeductX;
+                            if(wmCirclePickerParams.x<(-1*maxWidth)){
+                                wmCirclePickerParams.x=(-1*maxWidth);
+                            }else if(wmCirclePickerParams.x>maxWidth){
+                                wmCirclePickerParams.x=maxWidth;
                             }
 
-                            if(wmCirclePickerParams.y<(-1*mFinalBitmap.getHeight()/2)){
-                                wmCirclePickerParams.y=(-1*mFinalBitmap.getHeight()/2);
+                            int maxHeight = mFinalBitmap.getHeight()/2-mBorderWidthPx-toDeductY;
+                            if(wmCirclePickerParams.y<(-1*maxHeight)){
+                                wmCirclePickerParams.y=(-1*maxHeight);
                             }
-                            if(wmCirclePickerParams.y>(mFinalBitmap.getHeight()/2)){
-                                wmCirclePickerParams.y=(mFinalBitmap.getHeight()/2);
+                            if(wmCirclePickerParams.y>maxHeight){
+                                wmCirclePickerParams.y=maxHeight;
                             }
 
-                            Log.e("test","\nwmX ="+wmCirclePickerParams.x
+                            /*Log.e("test","\nwmX ="+wmCirclePickerParams.x
                                     +"\nwmY="+wmCirclePickerParams.y
                                     +"\nmFinalBitmap width = "+(mFinalBitmap.getWidth())
-                                    +"\nmFinalBitmap height = "+(mFinalBitmap.getHeight()));
+                                    +"\nmFinalBitmap height = "+(mFinalBitmap.getHeight()));*/
 
                             WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE);
                             wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512 we move x and y
