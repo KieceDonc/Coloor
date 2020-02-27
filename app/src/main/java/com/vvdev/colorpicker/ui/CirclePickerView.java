@@ -318,12 +318,12 @@ public class CirclePickerView extends ImageView {
     }
 
     private void setupFinalBitmap(){
-        mFinalBitmap = Bitmap.createBitmap(mScreenBitmap.getWidth()+getWidth()/2, mScreenBitmap.getHeight()+getHeight()/2, Bitmap.Config.ARGB_8888);
+        mFinalBitmap = Bitmap.createBitmap(mScreenBitmap.getWidth()+getWidth(), mScreenBitmap.getHeight()+getHeight(), Bitmap.Config.ARGB_8888);
         Log.e("test",mScreenBitmap.getHeight()+" "+mPhoneHeight+" "+getHeight());
         Canvas canvas=new Canvas(mFinalBitmap);
         canvas.drawColor(Color.BLACK);
-        int left = getWidth()/4;
-        int top = getHeight()/4;
+        int left = getWidth()/2;
+        int top = getHeight()/2;
         canvas.drawBitmap(mScreenBitmap, left, top, null);
 
         showPickerBitmapOutOfBorder(wmCirclePickerParams.x,wmCirclePickerParams.y);
@@ -574,29 +574,25 @@ public class CirclePickerView extends ImageView {
                             wmCirclePickerParams.x += deltaX;
                             wmCirclePickerParams.y += deltaY;
 
+                            int maxWidth = mFinalBitmap.getWidth()/2-(mFinalBitmap.getWidth()/2-mScreenBitmap.getWidth()/2);
+                            int mMiddleSquareDimBase = (int) (1 / 0.5); // equals to mMiddleBorderDim when scale factor = 0.5. Casting (int) cause imperfection
 
-                            int toDeductX= (int) (getWidth()-getWidth()*scaleFactor)/2; // due to zoom
-                            int toDeductY= (int) (getHeight()-getHeight()*scaleFactor)/2; // due to zoom
+                            int toDeductX= mBorderWidthPx*2-mMiddleSquareDimBase;
+                            int toDeductY= mMiddleSquareDimBase;
 
-                            int maxWidth = mFinalBitmap.getWidth()/2-mBorderWidthPx-toDeductX;
-                            if(wmCirclePickerParams.x<(-1*maxWidth)){
-                                wmCirclePickerParams.x=(-1*maxWidth);
-                            }else if(wmCirclePickerParams.x>maxWidth){
-                                wmCirclePickerParams.x=maxWidth;
+                            if(wmCirclePickerParams.x<(-1*maxWidth+toDeductX)){
+                                wmCirclePickerParams.x=(-1*maxWidth+toDeductX);
+                            }else if(wmCirclePickerParams.x>maxWidth-toDeductX){
+                                wmCirclePickerParams.x=maxWidth-toDeductX;
                             }
 
-                            int maxHeight = mFinalBitmap.getHeight()/2-mBorderWidthPx-toDeductY;
-                            if(wmCirclePickerParams.y<(-1*maxHeight)){
-                                wmCirclePickerParams.y=(-1*maxHeight);
+                            int maxHeight = mFinalBitmap.getHeight()/2-(mFinalBitmap.getHeight()/2-mScreenBitmap.getHeight()/2);
+                            if(wmCirclePickerParams.y<(-1*maxHeight+toDeductY)){
+                                wmCirclePickerParams.y=(-1*maxHeight+toDeductY);
                             }
                             if(wmCirclePickerParams.y>maxHeight){
                                 wmCirclePickerParams.y=maxHeight;
                             }
-
-                            /*Log.e("test","\nwmX ="+wmCirclePickerParams.x
-                                    +"\nwmY="+wmCirclePickerParams.y
-                                    +"\nmFinalBitmap width = "+(mFinalBitmap.getWidth())
-                                    +"\nmFinalBitmap height = "+(mFinalBitmap.getHeight()));*/
 
                             WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE);
                             wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512 we move x and y
