@@ -67,3 +67,4 @@
         app:srcCompat="@drawable/pipette_icon_icons_com_65005" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+<!--TODO replace all icon because you don't have authors permissions-->

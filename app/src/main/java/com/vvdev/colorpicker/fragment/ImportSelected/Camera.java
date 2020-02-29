@@ -986,7 +986,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
                 String hexValue = rawHexValue.substring(5);
                 ColorSpec CurrentColor = new ColorSpec(hexValue);
                 new ColorsData(getActivity()).addColor(CurrentColor);
-                CustomToast.show(getActivity(),getLayoutInflater(),hexValue); // TODO customToast
+                CustomToast.show(getActivity(),getLayoutInflater(),hexValue);
                 break;
             }
             case R.id.info: {

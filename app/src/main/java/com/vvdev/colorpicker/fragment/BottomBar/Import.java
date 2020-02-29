@@ -114,7 +114,6 @@ public class Import extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(data!=null){
             if(data.getData()!=null){
-                //String path = FileUtils.getPath(getContext(),data.getData());
                 switch (requestCode) {
                     case REQUEST_CODE_FILE: {
                         loadFile(data.getData());
@@ -131,7 +130,8 @@ public class Import extends Fragment implements View.OnClickListener {
             }else{
                 Log.e("Import","Import fragment error at onActivityResult, data.getData() null.\nData values : "+data);
             }
-        }else if(resultCode==PackageManager.PERMISSION_GRANTED){
+        }
+        /*if(resultCode==PackageManager.PERMISSION_GRANTED){
             switch (requestCode){
                 case REQUEST_CODE_PERM_PDF :{
                     choosePDF();
@@ -142,6 +142,7 @@ public class Import extends Fragment implements View.OnClickListener {
                     break;
                 }
                 case REQUEST_CODE_PERM_FILES:{
+                    Log.e("test","test");
                     chooseFile();
                     break;
                 }
@@ -149,7 +150,7 @@ public class Import extends Fragment implements View.OnClickListener {
                     chooseInternet();
                 }
             }
-        }
+        }*/
 
     }
 

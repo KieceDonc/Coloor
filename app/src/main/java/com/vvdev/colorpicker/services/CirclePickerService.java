@@ -25,7 +25,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 import static com.vvdev.colorpicker.activity.MainActivity.isCPRunning;
 
-public class CirclePickerService extends Service {
+public class CirclePickerService extends Service { // TODO fix back press bug
 
     public static boolean waitingForResult = true;
     public static boolean circleStarted = false;
