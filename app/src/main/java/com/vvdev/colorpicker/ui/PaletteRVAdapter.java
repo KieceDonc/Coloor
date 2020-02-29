@@ -3,11 +3,13 @@ package com.vvdev.colorpicker.ui;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.vvdev.colorpicker.interfaces.ColorsData;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -25,18 +28,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyViewHolderPalette> {
 
-    private ArrayList<ColorSpec> colors;
+    private static final String TAG =  PaletteRVAdapter.class.getName();;
+
     private final Activity activity;
 
     public PaletteRVAdapter(Activity activity){
         this.activity=activity;
-        ColorsData colorsData = new ColorsData(activity);
-        colors = colorsData.getShortedColors();
+
     }
 
     @Override
     public int getItemCount() {
-        return colors.size();
+        return new ColorsData(activity).getSize();
     }
 
     @Override
@@ -48,15 +51,16 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolderPalette holder, int position) {
-        ColorSpec currentColorSpec = colors.get(position);
+        ColorSpec currentColorSpec = new ColorsData(activity).getColors().get(position);
         holder.display(currentColorSpec);
     }
 
     public class MyViewHolderPalette extends RecyclerView.ViewHolder {
 
-        private ArrayList<String[]> allGeneratedColors;
+        private ColorSpec currentColor;
 
         private CircleImageView colorPreview;
+        private ImageView trash;
         private TextView colorName;
         private TextView hsv;
         private TextView rgb;
@@ -72,6 +76,8 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
         private ArrayList<TextView> extendHex = new ArrayList<>();
         private ArrayList<TextView> extendRGB = new ArrayList<>();
 
+        private boolean itemDeleted = false; // used to prevent bug. User can spam click the trash button and it delete multiple colors in colors data.
+
         public MyViewHolderPalette(final View itemView) { //
             super(itemView);
 
@@ -82,6 +88,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             rgb = itemView.findViewById(R.id.piRGB);
             hexa = itemView.findViewById(R.id.piHex);
             more = itemView.findViewById(R.id.piMore);
+            trash = itemView.findViewById(R.id.piTrash);
 
             generate.add(itemView.findViewById(R.id.piGenerate0));
             generate.add(itemView.findViewById(R.id.piGenerate1));
@@ -117,12 +124,28 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                 }
             });
 
+            trash.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"trash imageView clicked");
+                    if(!itemDeleted){
+                        itemDeleted=true;
+                        Log.i(TAG,"color selected isn't deleted, start to delete");
+                        ColorsData colorsData = new ColorsData(activity);
+                        int position = getLayoutPosition();
+                        colorsData.removeColor(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position,new ColorsData(activity).getSize());
+                    }
+                }
+            });
+
             // set the extend spinner on item click listener and change each extend include to the colors propriety of selected item
             extendSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     int selectedItem = parentView.getSelectedItemPosition();
-                    String[] colorsOfItem = allGeneratedColors.get(selectedItem);
+                    String[] colorsOfItem = currentColor.getAllGeneratedColors().get(selectedItem);
                     showNumberExtendInclude(colorsOfItem.length);
                     changeExtendInclude(colorsOfItem);
                 }
@@ -135,6 +158,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
         }
 
         public void display(ColorSpec colorSpec) {
+            currentColor = colorSpec;
 
             // get hexa, hsv, rgb of color
             String hexaFromColorSpec = colorSpec.getHexa();
@@ -154,10 +178,6 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             rgb.setText(toRGB);
             String toHexa = "Hexa : "+hexaFromColorSpec;
             hexa.setText(toHexa);
-
-            // setup all generated colors
-            allGeneratedColors=colorSpec.getAllGeneratedColors();
-
 
             // setup extend spinner
             ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,colorSpec.getGenerateMethod());

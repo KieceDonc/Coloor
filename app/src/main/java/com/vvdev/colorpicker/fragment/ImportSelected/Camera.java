@@ -49,6 +49,7 @@ import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
+import com.vvdev.colorpicker.ui.CustomToast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -89,7 +90,8 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     /**
      * Tag for the {@link Log}.
      */
-    private static final String TAG = "Camera2BasicFragment";
+    private static final String TAG = Camera.class.getName();;
+    ;
 
     /**
      * Camera state: Showing camera preview.
@@ -984,7 +986,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
                 String hexValue = rawHexValue.substring(5);
                 ColorSpec CurrentColor = new ColorSpec(hexValue);
                 new ColorsData(getActivity()).addColor(CurrentColor);
-                Toast.makeText(getActivity(), hexValue+" "+getContext().getString(R.string.Toast_have_been_added), Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
+                CustomToast.show(getActivity(),getLayoutInflater(),hexValue); // TODO customToast
                 break;
             }
             case R.id.info: {

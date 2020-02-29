@@ -4,22 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Picture;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -33,9 +28,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
@@ -45,12 +39,11 @@ import com.vvdev.colorpicker.services.CirclePickerService;
 import static android.content.Context.WINDOW_SERVICE;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerParams;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
-import static com.vvdev.colorpicker.activity.MainActivity.appNavigationBarHeight;
 
 @SuppressLint("AppCompatCustomView")
 public class CirclePickerView extends ImageView {
 
-    private static final String TAG ="CirclePicker";
+    private static final String TAG = CirclePickerView.class.getName();;
 
     private ScreenCapture mScreenCapture;
     private ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
@@ -319,7 +312,6 @@ public class CirclePickerView extends ImageView {
 
     private void setupFinalBitmap(){
         mFinalBitmap = Bitmap.createBitmap(mScreenBitmap.getWidth()+getWidth(), mScreenBitmap.getHeight()+getHeight(), Bitmap.Config.ARGB_8888);
-        Log.e("test",mScreenBitmap.getHeight()+" "+mPhoneHeight+" "+getHeight());
         Canvas canvas=new Canvas(mFinalBitmap);
         canvas.drawColor(Color.BLACK);
         int left = getWidth()/2;
@@ -489,9 +481,15 @@ public class CirclePickerView extends ImageView {
 
         @Override
         public void onLongPress(MotionEvent e) {
-            ColorsData colorsData = new ColorsData((Activity) getContext());
+            Activity activity = (Activity) getContext();
+            ColorsData colorsData = new ColorsData(activity);
             colorsData.addColor(new ColorSpec(mColorHexa));
-            Toast.makeText(getContext(), mColorHexa+" "+getContext().getString(R.string.Toast_have_been_added), Toast.LENGTH_LONG).show(); // TODO replace by a dialog message
+            CustomToast.show(activity,activity.getLayoutInflater(),mColorHexa);
+
+            if(Palette.recyclerView!=null){
+                Log.e("test","test");
+                Palette.recyclerView.getAdapter().notifyItemInserted(colorsData.getSize()-1);
+            }
         }
 
         @Override

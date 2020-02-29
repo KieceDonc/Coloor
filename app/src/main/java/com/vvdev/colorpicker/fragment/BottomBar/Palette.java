@@ -7,21 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.ui.PaletteRVAdapter;
-import com.vvdev.colorpicker.ui.PaletteControllerActions;
-import com.vvdev.colorpicker.ui.PaletteSwipeController;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class Palette extends Fragment {
 
+    public static RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,36 +41,13 @@ public class Palette extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        recyclerView=null;
     }
 
-    public void setupPaletteRecycleView(View view){
-        final ColorsData colorsData = new ColorsData(getActivity());
-
-        final RecyclerView rv = view.findViewById(R.id.pRecyclerView);
-        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+    private void setupPaletteRecycleView(View view){
+        recyclerView = view.findViewById(R.id.pRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(getActivity());
-        rv.setAdapter(PaletteRVAdapter);
-
-
-        final PaletteSwipeController paletteSwipeController = new PaletteSwipeController(new PaletteControllerActions(){
-            @Override
-            public void onRightClicked(int position) {
-                rv.removeViewAt(position);
-                colorsData.removeColor(position);
-                PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(getActivity());
-                rv.setAdapter(PaletteRVAdapter);
-                PaletteRVAdapter.notifyDataSetChanged();
-            }
-        });
-
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(paletteSwipeController);
-        itemTouchhelper.attachToRecyclerView(rv);
-
-        rv.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-                paletteSwipeController.onDraw(c);
-            }
-        });
+        recyclerView.setAdapter(PaletteRVAdapter);
     }
 }

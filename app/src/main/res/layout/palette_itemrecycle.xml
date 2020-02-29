@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/palette_ir_background"
+        android:background="@drawable/palette_ir_extend_background"
         android:paddingTop="5dp"
         android:paddingBottom="16dp"
         android:visibility="gone"
@@ -136,9 +136,11 @@
             android:id="@+id/piColorName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:text="Black"
+            android:textAllCaps="false"
             android:textColor="@android:color/black"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
             app:layout_constraintStart_toEndOf="@+id/piColorPreview"
             app:layout_constraintTop_toTopOf="@+id/piColorPreview"
@@ -148,7 +150,7 @@
             android:id="@+id/piHSV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="150dp"
+            android:layout_marginStart="132dp"
             android:text="HSV : 255, 255, 255"
             android:textColor="@android:color/black"
             android:textSize="12sp"
@@ -160,7 +162,7 @@
             android:id="@+id/piRGB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:text="RGB : 255, 255, 255"
             android:textColor="@android:color/black"
             android:textSize="12sp"
@@ -173,7 +175,7 @@
             android:id="@+id/piHex"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:text="Hexa : #000000"
             android:textColor="@android:color/black"
             android:textSize="12sp"
@@ -250,6 +252,18 @@
             app:layout_constraintStart_toEndOf="@+id/piGenerate4"
             app:layout_constraintTop_toTopOf="@+id/piGenerate0"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/piTrash"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@color/Theme1_Accent"
+            app:layout_constraintBottom_toBottomOf="@+id/piMore"
+            app:layout_constraintEnd_toStartOf="@+id/piMore"
+            app:layout_constraintTop_toTopOf="@+id/piMore"
+            app:srcCompat="@drawable/trash" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

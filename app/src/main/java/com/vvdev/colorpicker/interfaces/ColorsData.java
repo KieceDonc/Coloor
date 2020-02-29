@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -12,6 +13,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class ColorsData { // https://stackoverflow.com/questions/7145606/how-android-sharedpreferences-save-store-object
+
+    private static final String TAG =ColorsData.class.getName();
 
     private ArrayList<ColorSpec> colors;
     private SharedPreferences mPrefs;
@@ -32,14 +35,14 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         saveColors();
     }
 
-    public void removeColor(ColorSpec color){
-        colors.remove(color);
-        saveColors();
-    }
 
     public void removeColor(int position){
-        colors.remove(position);
-        saveColors();
+        if(position<=getSize()-1){
+            colors.remove(position);
+            saveColors();
+        }else{
+            Log.e(TAG,"trying to delete a color who isn't in the list. List size :"+getSize()+" position trying to delete : "+position);
+        }
     }
 
     public void clearColors(){
