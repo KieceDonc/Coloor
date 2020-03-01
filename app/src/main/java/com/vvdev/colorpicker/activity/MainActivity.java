@@ -15,12 +15,14 @@ import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.services.CirclePickerService;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Thread.currentThread().getStackTrace();
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         startCirclePickerB = findViewById(R.id.backgroundPipette);
@@ -80,8 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startCirclePickerService(){
-        Activity activity=this;
-        Intent CirclePickerServiceIntent = new Intent(activity, CirclePickerService.class);
+        Intent CirclePickerServiceIntent = new Intent(this, CirclePickerService.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(CirclePickerServiceIntent);
         }else{

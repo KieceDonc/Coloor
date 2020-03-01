@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.PermissionCustom;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.services.CirclePickerService;
 
@@ -28,7 +27,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
+import static android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+import static android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 import static com.vvdev.colorpicker.interfaces.ScreenCapture.mMediaProjectionManager;
 
 
@@ -69,6 +70,13 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        CirclePickerService.waitingForResult=false;
+        isCirclePickerActivityRunning=false;
+    }
+
     @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -76,17 +84,16 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         if(requestCode == REQUEST_CODE_MEDIA_PROJECTION){
             if (resultCode == Activity.RESULT_OK) {
                 ScreenCapture.setUpMediaProjection(resultCode,data);// TODO make it more cleaner in ScreenCapture
+                finish();
                 startCirclePicker();
-            }else{
+            }else if(resultCode == Activity.RESULT_CANCELED){
                 permissionNotGiven();
             }
         }
     }
 
     private void permissionNotGiven(){
-        CirclePickerService.waitingForResult=false;
         CirclePickerService.circleStarted=false;
-        isCirclePickerActivityRunning=false;
         finish();
     }
 
@@ -113,20 +120,19 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         LAYOUT_FLAG,
-                        FLAG_HARDWARE_ACCELERATED|FLAG_NOT_TOUCH_MODAL,
+                        FLAG_HARDWARE_ACCELERATED|FLAG_NOT_TOUCH_MODAL|FLAG_NOT_FOCUSABLE,
                         PixelFormat.TRANSPARENT);
                 wmCirclePickerParams.gravity = Gravity.CENTER_HORIZONTAL|Gravity.CENTER_VERTICAL;
 
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
-            }
-        }, 250);
 
-        CirclePickerService.waitingForResult=false;
-        CirclePickerService.circleStarted=true;
-        isCirclePickerActivityRunning=false;
-        finish();
+                CirclePickerService.circleStarted=true;
+                finish();
+
+            }
+        }, 500);
     }
 
     private void showAlertDialog(){

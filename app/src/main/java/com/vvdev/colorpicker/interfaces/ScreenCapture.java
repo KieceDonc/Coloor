@@ -43,6 +43,7 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     }
 
     public ScreenCapture(int mWindowHeight,int mWindowWidth,int mScreenDensity) {
+
         this.mWindowHeight=mWindowHeight;
         this.mWindowWidth=mWindowWidth;
         this.mScreenDensity=mScreenDensity;

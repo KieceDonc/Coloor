@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 import static com.vvdev.colorpicker.activity.MainActivity.isCPRunning;
 
@@ -53,7 +54,6 @@ public class CirclePickerService extends Service { // TODO fix back press bug
             }else{
                 Instance.set(this);
                 startCirclePicker();
-                setWaitingForResult();
                 notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID );
                 notificationFirstBuild();
             }
@@ -81,7 +81,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
         Notification notification = notificationBuilder.setSmallIcon(R.drawable.pipette_icon_icons_com_65005) // TODO replace by the application icon
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .build();
 
         startForeground(1, notification);
@@ -100,9 +100,11 @@ public class CirclePickerService extends Service { // TODO fix back press bug
     }
 
     private void startCirclePicker() {
+        waitingForResult = true;
         Intent startCirclePickerIntent = new Intent(this, CirclePickerActivityStart.class);
         startCirclePickerIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         startActivity(startCirclePickerIntent);
+        setWaitingForResult();
     }
 
     private void setWaitingForResult(){
@@ -127,7 +129,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
         Intent chooserIntent = Intent.createChooser(sharingIntent, "Share your color !");// TODO to translate
-        chooserIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        chooserIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(getApplicationContext(), 0, chooserIntent, 0);
     }
 
@@ -139,7 +141,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
 
     private void stopService(){
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE); // TODO ask permission to draw over other app
-        if(wmCirclePickerView!=null){
+        if(wmCirclePickerView!=null&&wmCirclePickerView.isAttachedToWindow()){
             wm.removeView(wmCirclePickerView);
         }
         isCPRunning=false; // boolean use to say if service is running or not ( declare static in main activity )
@@ -158,5 +160,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
             return instance;
         }
     }
+
+
 
 }

@@ -193,11 +193,6 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             }else{
                 extendSpinner.setSelection(0); // set spinner to position of Shades ( it will also set extendInclude to Shades mode )
                 toShow = colorSpec.getShades(); // setup preview generated colors by the method of generation Shades
-                /*int totalRGB = rgbFromColorSpec[0]+rgbFromColorSpec[1]+rgbFromColorSpec[2];
-                if(totalRGB>720){ // if color is very close to white, we add black border
-                    colorPreview.setBorderColor(Color.BLACK);
-                    colorPreview.setBorderWidth(4);
-                }*/
             }
             for(int x=0;x<generate.size();x++){ // setup preview generated colors by the method of generation ( Shades / Tints )
                 generate.get(x).setBackgroundColor(Color.parseColor(toShow[x]));

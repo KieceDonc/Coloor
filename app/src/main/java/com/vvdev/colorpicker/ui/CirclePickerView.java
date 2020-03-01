@@ -487,7 +487,6 @@ public class CirclePickerView extends ImageView {
             CustomToast.show(activity,activity.getLayoutInflater(),mColorHexa);
 
             if(Palette.recyclerView!=null){
-                Log.e("test","test");
                 Palette.recyclerView.getAdapter().notifyItemInserted(colorsData.getSize()-1);
             }
         }

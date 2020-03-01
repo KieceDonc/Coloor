@@ -31,7 +31,10 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name=".services.CirclePickerService" android:foregroundServiceType="mediaProjection" android:exported="false"></service>
+        <service
+            android:name=".services.CirclePickerService"
+            android:foregroundServiceType="mediaProjection"
+            android:exported="false" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -42,7 +45,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CirclePickerActivityStart" android:theme="@style/Translucent" android:noHistory="true" ></activity>
+        <activity
+            android:name=".activity.CirclePickerActivityStart"
+            android:theme="@style/Translucent"
+            android:noHistory="true" />
     </application>
 
 </manifest>
