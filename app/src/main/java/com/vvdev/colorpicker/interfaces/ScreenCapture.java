@@ -2,14 +2,15 @@ package com.vvdev.colorpicker.interfaces;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PixelFormat;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.Image;
 import android.media.ImageReader;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
-import android.os.Handler;
 import android.util.Log;
+
 
 import java.nio.ByteBuffer;
 
@@ -51,33 +52,14 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     }
 
     private void createEnvironment() {
-        mImageReader = ImageReader.newInstance(mWindowWidth, mWindowHeight, 0x1, 2);
+        mImageReader = ImageReader.newInstance(mWindowWidth, mWindowHeight, PixelFormat.RGBA_8888, 2);
     }
 
-    public void screenCapture() {
-        if (startScreenCapture()) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Log.d(TAG, "start startCapture");
-                    startCapture();
-                }
-            }, 100);
-        }
-    }
-
-    private int cmptAntiLoop=0;
     private void startCapture() {
         Image image = mImageReader.acquireLatestImage();
         if (image == null) {
             Log.e(TAG, "image is null.");
-            if(cmptAntiLoop<10){ // TODO check if it's fix something
-                cmptAntiLoop++;
-                screenCapture();
-            }else{
-                Log.e(TAG,"cmptAntiLoop = 10");
-            }
+            startScreenCapture();
             return;
         }
         int width = image.getWidth();
@@ -94,10 +76,10 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
 
         stopScreenCapture();
         if (mBitmap != null) {
-            Log.d(TAG, "bitmap create success");
+            Log.i(TAG, "bitmap create success");
             saveToFile();
         } else {
-            Log.d(TAG, "bitmap is null");
+            Log.i(TAG, "bitmap is null");
             if (mCaptureListener != null) {
                 mCaptureListener.onScreenCaptureFailed("Get bitmap failed.");
             }
@@ -111,13 +93,13 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         }
     }
 
-    private boolean startScreenCapture() {
-        Log.d(TAG, "startScreenCapture");
+    public boolean startScreenCapture() {
+        Log.i(TAG, "startScreenCapture");
         if (mMediaProjection != null) {
             setUpVirtualDisplay();
             return true;
         } else {
-            Log.d(TAG, "Error at startScreenCapture() in ScreenCapture");
+            Log.i(TAG, "Error at startScreenCapture() in ScreenCapture");
             return false;
         }
     }
@@ -126,7 +108,15 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         mVirtualDisplay = mMediaProjection.createVirtualDisplay("ScreenCapture",
                 mWindowWidth, mWindowHeight, mScreenDensity,
                 DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                mImageReader.getSurface(), null, null);
+                mImageReader.getSurface(), null,null);
+
+        mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+            @Override
+            public void onImageAvailable(ImageReader reader) {
+                startCapture();
+            }
+        },null);
+
     }
 
     public static void setUpMediaProjection(int mResultCode,Intent mResultData) {

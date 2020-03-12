@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -1768,9 +1770,5 @@ public class ColorUtility {
             {"FFFFF0", "Ivory"},
             {"FFFFFF", "White"}
     };
-
-
-
-
 
 }

@@ -18,11 +18,9 @@ import com.bumptech.glide.request.target.Target;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.FilesExtensionType;
-import com.vvdev.colorpicker.interfaces.ScreenCapture;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 public class Files_IS extends Fragment {
@@ -43,8 +41,6 @@ public class Files_IS extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
         String toCheck = getArguments().getString(KEY_ARGUMENT_FILES_PATH);
         pathToFile = Uri.parse(toCheck);
 
@@ -63,9 +59,6 @@ public class Files_IS extends Fragment {
         }else{
             Log.e(TAG,"Error trying to load an recognized type file. File path :"+pathToFile.toString()+"\nExtension : "+fileExtension);
         }
-
-       /* Intent receiveData = getIntent(); // get intent
-        String path = receiveData.getStringExtra(IntentExtraPath); // get img path from intent*/
     }
 
     private void setupImg(){

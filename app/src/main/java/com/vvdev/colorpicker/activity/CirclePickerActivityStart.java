@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import static android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
 import static android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
 import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
-import static android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
 import static com.vvdev.colorpicker.interfaces.ScreenCapture.mMediaProjectionManager;
 
 

@@ -19,6 +19,8 @@
         ]]>
     </string>
 
+    <string name="permission_denied">Permission denied, task cancel</string>
+
     <string name="Hex">Hex:</string>
     <string name="Hsv">Hsv:</string>
     <string name="RGB">RGB:</string>

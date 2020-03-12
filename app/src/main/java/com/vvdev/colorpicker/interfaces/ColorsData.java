@@ -25,11 +25,6 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         colors = getColors();
     }
 
-    /*public ColorsData(Context context){
-        mPrefs = context.getSharedPreferences(MODE_PRIVATE);
-        colors = new ArrayList<>();
-    }*/
-
     public void addColor(ColorSpec color){
         colors.add(color);
         saveColors();

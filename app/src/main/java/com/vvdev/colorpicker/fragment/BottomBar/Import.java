@@ -2,6 +2,7 @@ package com.vvdev.colorpicker.fragment.BottomBar;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -20,7 +22,6 @@ import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
 import com.vvdev.colorpicker.fragment.ImportSelected.Files_IS;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
 import com.vvdev.colorpicker.interfaces.FilesExtensionType;
-import com.vvdev.colorpicker.interfaces.PermissionCustom;
 import com.vvdev.colorpicker.ui.DownloadFileAlertDialog;
 
 import java.io.File;
@@ -28,7 +29,6 @@ import java.io.File;
 import androidx.annotation.NonNull;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -46,63 +46,53 @@ public class Import extends Fragment implements View.OnClickListener {
     private static final int REQUEST_CODE_PERM_FILES = 567;
     private static final int REQUEST_CODE_PERM_INTERNET = 568;
 
-    private RelativeLayout mImportCamera;
-    private RelativeLayout mImportFile;
-    private RelativeLayout mImportPDF;
-    private RelativeLayout mImportInternet;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+                             ViewGroup container, Bundle savedInstanceState){
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         return inflater.inflate(R.layout.fragment_import, container, false);
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
-        mImportCamera = view.findViewById(R.id.importCamera);
-        mImportFile = view.findViewById(R.id.importFile);
-        mImportPDF = view.findViewById(R.id.importPDF);
-        mImportInternet = view.findViewById(R.id.importInternet);
-
-        mImportCamera.setOnClickListener(this);
-        mImportFile.setOnClickListener(this);
-        mImportPDF.setOnClickListener(this);
-        mImportInternet.setOnClickListener(this);
+        view.findViewById(R.id.importCamera).setOnClickListener(this);  // set camera rectangle on click listener
+        view.findViewById(R.id.importFile).setOnClickListener(this);    // set file rectangle on click listener
+        view.findViewById(R.id.importPDF).setOnClickListener(this);     // set pdf rectangle on click listener
+        view.findViewById(R.id.importInternet).setOnClickListener(this);// set internet rectangle on click listener
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.importPDF:{
-                if(PermissionCustom.isWriteAndWritePermissionGiven(getContext())){
+                if(isWriteAndWritePermissionGiven()){
                     choosePDF();
                 }else{
-                    PermissionCustom.askReadAndWritePermissions(getActivity(),REQUEST_CODE_PERM_PDF);
+                    askReadAndWritePermissions(REQUEST_CODE_PERM_PDF);
                 }
                 break;
             }
             case R.id.importCamera:{
-                if(PermissionCustom.isReadPermissionGiven(getContext())){
+                if(isReadPermissionGiven()){
                     loadCamera();
                 }else {
-                    PermissionCustom.askCameraPermission(getActivity(),REQUEST_CODE_PERM_CAMERA);
+                    askCameraPermission(REQUEST_CODE_PERM_CAMERA);
                 }
                 break;
             }
             case R.id.importFile:{
-                if(PermissionCustom.isWriteAndWritePermissionGiven(getContext())){
+                if(isWriteAndWritePermissionGiven()){
                     chooseFile();
                 }else{
-                    PermissionCustom.askReadAndWritePermissions(getActivity(),REQUEST_CODE_PERM_FILES);
+                    askReadAndWritePermissions(REQUEST_CODE_PERM_FILES);
                 }
                 break;
             }
             case R.id.importInternet:{
-                if(PermissionCustom.isWriteAndWritePermissionGiven(getContext())){
+                if(isWriteAndWritePermissionGiven()){
                     chooseInternet();
                 }else{
-                    PermissionCustom.askReadAndWritePermissions(getActivity(),REQUEST_CODE_PERM_INTERNET);
+                    askReadAndWritePermissions(REQUEST_CODE_PERM_INTERNET);
                 }
                 break;
             }
@@ -131,29 +121,44 @@ public class Import extends Fragment implements View.OnClickListener {
                 Log.e("Import","Import fragment error at onActivityResult, data.getData() null.\nData values : "+data);
             }
         }
-        /*if(resultCode==PackageManager.PERMISSION_GRANTED){
-            switch (requestCode){
-                case REQUEST_CODE_PERM_PDF :{
-                    choosePDF();
-                    break;
-                }
-                case REQUEST_CODE_PERM_CAMERA:{
-                    loadCamera();
-                    break;
-                }
-                case REQUEST_CODE_PERM_FILES:{
-                    Log.e("test","test");
-                    chooseFile();
-                    break;
-                }
-                case REQUEST_CODE_PERM_INTERNET:{
-                    chooseInternet();
-                }
-            }
-        }*/
-
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_CODE_PERM_PDF :{
+                if(isWriteAndWritePermissionGiven()){
+                    choosePDF();
+                }else{
+                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case REQUEST_CODE_PERM_CAMERA:{
+                if(isCameraPermissionGiven()){
+                    loadCamera();
+                }else{
+                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case REQUEST_CODE_PERM_FILES:{
+                if(isWriteAndWritePermissionGiven()){
+                    chooseFile();
+                }else{
+                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                }
+                break;
+            }
+            case REQUEST_CODE_PERM_INTERNET:{
+                if(isWriteAndWritePermissionGiven()){
+                    chooseInternet();
+                }else{
+                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 
     private void choosePDF(){
         String type="application/pdf";
@@ -240,6 +245,28 @@ public class Import extends Fragment implements View.OnClickListener {
                 .replace(R.id.nav_host_fragment, filesFragment)
                 .disallowAddToBackStack()
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
+    }
+
+    private void askReadAndWritePermissions(int requestCode){
+        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
+    }
+
+    private void askCameraPermission(int requestCode){
+        requestPermissions(new String[]{Manifest.permission.CAMERA}, requestCode);
+    }
+
+    private boolean isWriteAndWritePermissionGiven(){
+        return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean isReadPermissionGiven(){
+        return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE ) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean isCameraPermissionGiven(){
+        return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
 
 

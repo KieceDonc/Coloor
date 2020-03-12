@@ -1,6 +1,5 @@
 package com.vvdev.colorpicker.fragment.ImportSelected;
 
-import android.content.Intent;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
