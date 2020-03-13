@@ -16,7 +16,7 @@ import java.util.Comparator;
 
 public class ColorsData { // https://stackoverflow.com/questions/7145606/how-android-sharedpreferences-save-store-object
 
-    private static final String TAG =ColorsData.class.getName();
+    private static final String TAG = ColorsData.class.getName();
 
     private ArrayList<ColorSpec> colors;
     private SharedPreferences mPrefs;

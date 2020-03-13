@@ -107,8 +107,6 @@ public class CirclePickerView extends ImageView {
     private int mBorderColor;
     private int mMiddleSquareDim;
     private int mMiddleBorderSquareDim;
-    private int mStatusBarHeight;
-    private int mNavigationBarHeight; // /!\ it include app navigation bar height
 
     private boolean mReady;
     private boolean mSetupPending=true;
@@ -129,7 +127,11 @@ public class CirclePickerView extends ImageView {
         init();
     }
 
-
+    /**
+     * first part = we divide the circle in 8 part. we want the position at 7/8. 7/8 = 0.875 * circle perimeter.
+     * After that the first part give the starting point but we want to center our text.
+     * second part = we get width of text and we divide by 2 to get the offset to delete
+     */
     @Override
     protected void onDraw(Canvas canvas) {
 
@@ -145,11 +147,6 @@ public class CirclePickerView extends ImageView {
 
         canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
         canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
-        /**
-         * first part = we divide the circle in 8 part. we want the position at 7/8. 7/8 = 0.875 * circle perimeter.
-         * After that the first part give the starting point but we want to center our text.
-         * second part = we get width of text and we divide by 2 to get the offset to delete
-         */
 
         mBorderPaintText.getTextBounds(mColorName,0,mColorName.length(),mBorderColorNameRect);
         mBorderPaintText.getTextBounds(mColorHexa,0,mColorHexa.length(),mBorderColorHexRect);
@@ -172,9 +169,6 @@ public class CirclePickerView extends ImageView {
             display.getSize(size);
             mPhoneWidth = size.x;
             mPhoneHeight= size.y;
-
-            mStatusBarHeight = getStatusBarHeight();
-            mNavigationBarHeight = getNavigationBarHeight();
 
             DisplayMetrics metrics = new DisplayMetrics();
             display.getMetrics(metrics);
@@ -200,7 +194,6 @@ public class CirclePickerView extends ImageView {
 
         if (mBitmap == null) {
             updateFinalBitmap();
-            invalidate();
             return;
         }
 

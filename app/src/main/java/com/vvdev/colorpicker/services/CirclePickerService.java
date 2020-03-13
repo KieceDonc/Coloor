@@ -8,11 +8,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
+import com.vvdev.colorpicker.interfaces.ColorsData;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -22,7 +25,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 import static com.vvdev.colorpicker.activity.MainActivity.isCPRunning;
 
@@ -31,8 +33,11 @@ public class CirclePickerService extends Service { // TODO fix back press bug
     public static boolean waitingForResult = true;
     public static boolean circleStarted = false;
 
-    private NotificationCompat.Builder notificationBuilder; // use to update hexa value, plz refer to https://stackoverflow.com/questions/14885368/update-text-of-notification-not-entire-notification
+    private final static String TAG = CirclePickerService.class.getName();
     private final static String CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID = "Circle_picker_channel_id";
+    private NotificationCompat.Builder notificationBuilder; // use to update hexa value, plz refer to https://stackoverflow.com/questions/14885368/update-text-of-notification-not-entire-notification
+    private String oldHexValue; // need to save last hex value received so we can refresh notification when user clicked on hide / show
+    private int isHideOrShow = 0 ; // 0 = hide, 1 = show
 
     @Override
     public void onCreate() {
@@ -48,15 +53,29 @@ public class CirclePickerService extends Service { // TODO fix back press bug
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         isCPRunning=true; // boolean use to say if service is running or not ( declare static in main activity )
+
         if(intent!=null){
+
             if(intent.getAction()!=null&&intent.getAction().equals("STOP")){
+                Log.i(TAG,"intent STOP detected");
                 stopService();
+            }else if(intent.getAction()!=null&&intent.getAction().equals("HIDE")){
+                Log.i(TAG,"intent HIDE detected");
+                isHideOrShow=1;
+                wmCirclePickerView.setVisibility(View.GONE);
+                updateHexaValue(oldHexValue);
+            }else if(intent.getAction()!=null&&intent.getAction().equals("SHOW")){
+                Log.i(TAG,"intent SHOW detected");
+                isHideOrShow=0;
+                wmCirclePickerView.setVisibility(View.VISIBLE);
+                updateHexaValue(oldHexValue);
             }else{
                 Instance.set(this);
                 startCirclePicker();
                 notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID );
                 notificationFirstBuild();
             }
+
         }
         return START_STICKY;
     }
@@ -88,13 +107,21 @@ public class CirclePickerService extends Service { // TODO fix back press bug
     }
 
     public void updateHexaValue(String Hexa){
+        oldHexValue=Hexa;
         notificationBuilder.mActions.clear(); // clear all past action ( you need to do that cuz you call addAction and not setAction ) plz refer https://stackoverflow.com/questions/24465587/change-notifications-action-icon-dynamically
-        Notification notification = notificationBuilder
+        notificationBuilder
                 .setContentTitle(getApplicationContext().getString(R.string.service_current_hexa))
                 .setContentText(Hexa)
-                .addAction(R.drawable.pipette_icon_icons_com_65005,getApplicationContext().getString(R.string.service_stop),stopIntent())
-                .addAction(R.drawable.pipette_icon_icons_com_65005,getApplicationContext().getString(R.string.service_share),shareIntent(Hexa))
-                .build();
+                .addAction(0,getApplicationContext().getString(R.string.service_stop),stopIntent())
+                .addAction(0,getApplicationContext().getString(R.string.service_share),shareIntent(Hexa));
+        if(isHideOrShow==0){ // hide
+            notificationBuilder
+                    .addAction(0,getApplicationContext().getString(R.string.service_hide),hideIntent());
+        }else{ // show
+            notificationBuilder
+                    .addAction(0,getApplicationContext().getString(R.string.service_show),showIntent());
+        }
+        Notification notification = notificationBuilder.build();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(1, notification);
     }
@@ -136,6 +163,18 @@ public class CirclePickerService extends Service { // TODO fix back press bug
     private PendingIntent stopIntent(){ // use to send a call in OnStartCommand
         Intent mIntent = new Intent(getApplicationContext(), CirclePickerService.class);
         mIntent.setAction("STOP");
+        return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
+    }
+
+    private PendingIntent hideIntent(){
+        Intent mIntent = new Intent(getApplicationContext(), CirclePickerService.class);
+        mIntent.setAction("HIDE");
+        return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
+    }
+
+    private PendingIntent showIntent(){
+        Intent mIntent = new Intent(getApplicationContext(), CirclePickerService.class);
+        mIntent.setAction("SHOW");
         return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
     }
 

@@ -1,5 +1,6 @@
 package com.vvdev.colorpicker.interfaces;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
@@ -105,17 +106,23 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     }
 
     private void setUpVirtualDisplay() {
-        mVirtualDisplay = mMediaProjection.createVirtualDisplay("ScreenCapture",
-                mWindowWidth, mWindowHeight, mScreenDensity,
-                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                mImageReader.getSurface(), null,null);
+        try{
+            mVirtualDisplay = mMediaProjection
+                    .createVirtualDisplay("ScreenCapture",
+                            mWindowWidth, mWindowHeight, mScreenDensity,
+                            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                            mImageReader.getSurface(), null,null);
 
-        mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
-            @Override
-            public void onImageAvailable(ImageReader reader) {
-                startCapture();
-            }
-        },null);
+            mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
+                @Override
+                public void onImageAvailable(ImageReader reader) {
+                    startCapture();
+                }
+            },null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
     }
 
