@@ -48,13 +48,11 @@ public class Import extends Fragment implements View.OnClickListener {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         return inflater.inflate(R.layout.fragment_import, container, false);
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-
         view.findViewById(R.id.importCamera).setOnClickListener(this);  // set camera rectangle on click listener
         view.findViewById(R.id.importFile).setOnClickListener(this);    // set file rectangle on click listener
         view.findViewById(R.id.importPDF).setOnClickListener(this);     // set pdf rectangle on click listener
@@ -99,7 +97,6 @@ public class Import extends Fragment implements View.OnClickListener {
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(data!=null){
@@ -130,7 +127,7 @@ public class Import extends Fragment implements View.OnClickListener {
                 if(isWriteAndWritePermissionGiven()){
                     choosePDF();
                 }else{
-                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                    permissionDeniedShowToast();
                 }
                 break;
             }
@@ -138,7 +135,7 @@ public class Import extends Fragment implements View.OnClickListener {
                 if(isCameraPermissionGiven()){
                     loadCamera();
                 }else{
-                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                    permissionDeniedShowToast();
                 }
                 break;
             }
@@ -146,7 +143,7 @@ public class Import extends Fragment implements View.OnClickListener {
                 if(isWriteAndWritePermissionGiven()){
                     chooseFile();
                 }else{
-                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                    permissionDeniedShowToast();
                 }
                 break;
             }
@@ -154,38 +151,40 @@ public class Import extends Fragment implements View.OnClickListener {
                 if(isWriteAndWritePermissionGiven()){
                     chooseInternet();
                 }else{
-                    Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                    permissionDeniedShowToast();
                 }
             }
         }
     }
 
+    private void permissionDeniedShowToast(){
+        Toast.makeText(getContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+    }
+
     private void choosePDF(){
         String type="application/pdf";
-        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getIntent.setType(type);
+        String title="Select a pdf file"; // TODO to translate
 
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType(type);
-
-        Intent chooserIntent = Intent.createChooser(getIntent, "Select a pdf file");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
-
-        startActivityForResult(chooserIntent, REQUEST_CODE_PDF);
+        startChooser(type,title,REQUEST_CODE_PDF);
     }
 
     private void chooseFile(){
         String type="image/* video/*";
+        String title="Select a video / image"; // TODO to translate
+        startChooser(type,title,REQUEST_CODE_FILE);
+    }
+
+    private void startChooser(String type, String title,int requestCode){
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
         getIntent.setType(type);
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         pickIntent.setType(type);
 
-        Intent chooserIntent = Intent.createChooser(getIntent, "Select a video / image");
+        Intent chooserIntent = Intent.createChooser(getIntent, title);
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
 
-        startActivityForResult(chooserIntent, REQUEST_CODE_FILE);
+        startActivityForResult(chooserIntent, requestCode);
     }
 
     private void chooseInternet(){
@@ -220,19 +219,13 @@ public class Import extends Fragment implements View.OnClickListener {
         bundle.putString(KEY_ARGUMENT_PDF_PATH,path.toString()); // plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
         pdfFragment.setArguments(bundle);
 
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, pdfFragment)
-                .disallowAddToBackStack()
-                .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
+        doFragmentTransaction(pdfFragment);
     }
 
     private void loadCamera(){
         Camera cameraFragment= new Camera();
 
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, cameraFragment)
-                .disallowAddToBackStack()
-                .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
+        doFragmentTransaction(cameraFragment);
     }
     private void loadFile(Uri path){
         Files_IS filesFragment = new Files_IS();
@@ -241,9 +234,13 @@ public class Import extends Fragment implements View.OnClickListener {
         bundle.putString(KEY_ARGUMENT_FILES_PATH,path.toString()); // plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
         filesFragment.setArguments(bundle);
 
+        doFragmentTransaction(filesFragment);
+    }
+
+    private void doFragmentTransaction(Fragment fragment){
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.nav_host_fragment, filesFragment)
-                .disallowAddToBackStack()
+                .replace(R.id.nav_host_fragment, fragment)
+                .addToBackStack(null)
                 .commit(); // https://stackoverflow.com/questions/21028786/how-do-i-open-a-new-fragment-from-another-fragment
     }
 

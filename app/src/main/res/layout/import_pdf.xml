@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/import_WebViewConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -40,8 +41,9 @@
         app:layout_constraintBottom_toBottomOf="@+id/numberOfPage"
         app:layout_constraintEnd_toStartOf="@+id/numberOfPage"
         app:layout_constraintTop_toTopOf="@+id/numberOfPage" />
+    <!-- TODO to traduce -->
 
-    <EditText
+    <com.vvdev.colorpicker.ui.CustomEditText
         android:id="@+id/input_desire_page"
         android:layout_width="49dp"
         android:layout_height="20dp"
@@ -49,15 +51,16 @@
         android:background="@drawable/white_border"
         android:ems="10"
         android:focusable="auto"
-        android:gravity="right|center_vertical"
+        android:gravity="end|center_vertical"
         android:inputType="number"
-        android:paddingRight="4dp"
+        android:paddingEnd="4dp"
         android:selectAllOnFocus="false"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         android:imeOptions="actionSend"
         app:layout_constraintBottom_toBottomOf="@+id/numberOfPage"
         app:layout_constraintEnd_toStartOf="@+id/textView13"
-        app:layout_constraintTop_toTopOf="@+id/numberOfPage" />
+        app:layout_constraintTop_toTopOf="@+id/numberOfPage"
+        tools:ignore="RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

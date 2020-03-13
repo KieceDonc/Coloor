@@ -7,17 +7,15 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorUtility;
 
 import androidx.cardview.widget.CardView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CustomToast {
+public class CustomToast { // used to create custom layout of toast
 
     public static void show(Activity activity, LayoutInflater inflater, String colorAdded){
         View cstmToast = inflater.inflate(R.layout.custom_toast, (CardView) activity.findViewById(R.id.cstmToastRoot));

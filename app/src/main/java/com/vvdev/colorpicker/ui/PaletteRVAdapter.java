@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
@@ -148,6 +149,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                     String[] colorsOfItem = currentColor.getAllGeneratedColors().get(selectedItem);
                     showNumberExtendInclude(colorsOfItem.length);
                     changeExtendInclude(colorsOfItem);
+                    updateListener(colorsOfItem);
                 }
 
                 @Override
@@ -189,7 +191,6 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             if(ColorUtility.isNearestFromBlackThanWhite(colorSpec.getHexa())){ // check if the color is closer to black than white
                 extendSpinner.setSelection(2); // set spinner to position of Tints ( it will also set extendInclude to Tints mode )
                 toShow = colorSpec.getTines(); // setup preview generated colors by the method of generation Tints
-
             }else{
                 extendSpinner.setSelection(0); // set spinner to position of Shades ( it will also set extendInclude to Shades mode )
                 toShow = colorSpec.getShades(); // setup preview generated colors by the method of generation Shades
@@ -224,6 +225,26 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                 int[] rgbOfColor = ColorUtility.getRGBFromHex(colors[x]);
                 String rgbText = rgbOfColor[0]+", "+rgbOfColor[1]+","+rgbOfColor[2];
                 extendRGB.get(x).setText(rgbText);
+            }
+        }
+
+        /**
+         * used to set extend item on listener or not
+         * @param colors
+         */
+        private void updateListener(final String[] colors){
+            for(int x=0;x<extendInclude.size();x++){
+                if(extendInclude.get(x).getVisibility()==View.VISIBLE){
+                    final String currentColor = colors[x];
+                    extendInclude.get(x).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            new ColorsData(activity).addColor(currentColor);
+                        }
+                    });
+                }else{
+                    extendInclude.get(x).setOnClickListener(null);
+                }
             }
         }
     }

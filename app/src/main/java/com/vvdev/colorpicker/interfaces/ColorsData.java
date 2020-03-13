@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.vvdev.colorpicker.fragment.BottomBar.Palette;
+import com.vvdev.colorpicker.ui.CustomToast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,16 +20,22 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
 
     private ArrayList<ColorSpec> colors;
     private SharedPreferences mPrefs;
+    private Activity activity;
     private static final String PREFS_TAG = "SharedPrefs";
 
     public ColorsData(Activity activity){
         mPrefs = activity.getApplicationContext().getSharedPreferences(PREFS_TAG, Context.MODE_PRIVATE);
+        this.activity=activity;
         colors = getColors();
     }
 
-    public void addColor(ColorSpec color){
-        colors.add(color);
+    public void addColor(String color){
+        colors.add(new ColorSpec(color));
         saveColors();
+        CustomToast.show(activity,activity.getLayoutInflater(),color);
+        if(Palette.recyclerView!=null){
+            Palette.recyclerView.getAdapter().notifyItemInserted(getSize()-1);
+        }
     }
 
 

@@ -471,7 +471,6 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         //((AppCompatActivity) getActivity()).getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //((AppCompatActivity) getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
@@ -984,9 +983,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
             case R.id.getpicture: {
                 String rawHexValue = TVHexValue.getText().toString();
                 String hexValue = rawHexValue.substring(5);
-                ColorSpec CurrentColor = new ColorSpec(hexValue);
-                new ColorsData(getActivity()).addColor(CurrentColor);
-                CustomToast.show(getActivity(),getLayoutInflater(),hexValue);
+                new ColorsData(getActivity()).addColor(hexValue);
                 break;
             }
             case R.id.info: {

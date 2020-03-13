@@ -1,5 +1,6 @@
 package com.vvdev.colorpicker.fragment.ImportSelected;
 
+import android.app.Activity;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -27,10 +29,11 @@ import com.github.barteksc.pdfviewer.listener.OnPageScrollListener;
 import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
+import com.shockwave.pdfium.util.SizeF;
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.ui.CustomEditText;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 public class PDF extends Fragment {
@@ -40,7 +43,7 @@ public class PDF extends Fragment {
     private static String TAG = PDF.class.getName();
 
     private PDFView pdfView;
-    private EditText inputDesirePage;
+    private CustomEditText inputDesirePage;
     private TextView numberOfPage;
     private Uri pathToPDF;
 
@@ -51,8 +54,6 @@ public class PDF extends Fragment {
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
         String toCheck = getArguments().getString(KEY_ARGUMENT_PDF_PATH); // get data send, plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
         pathToPDF = Uri.parse(toCheck); // plz refer to https://stackoverflow.com/questions/17356312/converting-of-uri-to-string
 
@@ -64,16 +65,6 @@ public class PDF extends Fragment {
         setupPdfView();
         setupInputDesirePage();
     }
-
-
-    /*@Override
-    public void onBackPressed() { // https://stackoverflow.com/questions/5448653/how-to-implement-onbackpressed-in-fragments
-        super.onBackPressed();
-        if(inputDesirePage.isCursorVisible()){
-            inputDesirePage.clearFocus();
-            inputDesirePage.setCursorVisible(false);
-        }
-    }*/
 
     private void setupPdfView(){
         DefaultLinkHandler mDefaultLinkHandler = new DefaultLinkHandler(pdfView);
@@ -165,8 +156,8 @@ public class PDF extends Fragment {
     }
 
     private void setupInputDesirePage(){
-        inputDesirePage.clearFocus();
-        inputDesirePage.setCursorVisible(false);
+        /*inputDesirePage.clearFocus();
+        inputDesirePage.setCursorVisible(false);*/
         inputDesirePage.addTextChangedListener(new TextWatcher() {
 
             boolean inModification=false;
@@ -200,18 +191,23 @@ public class PDF extends Fragment {
         inputDesirePage.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
 
-                if(actionId == EditorInfo.IME_ACTION_SEND&&inputDesirePage.getText().toString().length()>0&&inputDesirePage.getText().toString().length()<=pdfView.getPageCount()){
-                    pdfView.jumpTo((Integer.parseInt(inputDesirePage.getText().toString())-1),true);
-                    inputDesirePage.clearFocus();
-                    handled=true;
+                inputDesirePage.setCursorVisible(false);
+                inputDesirePage.clearFocus();
+
+                boolean handled = false;
+                String userInput = inputDesirePage.getText().toString();
+                if(actionId == EditorInfo.IME_ACTION_SEND&&userInput.length()>0&&userInput.length()<=pdfView.getPageCount()) {
+
+                    int desirePage = (Integer.parseInt(userInput) - 1);
+                    hideKeyboard();
+                    pdfView.jumpTo(desirePage, true); // TODO center the jump
+                    handled = true;
                 }
 
                 return handled;
             }
         });
-
 
         inputDesirePage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +215,24 @@ public class PDF extends Fragment {
                 inputDesirePage.setCursorVisible(true);
             }
         });
+
+        inputDesirePage.setEditTextOnBackPressListener(new CustomEditText.EditTextOnBackPress() {
+            @Override
+            public void editTextOnBackPress() {
+                inputDesirePage.setCursorVisible(false);
+                inputDesirePage.clearFocus();
+            }
+        });
     }
 
-
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = getActivity().getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(getActivity());
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }

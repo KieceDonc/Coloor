@@ -507,13 +507,7 @@ public class CirclePickerView extends ImageView {
         @Override
         public void onLongPress(MotionEvent e) {
             Activity activity = (Activity) getContext();
-            ColorsData colorsData = new ColorsData(activity);
-            colorsData.addColor(new ColorSpec(mColorHexa));
-            CustomToast.show(activity,activity.getLayoutInflater(),mColorHexa);
-
-            if(Palette.recyclerView!=null){
-                Palette.recyclerView.getAdapter().notifyItemInserted(colorsData.getSize()-1);
-            }
+            new ColorsData(activity).addColor(mColorHexa);
         }
 
         @Override

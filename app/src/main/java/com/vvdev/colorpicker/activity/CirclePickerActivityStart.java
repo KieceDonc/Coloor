@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
@@ -88,6 +89,12 @@ public class CirclePickerActivityStart extends AppCompatActivity {
             }else if(resultCode == Activity.RESULT_CANCELED){
                 permissionNotGiven();
             }
+        }else if(requestCode == REQUEST_CODE_ACTION_MANAGE_OVERLAY){
+            if(resultCode == Activity.RESULT_OK){
+                startCapture();
+            }else{
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -154,7 +161,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what would happen when positive button is clicked
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                        @SuppressLint("InlinedApi") Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION); // we only call the alert dialog if we are SDK > 23
                         startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
                         dialogInterface.dismiss();
                         permissionNotGiven(); // used to fix a bug
