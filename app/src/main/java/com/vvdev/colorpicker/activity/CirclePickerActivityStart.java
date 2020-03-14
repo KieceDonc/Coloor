@@ -88,18 +88,21 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 startCirclePicker();
             }else if(resultCode == Activity.RESULT_CANCELED){
                 permissionNotGiven();
+            }else{
+
             }
         }else if(requestCode == REQUEST_CODE_ACTION_MANAGE_OVERLAY){
             if(resultCode == Activity.RESULT_OK){
                 startCapture();
             }else{
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                permissionNotGiven();
             }
         }
     }
 
     private void permissionNotGiven(){
         CirclePickerService.circleStarted=false;
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -133,13 +136,13 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
+                CirclePickerService.Instance.getInstance().setOnClickListenerCloseButton(); // used to set on click listener the close button
 
                 CirclePickerService.circleStarted=true;
                 finish();
 
             }
-        }, 500);
-    }
+        }, 500); }
 
     private void showAlertDialog(){
         //set icon

@@ -29,13 +29,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyViewHolderPalette> {
 
-    private static final String TAG =  PaletteRVAdapter.class.getName();;
+    private static final String TAG = PaletteRVAdapter.class.getName();
 
     private final Activity activity;
 
-    public PaletteRVAdapter(Activity activity){
-        this.activity=activity;
-
+    public PaletteRVAdapter(Activity activity) {
+        this.activity = activity;
     }
 
     @Override
@@ -101,25 +100,25 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             piExtend = itemView.findViewById(R.id.piExtend);
 
             extendSpinner = itemView.findViewById(R.id.piSpinner);
-            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate0));
-            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate1));
-            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate2));
-            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate3));
-            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate4));
-            extendInclude.add((ConstraintLayout)itemView.findViewById(R.id.piExtendGenerate5));
+            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate0));
+            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate1));
+            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate2));
+            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate3));
+            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate4));
+            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate5));
 
-            for(int x=0;x<extendInclude.size();x++){
+            for (int x = 0; x < extendInclude.size(); x++) {
                 extendView.add(extendInclude.get(x).findViewById(R.id.piExtendView));
-                extendHex.add((TextView)extendInclude.get(x).findViewById(R.id.piExtendHex));
-                extendRGB.add((TextView)extendInclude.get(x).findViewById(R.id.piExtendRGB));
+                extendHex.add((TextView) extendInclude.get(x).findViewById(R.id.piExtendHex));
+                extendRGB.add((TextView) extendInclude.get(x).findViewById(R.id.piExtendRGB));
             }
 
             more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(piExtend.getVisibility()==View.VISIBLE){
+                    if (piExtend.getVisibility() == View.VISIBLE) {
                         piExtend.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         piExtend.setVisibility(View.VISIBLE);
                     }
                 }
@@ -128,21 +127,21 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             trash.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG,"trash imageView clicked");
-                    if(!itemDeleted){
-                        itemDeleted=true;
-                        Log.i(TAG,"color selected isn't deleted, start to delete");
+                    Log.i(TAG, "trash imageView clicked");
+                    if (!itemDeleted) {
+                        itemDeleted = true;
+                        Log.i(TAG, "color selected isn't deleted, start to delete");
                         ColorsData colorsData = new ColorsData(activity);
                         int position = getLayoutPosition();
                         colorsData.removeColor(position);
                         notifyItemRemoved(position);
-                        notifyItemRangeChanged(position,new ColorsData(activity).getSize());
+                        notifyItemRangeChanged(position, new ColorsData(activity).getSize());
                     }
                 }
             });
 
             // set the extend spinner on item click listener and change each extend include to the colors propriety of selected item
-            extendSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+            extendSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     int selectedItem = parentView.getSelectedItemPosition();
@@ -174,41 +173,42 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
 
             // setup text
             colorName.setText(ColorUtility.nearestColor(hexaFromColorSpec)[0]);
-            String toHSV = "HSV : "+hsvFromColorSpec[0]+", "+hsvFromColorSpec[1]+", "+hsvFromColorSpec[2];
+            String toHSV = "HSV : " + hsvFromColorSpec[0] + ", " + hsvFromColorSpec[1] + ", " + hsvFromColorSpec[2];
             hsv.setText(toHSV);
-            String toRGB = "RGB : "+rgbFromColorSpec[0]+", "+rgbFromColorSpec[1]+", "+rgbFromColorSpec[2];
+            String toRGB = "RGB : " + rgbFromColorSpec[0] + ", " + rgbFromColorSpec[1] + ", " + rgbFromColorSpec[2];
             rgb.setText(toRGB);
-            String toHexa = "Hexa : "+hexaFromColorSpec;
+            String toHexa = "Hexa : " + hexaFromColorSpec;
             hexa.setText(toHexa);
 
             // setup extend spinner
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,colorSpec.getGenerateMethod());
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, colorSpec.getGenerateMethod());
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             extendSpinner.setAdapter(spinnerAdapter);
 
             showNumberExtendInclude(6); // set the good number of include for generated colors method shades
             String[] toShow; // setup preview generated colors by the method of generation shades
-            if(ColorUtility.isNearestFromBlackThanWhite(colorSpec.getHexa())){ // check if the color is closer to black than white
+            if (ColorUtility.isNearestFromBlackThanWhite(colorSpec.getHexa())) { // check if the color is closer to black than white
                 extendSpinner.setSelection(2); // set spinner to position of Tints ( it will also set extendInclude to Tints mode )
                 toShow = colorSpec.getTines(); // setup preview generated colors by the method of generation Tints
-            }else{
+            } else {
                 extendSpinner.setSelection(0); // set spinner to position of Shades ( it will also set extendInclude to Shades mode )
                 toShow = colorSpec.getShades(); // setup preview generated colors by the method of generation Shades
             }
-            for(int x=0;x<generate.size();x++){ // setup preview generated colors by the method of generation ( Shades / Tints )
+            for (int x = 0; x < generate.size(); x++) { // setup preview generated colors by the method of generation ( Shades / Tints )
                 generate.get(x).setBackgroundColor(Color.parseColor(toShow[x]));
             }
         }
 
         /**
          * Change the visibility of extend include depending of generated colors length
+         *
          * @param number generated colors length
          */
-        private void showNumberExtendInclude(int number){
-            for(int x=0;x<number;x++){
+        private void showNumberExtendInclude(int number) {
+            for (int x = 0; x < number; x++) {
                 extendInclude.get(x).setVisibility(View.VISIBLE);
             }
-            for(int x=number;x<extendInclude.size();x++){
+            for (int x = number; x < extendInclude.size(); x++) {
                 extendInclude.get(x).setVisibility(View.INVISIBLE);
             }
             //piExtend.setLayoutParams(new ConstraintLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -216,25 +216,27 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
 
         /**
          * Change each extend view to the proper colors of generated colors
+         *
          * @param colors generated colors
          */
-        private void changeExtendInclude(String[] colors){
-            for(int x=0;x<colors.length;x++){
+        private void changeExtendInclude(String[] colors) {
+            for (int x = 0; x < colors.length; x++) {
                 extendView.get(x).setBackgroundColor(Color.parseColor(colors[x]));
                 extendHex.get(x).setText(colors[x]);
                 int[] rgbOfColor = ColorUtility.getRGBFromHex(colors[x]);
-                String rgbText = rgbOfColor[0]+", "+rgbOfColor[1]+","+rgbOfColor[2];
+                String rgbText = rgbOfColor[0] + ", " + rgbOfColor[1] + "," + rgbOfColor[2];
                 extendRGB.get(x).setText(rgbText);
             }
         }
 
         /**
          * used to set extend item on listener or not
+         *
          * @param colors
          */
-        private void updateListener(final String[] colors){
-            for(int x=0;x<extendInclude.size();x++){
-                if(extendInclude.get(x).getVisibility()==View.VISIBLE){
+        private void updateListener(final String[] colors) {
+            for (int x = 0; x < extendInclude.size(); x++) {
+                if (extendInclude.get(x).getVisibility() == View.VISIBLE) {
                     final String currentColor = colors[x];
                     extendInclude.get(x).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -242,11 +244,10 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                             new ColorsData(activity).addColor(currentColor);
                         }
                     });
-                }else{
+                } else {
                     extendInclude.get(x).setOnClickListener(null);
                 }
             }
         }
     }
-
 }

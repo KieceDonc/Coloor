@@ -10,6 +10,7 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
+import android.os.Handler;
 import android.util.Log;
 
 
@@ -116,7 +117,12 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
             mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
-                    startCapture();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() { // we delay by 50 ms to prevent circle picker view to capturing her self
+                        public void run() {
+                            startCapture();
+                        }
+                    }, 10);
                 }
             },null);
         }catch (Exception e){

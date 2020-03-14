@@ -1,17 +1,16 @@
 package com.vvdev.colorpicker.fragment.BottomBar;
 
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.ui.PaletteRVAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class Palette extends Fragment {
 
     public static RecyclerView recyclerView;
+
+    private FloatingActionMenu actionMenu;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class Palette extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        actionMenu = view.findViewById(R.id.ActionButtonMenu);
         setupPaletteRecycleView(view);
     }
 
@@ -48,5 +51,16 @@ public class Palette extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(getActivity());
         recyclerView.setAdapter(PaletteRVAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    actionMenu.hideMenuButton(true);
+                } else if (dy < 0) {
+                    actionMenu.showMenuButton(true);
+                }
+            }
+        });
     }
 }

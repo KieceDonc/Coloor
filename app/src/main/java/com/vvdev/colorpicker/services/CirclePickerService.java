@@ -1,5 +1,6 @@
 package com.vvdev.colorpicker.services;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -84,7 +85,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
                     CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID,
-                    "Circle picker channel",
+                    "Circle picker color",
                     NotificationManager.IMPORTANCE_LOW // TODO check google document to find the good IMPORTANCE for notification manager
             );
             channel1.setDescription("This is Channel 1");
@@ -106,6 +107,11 @@ public class CirclePickerService extends Service { // TODO fix back press bug
         startForeground(1, notification);
     }
 
+    /**
+     * used to update the hexadecimal value inside notification
+     * @param Hexa
+     */
+    @SuppressLint("RestrictedApi")
     public void updateHexaValue(String Hexa){
         oldHexValue=Hexa;
         notificationBuilder.mActions.clear(); // clear all past action ( you need to do that cuz you call addAction and not setAction ) plz refer https://stackoverflow.com/questions/24465587/change-notifications-action-icon-dynamically
@@ -124,6 +130,19 @@ public class CirclePickerService extends Service { // TODO fix back press bug
         Notification notification = notificationBuilder.build();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(1, notification);
+    }
+
+    /**
+     * used to set on click listener the close button of circle picker view
+     */
+    public void setOnClickListenerCloseButton(){
+        wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG,"Close button pressed, stopping service");
+                stopService();
+            }
+        });
     }
 
     private void startCirclePicker() {

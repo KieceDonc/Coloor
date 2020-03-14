@@ -34,6 +34,7 @@ dependencies{  // https://stackoverflow.com/questions/6980906/android-color-pick
     implementation 'com.google.code.gson:gson:2.8.5' // save object Shared Preferences
     implementation 'com.devbrackets.android:exomedia:4.0.0' // video view library ( with controllers ) DO NOT UPDATE THIS LIBRARY, TRUST ME, YOU WILL REGRET THAT.
     implementation 'com.mindorks.android:prdownloader:0.6.0' // file downloader library
+    implementation 'com.github.clans:fab:1.6.4' // floating button library
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     testImplementation 'org.testng:testng:6.9.6'
