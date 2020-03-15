@@ -1,12 +1,15 @@
 package com.vvdev.colorpicker.fragment.BottomBar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.ui.PaletteRVAdapter;
 
 import androidx.annotation.NonNull;
@@ -18,8 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class Palette extends Fragment {
 
     public static RecyclerView recyclerView;
+    public static FloatingActionMenu actionMenu;
 
-    private FloatingActionMenu actionMenu;
+    private FloatingActionButton actionButtonDeleteAll;
+
+    private final static String TAG = Palette.class.getName();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -32,7 +38,9 @@ public class Palette extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         actionMenu = view.findViewById(R.id.ActionButtonMenu);
+        actionButtonDeleteAll = view.findViewById(R.id.ActionButtonDeleteAll);
         setupPaletteRecycleView(view);
+        setupActionButtonListener();
     }
 
     @Override
@@ -60,6 +68,16 @@ public class Palette extends Fragment {
                 } else if (dy < 0) {
                     actionMenu.showMenuButton(true);
                 }
+            }
+        });
+    }
+
+    private void setupActionButtonListener(){
+        actionButtonDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG,"delete all colors floating button have been clicked");
+                new ColorsData(getActivity()).clearColors();
             }
         });
     }

@@ -133,6 +133,53 @@ public class ColorUtility {
         }
     }
 
+    /*public static int[] getHslFromRGB(int[] RGB) { // https://css-tricks.com/converting-color-spaces-in-javascript/
+        // Make r, g, and b fractions of 1
+        int r = RGB[0] / 255;
+        int g = RGB[1] / 255;
+        int b = RGB[2] / 255;
+
+        // Find greatest and smallest channel values
+        int cmin = Math.min(r, Math.min(g, b));
+        int cmax = Math.max(r, Math.max(g, b));
+        int delta = cmax - cmin;
+
+        int[] HSL = new int[3];
+
+        if (delta == 0) {
+            HSL[0] = 0;
+            // Red is max
+        } else if (cmax == r) {
+            HSL[0] = ((g - b) / delta) % 6;
+            // Green is max
+        } else if (cmax == g) {
+            HSL[0] = (b - r) / delta + 2;
+            // Blue is max
+        } else {
+            HSL[0] = (r - g) / delta + 4;
+        }
+        HSL[0] = Math.round(HSL[0] * 60);
+
+        // Make negative hues positive behind 360°
+        if (HSL[0] < 0) {
+            HSL[0] += 360;
+        }
+
+        HSL[1] = (cmax + cmin) / 2;
+
+        // Calculate saturation
+        if(delta==0){
+            HSL[1]=0;
+        }else{
+            HSL[1]= delta / (1 - Math.abs(2 * HSL[1] - 1));;
+        }
+
+        // Multiply l and s by 100
+        HSL[1] = +(HSL[1] * 100);
+        HSL[2] = +(HSL[2] * 100);
+        return HSL;
+    }*/
+
     /**
      * Decide if the text color should be black or white depending on background color. Dedicate to Circle picker view
      * @param TextColor Hex background color in String ( automatically handle if #000000 or 000000 )

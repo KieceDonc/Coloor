@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
 import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.ui.CirclePickerView;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -135,14 +136,44 @@ public class CirclePickerService extends Service { // TODO fix back press bug
     /**
      * used to set on click listener the close button of circle picker view
      */
-    public void setOnClickListenerCloseButton(){
-        wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG,"Close button pressed, stopping service");
-                stopService();
-            }
-        });
+    public void setOnClickListenerOutsideButton() throws Exception {
+        if(wmCirclePickerView!=null){
+            final CirclePickerView cpv = wmCirclePickerView.findViewById(R.id.CirclePicker);
+
+            wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"Close button pressed, stopping service");
+                    stopService();
+                }
+            });
+
+            wmCirclePickerView.findViewById(R.id.CirclePickerSave).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"save button clicked");
+                    cpv.saveCurrentColor();
+                }
+            });
+
+            wmCirclePickerView.findViewById(R.id.CirclePickerZoomIn).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"zoom in button clicked");
+                    cpv.zoomIn();
+                }
+            });
+
+            wmCirclePickerView.findViewById(R.id.CirclePickerZoomOut).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"zoom out button clicked");
+                    cpv.zoomOut();
+                }
+            });
+        }else{
+            throw new Exception("Couldn't set outside circle picker view button on click listener because wmCirclePickerView is null");
+        }
     }
 
     private void startCirclePicker() {

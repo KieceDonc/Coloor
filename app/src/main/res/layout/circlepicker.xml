@@ -29,4 +29,38 @@
         app:layout_constraintEnd_toEndOf="@id/CirclePicker"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_delete" />
+
+    <ImageView
+        android:id="@+id/CirclePickerSave"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="#ff669900"
+        android:scaleType="fitCenter"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/CirclePicker"
+        app:srcCompat="@drawable/save" />
+
+    <ImageView
+        android:id="@+id/CirclePickerZoomIn"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@color/Theme1_Secondary"
+        android:scaleType="center"
+        android:tint="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <ImageView
+        android:id="@+id/CirclePickerZoomOut"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@color/Theme1_Secondary"
+        android:scaleType="centerInside"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/moins" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

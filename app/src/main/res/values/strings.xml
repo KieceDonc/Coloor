@@ -21,10 +21,10 @@
 
     <string name="permission_denied">Permission denied, task cancel</string>
 
-    <string name="Hex">Hex:</string>
-    <string name="Hsv">Hsv:</string>
-    <string name="RGB">RGB:</string>
-    <string name="paletteItemMore"><![CDATA[<]]></string>
+    <string name="Hex" translatable="false">Hex:</string>
+    <string name="Hsv" translatable="false">Hsv:</string>
+    <string name="RGB" translatable="false">RGB:</string>
+    <string name="paletteItemMore" translatable="false"><![CDATA[<]]></string>
 
     <string name="Toast_have_been_added">haven been added to the palette !</string> <!-- Example : #000000 haven been added to the palette-->
 
@@ -32,6 +32,12 @@
     <string name="import_internet_unable_to_connect">Unable to connect to this address</string>
     <string name="import_internet_invalid_url">Invalid url address</string>
     <string name="import_internet_basic_error">Error while downloading, please retry</string>
+
+    <string name="ColorSpec_Shades">Shades</string>
+    <string name="ColorSpec_Tones">Tones</string>
+    <string name="ColorSpec_Tints">Tints</string>
+    <string name="ColorSpec_Triadic">Triadic</string>
+    <string name="ColorSpec_Complementary">Complementary</string>
 
     <string name="service_current_hexa">Current hexadecimal value</string>
     <string name="service_waiting_permission">Waiting for permission to be given</string>

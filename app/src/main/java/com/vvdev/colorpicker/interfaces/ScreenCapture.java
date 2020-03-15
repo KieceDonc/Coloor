@@ -60,7 +60,7 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     private void startCapture() {
         Image image = mImageReader.acquireLatestImage();
         if (image == null) {
-            Log.e(TAG, "image is null.");
+            Log.e(TAG, "Image is null.");
             startScreenCapture();
             return;
         }
@@ -78,10 +78,10 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
 
         stopScreenCapture();
         if (mBitmap != null) {
-            Log.i(TAG, "bitmap create success");
-            saveToFile();
+            Log.i(TAG, "Bitmap create success");
+            mCaptureListener.onScreenCaptureSuccess(mBitmap);
         } else {
-            Log.i(TAG, "bitmap is null");
+            Log.i(TAG, "Bitmap is null");
             if (mCaptureListener != null) {
                 mCaptureListener.onScreenCaptureFailed("Get bitmap failed.");
             }
@@ -96,7 +96,7 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     }
 
     public boolean startScreenCapture() {
-        Log.i(TAG, "startScreenCapture");
+        Log.i(TAG, "Start screen capture");
         if (mMediaProjection != null) {
             setUpVirtualDisplay();
             return true;
@@ -134,11 +134,5 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
 
     public static void setUpMediaProjection(int mResultCode,Intent mResultData) {
         mMediaProjection = mMediaProjectionManager.getMediaProjection(mResultCode, mResultData);
-    }
-
-    private void saveToFile() {
-            if (mCaptureListener != null) {
-                mCaptureListener.onScreenCaptureSuccess(mBitmap);
-            }
     }
 }

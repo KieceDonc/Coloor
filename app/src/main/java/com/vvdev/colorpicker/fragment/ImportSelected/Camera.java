@@ -1152,7 +1152,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
      */
     public void CameraTopRefresh() {
         int[] RGBAverage = ColorUtility.getRGBAverageFromTextureView(mTextureView, CameraCircle);
-        ColorSpec currentColor = new ColorSpec(RGBAverage);
+        ColorSpec currentColor = new ColorSpec(ColorsData.getGeneratedMethodName(getActivity()),RGBAverage);
 
         String ToDisplayRGB = SRGB+" "+RGBAverage[0]+", "+RGBAverage[1]+", "+RGBAverage[2];
         TVRGBValue.setText(ToDisplayRGB);

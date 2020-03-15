@@ -1,60 +1,70 @@
 package com.vvdev.colorpicker.interfaces;
 
+import android.app.Activity;
+import android.util.Log;
+
+import com.vvdev.colorpicker.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
-    private String hexa;
-    private int[] hsv = new int[3];
-    private int[] rgb = new int[3];
+    private final static String TAG = ColorSpec.class.getName();
 
-    private ArrayList<String> allGeneratedColors = new ArrayList<>(Arrays.asList("Shades","Tones","Tints","Triadic","Complementary"));
+
+    private String hexa;
+    private int[] hsv = new int[3]; // also hsb
+    private int[] rgb = new int[3];
+    private int[] hsl = new int[3];
+
+    private ArrayList<String> methodName;
     private String[] complementary =new String[2];
     private String[] triadic = new String[3];
-    private String[] tines = new String[6];
+    private String[] tints = new String[6];
     private String[] tones = new String[6];
     private String[] shades = new String[6];
 
-    public ColorSpec(int[] rgb) {
+    public ColorSpec(ArrayList<String> methodName, int[] rgb) {
+        this.methodName = methodName;
         setRGB(rgb);
         setHexa(ColorUtility.getHexFromRGB(rgb));
-        setHSV(ColorUtility.getHsvFromRGB(rgb));
         setup();
     }
 
-    public ColorSpec(String hexa) {
+    public ColorSpec(ArrayList<String> methodName,String hexa) {
+        this.methodName = methodName;
         setHexa(hexa);
         setRGB(ColorUtility.getRGBFromHex(hexa));
-        setHSV(ColorUtility.getHsvFromRGB(getRGB()));
-        setup();
-    }
-
-    public ColorSpec(String hexa, int[] rgb, int[] hsv) {
-        setHexa(hexa);
-        setHSV(hsv);
-        setRGB(rgb);
         setup();
     }
 
     private void setup(){
-        setComplementary();
-        setTriadic();
-        setTone();
+        setHSV(ColorUtility.getHsvFromRGB(getRGB()));
+        /*setHSL(ColorUtility.getHslFromRGB(getRGB()));*/
+
         setShades();
+        setTones();
         setTines();
+        setTriadic();
+        setComplementary();
     }
 
+    /**
+     * shades[0] = this.hexa
+     * triadic[ 1 / 2 /3 / 4 / 5 ] = generate
+     */
 
-    private void setComplementary() { // Complémentaire
-        int[] complementaryRGB = new int[3];
+    private void setShades(){ // Nuances
+        shades=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#000000",6);
+    }
 
-        complementaryRGB[0] = 255-getRGB()[0];
-        complementaryRGB[1] = 255-getRGB()[1];
-        complementaryRGB[2] = 255-getRGB()[2];
+    private void setTones() { // Tonalités
+        tones=ColorUtility.gradientApproximatelyGenerator(getHexa(),"707070",6);
+    }
 
-        complementary[0]=getHexa();
-        complementary[1]=ColorUtility.getHexFromRGB(complementaryRGB);
+    private void setTines() {
+        tints=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#f7f7f7",6);
     }
 
     /**
@@ -70,30 +80,22 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         triadic1[2]=getRGB()[1];
         triadic2[0]=getRGB()[1];
         triadic1[0]=getRGB()[2];
-        triadic1[1]=getRGB()[2];
+        triadic2[1]=getRGB()[2];
 
         triadic[0]=getHexa();
         triadic[1]=ColorUtility.getHexFromRGB(triadic1);
         triadic[2]=ColorUtility.getHexFromRGB(triadic2);
     }
 
+    private void setComplementary() { // Complémentaire
+        int[] complementaryRGB = new int[3];
 
-    private void setTone() { // Tonalités
-        tones=ColorUtility.gradientApproximatelyGenerator(getHexa(),"707070",6);
-    }
+        complementaryRGB[0] = 255-getRGB()[0];
+        complementaryRGB[1] = 255-getRGB()[1];
+        complementaryRGB[2] = 255-getRGB()[2];
 
-
-    private void setTines() {
-        tines=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#f7f7f7",6);
-    }
-
-    /**
-     * shades[0] = this.hexa
-     * triadic[ 1 / 2 /3 / 4 / 5 ] = generate
-     */
-
-    private void setShades(){ // Nuances
-        shades=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#000000",6);
+        complementary[0]=getHexa();
+        complementary[1]=ColorUtility.getHexFromRGB(complementaryRGB);
     }
 
 
@@ -121,6 +123,14 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         this.rgb = RGB;
     }
 
+    public int[] getHSL() {
+        return hsl;
+    }
+
+    public void setHSL(int[] hsl) {
+        this.hsl = hsl;
+    }
+
     public String[] getComplementary() {
         return complementary;
     }
@@ -133,8 +143,8 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         return tones;
     }
 
-    public String[] getTines() {
-        return tines;
+    public String[] getTints() {
+        return tints;
     }
 
     public String[] getShades(){
@@ -142,24 +152,68 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     }
 
     public ArrayList<String[]> getAllGeneratedColors(){
-        return new ArrayList<>(Arrays.asList(getShades(),getTones(),getTines(),getTriadic(),getComplementary()));
+        return new ArrayList<>(Arrays.asList(getShades(),getTones(),getTints(),getTriadic(),getComplementary()));
     }
 
-    public ArrayList<String> getGenerateMethod() {
-        return allGeneratedColors;
+    public ArrayList<String> getAllMethodName() {
+        return methodName;
     }
 
 
     public String toString(){
-        return "Hexadecimal = "+hexa+"\n" +
-                "RGB = RGB("+getRGB()[0]+", "+getRGB()[1]+", "+getRGB()[2]+")\n" +
-                "HSV = HSV("+getHSV()[0]+", "+getHSV()[1]+", "+getHSV()[2]+")\n" +
-                "Complementary = "+complementary[0]+"\n" +
-                "Triadic = "+getTriadic()[0]+", "+getTriadic()[1]+", "+getTriadic()[2]+"\n" +
-                "Tone = TODO\n" +
-                "Shades = "+getShades()[0]+", "+getShades()[1]+", "+getShades()[2]+", "+getShades()[3]+", "+getShades()[4]+", "+getShades()[5];
-
+        StringBuilder toReturn= new StringBuilder("ColorsSpec{\n" + "Hexa =" + hexa +"\n");
+        for(int x=0;x<getAllMethodName().size();x++){
+            toReturn.append(getAllMethodName().get(x)+" = ");
+            for(int y=0;y<getAllGeneratedColors().get(x).length;y++){
+                toReturn.append(getAllGeneratedColors().get(x)[y]+", ");
+            }
+            toReturn.append("\n");
+        }
+        toReturn.append("}");
+        return toReturn.toString();
 
         //TODO make toString() of ColorSpec
+    }
+
+    /**
+     * Used to check is the object is correct
+     * @param toVerify object to verify
+     * @param longCheck if true, check all hexa value length to know if it's correct or not
+     * @return
+     */
+    public static boolean isCorrect(ColorSpec toVerify,boolean longCheck){
+        if(toVerify.getHexa().length()<6){
+            Log.e(TAG,"isCorrect() detect error.\nHexa color length of object is <6. Value ="+toVerify.getHexa()
+            +"\nObject to verify toString()= "+toVerify.toString());
+            return false;
+        }
+        if(toVerify.getRGB().length<3){
+            return false;
+        }
+        if(toVerify.getHSV().length<3){
+            return false;
+        }
+        if(toVerify.getHSL().length<3){
+            return false;
+        }
+
+        if(toVerify.getAllMethodName().size()!=toVerify.getAllGeneratedColors().size()){ // you might forgot to add new method in getGenerateMethod() or getAllGeneratedColors()
+            Log.e(TAG,"isCorrect() detect error.\nYou might forgot to add new method in getGenerateMethod() or getAllGeneratedColors().\nObject to verify to string = "+toVerify.toString());
+            return false;
+        }
+        if(longCheck){
+            for(int x=0;x<toVerify.getAllMethodName().size();x++){
+                for(int y=0;y<toVerify.getAllGeneratedColors().get(x).length;x++){
+                    if(toVerify.getAllGeneratedColors().get(x)[y].length()<6){
+                        Log.e(TAG,"isCorrect() detect error."
+                                + "\nMethod at position "+x+" and hexa value at "+y+" have a length <6"
+                        +"\nWrong string value ="+toVerify.getAllGeneratedColors().get(x)[y]
+                        +"\nObject to verify to string ="+toVerify.toString());
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 }

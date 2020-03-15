@@ -18,6 +18,7 @@ import com.vvdev.colorpicker.services.CirclePickerService;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;

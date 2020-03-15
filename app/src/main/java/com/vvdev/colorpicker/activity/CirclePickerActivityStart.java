@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.services.CirclePickerService;
+import com.vvdev.colorpicker.ui.CirclePickerView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -136,9 +136,13 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
-                CirclePickerService.Instance.getInstance().setOnClickListenerCloseButton(); // used to set on click listener the close button
-
                 CirclePickerService.circleStarted=true;
+                try {
+                    CirclePickerService.Instance.getInstance().setOnClickListenerOutsideButton(); // used to set on click listener the close button
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 finish();
 
             }

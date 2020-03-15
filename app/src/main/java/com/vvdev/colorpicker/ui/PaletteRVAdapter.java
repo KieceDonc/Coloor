@@ -134,8 +134,6 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                         ColorsData colorsData = new ColorsData(activity);
                         int position = getLayoutPosition();
                         colorsData.removeColor(position);
-                        notifyItemRemoved(position);
-                        notifyItemRangeChanged(position, new ColorsData(activity).getSize());
                     }
                 }
             });
@@ -181,7 +179,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             hexa.setText(toHexa);
 
             // setup extend spinner
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, colorSpec.getGenerateMethod());
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, colorSpec.getAllMethodName());
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             extendSpinner.setAdapter(spinnerAdapter);
 
@@ -189,7 +187,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             String[] toShow; // setup preview generated colors by the method of generation shades
             if (ColorUtility.isNearestFromBlackThanWhite(colorSpec.getHexa())) { // check if the color is closer to black than white
                 extendSpinner.setSelection(2); // set spinner to position of Tints ( it will also set extendInclude to Tints mode )
-                toShow = colorSpec.getTines(); // setup preview generated colors by the method of generation Tints
+                toShow = colorSpec.getTints(); // setup preview generated colors by the method of generation Tints
             } else {
                 extendSpinner.setSelection(0); // set spinner to position of Shades ( it will also set extendInclude to Shades mode )
                 toShow = colorSpec.getShades(); // setup preview generated colors by the method of generation Shades

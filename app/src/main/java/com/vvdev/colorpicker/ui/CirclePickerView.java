@@ -39,7 +39,7 @@ import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCircleP
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 
 @SuppressLint("AppCompatCustomView")
-public class CirclePickerView extends ImageView {
+public class CirclePickerView extends ImageView { // TODO fix problems in android Q ( 10 )
 
     private static final String TAG = CirclePickerView.class.getName();;
 
@@ -112,6 +112,7 @@ public class CirclePickerView extends ImageView {
     private int mBorderColor;
     private int mMiddleLineStrokeWidth=3;
     private int mMiddleLineSize=convertDpToPx(10);
+    private int cmptErrorNullPointerException = 0; // used to prevent infinite loop in OnDraw
 
     private boolean mReady;
     private boolean mSetupPending=true;
@@ -149,14 +150,23 @@ public class CirclePickerView extends ImageView {
             setup();
         }
 
-        canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
-        canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
+        try {
+            canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
+            canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
 
-        canvas.drawTextOnPath(mColorName, mBorderCircle, mPositionBorderColorName, mBorderWidthDp, mBorderPaintText);
-        canvas.drawTextOnPath(mColorHexa, mBorderCircle, mPositionBorderHex, mBorderWidthDp, mBorderPaintText);
+            canvas.drawTextOnPath(mColorName, mBorderCircle, mPositionBorderColorName, mBorderWidthDp, mBorderPaintText);
+            canvas.drawTextOnPath(mColorHexa, mBorderCircle, mPositionBorderHex, mBorderWidthDp, mBorderPaintText);
 
-        canvas.drawLine(mDrawableRect.centerX()-mMiddleLineSize,mDrawableRect.centerY(),mDrawableRect.centerX()+mMiddleLineSize,mDrawableRect.centerY(),mMiddleLinePaint);
-        canvas.drawLine(mDrawableRect.centerX(),mDrawableRect.centerY()-mMiddleLineSize,mDrawableRect.centerX(),mDrawableRect.centerY()+mMiddleLineSize,mMiddleLinePaint);
+            canvas.drawLine(mDrawableRect.centerX()-mMiddleLineSize,mDrawableRect.centerY(),mDrawableRect.centerX()+mMiddleLineSize,mDrawableRect.centerY(),mMiddleLinePaint);
+            canvas.drawLine(mDrawableRect.centerX(),mDrawableRect.centerY()-mMiddleLineSize,mDrawableRect.centerX(),mDrawableRect.centerY()+mMiddleLineSize,mMiddleLinePaint);
+        }catch (NullPointerException e){
+            if(cmptErrorNullPointerException==6){
+                throw new RuntimeException("OnDraw cmpt error NullPointerExeception = 6. It's too much");
+            }
+            cmptErrorNullPointerException++;
+            e.printStackTrace();
+            init();
+        }
     }
 
     private void init() {
@@ -358,6 +368,32 @@ public class CirclePickerView extends ImageView {
         }
     }
 
+    public void saveCurrentColor(){
+        Activity activity = (Activity) getContext();
+        new ColorsData(activity).addColor(mColorHexa);
+    }
+
+    public void zoomIn(){
+        if(scaleFactor>0.175){
+            scaleFactor-=0.1;
+        }else{
+            scaleFactor-=0.025;
+        }
+
+        scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
+        showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
+    }
+
+    public void zoomOut(){
+        if(scaleFactor>0.175){
+            scaleFactor+=0.1;
+        }else{
+            scaleFactor+=0.025;
+        }
+        scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
+        showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
+    }
+
     private class UserInteractionHandler implements OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, OnDragListener {
 
         private GestureDetector gesture;
@@ -421,8 +457,6 @@ public class CirclePickerView extends ImageView {
 
         @Override
         public void onLongPress(MotionEvent e) {
-            Activity activity = (Activity) getContext();
-            new ColorsData(activity).addColor(mColorHexa);
         }
 
         @Override

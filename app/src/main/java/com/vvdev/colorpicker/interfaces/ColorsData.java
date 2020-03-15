@@ -7,8 +7,10 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.ui.CustomToast;
+import com.vvdev.colorpicker.ui.PaletteRVAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,12 +32,13 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
     }
 
     public void addColor(String color){
-        colors.add(new ColorSpec(color));
+        colors.add(new ColorSpec(getGeneratedMethodName(),color));
         saveColors();
         CustomToast.show(activity,activity.getLayoutInflater(),color);
         if(Palette.recyclerView!=null){
             Palette.recyclerView.getAdapter().notifyItemInserted(getSize()-1);
         }
+        Log.i(TAG,"color added. Hexa value = "+color);
     }
 
 
@@ -43,6 +46,11 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         if(position<=getSize()-1){
             colors.remove(position);
             saveColors();
+            if(Palette.recyclerView!=null){
+                Palette.recyclerView.getAdapter().notifyItemRemoved(position);
+                Palette.recyclerView.getAdapter().notifyItemRangeChanged(position,getSize());
+            }
+            Log.i(TAG,"color deleted at position :"+position+". Size list ="+getSize());
         }else{
             Log.e(TAG,"trying to delete a color who isn't in the list. List size :"+getSize()+" position trying to delete : "+position);
         }
@@ -51,6 +59,14 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
     public void clearColors(){
         colors.clear();
         saveColors();
+        if(Palette.recyclerView!=null){
+            PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(activity);
+            Palette.recyclerView.setAdapter(PaletteRVAdapter);
+        }
+        if(Palette.actionMenu!=null){
+            Palette.actionMenu.showMenuButton(true);
+        }
+        Log.i(TAG,"all colors deleted ( clearColors() ) ");
     }
 
     public int getSize(){
@@ -68,6 +84,7 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         String json = gson.toJson(copy);
         prefsEditor.putString("colorsArrayList", json);
         prefsEditor.commit();
+        Log.i(TAG,"New color list saved");
     }
 
     /**
@@ -97,6 +114,34 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
             }
         });
         return colors;
+    }
+
+    private ArrayList<String> getGeneratedMethodName(){
+        ArrayList<String> methodName = new ArrayList<>();
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Shades));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Tones));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Tints));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Triadic));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Complementary));
+        return methodName;
+    }
+
+    public static ArrayList<String> getGeneratedMethodName(Activity activity){
+        ArrayList<String> methodName = new ArrayList<>();
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Shades));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Tones));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Tints));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Triadic));
+        methodName.add(activity.getResources().getString(R.string.ColorSpec_Complementary));
+        return methodName;
+    }
+
+    public String toString(){
+        StringBuilder toReturn= new StringBuilder("ColorsData list of ColorSpec :");
+        for(int x=0;x<colors.size();x++){
+            toReturn.append(colors.get(x).toString()+"\n");
+        }
+        return toReturn.toString();
     }
 
     /**
