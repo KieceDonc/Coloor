@@ -24,7 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener { // TODO signature apk
 
     public static int appNavigationBarHeight = 0;
     public static boolean isCPRunning = false; // is circle picker running

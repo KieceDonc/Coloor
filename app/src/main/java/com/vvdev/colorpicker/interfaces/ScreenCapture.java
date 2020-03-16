@@ -3,6 +3,7 @@ package com.vvdev.colorpicker.interfaces;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
@@ -12,7 +13,6 @@ import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Handler;
 import android.util.Log;
-
 
 import java.nio.ByteBuffer;
 
@@ -28,7 +28,10 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     private ImageReader mImageReader;
 
     public static MediaProjectionManager mMediaProjectionManager;
-    private static MediaProjection mMediaProjection;
+    private static int resultCode;
+    private static Intent resultData;
+
+    private MediaProjection mMediaProjection;
 
     private Bitmap mBitmap;
 
@@ -45,12 +48,15 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         this.mCaptureListener = captureListener;
     }
 
-    public ScreenCapture(int mWindowHeight,int mWindowWidth,int mScreenDensity) {
+    private Context context;
+    public ScreenCapture(int mWindowHeight, int mWindowWidth, int mScreenDensity, Context context) {
 
         this.mWindowHeight=mWindowHeight;
         this.mWindowWidth=mWindowWidth;
         this.mScreenDensity=mScreenDensity;
         createEnvironment();
+        mMediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, resultData);
+        this.context=context;
     }
 
     private void createEnvironment() {
@@ -112,7 +118,22 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
                     .createVirtualDisplay("ScreenCapture",
                             mWindowWidth, mWindowHeight, mScreenDensity,
                             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                            mImageReader.getSurface(), null,null);
+                            mImageReader.getSurface(), new VirtualDisplay.Callback() {
+                                @Override
+                                public void onPaused() {
+                                    super.onPaused();
+                                }
+
+                                @Override
+                                public void onResumed() {
+                                    super.onResumed();
+                                }
+
+                                @Override
+                                public void onStopped() {
+                                    super.onStopped();
+                                }
+                            }, null);
 
             mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                 @Override
@@ -133,6 +154,7 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     }
 
     public static void setUpMediaProjection(int mResultCode,Intent mResultData) {
-        mMediaProjection = mMediaProjectionManager.getMediaProjection(mResultCode, mResultData);
+        resultCode = mResultCode;
+        resultData = mResultData;
     }
 }

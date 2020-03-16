@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
 import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.ui.CirclePickerView;
 
 import java.util.Timer;
@@ -136,7 +137,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
     /**
      * used to set on click listener the close button of circle picker view
      */
-    public void setOnClickListenerOutsideButton() throws Exception {
+    public void setOnClickListenerOutsideButton(){
         if(wmCirclePickerView!=null){
             final CirclePickerView cpv = wmCirclePickerView.findViewById(R.id.CirclePicker);
 
@@ -172,7 +173,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
                 }
             });
         }else{
-            throw new Exception("Couldn't set outside circle picker view button on click listener because wmCirclePickerView is null");
+            throw new RuntimeException("Couldn't set outside circle picker view button on click listener because wmCirclePickerView is null");
         }
     }
 
@@ -228,7 +229,8 @@ public class CirclePickerService extends Service { // TODO fix back press bug
         return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
     }
 
-    private void stopService(){
+    public void stopService(){
+        Log.i(TAG,"stopping service");
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE); // TODO ask permission to draw over other app
         if(wmCirclePickerView!=null&&wmCirclePickerView.isAttachedToWindow()){
             wm.removeView(wmCirclePickerView);

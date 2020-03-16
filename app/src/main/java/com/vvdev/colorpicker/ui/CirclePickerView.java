@@ -27,8 +27,10 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
@@ -49,12 +51,10 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
         public void onScreenCaptureSuccess(Bitmap bitmap) {
 
             mScreenBitmap = bitmap;
-            if(setVisibilityThisOrGlobalView==1){ // plz refer to commentary in private void updateFinalBitmap() and private int setVisibilityThisOrGlobalView = 0;
-                wmCirclePickerView.setVisibility(VISIBLE);
-            }else{
-                setVisibility(VISIBLE);
-            }
+            makeVisible();
             inUpdateFinalBitmap=false;
+            setupFinalBitmap();
+
 
             Thread renderThread = new Thread(new Runnable() {
                 @Override
@@ -71,6 +71,12 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
             Log.d(TAG, "onScreenCaptureFailed errorMsg:" + errorMsg);
         }
     };
+
+    private ImageView closeButton;
+    private ImageView saveButton;
+    private ImageView zoomInButton;
+    private ImageView zoomOutButton;
+
     private BitmapShader mBitmapShader;
 
     private Bitmap mFinalBitmap;
@@ -102,7 +108,6 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
     private float mPositionBorderColorName;
     private float mPositionBorderHex;
 
-    private int setVisibilityThisOrGlobalView = 0; // 0 = mean this.setVisibility(Invisible) and 1 = wmCirclePickerView.setVisibility(Invisible)
     private int mPhoneWidth;
     private int mPhoneHeight;
     private int mBitmapHeight;
@@ -171,7 +176,9 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
 
     private void init() {
         mReady=true;
+    }
 
+    public void initWithCustomParams(ImageView close, ImageView save, ImageView zoomIn, ImageView zoomOut){
         if (mSetupPending) {
             Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -181,10 +188,16 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
 
             DisplayMetrics metrics = new DisplayMetrics();
             display.getMetrics(metrics);
-            mScreenCapture = new ScreenCapture(mPhoneHeight,mPhoneWidth,metrics.densityDpi);
+            mScreenCapture = new ScreenCapture(mPhoneHeight,mPhoneWidth,metrics.densityDpi,getContext());
             mScreenCapture.setCaptureListener(mCaptureListener);
 
+            closeButton = close;
+            saveButton = save;
+            zoomInButton = zoomIn;
+            zoomOutButton = zoomOut;
+
             updateFinalBitmap();
+
             setup();
             new CirclePickerView.UserInteractionHandler(getContext(), this); // used to set on listener circle picker interaction
             mSetupPending = false;
@@ -304,13 +317,7 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
     public void updateFinalBitmap(){
         if(!inUpdateFinalBitmap) {
             inUpdateFinalBitmap=true;
-            if(wmCirclePickerView!=null){ // used to detect if it's first setup ( wmCirclePickerView is null ) or not
-                setVisibilityThisOrGlobalView=1;
-                wmCirclePickerView.setVisibility(INVISIBLE); // set this view invisible so we won't get it in bitmap. It give a basis to work on.
-            }else{ // first setup
-                setVisibilityThisOrGlobalView=0;
-                setVisibility(INVISIBLE);
-            }
+            makeInvisible();
             mScreenCapture.startScreenCapture();
         }
     }
@@ -362,7 +369,6 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
-
         }else{
             throw new RuntimeException("memory leak in CirclePickerView");
         }
@@ -392,6 +398,22 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
         }
         scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
         showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
+    }
+
+    private void makeInvisible(){ // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
+        this.setVisibility(INVISIBLE);
+        closeButton.setVisibility(INVISIBLE);
+        saveButton.setVisibility(INVISIBLE);
+        zoomOutButton.setVisibility(INVISIBLE);
+        zoomInButton.setVisibility(INVISIBLE);
+    }
+
+    private void makeVisible(){ // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
+        this.setVisibility(VISIBLE);
+        closeButton.setVisibility(VISIBLE);
+        saveButton.setVisibility(VISIBLE);
+        zoomOutButton.setVisibility(VISIBLE);
+        zoomInButton.setVisibility(VISIBLE);
     }
 
     private class UserInteractionHandler implements OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, OnDragListener {
@@ -562,7 +584,6 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
                             WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE);
                             wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512 we move x and y
                             showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
-
                             break;
                         }
                     }
