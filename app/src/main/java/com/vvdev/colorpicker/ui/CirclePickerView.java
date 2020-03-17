@@ -178,7 +178,7 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
         mReady=true;
     }
 
-    public void initWithCustomParams(ImageView close, ImageView save, ImageView zoomIn, ImageView zoomOut){
+    public void initWithCustomParams(){
         if (mSetupPending) {
             Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -191,10 +191,10 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
             mScreenCapture = new ScreenCapture(mPhoneHeight,mPhoneWidth,metrics.densityDpi,getContext());
             mScreenCapture.setCaptureListener(mCaptureListener);
 
-            closeButton = close;
-            saveButton = save;
-            zoomInButton = zoomIn;
-            zoomOutButton = zoomOut;
+            closeButton = wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton);
+            saveButton = wmCirclePickerView.findViewById(R.id.CirclePickerSave);
+            zoomInButton = wmCirclePickerView.findViewById(R.id.CirclePickerZoomIn);
+            zoomOutButton = wmCirclePickerView.findViewById(R.id.CirclePickerZoomOut);
 
             updateFinalBitmap();
 
@@ -318,7 +318,12 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
         if(!inUpdateFinalBitmap) {
             inUpdateFinalBitmap=true;
             makeInvisible();
-            mScreenCapture.startScreenCapture();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() { // we delay by XXXXX ms to prevent circle picker view to capturing her self too much
+                public void run() {
+                    mScreenCapture.startScreenCapture();
+                }
+            }, 15);
         }
     }
 
@@ -538,8 +543,8 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
             if(allowToMove(event)){
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        updateFinalBitmap();
 
+                        updateFinalBitmap();
                         recViewLastX = (int) event.getRawX();
                         recViewLastY = (int) event.getRawY();
                         recViewFirstX = recViewLastX;

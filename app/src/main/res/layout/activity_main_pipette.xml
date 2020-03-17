@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/backgroundPipette"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/blankcircle"
+        app:civ_border_color="#FF000000"
+        app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pi"
+        app:layout_constraintEnd_toEndOf="@+id/pi"
+        app:layout_constraintStart_toStartOf="@+id/pi"
+        app:layout_constraintTop_toTopOf="@+id/pi" />
+
+    <ImageView
+        android:id="@+id/pi"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:tint="@color/Theme1_Zero"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/pipette_icon_icons_com_65005" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

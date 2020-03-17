@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/nav_view"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/backgroundPipette" />
+        app:layout_constraintTop_toTopOf="@id/pipette" />
 
     <com.vvdev.colorpicker.ui.CurvedBottomNavigationView
         android:id="@+id/nav_view"
@@ -44,28 +44,15 @@
 
     </com.vvdev.colorpicker.ui.CurvedBottomNavigationView>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/backgroundPipette"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:src="@drawable/blankcircle"
-        app:civ_border_color="#FF000000"
-        app:civ_border_width="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/pipette"
-        app:layout_constraintEnd_toEndOf="@+id/pipette"
-        app:layout_constraintStart_toStartOf="@+id/pipette"
-        app:layout_constraintTop_toTopOf="@+id/pipette" />
-
-    <ImageView
+    <include
         android:id="@+id/pipette"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:tint="@color/Theme1_Zero"
+        layout="@layout/activity_main_pipette"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nav_view"
-        app:srcCompat="@drawable/pipette_icon_icons_com_65005" />
+        app:layout_constraintTop_toTopOf="@+id/nav_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 <!--TODO replace all icon because you don't have authors permissions-->

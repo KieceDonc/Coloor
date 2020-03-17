@@ -118,32 +118,12 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
                     .createVirtualDisplay("ScreenCapture",
                             mWindowWidth, mWindowHeight, mScreenDensity,
                             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                            mImageReader.getSurface(), new VirtualDisplay.Callback() {
-                                @Override
-                                public void onPaused() {
-                                    super.onPaused();
-                                }
-
-                                @Override
-                                public void onResumed() {
-                                    super.onResumed();
-                                }
-
-                                @Override
-                                public void onStopped() {
-                                    super.onStopped();
-                                }
-                            }, null);
+                            mImageReader.getSurface(),null, null);
 
             mImageReader.setOnImageAvailableListener(new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() { // we delay by 50 ms to prevent circle picker view to capturing her self
-                        public void run() {
-                            startCapture();
-                        }
-                    }, 10);
+                    startCapture();
                 }
             },null);
         }catch (Exception e){

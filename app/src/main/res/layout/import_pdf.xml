@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="@+id/numberOfPage" />
     <!-- TODO to traduce -->
 
-    <com.vvdev.colorpicker.ui.CustomEditText
+    <com.vvdev.colorpicker.ui.PDFEditText
         android:id="@+id/input_desire_page"
         android:layout_width="49dp"
         android:layout_height="20dp"

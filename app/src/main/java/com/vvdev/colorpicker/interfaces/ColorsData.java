@@ -9,7 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
-import com.vvdev.colorpicker.ui.CustomToast;
+import com.vvdev.colorpicker.ui.ColorAddedToast;
 import com.vvdev.colorpicker.ui.PaletteRVAdapter;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
     public void addColor(String color){
         colors.add(new ColorSpec(getGeneratedMethodName(),color));
         saveColors();
-        CustomToast.show(activity,activity.getLayoutInflater(),color);
+        ColorAddedToast.show(activity,activity.getLayoutInflater(),color);
         if(Palette.recyclerView!=null){
             Palette.recyclerView.getAdapter().notifyItemInserted(getSize()-1);
         }

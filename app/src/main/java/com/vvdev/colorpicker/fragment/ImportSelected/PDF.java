@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -29,9 +28,8 @@ import com.github.barteksc.pdfviewer.listener.OnPageScrollListener;
 import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
-import com.shockwave.pdfium.util.SizeF;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.ui.CustomEditText;
+import com.vvdev.colorpicker.ui.PDFEditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -43,7 +41,7 @@ public class PDF extends Fragment {
     private static String TAG = PDF.class.getName();
 
     private PDFView pdfView;
-    private CustomEditText inputDesirePage;
+    private PDFEditText inputDesirePage;
     private TextView numberOfPage;
     private Uri pathToPDF;
 
@@ -216,7 +214,7 @@ public class PDF extends Fragment {
             }
         });
 
-        inputDesirePage.setEditTextOnBackPressListener(new CustomEditText.EditTextOnBackPress() {
+        inputDesirePage.setEditTextOnBackPressListener(new PDFEditText.EditTextOnBackPress() {
             @Override
             public void editTextOnBackPress() {
                 inputDesirePage.setCursorVisible(false);

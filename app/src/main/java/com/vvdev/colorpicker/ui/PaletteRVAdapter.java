@@ -67,6 +67,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
         private TextView hexa;
         private TextView more;
         private ConstraintLayout piExtend;
+        private TextView moreInformation;
 
         private ArrayList<View> generate = new ArrayList<>();
 
@@ -89,6 +90,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             hexa = itemView.findViewById(R.id.piHex);
             more = itemView.findViewById(R.id.piMore);
             trash = itemView.findViewById(R.id.piTrash);
+            moreInformation = itemView.findViewById(R.id.piExtendMoreInformation);
 
             generate.add(itemView.findViewById(R.id.piGenerate0));
             generate.add(itemView.findViewById(R.id.piGenerate1));
@@ -152,6 +154,15 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {
                     // your code here
+                }
+            });
+
+            moreInformation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.i(TAG,"TextView more information clicked");
+                    ColorInfoDialog cid = new ColorInfoDialog(activity,currentColor);
+                    cid.show();
                 }
             });
         }

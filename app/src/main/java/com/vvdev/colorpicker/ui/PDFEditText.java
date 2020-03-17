@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 
-public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText {
+public class PDFEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     private EditTextOnBackPress listenerBackPress;
 
@@ -13,15 +13,15 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
         void editTextOnBackPress();
     }
 
-    public CustomEditText(Context context) {
+    public PDFEditText(Context context) {
         super(context);
     }
 
-    public CustomEditText(Context context, AttributeSet attrs) {
+    public PDFEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public CustomEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+    public PDFEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

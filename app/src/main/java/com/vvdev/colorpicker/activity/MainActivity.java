@@ -17,8 +17,8 @@ import com.vvdev.colorpicker.services.CirclePickerService;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static int appNavigationBarHeight = 0;
     public static boolean isCPRunning = false; // is circle picker running
 
-    private ImageView startCirclePickerI;
-    private CircleImageView startCirclePickerB;
+    private BottomNavigationView navView;
+    private ConstraintLayout startCirclePicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +38,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navigation_palette);
         navView.setOnNavigationItemSelectedListener(this);
 
-        startCirclePickerB = findViewById(R.id.backgroundPipette);
-        startCirclePickerI = findViewById(R.id.pipette);
+        startCirclePicker = findViewById(R.id.pipette);
 
-        startCirclePickerB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isCPRunning){ // check if circle picker is not running. If not, we start it
-                    startCirclePickerService();
-                }
-            }
-        });
-
-        startCirclePickerI.setOnClickListener(new View.OnClickListener() {
+        startCirclePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!isCPRunning){ // check if circle picker is not running. If not, we start it
@@ -74,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onResume();
         BottomNavigationView navView = findViewById(R.id.nav_view); // used in CirclePickerView
         appNavigationBarHeight=navView.getHeight(); // used in CirclePickerView
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed(); // TODO change item selected on back press cuz it's doesn't do it.
     }
 
     private void startCirclePickerService(){

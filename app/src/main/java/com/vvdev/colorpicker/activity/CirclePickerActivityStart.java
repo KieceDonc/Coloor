@@ -134,12 +134,8 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
 
-                ImageView closeButton = wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton);
-                ImageView saveButton = wmCirclePickerView.findViewById(R.id.CirclePickerSave);
-                ImageView zoomInButton = wmCirclePickerView.findViewById(R.id.CirclePickerZoomIn);
-                ImageView zoomOutButton = wmCirclePickerView.findViewById(R.id.CirclePickerZoomOut);
                 CirclePickerView cpv = wmCirclePickerView.findViewById(R.id.CirclePicker);
-                cpv.initWithCustomParams(closeButton, saveButton, zoomInButton, zoomOutButton);
+                cpv.initWithCustomParams();
 
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
 
