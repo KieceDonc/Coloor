@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "9975845633",
+    "firebase_url": "https://circlepicker.firebaseio.com",
+    "project_id": "circlepicker",
+    "storage_bucket": "circlepicker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9975845633:android:f9cc038a73e8089906c100",
+        "android_client_info": {
+          "package_name": "com.vvdev.colorpicker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9975845633-b57gp3t2efiabvmtk8lhh8dljvpbtt8e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAftYNhfFrCUt5gn50GACMMQc9O0Q-4GiQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9975845633-b57gp3t2efiabvmtk8lhh8dljvpbtt8e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

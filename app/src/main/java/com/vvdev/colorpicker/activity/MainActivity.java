@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed(); // TODO change item selected on back press cuz it's doesn't do it.
+        super.onBackPressed();
     }
 
     private void startCirclePickerService(){

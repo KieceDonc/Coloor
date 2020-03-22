@@ -31,7 +31,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 import static com.vvdev.colorpicker.activity.MainActivity.isCPRunning;
 
-public class CirclePickerService extends Service { // TODO fix back press bug
+public class CirclePickerService extends Service {
 
     public static boolean waitingForResult = true;
     public static boolean circleStarted = false;
@@ -231,7 +231,7 @@ public class CirclePickerService extends Service { // TODO fix back press bug
 
     public void stopService(){
         Log.i(TAG,"stopping service");
-        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE); // TODO ask permission to draw over other app
+        WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         if(wmCirclePickerView!=null&&wmCirclePickerView.isAttachedToWindow()){
             wm.removeView(wmCirclePickerView);
         }

@@ -41,7 +41,7 @@ import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCircleP
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
 
 @SuppressLint("AppCompatCustomView")
-public class CirclePickerView extends ImageView { // TODO fix problems in android Q ( 10 )
+public class CirclePickerView extends ImageView {
 
     private static final String TAG = CirclePickerView.class.getName();
 
@@ -355,7 +355,7 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
             Matrix matrix = new Matrix();
             matrix.postScale(1, 1);
 
-            mBitmap = Bitmap.createBitmap(mFinalBitmap, DesireXLocationOnScreen+DesireX, DesireYLocationOnScreen+DesireY,DesireWidth,DesireHeight, matrix, true); // TODO make test to know if you need mStatusBarHeight or not. In samsung galaxy s10 e if you must have it but in emulator you mustn't
+            mBitmap = Bitmap.createBitmap(mFinalBitmap, DesireXLocationOnScreen+DesireX, DesireYLocationOnScreen+DesireY,DesireWidth,DesireHeight, matrix, true);
             setup();
         }else{
             updateFinalBitmap();
