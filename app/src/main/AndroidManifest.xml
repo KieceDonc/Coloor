@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-feature android:name="android.hardware.camera2.full" />
 
-
+    <!--TODO update privacy police-->
 
     <application
         android:allowBackup="true"

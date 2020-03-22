@@ -7,14 +7,27 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="#aaaaaa">
 
+    <include
+        android:id="@+id/PaletteTuto"
+        layout="@layout/fragment_palette_tuto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ActionBarBackground">
+        app:layout_constraintTop_toBottomOf="@+id/ActionBarBackground"
+        app:layout_constraintVertical_bias="0.0">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -29,6 +42,28 @@
         app:layout_constraintEnd_toEndOf="@+id/pRecyclerView"
         fab:menu_colorNormal="#000000"
         fab:menu_colorPressed="#7f7f7f">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/ActionButtonPickFromWheel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/abc_vector_test"
+            app:fab_colorNormal="#0084D1"
+            app:fab_colorPressed="#7f7f7f"
+            app:fab_label="Pick color from wheel"
+            app:fab_size="mini"
+            fab:menu_colorNormal="#000000" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/ActionButtonCreateGradient"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/abc_vector_test"
+            app:fab_colorNormal="#0084D1"
+            app:fab_colorPressed="#7f7f7f"
+            app:fab_label="Create a gradient"
+            app:fab_size="mini"
+            fab:menu_colorNormal="#000000" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/ActionButtonDeleteAll"
@@ -48,18 +83,7 @@
             android:src="@drawable/abc_vector_test"
             app:fab_colorNormal="#0084D1"
             app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Add color"
-            app:fab_size="mini"
-            fab:menu_colorNormal="#000000" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/ActionButtonCreateGradient"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/abc_vector_test"
-            app:fab_colorNormal="#0084D1"
-            app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Create a gradient"
+            app:fab_label="Add hexa color"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 
@@ -78,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="BlaBlaBla"
+        android:text="@string/app_name"
         android:textColor="@color/Theme1_text"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/ActionBarBackground"

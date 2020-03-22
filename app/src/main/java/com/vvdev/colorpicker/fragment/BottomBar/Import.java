@@ -121,7 +121,7 @@ public class Import extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode){
             case REQUEST_CODE_PERM_PDF :{
                 if(isWriteAndWritePermissionGiven()){

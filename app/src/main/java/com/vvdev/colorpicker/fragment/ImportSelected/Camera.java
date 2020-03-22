@@ -88,8 +88,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     /**
      * Tag for the {@link Log}.
      */
-    private static final String TAG = Camera.class.getName();;
-    ;
+    private static final String TAG = Camera.class.getName();
 
     /**
      * Camera state: Showing camera preview.
@@ -469,9 +468,6 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //((AppCompatActivity) getActivity()).getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //((AppCompatActivity) getActivity()).getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
         return inflater.inflate(R.layout.fragment_camera, container, false);
     }
 
@@ -842,8 +838,8 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
             float viewLongEdge = viewWidth > viewHeight ? viewWidth : viewHeight;
             float viewShortEdge = viewWidth <= viewHeight ? viewWidth : viewHeight;
             float scale = Math.max(
-                    (float) viewShortEdge / mPreviewSize.getHeight(),
-                    (float) viewLongEdge / mPreviewSize.getWidth());
+                    viewShortEdge / mPreviewSize.getHeight(),
+                    viewLongEdge / mPreviewSize.getWidth());
             matrix.postScale(scale, scale, centerX, centerY);
             // Rotate the rectangle to the correct orientation.
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
@@ -1139,8 +1135,8 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
      * Setup local variable of CameraTopRefresh in onViewCreated to avoid to call getActivity().getResources().getString(...) everytime we call CameraTopRefresh()
      */
     private void initCameraTop(){
-        SHex = Objects.requireNonNull(getActivity()).getResources().getString(R.string.Hex);
-        SHsv = getActivity().getResources().getString(R.string.Hsv);
+        SHex = Objects.requireNonNull(getActivity()).getResources().getString(R.string.HEX);
+        SHsv = getActivity().getResources().getString(R.string.HSV);
         SRGB =  getActivity().getResources().getString(R.string.RGB);
     }
 
@@ -1150,7 +1146,6 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
      */
     public void CameraTopRefresh() {
         int[] RGBAverage = ColorUtility.getRGBAverageFromTextureView(mTextureView, CameraCircle);
-        ColorSpec currentColor = new ColorSpec(ColorsData.getGeneratedMethodName(getActivity()),RGBAverage);
 
         String ToDisplayRGB = SRGB+" "+RGBAverage[0]+", "+RGBAverage[1]+", "+RGBAverage[2];
         TVRGBValue.setText(ToDisplayRGB);

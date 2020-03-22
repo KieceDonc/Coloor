@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.vvdev.colorpicker.R;
@@ -23,6 +24,7 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
     private ArrayList<ColorSpec> colors;
     private SharedPreferences mPrefs;
     private Activity activity;
+    private static Palette palette;
     private static final String PREFS_TAG = "SharedPrefs";
 
     public ColorsData(Activity activity){
@@ -35,8 +37,11 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         colors.add(new ColorSpec(getGeneratedMethodName(),color));
         saveColors();
         ColorAddedToast.show(activity,activity.getLayoutInflater(),color);
-        if(Palette.recyclerView!=null){
-            Palette.recyclerView.getAdapter().notifyItemInserted(getSize()-1);
+        if(palette!=null){
+            palette.getRecycleView().getAdapter().notifyItemInserted(getSize()-1);
+            if(getSize()==1){
+                palette.showColors();
+            }
         }
         Log.i(TAG,"color added. Hexa value = "+color);
     }
@@ -46,9 +51,12 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         if(position<=getSize()-1){
             colors.remove(position);
             saveColors();
-            if(Palette.recyclerView!=null){
-                Palette.recyclerView.getAdapter().notifyItemRemoved(position);
-                Palette.recyclerView.getAdapter().notifyItemRangeChanged(position,getSize());
+            if(palette!=null){
+                palette.getRecycleView().getAdapter().notifyItemRemoved(position);
+                palette.getRecycleView().getAdapter().notifyItemRangeChanged(position,getSize());
+                if(getSize()==0){
+                    palette.showTutorial();
+                }
             }
             Log.i(TAG,"color deleted at position :"+position+". Size list ="+getSize());
         }else{
@@ -59,12 +67,11 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
     public void clearColors(){
         colors.clear();
         saveColors();
-        if(Palette.recyclerView!=null){
+        if(palette!=null){
             PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(activity);
-            Palette.recyclerView.setAdapter(PaletteRVAdapter);
-        }
-        if(Palette.actionMenu!=null){
-            Palette.actionMenu.showMenuButton(true);
+            palette.getRecycleView().setAdapter(PaletteRVAdapter);
+            palette.getActionMenu().showMenuButton(true);
+            palette.showTutorial();
         }
         Log.i(TAG,"all colors deleted ( clearColors() ) ");
     }
@@ -134,6 +141,10 @@ public class ColorsData { // https://stackoverflow.com/questions/7145606/how-and
         methodName.add(activity.getResources().getString(R.string.ColorSpec_Triadic));
         methodName.add(activity.getResources().getString(R.string.ColorSpec_Complementary));
         return methodName;
+    }
+
+    public void setInstancePalette(Palette palette){
+        this.palette = palette;
     }
 
     public String toString(){

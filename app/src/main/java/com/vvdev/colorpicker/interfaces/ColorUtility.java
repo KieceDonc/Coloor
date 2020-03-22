@@ -1,10 +1,13 @@
 package com.vvdev.colorpicker.interfaces;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.ColorSpace;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.skydoves.colorpickerview.ColorPickerView;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
 
@@ -133,18 +136,33 @@ public class ColorUtility {
         }
     }
 
-    /*public static int[] getHslFromRGB(int[] RGB) { // https://css-tricks.com/converting-color-spaces-in-javascript/
+    public static int[] getHsvFromRGB(int[] RGB){
+        float[] hsv = new float[3];
+        Color.RGBToHSV(RGB[0],RGB[1],RGB[2],hsv);
+        hsv[1]*=100;
+        hsv[2]*=100;
+        hsv[0]=Math.round(hsv[0]);
+        hsv[1]=Math.round(hsv[1]);
+        hsv[2]=Math.round(hsv[2]);
+        return new int[]{(int)hsv[0],(int)hsv[1],(int)hsv[2]};
+    }
+
+    public static int[] getHslFromRGB(int[] RGB) { // https://css-tricks.com/converting-color-spaces-in-javascript/
         // Make r, g, and b fractions of 1
-        int r = RGB[0] / 255;
-        int g = RGB[1] / 255;
-        int b = RGB[2] / 255;
+        double r = RGB[0];
+        double g = RGB[1];
+        double b = RGB[2];
+
+        r/=255;
+        g/=255;
+        b/=255;
 
         // Find greatest and smallest channel values
-        int cmin = Math.min(r, Math.min(g, b));
-        int cmax = Math.max(r, Math.max(g, b));
-        int delta = cmax - cmin;
+        double cmin = Math.min(r, Math.min(g, b));
+        double cmax = Math.max(r, Math.max(g, b));
+        double delta = cmax - cmin;
 
-        int[] HSL = new int[3];
+        double[] HSL = new double[3];
 
         if (delta == 0) {
             HSL[0] = 0;
@@ -165,20 +183,193 @@ public class ColorUtility {
             HSL[0] += 360;
         }
 
-        HSL[1] = (cmax + cmin) / 2;
+        HSL[2] = (cmax + cmin) / 2;
 
         // Calculate saturation
         if(delta==0){
             HSL[1]=0;
         }else{
-            HSL[1]= delta / (1 - Math.abs(2 * HSL[1] - 1));;
+            HSL[1]= delta / (1 - Math.abs(2 * HSL[2] - 1));
         }
 
         // Multiply l and s by 100
         HSL[1] = +(HSL[1] * 100);
         HSL[2] = +(HSL[2] * 100);
-        return HSL;
-    }*/
+
+        int[] toReturn = new int[3];
+        toReturn[0]= (int) Math.round(HSL[0]);
+        toReturn[1]= (int) Math.round(HSL[1]);
+        toReturn[2]= (int) Math.round(HSL[2]);
+        return toReturn;
+    }
+
+    public static int[] getCMYKFromRGB(int[] rgb){ // https://fr.wikipedia.org/wiki/Quadrichromie
+        double r = rgb[0];
+        double g = rgb[1];
+        double b = rgb[2];
+
+        r/=255;
+        g/=255;
+        b/=255;
+
+        double c = 1 - r;
+        double m = 1 - g;
+        double j = 1 - b;
+
+        double n = Math.min(c,Math.min(m,j));
+
+        if(n==1){
+            return new int[]{0,0,0};
+        }
+
+        int C = (int) Math.round(((c-n)/(1-n))*100);
+        int M = (int) Math.round(((m-n)/(1-n))*100);
+        int J = (int) Math.round(((j-n)/(1-n))*100);
+        int N = (int) Math.round(n*100);
+
+        return new int[]{C,M,J,N};
+    }
+
+    public static int[] getLABFromRGB(int[] RGB) {
+        //http://www.brucelindbloom.com
+
+        int R = RGB[0];
+        int G = RGB[1];
+        int B = RGB[2];
+        int[] lab = new int[3];
+
+        float r, g, b, X, Y, Z, fx, fy, fz, xr, yr, zr;
+        float Ls, as, bs;
+        float eps = 216.f/24389.f;
+        float k = 24389.f/27.f;
+
+        float Xr = 0.964221f;  // reference white D50
+        float Yr = 1.0f;
+        float Zr = 0.825211f;
+
+        // RGB to XYZ
+        r = R/255.f; //R 0..1
+        g = G/255.f; //G 0..1
+        b = B/255.f; //B 0..1
+
+        // assuming sRGB (D65)
+        if (r <= 0.04045)
+            r = r/12;
+        else
+            r = (float) Math.pow((r+0.055)/1.055,2.4);
+
+        if (g <= 0.04045)
+            g = g/12;
+        else
+            g = (float) Math.pow((g+0.055)/1.055,2.4);
+
+        if (b <= 0.04045)
+            b = b/12;
+        else
+            b = (float) Math.pow((b+0.055)/1.055,2.4);
+
+
+        X =  0.436052025f*r     + 0.385081593f*g + 0.143087414f *b;
+        Y =  0.222491598f*r     + 0.71688606f *g + 0.060621486f *b;
+        Z =  0.013929122f*r     + 0.097097002f*g + 0.71418547f  *b;
+
+        // XYZ to Lab
+        xr = X/Xr;
+        yr = Y/Yr;
+        zr = Z/Zr;
+
+        if ( xr > eps )
+            fx =  (float) Math.pow(xr, 1/3.);
+        else
+            fx = (float) ((k * xr + 16.) / 116.);
+
+        if ( yr > eps )
+            fy =  (float) Math.pow(yr, 1/3.);
+        else
+            fy = (float) ((k * yr + 16.) / 116.);
+
+        if ( zr > eps )
+            fz =  (float) Math.pow(zr, 1/3.);
+        else
+            fz = (float) ((k * zr + 16.) / 116);
+
+        Ls = ( 116 * fy ) - 16;
+        as = 500*(fx-fy);
+        bs = 200*(fy-fz);
+
+        lab[0] = (int) Math.round(Ls + .5);
+        lab[1] = (int) Math.round(as + .5);
+        lab[2] = (int) Math.round(bs + .5);
+        return lab;
+    }
+
+    /**
+     * Converts an HSL color value to RGB. Conversion formula
+     * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+     */
+    public static int[] getRGBFromHSL(int hsl[]) {
+        float alpha=1f;
+        float h = hsl[0];
+        float s = hsl[1];
+        float l = hsl[2];
+        if (s < 0.0f || s > 100.0f) {
+            String message = "Color parameter outside of expected range - Saturation";
+            throw new IllegalArgumentException(message);
+        }
+
+        if (l < 0.0f || l > 100.0f) {
+            String message = "Color parameter outside of expected range - Luminance";
+            throw new IllegalArgumentException(message);
+        }
+
+        // Formula needs all values between 0 - 1.
+
+        h = h % 360.0f;
+        h /= 360f;
+        s /= 100f;
+        l /= 100f;
+
+        float q = 0;
+
+        if (l < 0.5)
+            q = l * (1 + s);
+        else
+            q = (l + s) - (s * l);
+
+        float p = 2 * l - q;
+
+        float r = Math.max(0, HueToRGB(p, q, h + (1.0f / 3.0f)));
+        float g = Math.max(0, HueToRGB(p, q, h));
+        float b = Math.max(0, HueToRGB(p, q, h - (1.0f / 3.0f)));
+
+        r = Math.min(r, 1.0f);
+        g = Math.min(g, 1.0f);
+        b = Math.min(b, 1.0f);
+
+        return new int[]{(int) r, (int) g, (int) b};
+    }
+
+    private static float HueToRGB(float p, float q, float h) {
+        if (h < 0)
+            h += 1;
+
+        if (h > 1)
+            h -= 1;
+
+        if (6 * h < 1) {
+            return p + ((q - p) * 6 * h);
+        }
+
+        if (2 * h < 1) {
+            return q;
+        }
+
+        if (3 * h < 2) {
+            return p + ((q - p) * 6 * ((2.0f / 3.0f) - h));
+        }
+
+        return p;
+    }
 
     /**
      * Decide if the text color should be black or white depending on background color. Dedicate to Circle picker view
@@ -194,21 +385,21 @@ public class ColorUtility {
      * create a gradient from colors given in parameters
      * @param fromColor
      * @param toColor
-     * @param numGrandient
+     * @param numGradient
      * @return
      */
-    public static String[] gradientApproximatelyGenerator(String fromColor,String toColor,int numGrandient){
-        String[] toReturn = new String[numGrandient];
-        int[][] rgbGradient = new int[6][3];
+    public static String[] gradientApproximatelyGenerator(String fromColor,String toColor,int numGradient){
+        String[] toReturn = new String[numGradient];
+        int[][] rgbGradient = new int[numGradient][3];
         int[] rgbFromColor = ColorUtility.getRGBFromHex(fromColor);
         int[] rgbToColor = ColorUtility.getRGBFromHex(toColor);
-        int redDistance = (rgbFromColor[0]-rgbToColor[0])/numGrandient;
-        int greenDistance = (rgbFromColor[1]-rgbToColor[1])/numGrandient;
-        int blueDistance = (rgbFromColor[2]-rgbToColor[2])/numGrandient;
+        int redDistance = (rgbFromColor[0]-rgbToColor[0])/numGradient;
+        int greenDistance = (rgbFromColor[1]-rgbToColor[1])/numGradient;
+        int blueDistance = (rgbFromColor[2]-rgbToColor[2])/numGradient;
 
         toReturn[0]=ColorUtility.getHexFromRGB(rgbFromColor);
         rgbGradient[0]=rgbFromColor;
-        for(int x=1;x<numGrandient;x++){
+        for(int x=1;x<numGradient;x++){
             for(int y = 0;y<3;y++){
                 switch (y){
                     case 0:{
@@ -230,6 +421,42 @@ public class ColorUtility {
         return toReturn;
     }
 
+    public static String[] getTriadicFromRGB(int[] RGB){
+
+        String[] triadic = new String[3];
+        int[] triadic1 = new int[3];
+        int[] triadic2 = new int[3];
+
+        triadic1[1]=RGB[0];
+        triadic2[2]=RGB[0];
+        triadic1[2]=RGB[1];
+        triadic2[0]=RGB[1];
+        triadic1[0]=RGB[2];
+        triadic2[1]=RGB[2];
+
+        triadic[0]=getHexFromRGB(RGB);
+        triadic[1]=ColorUtility.getHexFromRGB(triadic1);
+        triadic[2]=ColorUtility.getHexFromRGB(triadic2);
+
+        return  triadic;
+    }
+
+    public static String[] getComplementaryFromRGB(int RGB[]){
+        String[] complementary = new String[2];
+        int[] complementaryRGB = new int[3];
+
+        complementaryRGB[0] = 255-RGB[0];
+        complementaryRGB[1] = 255-RGB[1];
+        complementaryRGB[2] = 255-RGB[2];
+
+        complementary[0]=getHexFromRGB(RGB);
+        complementary[1]=ColorUtility.getHexFromRGB(complementaryRGB);
+        return complementary;
+    }
+
+    // view-source:https://www.w3schools.com/colors/trycolorwheel.js ( satLight )
+// https://www.w3schools.com/colors/colors_monochromatic.asp
+
     /**
      * Give a color to this function and it will return true if the color is closer to black than white and false for the contrary
      * @param color String
@@ -241,15 +468,159 @@ public class ColorUtility {
         return ((Color.red(intColor) * 0.299) + (Color.green(intColor) * 0.587) + (Color.blue(intColor) * 0.114)) < 186;
     }
 
-    public static int[] getHsvFromRGB(int[] RGB){
-        float[] hsv = new float[3];
-        Color.RGBToHSV(RGB[0],RGB[1],RGB[2],hsv);
-        hsv[1]*=100;
-        hsv[2]*=100;
-        return new int[]{(int)hsv[0],(int)hsv[1],(int)hsv[2]};
-    }
+    public static final String[][] AllColor = {
+        {"f0f8ff", "AliceBlue"},
+        {"faebd7", "AntiqueWhite"},
+        {"00ffff", "Aqua"},
+        {"7fffd4", "Aquamarine"},
+        {"f0ffff", "Azure"},
+        {"f5f5dc", "Beige"},
+        {"ffe4c4", "Bisque"},
+        {"000000", "Black"},
+        {"ffebcd", "BlanchedAlmond"},
+        {"0000ff", "Blue"},
+        {"8a2be2", "BlueViolet"},
+        {"a52a2a", "Brown"},
+        {"deb887", "BurlyWood"},
+        {"5f9ea0", "CadetBlue"},
+        {"7fff00", "Chartreuse"},
+        {"d2691e", "Chocolate"},
+        {"ff7f50", "Coral"},
+        {"6495ed", "CornflowerBlue"},
+        {"fff8dc", "Cornsilk"},
+        {"dc143c", "Crimson"},
+        {"00ffff", "Cyan"},
+        {"00008b", "DarkBlue"},
+        {"008b8b", "DarkCyan"},
+        {"b8860b", "DarkGoldenRod"},
+        {"a9a9a9", "DarkGray"},
+        {"a9a9a9", "DarkGrey"},
+        {"006400", "DarkGreen"},
+        {"bdb76b", "DarkKhaki"},
+        {"8b008b", "DarkMagenta"},
+        {"556b2f", "DarkOliveGreen"},
+        {"ff8c00", "DarkOrange"},
+        {"9932cc", "DarkOrchid"},
+        {"8b0000", "DarkRed"},
+        {"e9967a", "DarkSalmon"},
+        {"8fbc8f", "DarkSeaGreen"},
+        {"483d8b", "DarkSlateBlue"},
+        {"2f4f4f", "DarkSlateGray"},
+        {"2f4f4f", "DarkSlateGrey"},
+        {"00ced1", "DarkTurquoise"},
+        {"9400d3", "DarkViolet"},
+        {"ff1493", "DeepPink"},
+        {"00bfff", "DeepSkyBlue"},
+        {"696969", "DimGray"},
+        {"696969", "DimGrey"},
+        {"1e90ff", "DodgerBlue"},
+        {"b22222", "FireBrick"},
+        {"fffaf0", "FloralWhite"},
+        {"228b22", "ForestGreen"},
+        {"ff00ff", "Fuchsia"},
+        {"dcdcdc", "Gainsboro"},
+        {"f8f8ff", "GhostWhite"},
+        {"ffd700", "Gold"},
+        {"daa520", "GoldenRod"},
+        {"808080", "Gray"},
+        {"808080", "Grey"},
+        {"008000", "Green"},
+        {"adff2f", "GreenYellow"},
+        {"f0fff0", "HoneyDew"},
+        {"ff69b4", "HotPink"},
+        {"cd5c5c", "IndianRed"},
+        {"4b0082", "Indigo"},
+        {"fffff0", "Ivory"},
+        {"f0e68c", "Khaki"},
+        {"e6e6fa", "Lavender"},
+        {"fff0f5", "LavenderBlush"},
+        {"7cfc00", "LawnGreen"},
+        {"fffacd", "LemonChiffon"},
+        {"add8e6", "LightBlue"},
+        {"f08080", "LightCoral"},
+        {"e0ffff", "LightCyan"},
+        {"fafad2", "LightGoldenRodYellow"},
+        {"d3d3d3", "LightGray"},
+        {"d3d3d3", "LightGrey"},
+        {"90ee90", "LightGreen"},
+        {"ffb6c1", "LightPink"},
+        {"ffa07a", "LightSalmon"},
+        {"20b2aa", "LightSeaGreen"},
+        {"87cefa", "LightSkyBlue"},
+        {"778899", "LightSlateGray"},
+        {"778899", "LightSlateGrey"},
+        {"b0c4de", "LightSteelBlue"},
+        {"ffffe0", "LightYellow"},
+        {"00ff00", "Lime"},
+        {"32cd32", "LimeGreen"},
+        {"faf0e6", "Linen"},
+        {"ff00ff", "Magenta"},
+        {"800000", "Maroon"},
+        {"66cdaa", "MediumAquaMarine"},
+        {"0000cd", "MediumBlue"},
+        {"ba55d3", "MediumOrchid"},
+        {"9370db", "MediumPurple"},
+        {"3cb371", "MediumSeaGreen"},
+        {"7b68ee", "MediumSlateBlue"},
+        {"00fa9a", "MediumSpringGreen"},
+        {"48d1cc", "MediumTurquoise"},
+        {"c71585", "MediumVioletRed"},
+        {"191970", "MidnightBlue"},
+        {"f5fffa", "MintCream"},
+        {"ffe4e1", "MistyRose"},
+        {"ffe4b5", "Moccasin"},
+        {"ffdead", "NavajoWhite"},
+        {"000080", "Navy"},
+        {"fdf5e6", "OldLace"},
+        {"808000", "Olive"},
+        {"6b8e23", "OliveDrab"},
+        {"ffa500", "Orange"},
+        {"ff4500", "OrangeRed"},
+        {"da70d6", "Orchid"},
+        {"eee8aa", "PaleGoldenRod"},
+        {"98fb98", "PaleGreen"},
+        {"afeeee", "PaleTurquoise"},
+        {"db7093", "PaleVioletRed"},
+        {"ffefd5", "PapayaWhip"},
+        {"ffdab9", "PeachPuff"},
+        {"cd853f", "Peru"},
+        {"ffc0cb", "Pink"},
+        {"dda0dd", "Plum"},
+        {"b0e0e6", "PowderBlue"},
+        {"800080", "Purple"},
+        {"663399", "RebeccaPurple"},
+        {"ff0000", "Red"},
+        {"bc8f8f", "RosyBrown"},
+        {"4169e1", "RoyalBlue"},
+        {"8b4513", "SaddleBrown"},
+        {"fa8072", "Salmon"},
+        {"f4a460", "SandyBrown"},
+        {"2e8b57", "SeaGreen"},
+        {"fff5ee", "SeaShell"},
+        {"a0522d", "Sienna"},
+        {"c0c0c0", "Silver"},
+        {"87ceeb", "SkyBlue"},
+        {"6a5acd", "SlateBlue"},
+        {"708090", "SlateGray"},
+        {"708090", "SlateGrey"},
+        {"fffafa", "Snow"},
+        {"00ff7f", "SpringGreen"},
+        {"4682b4", "SteelBlue"},
+        {"d2b48c", "Tan"},
+        {"008080", "Teal"},
+        {"d8bfd8", "Thistle"},
+        {"ff6347", "Tomato"},
+        {"40e0d0", "Turquoise"},
+        {"ee82ee", "Violet"},
+        {"f5deb3", "Wheat"},
+        {"ffffff", "White"},
+        {"f5f5f5", "WhiteSmoke"},
+        {"ffff00", "Yellow"},
+        {"9acd32", "YellowGreen"}
+    };
 
-    public static final String[][] AllColor= new String[][]{
+
+   /* public static final String[][] AllColor= new String[][]{
             {"000000", "Black"},
             {"000080", "Navy Blue"},
             {"0000C8", "Dark Blue"},
@@ -1816,6 +2187,6 @@ public class ColorUtility {
             {"FFFFB4", "Portafino"},
             {"FFFFF0", "Ivory"},
             {"FFFFFF", "White"}
-    };
+    };*/
 
 }

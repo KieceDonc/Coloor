@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="56dp"
-        android:text="Hexa : #000000"
+        android:text="HEX : #000000"
         android:textColor="@color/Theme1_Zero"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/MoreIColorName" />
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="HSV / HSB : 0°,0%,0%"
+        android:text="HSV : 0°, 0%, 0%"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MoreIRGB" />
@@ -56,10 +56,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="HSL : 0°,0% ,0%"
+        android:text="HSL : 0°, 0% , 0%"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MoreIHSV" />
+
+    <TextView
+        android:id="@+id/MoreICMYK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="CMYK : 0°, 0%, 0%, 0%"
+        android:textColor="@color/Theme1_TextBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MoreIHSL" />
 
     <TextView
         android:id="@+id/MoreICIELAB"
@@ -70,23 +81,13 @@
         android:text="CIE LAB : "
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIHSL" />
-
-    <TextView
-        android:id="@+id/MoreICIEXYZ"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="CIE XYZ : "
-        android:textColor="@color/Theme1_TextBlack"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreICIELAB" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreICMYK" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate0"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_marginTop="4dp"
         android:background="#AAAAAA"
         app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
         app:layout_constraintTop_toBottomOf="@+id/MoreIPreview" />
@@ -97,7 +98,7 @@
         android:layout_height="24dp"
         android:background="#AEEEEE"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate0"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIPreview" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate0" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate2"
@@ -105,7 +106,7 @@
         android:layout_height="24dp"
         android:background="#AAAAAA"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate1"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIPreview" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate1" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate3"
@@ -113,7 +114,7 @@
         android:layout_height="24dp"
         android:background="#AEEEEE"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate2"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIPreview" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate2" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate4"
@@ -121,7 +122,7 @@
         android:layout_height="24dp"
         android:background="#AAAAAA"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate3"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIPreview" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate3" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate5"
@@ -129,16 +130,15 @@
         android:layout_height="24dp"
         android:background="#AEEEEE"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate4"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIPreview" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate4" />
 
     <ImageView
         android:id="@+id/MoreIPreview"
         android:layout_width="144dp"
         android:layout_height="144dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
         android:background="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/MoreIHSV"
+        app:layout_constraintBottom_toBottomOf="@+id/MoreIHSL"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/MoreIHSV" />
 
@@ -147,10 +147,11 @@
         layout="@layout/alertdialog_moreinformation_ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreICIEXYZ" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreICIELAB" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

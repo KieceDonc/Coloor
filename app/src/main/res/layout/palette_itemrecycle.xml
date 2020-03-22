@@ -117,6 +117,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" />
 
+        <TextView
+            android:id="@+id/piExtendMoreShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Share ( TODO ) "
+            android:textColor="#000000"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/piExtendMoreInformation"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" /><!-- TODO implement this feature -->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

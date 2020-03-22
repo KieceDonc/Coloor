@@ -14,14 +14,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.ColorsData;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -186,7 +184,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             hsv.setText(toHSV);
             String toRGB = "RGB : " + rgbFromColorSpec[0] + ", " + rgbFromColorSpec[1] + ", " + rgbFromColorSpec[2];
             rgb.setText(toRGB);
-            String toHexa = "Hexa : " + hexaFromColorSpec;
+            String toHexa = "HEX : " + hexaFromColorSpec;
             hexa.setText(toHexa);
 
             // setup extend spinner

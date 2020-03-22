@@ -20,26 +20,12 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/camera_switching" />
 
-    <ImageButton
-        android:id="@+id/info"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="56dp"
-        android:background="@drawable/roundcorner"
-        android:scaleType="centerInside"
-        android:src="@drawable/settings"
-        android:tint="#ffffff"
-        app:layout_constraintBottom_toBottomOf="@+id/getpicture"
-        app:layout_constraintEnd_toStartOf="@+id/getpicture"
-        app:layout_constraintTop_toTopOf="@+id/getpicture"
-        app:layout_constraintVertical_bias="1.0" />
-
     <Button
         android:id="@+id/getpicture"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/takephoto"
         android:backgroundTint="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"

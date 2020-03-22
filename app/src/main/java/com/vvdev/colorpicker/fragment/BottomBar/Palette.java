@@ -1,29 +1,37 @@
 package com.vvdev.colorpicker.fragment.BottomBar;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ActionMenuView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.ui.ColorAddDialog;
+import com.vvdev.colorpicker.ui.ColorPickFromWheelDialog;
 import com.vvdev.colorpicker.ui.PaletteRVAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class Palette extends Fragment {
 
-    public static RecyclerView recyclerView;
-    public static FloatingActionMenu actionMenu;
-
+    private FloatingActionButton actionButtonPickFromWheel;
     private FloatingActionButton actionButtonDeleteAll;
+    private FloatingActionButton actionButtonAddColor;
+
+    private ConstraintLayout tutorial;
+    private RecyclerView recyclerView;
+    private FloatingActionMenu actionMenu;
 
     private final static String TAG = Palette.class.getName();
 
@@ -38,7 +46,12 @@ public class Palette extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         actionMenu = view.findViewById(R.id.ActionButtonMenu);
+        actionButtonPickFromWheel = view.findViewById(R.id.ActionButtonPickFromWheel);
         actionButtonDeleteAll = view.findViewById(R.id.ActionButtonDeleteAll);
+        actionButtonAddColor = view.findViewById(R.id.ActionButtonAdd);
+        tutorial = view.findViewById(R.id.PaletteTuto);
+        recyclerView = view.findViewById(R.id.pRecyclerView);
+
         setupPaletteRecycleView(view);
         setupActionButtonListener();
     }
@@ -46,16 +59,20 @@ public class Palette extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ColorsData temp = new ColorsData(getActivity());
+        temp.setInstancePalette(this);
+        if(temp.getSize()>0){
+            showColors();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        recyclerView=null;
+        new ColorsData(getActivity()).setInstancePalette(null);
     }
 
     private void setupPaletteRecycleView(View view){
-        recyclerView = view.findViewById(R.id.pRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(getActivity());
         recyclerView.setAdapter(PaletteRVAdapter);
@@ -73,6 +90,15 @@ public class Palette extends Fragment {
     }
 
     private void setupActionButtonListener(){
+        actionButtonPickFromWheel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG,"Action button pick from wheel clicked");
+                ColorPickFromWheelDialog cpfwd = new ColorPickFromWheelDialog(getActivity());
+                cpfwd.show();
+            }
+        });
+
         actionButtonDeleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,5 +106,32 @@ public class Palette extends Fragment {
                 new ColorsData(getActivity()).clearColors();
             }
         });
+
+        actionButtonAddColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG,"Action button add color clicked");
+                ColorAddDialog cad = new ColorAddDialog(getActivity());
+                cad.show();
+            }
+        });
+    }
+
+    public void showTutorial(){
+        tutorial.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    public void showColors(){
+        tutorial.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public RecyclerView getRecycleView(){
+        return this.recyclerView;
+    }
+
+    public FloatingActionMenu getActionMenu(){
+        return actionMenu;
     }
 }

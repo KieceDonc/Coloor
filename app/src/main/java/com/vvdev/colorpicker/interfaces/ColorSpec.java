@@ -12,18 +12,19 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
     private final static String TAG = ColorSpec.class.getName();
 
-
     private String hexa;
-    private int[] hsv = new int[3]; // also hsb
-    private int[] rgb = new int[3];
-    private int[] hsl = new int[3];
+    private int[] hsv; // also hsb
+    private int[] rgb;
+    private int[] hsl;
+    private int[] cmyk;
+    private int[] cielab;
 
     private ArrayList<String> methodName;
-    private String[] complementary =new String[2];
-    private String[] triadic = new String[3];
-    private String[] tints = new String[6];
-    private String[] tones = new String[6];
-    private String[] shades = new String[6];
+    private String[] complementary;
+    private String[] triadic;
+    private String[] tints;
+    private String[] tones;
+    private String[] shades;
 
     public ColorSpec(ArrayList<String> methodName, int[] rgb) {
         this.methodName = methodName;
@@ -41,13 +42,15 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
     private void setup(){
         setHSV(ColorUtility.getHsvFromRGB(getRGB()));
-        /*setHSL(ColorUtility.getHslFromRGB(getRGB()));*/
+        setHSL(ColorUtility.getHslFromRGB(getRGB()));
+        setCmyk(ColorUtility.getCMYKFromRGB(getRGB()));
+        setCielab(ColorUtility.getLABFromRGB(getRGB()));
 
-        setShades();
-        setTones();
-        setTines();
-        setTriadic();
-        setComplementary();
+        setShades(ColorUtility.gradientApproximatelyGenerator(getHexa(),"#000000",6));
+        setTones(ColorUtility.gradientApproximatelyGenerator(getHexa(),"707070",6));
+        setTints(ColorUtility.gradientApproximatelyGenerator(getHexa(),"#f7f7f7",6));
+        setTriadic(ColorUtility.getTriadicFromRGB(getRGB()));
+        setComplementary(ColorUtility.getComplementaryFromRGB(getRGB()));
     }
 
     /**
@@ -55,47 +58,28 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
      * triadic[ 1 / 2 /3 / 4 / 5 ] = generate
      */
 
-    private void setShades(){ // Nuances
-        shades=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#000000",6);
+    private void setShades(String[] shades){ // Nuances
+        this.shades = shades;
     }
 
-    private void setTones() { // Tonalités
-        tones=ColorUtility.gradientApproximatelyGenerator(getHexa(),"707070",6);
+    private void setTones(String[] tones) { // Tonalités
+        this.tones=tones;
     }
 
-    private void setTines() {
-        tints=ColorUtility.gradientApproximatelyGenerator(getHexa(),"#f7f7f7",6);
+    private void setTints(String[] tints) {
+        this.tints=tints;
     }
 
     /**
      * triadic[0] = this.hexa
      * triadic[ 1 / 2 ] = generate
      */
-    private void setTriadic() { // Triadique
-        int triadic1[] = new int[3];
-        int triadic2[] = new int[3];
-
-        triadic1[1]=getRGB()[0];
-        triadic2[2]=getRGB()[0];
-        triadic1[2]=getRGB()[1];
-        triadic2[0]=getRGB()[1];
-        triadic1[0]=getRGB()[2];
-        triadic2[1]=getRGB()[2];
-
-        triadic[0]=getHexa();
-        triadic[1]=ColorUtility.getHexFromRGB(triadic1);
-        triadic[2]=ColorUtility.getHexFromRGB(triadic2);
+    private void setTriadic(String[] triadic) { // Triadique
+        this.triadic=triadic;
     }
 
-    private void setComplementary() { // Complémentaire
-        int[] complementaryRGB = new int[3];
-
-        complementaryRGB[0] = 255-getRGB()[0];
-        complementaryRGB[1] = 255-getRGB()[1];
-        complementaryRGB[2] = 255-getRGB()[2];
-
-        complementary[0]=getHexa();
-        complementary[1]=ColorUtility.getHexFromRGB(complementaryRGB);
+    private void setComplementary(String[] complementary) { // Complémentaire
+        this.complementary=complementary;
     }
 
 
@@ -149,6 +133,22 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
     public String[] getShades(){
         return shades;
+    }
+
+    public int[] getCmyk() {
+        return cmyk;
+    }
+
+    public void setCmyk(int[] cmyk) {
+        this.cmyk = cmyk;
+    }
+
+    public int[] getCielab() {
+        return cielab;
+    }
+
+    public void setCielab(int[] cielab) {
+        this.cielab = cielab;
     }
 
     public ArrayList<String[]> getAllGeneratedColors(){

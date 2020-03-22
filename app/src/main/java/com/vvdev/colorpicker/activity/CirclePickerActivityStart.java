@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.media.projection.MediaProjectionManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -156,17 +157,17 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         //set what should happen when negative button is clicked
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 //set icon
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(android.R.drawable.ic_dialog_info)
                 //set title
-                .setTitle("Warning!")
+                .setTitle("Permission request")
                 //set message
-                .setMessage("You need to give the permission to draw over all application, do you want to give the permission ?")
+                .setMessage("To use this feature, you need to give the permission to draw over all application, do you want to give the permission ?")
                 //set positive button
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what would happen when positive button is clicked
-                        @SuppressLint("InlinedApi") Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION); // we only call the alert dialog if we are SDK > 23
+                        @SuppressLint("InlinedApi") Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName())); // we only call the alert dialog if we are SDK > 23
                         startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
                         dialogInterface.dismiss();
                     }

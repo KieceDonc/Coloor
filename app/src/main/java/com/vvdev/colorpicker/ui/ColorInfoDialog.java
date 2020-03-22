@@ -2,6 +2,9 @@ package com.vvdev.colorpicker.ui;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
+import com.vvdev.colorpicker.interfaces.ColorsData;
 
 import java.util.ArrayList;
 
@@ -21,6 +25,8 @@ import androidx.constraintlayout.widget.Constraints;
 
 public class ColorInfoDialog extends Dialog implements android.view.View.OnClickListener {
 
+    private static final String TAG = ColorInfoDialog.class.getName();
+
     private ColorSpec currentColor;
 
     private TextView TVColorName; // TV = TextView
@@ -28,8 +34,8 @@ public class ColorInfoDialog extends Dialog implements android.view.View.OnClick
     private TextView TVRgb;
     private TextView TVHsv;
     private TextView TVHsl;
+    private TextView TVCMYK;
     private TextView TVCieLAB;
-    private TextView TVCieXYZ;
     private ImageView preview; // used to show color
 
     private ImageView generate0;
@@ -41,10 +47,12 @@ public class ColorInfoDialog extends Dialog implements android.view.View.OnClick
 
     private ArrayList<ImageView> generate = new ArrayList<>();
 
-    private static final String TAG = ColorInfoDialog.class.getName();
+    private String[] currentGenerateColor;
+    private Activity activity;
 
     public ColorInfoDialog(@NonNull Activity activity, ColorSpec toParse) {
         super(activity);
+        this.activity=activity;
         this.currentColor = toParse;
         Log.i(TAG,"init ColorInfoDialog with :"+currentColor.toString());
     }
@@ -62,8 +70,8 @@ public class ColorInfoDialog extends Dialog implements android.view.View.OnClick
         TVRgb = findViewById(R.id.MoreIRGB);
         TVHsv = findViewById(R.id.MoreIHSV);
         TVHsl = findViewById(R.id.MoreIHSL);
+        TVCMYK = findViewById(R.id.MoreICMYK);
         TVCieLAB = findViewById(R.id.MoreICIELAB);
-        TVCieXYZ = findViewById(R.id.MoreICIEXYZ);
         preview = findViewById(R.id.MoreIPreview);
         generate0 = findViewById(R.id.MoreIPreviewGenerate0);
         generate1 = findViewById(R.id.MoreIPreviewGenerate1);
@@ -72,49 +80,92 @@ public class ColorInfoDialog extends Dialog implements android.view.View.OnClick
         generate4 = findViewById(R.id.MoreIPreviewGenerate4);
         generate5 = findViewById(R.id.MoreIPreviewGenerate5);
 
+        findViewById(R.id.MoreIOK).setOnClickListener(this);
+        generate0.setOnClickListener(this);
+        generate1.setOnClickListener(this);
+        generate2.setOnClickListener(this);
+        generate3.setOnClickListener(this);
+        generate4.setOnClickListener(this);
+        generate5.setOnClickListener(this);
+
         generate.add(generate0);generate.add(generate1);generate.add(generate2);generate.add(generate3);generate.add(generate4);generate.add(generate5);
 
+        init(currentColor);
+    }
 
+    private void init(ColorSpec currentColor){
         TVColorName.setText(ColorUtility.nearestColor(currentColor.getHexa())[0]);
 
-        String forHexa = "Hexa : "+currentColor.getHexa();
+        String forHexa = "HEX : "+currentColor.getHexa();
         TVHexa.setText(forHexa);
 
         String forRGB = "RGB : "+currentColor.getRGB()[0]+", "+currentColor.getRGB()[1]+", "+currentColor.getRGB()[2];
         TVRgb.setText(forRGB);
 
-        String forHSV = "HSV / HSB : "+currentColor.getHSV()[0]+"°, "+currentColor.getHSV()[1]+"%, "+currentColor.getHSV()[2]+"%";
+        String forHSV = "HSV : "+currentColor.getHSV()[0]+"°, "+currentColor.getHSV()[1]+"%, "+currentColor.getHSV()[2]+"%";
         TVHsv.setText(forHSV);
 
-        String forHSL ="HSL : WIP"; // TODO implement HSL
+        String forHSL = "HSL : "+currentColor.getHSL()[0]+"°, "+currentColor.getHSL()[1]+"%, "+currentColor.getHSL()[2]+"%";
         TVHsl.setText(forHSL);
 
-        String forCieLAB = "CIE LAB = WIP";
-        TVCieLAB.setText(forCieLAB);
+        String forCMYK = "CMYK : "+currentColor.getCmyk()[0]+"%, "+currentColor.getCmyk()[1]+"%, "+currentColor.getCmyk()[2]+"%, "+currentColor.getCmyk()[3]+"%";
+        TVCMYK.setText(forCMYK);
 
-        String forCieXYZ = "CIE XYZ = WIP";
-        TVCieXYZ.setText(forCieXYZ);
+        String forCieLAB = "CIE LAB : "+currentColor.getCielab()[0]+", "+currentColor.getCielab()[1]+", "+currentColor.getCielab()[2];
+        TVCieLAB.setText(forCieLAB);
 
         preview.setBackgroundColor(Color.parseColor(currentColor.getHexa()));
 
-        String[] toShow;
         if (ColorUtility.isNearestFromBlackThanWhite(currentColor.getHexa())) { // check if the color is closer to black than white
-            toShow = currentColor.getTints(); // setup preview generated colors by the method of generation Tints
+            currentGenerateColor = currentColor.getTints(); // setup preview generated colors by the method of generation Tints
         } else {
-            toShow = currentColor.getShades(); // setup preview generated colors by the method of generation Shades
+            currentGenerateColor = currentColor.getShades(); // setup preview generated colors by the method of generation Shades
         }
 
         for (int x = 0; x < generate.size(); x++) { // setup preview generated colors by the method of generation ( Shades / Tints )
-            generate.get(x).setBackgroundColor(Color.parseColor(toShow[x]));
+            generate.get(x).setBackgroundColor(Color.parseColor(currentGenerateColor[x]));
+        }
+    }
+
+    private void initNewColor(String hexaValue){
+        ColorSpec color = new ColorSpec(ColorsData.getGeneratedMethodName(activity),hexaValue);
+        init(color);
+    }
+
+    private void addStringToClipBoard(String toAdd){ // TODO add this feature
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("", toAdd);
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(clip);
         }
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.MoreIOK:{ // TODO make it work
+            case R.id.MoreIOK:{
                 Log.i(TAG,"Closing ColorInfoDialog with color"+currentColor.getHexa());
                 dismiss();
+                break;
+            }
+            case R.id.MoreIPreviewGenerate1:{
+                initNewColor(currentGenerateColor[1]);
+                break;
+            }
+            case R.id.MoreIPreviewGenerate2:{
+                initNewColor(currentGenerateColor[2]);
+                break;
+            }
+            case R.id.MoreIPreviewGenerate3:{
+                initNewColor(currentGenerateColor[3]);
+                break;
+            }
+            case R.id.MoreIPreviewGenerate4:{
+                initNewColor(currentGenerateColor[4]);
+                break;
+            }
+            case R.id.MoreIPreviewGenerate5:{
+                initNewColor(currentGenerateColor[5]);
                 break;
             }
         }

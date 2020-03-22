@@ -43,7 +43,7 @@ import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCircleP
 @SuppressLint("AppCompatCustomView")
 public class CirclePickerView extends ImageView { // TODO fix problems in android Q ( 10 )
 
-    private static final String TAG = CirclePickerView.class.getName();;
+    private static final String TAG = CirclePickerView.class.getName();
 
     private ScreenCapture mScreenCapture;
     private ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
@@ -53,17 +53,13 @@ public class CirclePickerView extends ImageView { // TODO fix problems in androi
             mScreenBitmap = bitmap;
             makeVisible();
             inUpdateFinalBitmap=false;
-            setupFinalBitmap();
 
-
-            Thread renderThread = new Thread(new Runnable() {
+            ((Activity) getContext()).runOnUiThread(new Runnable() { // use to solve a bug
                 @Override
                 public void run() {
                     setupFinalBitmap();
                 }
             });
-            renderThread.setPriority(Thread.MAX_PRIORITY);
-            renderThread.start();
         }
 
         @Override

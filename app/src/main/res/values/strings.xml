@@ -21,8 +21,8 @@
 
     <string name="permission_denied">Permission denied, task cancel</string>
 
-    <string name="Hex" translatable="false">Hex:</string>
-    <string name="Hsv" translatable="false">Hsv:</string>
+    <string name="HEX" translatable="false">HEX:</string>
+    <string name="HSV" translatable="false">HSV:</string>
     <string name="RGB" translatable="false">RGB:</string>
     <string name="paletteItemMore" translatable="false"><![CDATA[<]]></string>
 
@@ -45,4 +45,7 @@
     <string name="service_share">SHARE</string>
     <string name="service_hide">HIDE</string>
     <string name="service_show">SHOW</string>
+
+    <string name="share_self_promo">- Sent from APPNAME. An app for android</string>
+    <string name="alertdialog_addcolor_add">Add</string> <!--Replace by app name-->
 </resources>

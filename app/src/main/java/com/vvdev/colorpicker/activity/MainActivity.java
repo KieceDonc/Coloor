@@ -7,19 +7,19 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.BottomBar.Import;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
+import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.services.CirclePickerService;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
@@ -32,11 +32,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private BottomNavigationView navView;
     private ConstraintLayout startCirclePicker;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navigation_palette);
@@ -101,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.nav_host_fragment, fragment)
-                    .addToBackStack(null)
                     .commit();
             return true;
         }
