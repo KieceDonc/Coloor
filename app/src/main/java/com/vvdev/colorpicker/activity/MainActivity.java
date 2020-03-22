@@ -1,5 +1,6 @@
 package com.vvdev.colorpicker.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.BottomBar.Import;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
+import com.vvdev.colorpicker.interfaces.Gradient;
+import com.vvdev.colorpicker.interfaces.Gradients;
 import com.vvdev.colorpicker.services.CirclePickerService;
 
 import androidx.annotation.NonNull;
@@ -34,11 +37,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
+    public static Activity getActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+        getActivity=this;
+
+        if(Gradients.getSavedGradients(this)==null){
+            Gradients.firstSetup(this);
+        }
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 

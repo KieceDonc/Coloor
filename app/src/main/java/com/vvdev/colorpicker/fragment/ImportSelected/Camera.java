@@ -45,9 +45,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.SavedData;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
 
 import java.io.File;
@@ -977,7 +976,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
             case R.id.getpicture: {
                 String rawHexValue = TVHexValue.getText().toString();
                 String hexValue = rawHexValue.substring(5);
-                new ColorsData(getActivity()).addColor(hexValue);
+                new SavedData(getActivity()).addColor(hexValue);
                 break;
             }
             case R.id.info: {

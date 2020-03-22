@@ -1,17 +1,15 @@
 package com.vvdev.colorpicker.fragment.BottomBar;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ActionMenuView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.SavedData;
 import com.vvdev.colorpicker.ui.ColorAddDialog;
 import com.vvdev.colorpicker.ui.ColorPickFromWheelDialog;
 import com.vvdev.colorpicker.ui.PaletteRVAdapter;
@@ -31,6 +29,7 @@ public class Palette extends Fragment {
 
     private ConstraintLayout tutorial;
     private RecyclerView recyclerView;
+    private PaletteRVAdapter paletteRVAdapter;
     private FloatingActionMenu actionMenu;
 
     private final static String TAG = Palette.class.getName();
@@ -59,9 +58,9 @@ public class Palette extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ColorsData temp = new ColorsData(getActivity());
+        SavedData temp = new SavedData(getActivity());
         temp.setInstancePalette(this);
-        if(temp.getSize()>0){
+        if(temp.getColorsSize()>0){
             showColors();
         }
     }
@@ -69,13 +68,14 @@ public class Palette extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        new ColorsData(getActivity()).setInstancePalette(null);
+        new SavedData(getActivity()).setInstancePalette(null);
     }
 
     private void setupPaletteRecycleView(View view){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(getActivity());
-        recyclerView.setAdapter(PaletteRVAdapter);
+        paletteRVAdapter = new PaletteRVAdapter(getActivity());
+
+        recyclerView.setAdapter(paletteRVAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -103,7 +103,7 @@ public class Palette extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"delete all colors floating button have been clicked");
-                new ColorsData(getActivity()).clearColors();
+                new SavedData(getActivity()).clearColors();
             }
         });
 
@@ -133,5 +133,13 @@ public class Palette extends Fragment {
 
     public FloatingActionMenu getActionMenu(){
         return actionMenu;
+    }
+
+    public PaletteRVAdapter getPaletteRVAdapter(){
+        return this.paletteRVAdapter;
+    }
+
+    public void setPaletteRVAdapter(PaletteRVAdapter rvAdapter){
+        this.paletteRVAdapter = paletteRVAdapter;
     }
 }

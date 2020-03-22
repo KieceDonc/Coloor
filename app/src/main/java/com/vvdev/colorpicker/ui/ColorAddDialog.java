@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.SavedData;
 
 import java.util.ArrayList;
 
@@ -89,7 +89,7 @@ public class ColorAddDialog extends Dialog implements View.OnClickListener {
         findViewById(R.id.AddColorAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ColorsData(activity).addColor(currentHexValue);
+                new SavedData(activity).addColor(currentHexValue);
                 Log.i(TAG,"dismiss");
                 dismiss();
             }

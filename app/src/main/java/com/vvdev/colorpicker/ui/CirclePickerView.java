@@ -3,7 +3,6 @@ package com.vvdev.colorpicker.ui;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -27,12 +26,11 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.SavedData;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.services.CirclePickerService;
 
@@ -377,7 +375,7 @@ public class CirclePickerView extends ImageView {
 
     public void saveCurrentColor(){
         Activity activity = (Activity) getContext();
-        new ColorsData(activity).addColor(mColorHexa);
+        new SavedData(activity).addColor(mColorHexa);
     }
 
     public void zoomIn(){

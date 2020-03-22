@@ -13,7 +13,7 @@ import com.skydoves.colorpickerview.listeners.ColorListener;
 import com.skydoves.colorpickerview.sliders.BrightnessSlideBar;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.SavedData;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Constraints;
@@ -73,7 +73,7 @@ public class ColorPickFromWheelDialog extends Dialog {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ColorsData(activity).addColor(currentHex);
+                new SavedData(activity).addColor(currentHex);
                 dismiss();
             }
         });

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,22 +20,19 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     private int[] cmyk;
     private int[] cielab;
 
-    private ArrayList<String> methodName;
     private String[] complementary;
     private String[] triadic;
     private String[] tints;
     private String[] tones;
     private String[] shades;
 
-    public ColorSpec(ArrayList<String> methodName, int[] rgb) {
-        this.methodName = methodName;
+    public ColorSpec(int[] rgb) {
         setRGB(rgb);
         setHexa(ColorUtility.getHexFromRGB(rgb));
         setup();
     }
 
-    public ColorSpec(ArrayList<String> methodName,String hexa) {
-        this.methodName = methodName;
+    public ColorSpec(String hexa) {
         setHexa(hexa);
         setRGB(ColorUtility.getRGBFromHex(hexa));
         setup();
@@ -46,9 +44,9 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         setCmyk(ColorUtility.getCMYKFromRGB(getRGB()));
         setCielab(ColorUtility.getLABFromRGB(getRGB()));
 
-        setShades(ColorUtility.gradientApproximatelyGenerator(getHexa(),"#000000",6));
-        setTones(ColorUtility.gradientApproximatelyGenerator(getHexa(),"707070",6));
-        setTints(ColorUtility.gradientApproximatelyGenerator(getHexa(),"#f7f7f7",6));
+        setShades(ColorUtility.gradientApproximatelyGenerator(getHexa(),Gradient.getShadesValue(),6));
+        setTones(ColorUtility.gradientApproximatelyGenerator(getHexa(),Gradient.getTonesValue(),6));
+        setTints(ColorUtility.gradientApproximatelyGenerator(getHexa(),Gradient.getTintsValue(),6));
         setTriadic(ColorUtility.getTriadicFromRGB(getRGB()));
         setComplementary(ColorUtility.getComplementaryFromRGB(getRGB()));
     }
@@ -152,16 +150,23 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     }
 
     public ArrayList<String[]> getAllGeneratedColors(){
-        return new ArrayList<>(Arrays.asList(getShades(),getTones(),getTints(),getTriadic(),getComplementary()));
+        ArrayList<String[]> toReturn = new ArrayList<>(Arrays.asList(
+                getShades(),
+                getTones(),
+                getTints(),
+                getTriadic(),
+                getComplementary()));
+        if(MainActivity.getActivity!=null){
+            ArrayList<Gradient> customGradients = Gradients.getAllCustomGradients(MainActivity.getActivity);
+            for(int x=0;x<customGradients.size();x++){
+                toReturn.add(ColorUtility.gradientApproximatelyGenerator(getHexa(),customGradients.get(x).getHexaValue(),6));
+            }
+        }
+        return toReturn;
     }
-
-    public ArrayList<String> getAllMethodName() {
-        return methodName;
-    }
-
 
     public String toString(){
-        StringBuilder toReturn= new StringBuilder("ColorsSpec{\n" + "Hexa =" + hexa +"\n");
+        /*tringBuilder toReturn= new StringBuilder("ColorsSpec{\n" + "Hexa =" + hexa +"\n");
         for(int x=0;x<getAllMethodName().size();x++){
             toReturn.append(getAllMethodName().get(x)+" = ");
             for(int y=0;y<getAllGeneratedColors().get(x).length;y++){
@@ -170,7 +175,8 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
             toReturn.append("\n");
         }
         toReturn.append("}");
-        return toReturn.toString();
+        return toReturn.toString();*/
+        return "";
 
         //TODO make toString() of ColorSpec
     }
@@ -182,7 +188,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
      * @return
      */
     public static boolean isCorrect(ColorSpec toVerify,boolean longCheck){
-        if(toVerify.getHexa().length()<6){
+       /* if(toVerify.getHexa().length()<6){
             Log.e(TAG,"isCorrect() detect error.\nHexa color length of object is <6. Value ="+toVerify.getHexa()
             +"\nObject to verify toString()= "+toVerify.toString());
             return false;
@@ -213,7 +219,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
                     }
                 }
             }
-        }
+        }*/
         return true;
     }
 }

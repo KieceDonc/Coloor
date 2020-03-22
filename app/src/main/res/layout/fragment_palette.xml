@@ -55,17 +55,6 @@
             fab:menu_colorNormal="#000000" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/ActionButtonCreateGradient"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/abc_vector_test"
-            app:fab_colorNormal="#0084D1"
-            app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Create a gradient"
-            app:fab_size="mini"
-            fab:menu_colorNormal="#000000" />
-
-        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/ActionButtonDeleteAll"
             android:layout_width="40dp"
             android:layout_height="40dp"

@@ -16,8 +16,6 @@ import android.view.WindowManager;
 
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
-import com.vvdev.colorpicker.interfaces.ColorsData;
-import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.ui.CirclePickerView;
 
 import java.util.Timer;

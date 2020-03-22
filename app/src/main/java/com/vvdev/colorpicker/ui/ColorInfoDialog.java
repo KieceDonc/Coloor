@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.SavedData;
 
 import java.util.ArrayList;
 
@@ -128,7 +128,7 @@ public class ColorInfoDialog extends Dialog implements android.view.View.OnClick
     }
 
     private void initNewColor(String hexaValue){
-        ColorSpec color = new ColorSpec(ColorsData.getGeneratedMethodName(activity),hexaValue);
+        ColorSpec color = new ColorSpec(hexaValue);
         init(color);
     }
 

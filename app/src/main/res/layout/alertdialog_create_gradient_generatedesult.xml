@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/cgResult0"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#AAAAAA"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/cgResult1"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#000000"
+        app:layout_constraintStart_toEndOf="@+id/cgResult0"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/cgResult2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#AAAAAA"
+        app:layout_constraintStart_toEndOf="@+id/cgResult1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/cgResult3"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#000000"
+        app:layout_constraintStart_toEndOf="@+id/cgResult2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/cgResult4"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#AAAAAA"
+        app:layout_constraintStart_toEndOf="@+id/cgResult3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/cgResult5"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="#000000"
+        app:layout_constraintStart_toEndOf="@+id/cgResult4"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

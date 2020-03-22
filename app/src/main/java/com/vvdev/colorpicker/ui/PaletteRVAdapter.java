@@ -16,7 +16,8 @@ import android.widget.TextView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.ColorsData;
+import com.vvdev.colorpicker.interfaces.Gradients;
+import com.vvdev.colorpicker.interfaces.SavedData;
 
 import java.util.ArrayList;
 
@@ -31,13 +32,15 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
 
     private final Activity activity;
 
+    public ArrayList<MyViewHolderPalette> myViewHolderPaletteArrayList = new ArrayList<>();
+
     public PaletteRVAdapter(Activity activity) {
         this.activity = activity;
     }
 
     @Override
     public int getItemCount() {
-        return new ColorsData(activity).getSize();
+        return new SavedData(activity).getColorsSize();
     }
 
     @Override
@@ -49,8 +52,15 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
 
     @Override
     public void onBindViewHolder(MyViewHolderPalette holder, int position) {
-        ColorSpec currentColorSpec = new ColorsData(activity).getColors().get(position);
+        ColorSpec currentColorSpec = new SavedData(activity).getColors().get(position);
         holder.display(currentColorSpec);
+    }
+
+    public void updateSpinner(){
+        for(int x=0;x<myViewHolderPaletteArrayList.size();x++){
+            myViewHolderPaletteArrayList.get(x).updateSpinners();
+            Log.e("test","called");
+        }
     }
 
     public class MyViewHolderPalette extends RecyclerView.ViewHolder {
@@ -64,6 +74,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
         private TextView rgb;
         private TextView hexa;
         private TextView more;
+        private TextView createGradient;
         private ConstraintLayout piExtend;
         private TextView moreInformation;
 
@@ -80,6 +91,8 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
         public MyViewHolderPalette(final View itemView) { //
             super(itemView);
 
+            myViewHolderPaletteArrayList.add(this);
+
             colorPreview = itemView.findViewById(R.id.piColorPreview);
 
             colorName = itemView.findViewById(R.id.piColorName);
@@ -89,6 +102,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             more = itemView.findViewById(R.id.piMore);
             trash = itemView.findViewById(R.id.piTrash);
             moreInformation = itemView.findViewById(R.id.piExtendMoreInformation);
+            createGradient = itemView.findViewById(R.id.piExtendMoreCreateGradient);
 
             generate.add(itemView.findViewById(R.id.piGenerate0));
             generate.add(itemView.findViewById(R.id.piGenerate1));
@@ -131,12 +145,13 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                     if (!itemDeleted) {
                         itemDeleted = true;
                         Log.i(TAG, "color selected isn't deleted, start to delete");
-                        ColorsData colorsData = new ColorsData(activity);
+                        SavedData savedData = new SavedData(activity);
                         int position = getLayoutPosition();
-                        colorsData.removeColor(position);
+                        savedData.removeColor(position);
                     }
                 }
             });
+
 
             // set the extend spinner on item click listener and change each extend include to the colors propriety of selected item
             extendSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -161,6 +176,14 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                     Log.i(TAG,"TextView more information clicked");
                     ColorInfoDialog cid = new ColorInfoDialog(activity,currentColor);
                     cid.show();
+                }
+            });
+
+            createGradient.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CreateGradientDialog cgd = new CreateGradientDialog(activity,currentColor);
+                    cgd.show();
                 }
             });
         }
@@ -188,7 +211,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             hexa.setText(toHexa);
 
             // setup extend spinner
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, colorSpec.getAllMethodName());
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getAllGradientsName(activity));
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             extendSpinner.setAdapter(spinnerAdapter);
 
@@ -248,13 +271,19 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
                     extendInclude.get(x).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            new ColorsData(activity).addColor(currentColor);
+                            new SavedData(activity).addColor(currentColor);
                         }
                     });
                 } else {
                     extendInclude.get(x).setOnClickListener(null);
                 }
             }
+        }
+
+        public void updateSpinners(){
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getAllGradientsName(activity));
+            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            extendSpinner.setAdapter(spinnerAdapter);
         }
     }
 }
