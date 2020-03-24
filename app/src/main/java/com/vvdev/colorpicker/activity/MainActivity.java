@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -14,14 +13,11 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.BottomBar.Import;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
-import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.Gradient;
 import com.vvdev.colorpicker.interfaces.Gradients;
 import com.vvdev.colorpicker.services.CirclePickerService;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
@@ -33,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public static boolean isCPRunning = false; // is circle picker running
 
     private BottomNavigationView navView;
-    private ConstraintLayout startCirclePicker;
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -56,22 +51,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navView = findViewById(R.id.nav_view);
         navView.setSelectedItemId(R.id.navigation_palette);
         navView.setOnNavigationItemSelectedListener(this);
-
-        startCirclePicker = findViewById(R.id.pipette);
-
-        startCirclePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isCPRunning){ // check if circle picker is not running. If not, we start it
-                    startCirclePickerService();
-                }else if(isCPRunning&&wmCirclePickerView==null&&!isCirclePickerActivityRunning){
-                    isCPRunning=false;
-                    startCirclePickerService();
-                    Log.e("MainActivity","Bug detected, isCPRunning = true and isCirclePickerActivityRunning = false but no circle view attached.\nisCPRunning have been set to false and startCirPickerService have been started");
-                }
-
-            }
-        });
     }
 
     @Override
@@ -105,6 +84,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             }
             case R.id.navigation_palette:{
                 fragment = new Palette();
+                break;
+            }
+            case R.id.navigation_circle_picker:{
+                if(!isCPRunning){ // check if circle picker is not running. If not, we start it
+                    startCirclePickerService();
+                }else if(isCPRunning&&wmCirclePickerView==null&&!isCirclePickerActivityRunning){
+                    isCPRunning=false;
+                    startCirclePickerService();
+                    Log.e("MainActivity","Bug detected, isCPRunning = true and isCirclePickerActivityRunning = false but no circle view attached.\nisCPRunning have been set to false and startCirPickerService have been started");
+                }
             }
         }
         return loadFragment(fragment);

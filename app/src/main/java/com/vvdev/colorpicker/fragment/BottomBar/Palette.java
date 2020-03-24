@@ -37,7 +37,7 @@ public class Palette extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_palette, container, false);
+        return inflater.inflate(R.layout.fragment_palette_test, container, false);
     }
 
     @Override

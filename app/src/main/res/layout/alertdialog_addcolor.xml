@@ -143,7 +143,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:tag="buttonHexaCode"
-        android:text="6"
+        android:text="5"
         app:layout_constraintStart_toStartOf="@+id/AddColor2"
         app:layout_constraintTop_toBottomOf="@+id/AddColor2" />
 
@@ -154,7 +154,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:tag="buttonHexaCode"
-        android:text="5"
+        android:text="4"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/AddColor2" />
 
@@ -165,7 +165,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:tag="buttonHexaCode"
-        android:text="9"
+        android:text="7"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/AddColor5" />
 
@@ -220,7 +220,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:tag="buttonHexaCode"
-        android:text="A"
+        android:text="8"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/AddColor5" />
 
@@ -231,7 +231,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:tag="buttonHexaCode"
-        android:text="B"
+        android:text="9"
         app:layout_constraintStart_toEndOf="@+id/AddColorA"
         app:layout_constraintTop_toBottomOf="@+id/AddColor5" />
 
@@ -241,10 +241,10 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="4"
+        android:tag="buttonHexaCode"
+        android:text="A"
         app:layout_constraintEnd_toStartOf="@+id/AddColor5"
-        app:layout_constraintTop_toBottomOf="@+id/AddColor2"
-        android:tag="buttonHexaCode" />
+        app:layout_constraintTop_toBottomOf="@+id/AddColor2" />
 
     <Button
         android:id="@+id/AddColor8"
@@ -253,7 +253,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:tag="buttonHexaCode"
-        android:text="8"
+        android:text="B"
         app:layout_constraintEnd_toStartOf="@+id/AddColor5"
         app:layout_constraintTop_toBottomOf="@+id/AddColor4" />
 
@@ -263,7 +263,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="16dp"
         android:tag="buttonHexaCode"
-        android:text="7"
+        android:text="6"
         app:layout_constraintStart_toStartOf="@+id/AddColor3"
         app:layout_constraintTop_toBottomOf="@+id/AddColor2" />
 

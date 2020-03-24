@@ -56,13 +56,13 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         WindowManager.LayoutParams wp = getWindow().getAttributes();
         wp.dimAmount = 0f;
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            if (!Settings.canDrawOverlays(this)) {
-                showAlertDialog();
-            } else {
-                startCapture();
-            }
+
+        if (!Settings.canDrawOverlays(this)) {
+            showAlertDialog();
+        } else {
+            startCapture();
         }
+
     }
 
     @Override

@@ -47,5 +47,6 @@
     <string name="service_show">SHOW</string>
 
     <string name="share_self_promo">- Sent from APPNAME. An app for android</string>
-    <string name="alertdialog_addcolor_add">Add</string> <!--Replace by app name-->
+    <string name="alertdialog_addcolor_add">Add</string>
+    <string name="test">Circle picker</string> <!--Replace by app name-->
 </resources>

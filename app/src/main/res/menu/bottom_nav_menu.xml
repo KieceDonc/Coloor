@@ -7,10 +7,9 @@
         android:title="@string/nav_menu_Import" />
 
     <item
-        android:checkable="false"
-        android:checked="false"
-        android:enabled="false"
-        android:title="@null" />
+        android:id="@+id/navigation_circle_picker"
+        android:icon="@drawable/pipette_icon_icons_com_65005"
+        android:title="Circle picker" />
 
     <item
         android:id="@+id/navigation_palette"
