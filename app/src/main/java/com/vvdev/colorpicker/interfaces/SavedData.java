@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.ui.ColorAddedToast;
 import com.vvdev.colorpicker.ui.PaletteRVAdapter;
@@ -22,7 +23,6 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
     private ArrayList<ColorSpec> colors;
     private SharedPreferences mPrefs;
     private Activity activity;
-    private static Palette palette;
     private static final String PREFS_TAG = "SharedPrefs";
 
     public SavedData(Activity activity){
@@ -35,6 +35,7 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         colors.add(new ColorSpec(color));
         saveColors();
         ColorAddedToast.show(activity,activity.getLayoutInflater(),color);
+        Palette palette = getPaletteInstance();
         if(palette!=null){
             palette.getRecycleView().getAdapter().notifyItemInserted(getColorsSize()-1);
             if(getColorsSize()==1){
@@ -48,6 +49,7 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         if(position<=getColorsSize()-1){
             colors.remove(position);
             saveColors();
+            Palette palette = getPaletteInstance();
             if(palette!=null){
                 palette.getRecycleView().getAdapter().notifyItemRemoved(position);
                 palette.getRecycleView().getAdapter().notifyItemRangeChanged(position,getColorsSize());
@@ -64,6 +66,7 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
     public void clearColors(){
         colors.clear();
         saveColors();
+        Palette palette = getPaletteInstance();
         if(palette!=null){
             PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(activity);
             palette.getRecycleView().setAdapter(PaletteRVAdapter);
@@ -142,12 +145,8 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         }
     }
 
-    public void setInstancePalette(Palette palette){
-        this.palette = palette;
-    }
-
-    public Palette getInstancePalette(){
-        return palette;
+    public Palette getPaletteInstance(){
+        return MainActivity.Instance.getPaletteInstance();
     }
 
     public String toString(){

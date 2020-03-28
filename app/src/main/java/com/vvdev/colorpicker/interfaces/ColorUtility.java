@@ -64,7 +64,7 @@ public class ColorUtility {
      * @return int[0] = Average red value [0:255], int[1] = Average blue value [0:255], int[2] = Average green value [0:255]
      */
 
-    public static int[] getRGBAverageFromTextureView(AutoFitTextureView CameraView, ImageView AverageLayout){
+   public static int[] getRGBAverageFromTextureView(AutoFitTextureView CameraView, ImageView AverageLayout){
         int CircleHeight = AverageLayout.getHeight();
         int CircleWidth = AverageLayout.getWidth();
         Bitmap mTextViewBitmap = Bitmap.createBitmap(CameraView.getBitmap(),CameraView.getWidth()/2-CircleWidth/2,CameraView.getHeight()/2-CircleHeight/2,CircleWidth,CircleHeight);
@@ -219,7 +219,7 @@ public class ColorUtility {
         double n = Math.min(c,Math.min(m,j));
 
         if(n==1){
-            return new int[]{0,0,0};
+            return new int[]{0,0,0,0};
         }
 
         int C = (int) Math.round(((c-n)/(1-n))*100);

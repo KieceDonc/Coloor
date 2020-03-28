@@ -1,67 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CameraLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
+    android:background="#AAAAAA">
+
+    <TextView
+        android:id="@+id/HsvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/RGBValue"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/RGBValue"
+        app:layout_constraintTop_toBottomOf="@+id/RGBValue" />
+
+    <TextView
+        android:id="@+id/RGBValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="184dp"
+        android:text="-"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ColorName"
+        app:layout_constraintStart_toEndOf="@+id/ColorPreview"
+        app:layout_constraintTop_toTopOf="@+id/ColorName"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/ColorPreview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#000000"
+        android:clickable="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/HexValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ColorName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ColorName"
+        app:layout_constraintTop_toBottomOf="@+id/ColorName" />
+
+    <TextView
+        android:id="@+id/ColorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="-"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ColorPreview"
+        app:layout_constraintStart_toEndOf="@+id/ColorPreview"
+        app:layout_constraintTop_toTopOf="@+id/ColorPreview"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/TextureViewBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/TextureViewCamera"
+        app:layout_constraintEnd_toEndOf="@+id/TextureViewCamera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TextureViewCamera" />
+
 
     <com.vvdev.colorpicker.ui.AutoFitTextureView
         android:id="@+id/TextureViewCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/BottomBar"
-        android:layout_below="@id/TopBar" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/getpicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ColorPreview"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <FrameLayout
-        android:id="@+id/ZoomControl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/BottomBar"
-        android:layout_below="@id/TopBar"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="vertical">
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/TextureViewBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/TextureViewBackground"
+        app:layout_constraintTop_toTopOf="@+id/TextureViewBackground"
+        app:layout_constraintVertical_bias="0.498"
+        app:srcCompat="@drawable/camera_plus_icon" />
 
-        <ImageView
-            android:id="@+id/CameraCircle"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:background="@drawable/white_rounded_area"
-            app:srcCompat="@android:color/transparent" />
+    <ImageView
+        android:id="@+id/SwitchCamera"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerInside"
+        android:tint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/getpicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/getpicture"
+        app:srcCompat="@drawable/camera_switching" />
 
-    </FrameLayout>
-
-    <include
-        android:id="@+id/TopBar"
-        layout="@layout/camera_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
-
-    <FrameLayout
-        android:layout_width="32dp"
-        android:layout_height="140dp"
-        android:layout_alignBottom="@id/BottomBar"
-        android:layout_marginBottom="110dp"
-        android:orientation="vertical">
-
-        <SeekBar
-            android:id="@+id/SeebarZoom"
-            android:layout_width="140dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:rotation="270" />
-
-    </FrameLayout>
-
-    <include
-        android:id="@+id/BottomBar"
-        layout="@layout/camera_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+    <Button
+        android:id="@+id/getpicture"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/takephoto"
+        android:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

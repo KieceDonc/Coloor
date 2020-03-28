@@ -5,7 +5,7 @@
     android:id="@+id/import_WebViewConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@color/Theme1_Primary"
     android:orientation="vertical">
 
     <com.github.barteksc.pdfviewer.PDFView
@@ -52,12 +52,12 @@
         android:ems="10"
         android:focusable="auto"
         android:gravity="end|center_vertical"
+        android:imeOptions="actionSend"
         android:inputType="number"
         android:paddingEnd="4dp"
         android:selectAllOnFocus="false"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
-        android:imeOptions="actionSend"
         app:layout_constraintBottom_toBottomOf="@+id/numberOfPage"
         app:layout_constraintEnd_toStartOf="@+id/textView13"
         app:layout_constraintTop_toTopOf="@+id/numberOfPage"

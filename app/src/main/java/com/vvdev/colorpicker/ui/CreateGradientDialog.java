@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
@@ -162,7 +163,7 @@ public class CreateGradientDialog extends Dialog {
     }
 
     public void updateSpinnersViewInAdapter(){
-        Palette palette =new SavedData(activity).getInstancePalette();
+        Palette palette = MainActivity.Instance.getPaletteInstance();
         if(palette!=null){
             if(palette.getRecycleView()!=null){
                 if(palette.getPaletteRVAdapter()!=null){

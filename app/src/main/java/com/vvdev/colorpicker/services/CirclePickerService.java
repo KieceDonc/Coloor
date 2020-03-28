@@ -27,7 +27,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static com.vvdev.colorpicker.activity.CirclePickerActivityStart.wmCirclePickerView;
-import static com.vvdev.colorpicker.activity.MainActivity.isCPRunning;
 
 public class CirclePickerService extends Service {
 
@@ -53,8 +52,6 @@ public class CirclePickerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        isCPRunning=true; // boolean use to say if service is running or not ( declare static in main activity )
-
         if(intent!=null){
 
             if(intent.getAction()!=null&&intent.getAction().equals("STOP")){
@@ -233,7 +230,8 @@ public class CirclePickerService extends Service {
         if(wmCirclePickerView!=null&&wmCirclePickerView.isAttachedToWindow()){
             wm.removeView(wmCirclePickerView);
         }
-        isCPRunning=false; // boolean use to say if service is running or not ( declare static in main activity )
+        wmCirclePickerView=null;
+        Instance.set(null);
         stopForeground(true);
     }
 

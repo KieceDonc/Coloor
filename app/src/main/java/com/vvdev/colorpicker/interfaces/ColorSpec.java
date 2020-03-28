@@ -156,8 +156,8 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
                 getTints(),
                 getTriadic(),
                 getComplementary()));
-        if(MainActivity.getActivity!=null){
-            ArrayList<Gradient> customGradients = Gradients.getAllCustomGradients(MainActivity.getActivity);
+        if(MainActivity.Instance.getMainActivityInstance()!=null){
+            ArrayList<Gradient> customGradients = Gradients.getAllCustomGradients(MainActivity.Instance.getMainActivityInstance());
             for(int x=0;x<customGradients.size();x++){
                 toReturn.add(ColorUtility.gradientApproximatelyGenerator(getHexa(),customGradients.get(x).getHexaValue(),6));
             }
@@ -165,21 +165,8 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         return toReturn;
     }
 
-    public String toString(){
-        /*tringBuilder toReturn= new StringBuilder("ColorsSpec{\n" + "Hexa =" + hexa +"\n");
-        for(int x=0;x<getAllMethodName().size();x++){
-            toReturn.append(getAllMethodName().get(x)+" = ");
-            for(int y=0;y<getAllGeneratedColors().get(x).length;y++){
-                toReturn.append(getAllGeneratedColors().get(x)[y]+", ");
-            }
-            toReturn.append("\n");
-        }
-        toReturn.append("}");
-        return toReturn.toString();*/
-        return "";
+    //TODO make toString() of ColorSpec
 
-        //TODO make toString() of ColorSpec
-    }
 
     /**
      * Used to check is the object is correct

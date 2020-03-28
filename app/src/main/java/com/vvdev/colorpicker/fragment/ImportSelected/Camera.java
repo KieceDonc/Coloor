@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
@@ -39,12 +40,11 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.SavedData;
 import com.vvdev.colorpicker.ui.AutoFitTextureView;
@@ -69,6 +69,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 public class Camera extends Fragment implements View.OnClickListener, View.OnTouchListener, ActivityCompat.OnRequestPermissionsResultCallback {
+
+    public interface setOnCameraLifeCycleListener{
+        void onFragmentResume();
+        void onFragmentPause();
+    }
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -287,11 +292,6 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     private int mSensorOrientation;
 
     /**
-     *  ImageView of the circle in the middle
-     */
-    private ImageView CameraCircle;
-
-    /**
      * Button only use to display a preview of average color in CircleView
      */
     private Button ColorPreview;
@@ -465,6 +465,14 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         }
     }
 
+    private setOnCameraLifeCycleListener lifeCycleListener;
+
+    public Camera(){
+        MainActivity mainActivity = MainActivity.Instance.getMainActivityInstance();
+        if(mainActivity!=null){
+            lifeCycleListener = mainActivity.getCameraListener();
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_camera, container, false);
@@ -472,7 +480,6 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-
         ColorPreview = view.findViewById(R.id.ColorPreview);
         TVColorName = view.findViewById(R.id.ColorName);
         TVHexValue = view.findViewById(R.id.HexValue);
@@ -480,14 +487,11 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         TVRGBValue = view.findViewById(R.id.RGBValue);
 
         mTextureView = view.findViewById(R.id.TextureViewCamera);
-        ZoomControl = view.findViewById(R.id.ZoomControl);
-        CameraCircle = view.findViewById(R.id.CameraCircle);
 
         view.findViewById(R.id.getpicture).setOnClickListener(this);
         view.findViewById(R.id.SwitchCamera).setOnClickListener(this);
 
         mTextureView.setOnClickListener(this);
-        ZoomControl.setOnTouchListener(this);
 
         initCameraTop();
     }
@@ -523,7 +527,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
             mTextureView.setSurfaceTextureListener(mSurfaceTextureListener);
         }
 
-
+        lifeCycleListener.onFragmentResume();
     }
 
     @Override
@@ -532,6 +536,8 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         stopBackgroundThread();
         HandlerCameraTop.removeCallbacks(RunnableCameraTop);
         super.onPause();
+        lifeCycleListener.onFragmentPause();
+
     }
 
     private void requestCameraPermission() {
@@ -676,7 +682,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
 
     // specified by {@link meCamera2BasicFragnt#mCameraId}.
     private void openCamera(int width, int height) {
-        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getActivity()), Manifest.permission.CAMERA)
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             requestCameraPermission();
             return;
@@ -1134,7 +1140,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
      * Setup local variable of CameraTopRefresh in onViewCreated to avoid to call getActivity().getResources().getString(...) everytime we call CameraTopRefresh()
      */
     private void initCameraTop(){
-        SHex = Objects.requireNonNull(getActivity()).getResources().getString(R.string.HEX);
+        SHex = requireActivity().getResources().getString(R.string.HEX);
         SHsv = getActivity().getResources().getString(R.string.HSV);
         SRGB =  getActivity().getResources().getString(R.string.RGB);
     }
@@ -1144,19 +1150,21 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
      * Function who's refreshing value of camera_top.xml
      */
     public void CameraTopRefresh() {
-        int[] RGBAverage = ColorUtility.getRGBAverageFromTextureView(mTextureView, CameraCircle);
+        Bitmap textureViewBitmap = mTextureView.getBitmap();
+        int middlePixel = textureViewBitmap.getPixel(textureViewBitmap.getWidth()/2,textureViewBitmap.getHeight()/2);
+        int[] RGBMiddlePixel = new int[]{Color.red(middlePixel),Color.green(middlePixel),Color.blue(middlePixel)};
 
-        String ToDisplayRGB = SRGB+" "+RGBAverage[0]+", "+RGBAverage[1]+", "+RGBAverage[2];
+        String ToDisplayRGB = SRGB+" "+RGBMiddlePixel[0]+", "+RGBMiddlePixel[1]+", "+RGBMiddlePixel[2];
         TVRGBValue.setText(ToDisplayRGB);
 
-        String HexValue = ColorUtility.getHexFromRGB(RGBAverage);
+        String HexValue = ColorUtility.getHexFromRGB(RGBMiddlePixel);
         String ToDisplayHex = SHex+" "+HexValue;
         TVHexValue.setText(ToDisplayHex);
 
         String[] NearestColor = ColorUtility.nearestColor(HexValue);
         TVColorName.setText(NearestColor[0]);
 
-        int[] Hsv = ColorUtility.getHsvFromRGB(RGBAverage);
+        int[] Hsv = ColorUtility.getHsvFromRGB(RGBMiddlePixel);
         String ToDisplayHsv = SHsv+" "+Hsv[0]+"°, "+Hsv[1]+"%, "+Hsv[2]+"%";
         TVHsvValue.setText(ToDisplayHsv);
 
@@ -1193,7 +1201,6 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     public float finger_spacing = 0;
     public double zoom_level = 1;
 
-    public FrameLayout ZoomControl;
 
     public boolean onTouch(View v, MotionEvent event) {
         try {

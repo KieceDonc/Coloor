@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    android:background="#aaaaaa">
+    android:background="#aca9aa">
 
     <include
         android:id="@+id/PaletteTuto"
@@ -26,8 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ActionBarBackground"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -40,7 +39,7 @@
         android:src="@drawable/fab_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/pRecyclerView"
-        fab:menu_colorNormal="#000000"
+        app:menu_colorNormal="#000000"
         fab:menu_colorPressed="#7f7f7f">
 
         <com.github.clans.fab.FloatingActionButton
@@ -48,7 +47,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/abc_vector_test"
-            app:fab_colorNormal="#0084D1"
+            app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
             app:fab_label="Pick color from wheel"
             app:fab_size="mini"
@@ -59,7 +58,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/abc_vector_test"
-            app:fab_colorNormal="#0084D1"
+            app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
             app:fab_label="Delete all colors"
             app:fab_size="mini"
@@ -70,32 +69,13 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/abc_vector_test"
-            app:fab_colorNormal="#0084D1"
+            android:visibility="visible"
+            app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
             app:fab_label="Add hexa color"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 
     </com.github.clans.fab.FloatingActionMenu>
-
-    <View
-        android:id="@+id/ActionBarBackground"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/Theme1_Primary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/app_name"
-        android:textColor="@color/Theme1_text"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/ActionBarBackground"
-        app:layout_constraintStart_toStartOf="@+id/ActionBarBackground"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

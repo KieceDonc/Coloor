@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.interfaces.SavedData;
 import com.vvdev.colorpicker.ui.ColorAddDialog;
 import com.vvdev.colorpicker.ui.ColorPickFromWheelDialog;
@@ -23,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class Palette extends Fragment {
 
+    private final static String TAG = Palette.class.getName();
+
     private FloatingActionButton actionButtonPickFromWheel;
     private FloatingActionButton actionButtonDeleteAll;
     private FloatingActionButton actionButtonAddColor;
@@ -32,12 +35,15 @@ public class Palette extends Fragment {
     private PaletteRVAdapter paletteRVAdapter;
     private FloatingActionMenu actionMenu;
 
-    private final static String TAG = Palette.class.getName();
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivity.Instance.setPaletteInstance(this);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_palette_test, container, false);
+        return inflater.inflate(R.layout.fragment_palette, container, false);
     }
 
     @Override
@@ -59,7 +65,6 @@ public class Palette extends Fragment {
     public void onResume() {
         super.onResume();
         SavedData temp = new SavedData(getActivity());
-        temp.setInstancePalette(this);
         if(temp.getColorsSize()>0){
             showColors();
         }
@@ -68,7 +73,7 @@ public class Palette extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        new SavedData(getActivity()).setInstancePalette(null);
+        MainActivity.Instance.setPaletteInstance(null);
     }
 
     private void setupPaletteRecycleView(View view){

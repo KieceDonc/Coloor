@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
 import com.vvdev.colorpicker.fragment.ImportSelected.Files_IS;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
@@ -28,6 +29,7 @@ import java.io.File;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -46,9 +48,15 @@ public class Import extends Fragment implements View.OnClickListener {
     private static final int REQUEST_CODE_PERM_FILES = 567;
     private static final int REQUEST_CODE_PERM_INTERNET = 568;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        MainActivity.Instance.setImportInstance(this);
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.fragment_import, container, false);
+        return inflater.inflate(R.layout.fragment_import_test, container, false);
     }
 
     @Override
@@ -57,6 +65,12 @@ public class Import extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.importFile).setOnClickListener(this);    // set file rectangle on click listener
         view.findViewById(R.id.importPDF).setOnClickListener(this);     // set pdf rectangle on click listener
         view.findViewById(R.id.importInternet).setOnClickListener(this);// set internet rectangle on click listener
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MainActivity.Instance.setImportInstance(null);
     }
 
     @Override
@@ -224,9 +238,9 @@ public class Import extends Fragment implements View.OnClickListener {
 
     private void loadCamera(){
         Camera cameraFragment= new Camera();
-
         doFragmentTransaction(cameraFragment);
     }
+
     private void loadFile(Uri path){
         Files_IS filesFragment = new Files_IS();
 

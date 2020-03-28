@@ -29,6 +29,7 @@ import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.ui.PDFEditText;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ public class PDF extends Fragment {
     public static final String KEY_ARGUMENT_PDF_PATH ="PathToPDF";
 
     private static String TAG = PDF.class.getName();
+
 
     private PDFView pdfView;
     private PDFEditText inputDesirePage;
