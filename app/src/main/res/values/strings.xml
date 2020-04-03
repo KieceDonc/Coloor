@@ -26,12 +26,27 @@
     <string name="RGB" translatable="false">RGB:</string>
     <string name="paletteItemMore" translatable="false"><![CDATA[<]]></string>
 
-    <string name="Toast_have_been_added">haven been added to the palette !</string> <!-- Example : #000000 haven been added to the palette-->
+    <!-- Example : #000000 haven been added to the palette-->
+    
+    <string name="import_from_pdf">From a PDF</string>
+    <string name="import_from_camera">From your camera</string>
+    <string name="import_from_files">From your files</string>
+    <string name="import_from_url">From url</string>
 
-    <string name="import_internet_url_text">Copy your url file</string>
+    <string name="import_pdf_on">on</string>
+    <string name="import_pdf_select">Select a pdf file</string>
+
+    <string name="import_files_select">Select an image / a video</string>
+
+    <string name="import_internet_url_text">Copy your url</string>
     <string name="import_internet_unable_to_connect">Unable to connect to this address</string>
     <string name="import_internet_invalid_url">Invalid url address</string>
     <string name="import_internet_basic_error">Error while downloading, please retry</string>
+
+    <string name="tuto_title">How to start</string>
+    <string name="tuto_circlepicker">This icon is moveable wheel which allow you to pick the color of any pixel on your screen</string>
+    <string name="tuto_import">The import menu permit you to pick a color from an image, video, pdf, camera or direct link to a file</string>
+    <string name="tuto_palette">The palette store your colors and unleash your creativity through her features</string>
 
     <string name="ColorSpec_Shades">Shades</string>
     <string name="ColorSpec_Tones">Tones</string>
@@ -39,14 +54,39 @@
     <string name="ColorSpec_Triadic">Triadic</string>
     <string name="ColorSpec_Complementary">Complementary</string>
 
+    <string name="palette_more_information">More information</string>
+    <string name="palette_more_gradient">Create a gradient</string>
+    <string name="palette_more_share">Share</string>
+
+    <string name="alertdialog_addcolor_add">Add</string>
+    <string name="alertdialog_pickwheel_cancel">Cancel</string>
+    <string name="alertdialog_pickwheel_ok">Ok</string>
+    <string name="alertdialog_gradient_choose_name">Choose a name</string>
+    <string name="alertdialog_gradient_mustchoose_name">You must put a name</string>
+    <string name="alertdialog_gradient_name_alreadytaken">This name is already taken</string>
+    <string name="alertdialog_internet_download">Download</string>
+    <string name="alertdialog_internet_pause">Pause</string>
+    <string name="alertdialog_internet_resume">Resume</string>
+
+
     <string name="service_current_hexa">Current hexadecimal value</string>
     <string name="service_waiting_permission">Waiting for permission to be given</string>
     <string name="service_stop">STOP</string>
     <string name="service_share">SHARE</string>
+    <string name="service_share_title">Share your color !</string>
     <string name="service_hide">HIDE</string>
     <string name="service_show">SHOW</string>
 
-    <string name="share_self_promo">- Sent from APPNAME. An app for android</string>
-    <string name="alertdialog_addcolor_add">Add</string>
-    <string name="test">Circle picker</string> <!--Replace by app name-->
+    <string name="share_self_promo">- Sent from ColorPicker. An app for android</string>
+
+    <string name="settings_user_experience">User experience</string>
+    <string name="settings_circle">Modify circle picker color size</string>
+    <string name="settings_gradient">Edit gradient</string>
+    <string name="settings_about">About</string>
+    <string name="settings_rate_app">Rate the app</string>
+    <string name="settings_contact">Contact the support</string>
+    <string name="settings_legacy">Legacy</string>
+
+    <string name="support_email">valentinverst.developer@gmail.com</string>
+    <!--Replace by app name-->
 </resources>

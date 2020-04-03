@@ -1,8 +1,6 @@
 package com.vvdev.colorpicker.fragment.BottomBar;
 
 import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,9 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.vvdev.colorpicker.R;
@@ -30,7 +26,6 @@ import java.io.File;
 import androidx.annotation.NonNull;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -56,7 +51,7 @@ public class Import extends Fragment implements View.OnClickListener {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.fragment_import_test, container, false);
+        return inflater.inflate(R.layout.fragment_import, container, false);
     }
 
     @Override
@@ -177,14 +172,14 @@ public class Import extends Fragment implements View.OnClickListener {
 
     private void choosePDF(){
         String type="application/pdf";
-        String title="Select a pdf file"; // TODO to translate
+        String title=getResources().getString(R.string.import_pdf_select);
 
         startChooser(type,title,REQUEST_CODE_PDF);
     }
 
     private void chooseFile(){
         String type="image/* video/*";
-        String title="Select a video / image"; // TODO to translate
+        String title=getResources().getString(R.string.import_files_select);
         startChooser(type,title,REQUEST_CODE_FILE);
     }
 

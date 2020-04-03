@@ -59,7 +59,6 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
     public void updateSpinner(){
         for(int x=0;x<myViewHolderPaletteArrayList.size();x++){
             myViewHolderPaletteArrayList.get(x).updateSpinners();
-            Log.e("test","called");
         }
     }
 

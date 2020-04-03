@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.colorpicker.R;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private ConstraintLayout circlePickerStartConstraintLayout;
 
     private ImageView startSettings;
+    private ImageView appIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navView.setOnNavigationItemSelectedListener(this);
 
         circlePickerStartConstraintLayout = findViewById(R.id.circlePickerStartConstraintLayout);
+        circlePickerStartConstraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(wmCirclePickerView==null&&!isCirclePickerActivityRunning){
+                    startCirclePickerService();
+                    Log.e("MainActivity","Bug detected, isCPRunning = true and isCirclePickerActivityRunning = false but no circle view attached.\nisCPRunning have been set to false and startCirPickerService have been started");
+                }
+            }
+        });
         actionBar = findViewById(R.id.actionBar);
         startSettings = findViewById(R.id.settings);
 
@@ -71,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 loadFragment(fragment);
             }
         });
+
+        appIcon = findViewById(R.id.imageViewLogo);
+        Glide.with(this).load(R.drawable.ic_launcher_square).centerCrop().into(appIcon);
+
     }
 
     @Override

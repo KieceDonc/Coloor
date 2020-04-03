@@ -116,7 +116,7 @@ public class DownloadFileAlertDialog extends Dialog implements android.view.View
             String fileName = createFileName()+urlText.substring(urlText.lastIndexOf("/")+1);
             currentDownload = newDownload(urlText,pathFile,fileName);
         }else{
-            url.setTextColor(activity.getResources().getColor(R.color.import_internet_url_text_error)); // red color to show an error to the user
+            url.setTextColor(activity.getResources().getColor(R.color.import_internet_url_text_error,null)); // red color to show an error to the user
             url.setText(getContext().getString(R.string.import_internet_unable_to_connect));
         }
     }

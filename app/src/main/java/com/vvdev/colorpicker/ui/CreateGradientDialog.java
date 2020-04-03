@@ -65,7 +65,7 @@ public class CreateGradientDialog extends Dialog {
                 if(userInput.getTextColors().equals(activity.getResources().getColor(R.color.import_internet_url_text_error))){
                     userInput.setTextColor(Color.BLACK);
                     userInput.setText("");
-                }else if(userInput.getText().toString().equals("Choose a name")){ // todo link string resource in alert_dialog_gradient cgInputName text value and this. ( traduce )
+                }else if(userInput.getText().toString().equals(activity.getResources().getString(R.string.alertdialog_gradient_choose_name))){
                     userInput.setText("");
                 }
             }
@@ -97,11 +97,11 @@ public class CreateGradientDialog extends Dialog {
                 }else{
                     if(canBeSave.equals(lengthError)){
                         userInput.setTextColor(activity.getResources().getColor(R.color.import_internet_url_text_error)); // red color to show an error to the user
-                        userInput.setText("You must put a name"); // TODO to translate
+                        userInput.setText((activity.getResources().getString(R.string.alertdialog_gradient_mustchoose_name)));
 
                     }else if(canBeSave.equals(nameAlreadyInDataBase)){
                         userInput.setTextColor(activity.getResources().getColor(R.color.import_internet_url_text_error)); // red color to show an error to the user
-                        userInput.setText("This name is already taken"); // TODO to translate
+                        userInput.setText(activity.getResources().getString(R.string.alertdialog_gradient_name_alreadytaken));
                     }
                 }
             }
@@ -151,7 +151,7 @@ public class CreateGradientDialog extends Dialog {
 
     private String canBeSave(){
         String stringUserInput = userInput.getText().toString();
-        if(stringUserInput.length()>0&&!stringUserInput.equals("Choose a name")){ // todo link string resource in alert_dialog_gradient cgInputName text value and this. ( traduce )
+        if(stringUserInput.length()>0&&!stringUserInput.equals((activity.getResources().getString(R.string.alertdialog_gradient_choose_name)))){
             if(Gradients.getGradientValueByName(activity,stringUserInput)==null){
                 return null;
             }else{

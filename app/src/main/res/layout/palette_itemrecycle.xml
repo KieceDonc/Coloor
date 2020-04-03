@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
@@ -112,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="More information"
+            android:text="@string/palette_more_information"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" />
@@ -123,7 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Create a gradient"
+            android:text="@string/palette_more_gradient"
             android:textColor="#000000"
             app:layout_constraintEnd_toStartOf="@+id/piExtendMoreInformation"
             app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" />
@@ -134,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="Share ( TODO ) "
+            android:text="@string/palette_more_share"
             android:textColor="#000000"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/piExtendMoreInformation"

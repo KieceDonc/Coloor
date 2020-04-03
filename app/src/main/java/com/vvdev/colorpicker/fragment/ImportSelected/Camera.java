@@ -492,6 +492,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         view.findViewById(R.id.SwitchCamera).setOnClickListener(this);
 
         mTextureView.setOnClickListener(this);
+        mTextureView.setOnTouchListener(this);
 
         initCameraTop();
     }

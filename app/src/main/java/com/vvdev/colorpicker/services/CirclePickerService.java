@@ -8,12 +8,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
 import com.vvdev.colorpicker.ui.CirclePickerView;
@@ -86,6 +88,8 @@ public class CirclePickerService extends Service {
                     NotificationManager.IMPORTANCE_LOW // TODO check google document to find the good IMPORTANCE for notification manager
             );
             channel1.setDescription("This is Channel 1");
+            channel1.setSound(null,null);
+            channel1.setVibrationPattern(null);
 
 
             NotificationManager manager = getSystemService(NotificationManager.class);
@@ -97,6 +101,8 @@ public class CirclePickerService extends Service {
 
         Notification notification = notificationBuilder.setSmallIcon(R.drawable.pipette_icon_icons_com_65005) // TODO replace by the application icon
                 .setContentText(message)
+                .setSound(null)
+                .setVibrate(null)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .build();
@@ -201,7 +207,7 @@ public class CirclePickerService extends Service {
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
-        Intent chooserIntent = Intent.createChooser(sharingIntent, "Share your color !");// TODO to translate
+        Intent chooserIntent = Intent.createChooser(sharingIntent, getApplicationContext().getResources().getString(R.string.service_share_title));
         chooserIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(getApplicationContext(), 0, chooserIntent, 0);
     }

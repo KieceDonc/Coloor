@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ColorPicker</string>
+    <string name="import_internet_url_text">Copier votre lien</string>
+    <string name="permission_denied">Permission refusée, tâche annulée</string>
+    <string name="nav_menu_Palette">Palette</string>
+    <string name="nav_menu_Import">Importer</string>
+    <string name="nav_menu_Camera">Camera</string>
+    <string name="camera_error">Cette appareil ne supporte Camera API 2</string>
+    <string name="import_internet_basic_error">Erreur pendant le téléchargement, réessayer</string>
+    <string name="service_share">PARTAGER</string>
+    <string name="service_hide">CACHER</string>
+    <string name="service_show">AFFICHER</string>
+    <string name="share_self_promo">- Envoyé depuis ColorPicker. Une application d\'android</string>
+    <string name="alertdialog_addcolor_add">Ajouter</string>
+    <string name="service_stop">STOPPER</string>
+    <string name="service_waiting_permission">En attente des autorisations</string>
+    <string name="service_current_hexa">Valeur hexadecimal courante</string>
+    <string name="ColorSpec_Complementary">Complémentaire</string>
+    <string name="ColorSpec_Triadic">Triadique</string>
+    <string name="import_internet_invalid_url">Adresse url invalide</string>
+    <string name="import_internet_unable_to_connect">Impossible de se connecter à cette adresse</string>
 </resources>

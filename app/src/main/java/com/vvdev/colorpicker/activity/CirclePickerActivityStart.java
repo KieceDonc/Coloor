@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.services.CirclePickerService;
