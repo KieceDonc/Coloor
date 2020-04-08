@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.ui;
+package com.vvdev.colorpicker.ui.customview;
 
 import android.content.Context;
 import android.graphics.Canvas;

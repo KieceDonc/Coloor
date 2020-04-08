@@ -47,7 +47,7 @@ import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.SavedData;
-import com.vvdev.colorpicker.ui.AutoFitTextureView;
+import com.vvdev.colorpicker.ui.customview.AutoFitTextureView;
 
 import java.io.File;
 import java.io.FileOutputStream;

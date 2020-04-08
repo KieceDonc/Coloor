@@ -54,13 +54,18 @@
     <string name="ColorSpec_Triadic">Triadic</string>
     <string name="ColorSpec_Complementary">Complementary</string>
 
+    <string name="palette_more_gradient">Gradient -</string>
     <string name="palette_more_information">More information</string>
-    <string name="palette_more_gradient">Create a gradient</string>
+    <string name="palette_more_gradient_create">Create a gradient</string>
     <string name="palette_more_share">Share</string>
 
     <string name="alertdialog_addcolor_add">Add</string>
     <string name="alertdialog_pickwheel_cancel">Cancel</string>
     <string name="alertdialog_pickwheel_ok">Ok</string>
+    <string name="alertdialog_gradient_from">From :</string>
+    <string name="alertdialog_gradient_toShades">Shades :</string>
+    <string name="alertdialog_gradient_toTints">Tints :</string>
+    <string name="alertdialog_gradient_add">Add</string>
     <string name="alertdialog_gradient_choose_name">Choose a name</string>
     <string name="alertdialog_gradient_mustchoose_name">You must put a name</string>
     <string name="alertdialog_gradient_name_alreadytaken">This name is already taken</string>
@@ -86,6 +91,11 @@
     <string name="settings_rate_app">Rate the app</string>
     <string name="settings_contact">Contact the support</string>
     <string name="settings_legacy">Legacy</string>
+    <string name="settings_gradients_tuto_nograd">No gradients detected</string>
+    <string name="settings_gradients_tuto_howto">If you haven\'t created gradients this is how you should do :</string>
+    <string name="settings_gradients_tuto1">1 - Go to the palette</string>
+    <string name='settings_gradents_tuto2'>2 - Pick a color and click on \"create a gradient\"</string>
+    <string name="settings_gradients_tuto3">3 - Choose a name and click on \"add\"</string>
 
     <string name="support_email">valentinverst.developer@gmail.com</string>
     <!--Replace by app name-->

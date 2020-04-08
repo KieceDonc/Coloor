@@ -3,6 +3,9 @@ package com.vvdev.colorpicker.interfaces;
 import android.app.Activity;
 
 import com.vvdev.colorpicker.R;
+import com.vvdev.colorpicker.activity.MainActivity;
+import com.vvdev.colorpicker.fragment.BottomBar.Import;
+import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 
 import java.util.ArrayList;
 
@@ -10,7 +13,13 @@ import androidx.annotation.NonNull;
 
 public class Gradients {
 
-    public static void firstSetup(@NonNull Activity activity){
+    private Activity activity;
+
+    public Gradients(Activity activity){
+        this.activity = activity;
+    }
+
+    public void firstSetup(){
         ArrayList<Gradient> gradients = new ArrayList<>();
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Shades),Gradient.getShadesValue()));
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Tones),Gradient.getTonesValue()));
@@ -20,8 +29,8 @@ public class Gradients {
         new SavedData(activity).saveGradients(gradients);
     }
 
-    public static String getGradientValueByName(@NonNull Activity activity,String name){
-        ArrayList<Gradient> gradients = getSavedGradients(activity);
+    public String getGradientValueByName(String name){
+        ArrayList<Gradient> gradients = getSavedGradients();
         String value=null;
         int cmpt = 0;
         boolean founded = false;
@@ -36,14 +45,14 @@ public class Gradients {
         return value;
     }
 
-    public static void addGradient(@NonNull Activity activity, Gradient gradient){
-        ArrayList<Gradient> gradients = getSavedGradients(activity);
+    public void addGradient( Gradient gradient){
+        ArrayList<Gradient> gradients = getSavedGradients();
         gradients.add(gradient);
         new SavedData(activity).saveGradients(gradients);
     }
 
-    public static void deleteGradient(@NonNull Activity activity,Gradient gradient){
-        ArrayList<Gradient> gradients = getSavedGradients(activity);
+    public void removeGradient(Gradient gradient){
+        ArrayList<Gradient> gradients = getSavedGradients();
         int cmpt = 0;
         boolean removed = false;
         do{
@@ -59,8 +68,8 @@ public class Gradients {
         }
     }
 
-    public static ArrayList<String> getAllGradientsName(Activity activity){
-        ArrayList<Gradient> gradients = getSavedGradients(activity);
+    public ArrayList<String> getAllGradientsName(){
+        ArrayList<Gradient> gradients = getSavedGradients();
         ArrayList<String> gradientsName = new ArrayList<>();
         for(int x=0;x<gradients.size();x++){
             gradientsName.add(gradients.get(x).getName());
@@ -68,8 +77,8 @@ public class Gradients {
         return gradientsName;
     }
 
-    public static ArrayList<Gradient> getAllCustomGradients(Activity activity){
-        ArrayList<Gradient> gradients = getSavedGradients(activity);
+    public ArrayList<Gradient> getAllCustomGradients(){
+        ArrayList<Gradient> gradients = getSavedGradients();
         ArrayList<Gradient> toReturn = new ArrayList<>();
         for(int x=5;x<gradients.size();x++){
             toReturn.add(gradients.get(x));
@@ -77,11 +86,11 @@ public class Gradients {
         return toReturn;
     }
 
-    public static ArrayList<Gradient> getSavedGradients(Activity activity){
+    public ArrayList<Gradient> getSavedGradients(){
         return new SavedData(activity).getSavedGradients();
     }
 
-
-
-
+    public static Gradients getInstance(Activity activity){
+        return new Gradients(activity);
+    }
 }

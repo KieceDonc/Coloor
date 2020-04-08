@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.ui;
+package com.vvdev.colorpicker.ui.adapter;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -18,6 +18,8 @@ import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.Gradients;
 import com.vvdev.colorpicker.interfaces.SavedData;
+import com.vvdev.colorpicker.ui.alertdialog.ColorInfoDialog;
+import com.vvdev.colorpicker.ui.alertdialog.CreateGradientDialog;
 
 import java.util.ArrayList;
 
@@ -46,7 +48,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
     @Override
     public MyViewHolderPalette onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.palette_itemrecycle, parent, false);
+        View view = inflater.inflate(R.layout.fragment_palette_itemrecycle, parent, false);
         return new MyViewHolderPalette(view);
     }
 
@@ -210,7 +212,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             hexa.setText(toHexa);
 
             // setup extend spinner
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getAllGradientsName(activity));
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getInstance(activity).getAllGradientsName());
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             extendSpinner.setAdapter(spinnerAdapter);
 
@@ -280,7 +282,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
         }
 
         public void updateSpinners(){
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getAllGradientsName(activity));
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getInstance(activity).getAllGradientsName());
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             extendSpinner.setAdapter(spinnerAdapter);
         }

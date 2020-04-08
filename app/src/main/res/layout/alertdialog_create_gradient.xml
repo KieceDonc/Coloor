@@ -21,7 +21,7 @@
 
     <include
         android:id="@+id/cgResultFromBlack"
-        layout="@layout/alertdialog_create_gradient_generatedesult"
+        layout="@layout/gradient_generatedesult_30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -33,7 +33,7 @@
 
     <include
         android:id="@+id/cgResultFromWhite"
-        layout="@layout/alertdialog_create_gradient_generatedesult"
+        layout="@layout/gradient_generatedesult_30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/cgTv1"
@@ -43,7 +43,7 @@
 
     <include
         android:id="@+id/cgResultFromRed"
-        layout="@layout/alertdialog_create_gradient_generatedesult"
+        layout="@layout/gradient_generatedesult_30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -54,7 +54,7 @@
 
     <include
         android:id="@+id/cgResultFromBlue"
-        layout="@layout/alertdialog_create_gradient_generatedesult"
+        layout="@layout/gradient_generatedesult_30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -65,7 +65,7 @@
 
     <include
         android:id="@+id/cgResultFromGreen"
-        layout="@layout/alertdialog_create_gradient_generatedesult"
+        layout="@layout/gradient_generatedesult_30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -81,9 +81,19 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="To black :"
+        android:text="@string/alertdialog_gradient_toShades"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cgTv" />
+
+    <TextView
+        android:id="@+id/cgTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/alertdialog_gradient_from"
+        android:textColor="@color/Theme1_TextBlack"
+        app:layout_constraintStart_toStartOf="@+id/cgTv0"
         app:layout_constraintTop_toBottomOf="@+id/cgInputName" />
 
     <TextView
@@ -92,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:text="To white :"
+        android:text="@string/alertdialog_gradient_toTints"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cgTv0" />
@@ -140,7 +150,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="Save"
+        android:text="@string/alertdialog_gradient_add"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -150,11 +160,21 @@
         android:id="@+id/cgCancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="48dp"
+        android:layout_marginEnd="32dp"
         android:text="@android:string/cancel"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintBottom_toBottomOf="@+id/cgSave"
         app:layout_constraintEnd_toStartOf="@+id/cgSave"
         app:layout_constraintTop_toTopOf="@+id/cgSave" />
+
+    <View
+        android:id="@+id/cgColorView"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toBottomOf="@+id/cgTv"
+        app:layout_constraintEnd_toEndOf="@+id/cgResultFromBlack"
+        app:layout_constraintStart_toStartOf="@+id/cgResultFromBlack"
+        app:layout_constraintTop_toTopOf="@+id/cgTv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

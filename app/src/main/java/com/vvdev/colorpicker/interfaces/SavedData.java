@@ -10,7 +10,7 @@ import com.google.gson.Gson;
 import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.ui.ColorAddedToast;
-import com.vvdev.colorpicker.ui.PaletteRVAdapter;
+import com.vvdev.colorpicker.ui.adapter.PaletteRVAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;

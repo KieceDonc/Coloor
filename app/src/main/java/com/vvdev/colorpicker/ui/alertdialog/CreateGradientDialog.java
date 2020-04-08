@@ -1,16 +1,10 @@
-package com.vvdev.colorpicker.ui;
+package com.vvdev.colorpicker.ui.alertdialog;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,13 +15,10 @@ import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
 import com.vvdev.colorpicker.interfaces.Gradient;
 import com.vvdev.colorpicker.interfaces.Gradients;
-import com.vvdev.colorpicker.interfaces.SavedData;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.Constraints;
 
 public class CreateGradientDialog extends Dialog {
 
@@ -37,6 +28,7 @@ public class CreateGradientDialog extends Dialog {
 
     private Activity activity;
     private EditText userInput;
+    private View colorView;
 
     private TextView save;
     private TextView cancel;
@@ -91,7 +83,7 @@ public class CreateGradientDialog extends Dialog {
             public void onClick(View v) {
                 String canBeSave = canBeSave();
                 if(canBeSave==null){
-                    Gradients.addGradient(activity,new Gradient(userInput.getText().toString(),currentColor.getHexa()));
+                    Gradients.getInstance(activity).addGradient(new Gradient(userInput.getText().toString(),currentColor.getHexa()));
                     updateSpinnersViewInAdapter();
                     dismiss();
                 }else{
@@ -107,6 +99,8 @@ public class CreateGradientDialog extends Dialog {
             }
         });
 
+        colorView = findViewById(R.id.cgColorView);
+        colorView.setBackgroundColor(Color.parseColor(currentColor.getHexa()));
 
         showGeneratedResult();
 
@@ -152,7 +146,7 @@ public class CreateGradientDialog extends Dialog {
     private String canBeSave(){
         String stringUserInput = userInput.getText().toString();
         if(stringUserInput.length()>0&&!stringUserInput.equals((activity.getResources().getString(R.string.alertdialog_gradient_choose_name)))){
-            if(Gradients.getGradientValueByName(activity,stringUserInput)==null){
+            if(Gradients.getInstance(activity).getGradientValueByName(stringUserInput)==null){
                 return null;
             }else{
                 return nameAlreadyInDataBase;

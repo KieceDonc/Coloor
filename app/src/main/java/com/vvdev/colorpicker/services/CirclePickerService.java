@@ -8,17 +8,15 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.CirclePickerActivityStart;
-import com.vvdev.colorpicker.ui.CirclePickerView;
+import com.vvdev.colorpicker.ui.customview.CirclePickerView;
 
 import java.util.Timer;
 import java.util.TimerTask;

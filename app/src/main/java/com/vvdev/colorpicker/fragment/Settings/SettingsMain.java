@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.fragment;
+package com.vvdev.colorpicker.fragment.Settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,12 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class Settings extends Fragment {
+public class SettingsMain extends Fragment {
+
+    private View gradientsListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity.Instance.setSettingsInstance(this);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -28,6 +29,17 @@ public class Settings extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        gradientsListener = view.findViewById(R.id.sttingGradientListener);
+        gradientsListener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.Instance.getMainActivityInstance().getSupportFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.nav_host_fragment, new SettingsGradients())
+                        .commit();
+            }
+        });
     }
 
     @Override
@@ -39,6 +51,5 @@ public class Settings extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MainActivity.Instance.setSettingsInstance(null);
     }
 }

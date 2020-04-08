@@ -19,7 +19,7 @@ import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
 import com.vvdev.colorpicker.fragment.ImportSelected.Files_IS;
 import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
 import com.vvdev.colorpicker.interfaces.FilesExtensionType;
-import com.vvdev.colorpicker.ui.DownloadFileAlertDialog;
+import com.vvdev.colorpicker.ui.alertdialog.DownloadFileAlertDialog;
 
 import java.io.File;
 

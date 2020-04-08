@@ -11,6 +11,7 @@
     <color name="Theme1_text">#FFFFFF</color>
     <color name="Theme1_Accent">#D33F49</color>
     <color name="Theme1_TextBlack">#000000</color>
+    <color name="Theme1_DefaultBackground">#aca9aa</color>
 
     <color name="transparent">#FFFFFFFF</color>
 

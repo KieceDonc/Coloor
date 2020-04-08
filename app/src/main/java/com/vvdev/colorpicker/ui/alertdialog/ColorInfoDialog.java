@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.ui;
+package com.vvdev.colorpicker.ui.alertdialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ColorSpec;
 import com.vvdev.colorpicker.interfaces.ColorUtility;
-import com.vvdev.colorpicker.interfaces.SavedData;
 
 import java.util.ArrayList;
 

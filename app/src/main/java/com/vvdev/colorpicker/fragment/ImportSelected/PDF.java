@@ -29,8 +29,7 @@ import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vvdev.colorpicker.R;
-import com.vvdev.colorpicker.activity.MainActivity;
-import com.vvdev.colorpicker.ui.PDFEditText;
+import com.vvdev.colorpicker.ui.customview.PDFEditText;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

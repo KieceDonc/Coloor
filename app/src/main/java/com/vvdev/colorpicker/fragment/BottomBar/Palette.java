@@ -11,9 +11,9 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.activity.MainActivity;
 import com.vvdev.colorpicker.interfaces.SavedData;
-import com.vvdev.colorpicker.ui.ColorAddDialog;
-import com.vvdev.colorpicker.ui.ColorPickFromWheelDialog;
-import com.vvdev.colorpicker.ui.PaletteRVAdapter;
+import com.vvdev.colorpicker.ui.alertdialog.ColorAddDialog;
+import com.vvdev.colorpicker.ui.alertdialog.ColorPickFromWheelDialog;
+import com.vvdev.colorpicker.ui.adapter.PaletteRVAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,7 +57,7 @@ public class Palette extends Fragment {
         tutorial = view.findViewById(R.id.PaletteTuto);
         recyclerView = view.findViewById(R.id.pRecyclerView);
 
-        setupPaletteRecycleView(view);
+        setupPaletteRecycleView();
         setupActionButtonListener();
     }
 
@@ -76,7 +76,7 @@ public class Palette extends Fragment {
         MainActivity.Instance.setPaletteInstance(null);
     }
 
-    private void setupPaletteRecycleView(View view){
+    private void setupPaletteRecycleView(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         paletteRVAdapter = new PaletteRVAdapter(getActivity());
 

@@ -3,20 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LLCirclePicker"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="220dp"
+    android:layout_height="220dp"
     android:background="@android:color/transparent"
     android:gravity="center_horizontal|center_vertical">
 
 
-    <com.vvdev.colorpicker.ui.CirclePickerView
+    <com.vvdev.colorpicker.ui.customview.CirclePickerView
         android:id="@+id/CirclePicker"
         android:layout_width="220dp"
         android:layout_height="220dp"
         android:scaleType="centerCrop"
         android:src="@android:color/transparent"
         app:civ_border_width="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/CirclePickerCloseButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

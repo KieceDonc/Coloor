@@ -1,6 +1,5 @@
 package com.vvdev.colorpicker.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,11 +16,9 @@ import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.fragment.BottomBar.Import;
 import com.vvdev.colorpicker.fragment.BottomBar.Palette;
 import com.vvdev.colorpicker.fragment.ImportSelected.Camera;
-import com.vvdev.colorpicker.fragment.Settings;
+import com.vvdev.colorpicker.fragment.Settings.SettingsMain;
 import com.vvdev.colorpicker.interfaces.Gradients;
 import com.vvdev.colorpicker.services.CirclePickerService;
-
-import java.util.Set;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,8 +48,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        if(Gradients.getSavedGradients(this)==null){
-            Gradients.firstSetup(this);
+        if(Gradients.getInstance(this).getSavedGradients()==null){
+            Gradients.getInstance(this).firstSetup();
         }
 
         navView = findViewById(R.id.nav_view);
@@ -75,11 +72,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         startSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = Instance.getSettingsInstance();
-                if(fragment==null){
-                    fragment = new Settings();
-                }
-                loadFragment(fragment);
+                loadFragment(new SettingsMain());
             }
         });
 
@@ -212,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         private static MainActivity mainActivityInstance;
         private static Import importInstance;
         private static Palette paletteInstance;
-        private static Settings settingsInstance;
 
         public static MainActivity getMainActivityInstance() {
             return mainActivityInstance;
@@ -236,14 +228,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         public static void setPaletteInstance(Palette paletteInstance) {
             Instance.paletteInstance = paletteInstance;
-        }
-
-        public static Settings getSettingsInstance() {
-            return settingsInstance;
-        }
-
-        public static void setSettingsInstance(Settings settingsInstance) {
-            Instance.settingsInstance = settingsInstance;
         }
     }
 }

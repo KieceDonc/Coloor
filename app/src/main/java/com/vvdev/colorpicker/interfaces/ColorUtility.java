@@ -1,22 +1,11 @@
 package com.vvdev.colorpicker.interfaces;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.ColorSpace;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.skydoves.colorpickerview.ColorPickerView;
-import com.vvdev.colorpicker.fragment.ImportSelected.PDF;
-import com.vvdev.colorpicker.ui.AutoFitTextureView;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
+import com.vvdev.colorpicker.ui.customview.AutoFitTextureView;
 
 import static java.lang.Integer.parseInt;
 

@@ -5,7 +5,7 @@
     android:id="@+id/CameraLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#AAAAAA">
+    android:background="@color/Theme1_DefaultBackground">
 
     <TextView
         android:id="@+id/HsvValue"
@@ -77,7 +77,7 @@
         app:layout_constraintTop_toTopOf="@+id/TextureViewCamera" />
 
 
-    <com.vvdev.colorpicker.ui.AutoFitTextureView
+    <com.vvdev.colorpicker.ui.customview.AutoFitTextureView
         android:id="@+id/TextureViewCamera"
         android:layout_width="0dp"
         android:layout_height="0dp"

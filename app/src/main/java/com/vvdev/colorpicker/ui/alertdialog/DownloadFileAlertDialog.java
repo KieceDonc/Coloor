@@ -1,4 +1,4 @@
-package com.vvdev.colorpicker.ui;
+package com.vvdev.colorpicker.ui.alertdialog;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

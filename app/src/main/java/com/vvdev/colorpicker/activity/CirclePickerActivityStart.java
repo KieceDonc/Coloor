@@ -18,14 +18,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.colorpicker.R;
 import com.vvdev.colorpicker.interfaces.ScreenCapture;
 import com.vvdev.colorpicker.services.CirclePickerService;
-import com.vvdev.colorpicker.ui.CirclePickerView;
+import com.vvdev.colorpicker.ui.customview.CirclePickerView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
