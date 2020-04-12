@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toStartOf="@+id/numberOfPage"
         app:layout_constraintTop_toTopOf="@+id/numberOfPage" />
 
-    <com.vvdev.colorpicker.ui.customview.PDFEditText
+    <com.vvdev.coolor.ui.customview.PDFEditText
         android:id="@+id/input_desire_page"
         android:layout_width="49dp"
         android:layout_height="20dp"

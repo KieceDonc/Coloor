@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="@string/alertdialog_gradient_toBlack"
+            android:text="@string/alertdialog_gradient_toShades"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="12dp"
-            android:text="@string/alertdialog_gradient_toWhite"
+            android:text="@string/alertdialog_gradient_toTints"
             android:textColor="@android:color/black"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
@@ -100,9 +100,8 @@
             layout="@layout/gradient_generatedesult_20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/gradients2"
-            app:layout_constraintStart_toEndOf="@+id/gradients2"
+            app:layout_constraintStart_toStartOf="@+id/gradientIncludeBlack"
             app:layout_constraintTop_toTopOf="@+id/gradients2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

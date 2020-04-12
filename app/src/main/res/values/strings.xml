@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">ColorPicker</string>
+    <string name="app_name">Coolor</string>
 
     <string name="nav_menu_Camera">Camera</string>
     <string name="nav_menu_Import">Import</string>
     <string name="nav_menu_Palette">Palette</string>
     <string name="nav_menu_PhonePicker">Phone picker</string>
 
-    <string name="request_permission">This sample needs camera permission.</string>
+    <string name="request_permission">You need to give camera permission</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="intro_message">
         <![CDATA[
@@ -26,7 +26,12 @@
     <string name="RGB" translatable="false">RGB:</string>
     <string name="paletteItemMore" translatable="false"><![CDATA[<]]></string>
 
+    <string name="circle_picker_activity_title">Permission request</string>
+    <string name="circle_picker_activity_message">To use this feature, you need to give the permission to draw over all application, do you want to give the permission ?</string>
+    <string name="circle_picker_activity_cancel">Cancel</string>
     <!-- Example : #000000 haven been added to the palette-->
+
+    <string name="import_error_file">Error, invalid file extension</string>
     
     <string name="import_from_pdf">From a PDF</string>
     <string name="import_from_camera">From your camera</string>
@@ -60,18 +65,30 @@
     <string name="palette_more_share">Share</string>
 
     <string name="alertdialog_addcolor_add">Add</string>
+
     <string name="alertdialog_pickwheel_cancel">Cancel</string>
     <string name="alertdialog_pickwheel_ok">Ok</string>
+
     <string name="alertdialog_gradient_from">From :</string>
     <string name="alertdialog_gradient_toShades">Shades :</string>
     <string name="alertdialog_gradient_toTints">Tints :</string>
     <string name="alertdialog_gradient_add">Add</string>
     <string name="alertdialog_gradient_choose_name">Choose a name</string>
-    <string name="alertdialog_gradient_mustchoose_name">You must put a name</string>
+    <string name="alertdialog_gradient_mustchoose_name">You must choose a name</string>
     <string name="alertdialog_gradient_name_alreadytaken">This name is already taken</string>
+
     <string name="alertdialog_internet_download">Download</string>
     <string name="alertdialog_internet_pause">Pause</string>
     <string name="alertdialog_internet_resume">Resume</string>
+
+    <string name="alertdialog_premium_title">Want to help us ?</string>
+    <string name="alertdialog_premium_whyyoushloud">Switching to the premium version will permit us to improve and release new features !</string>
+    <string name="alertdialog_premium_title2">As a premium user you could</string>
+    <string name="alertdialog_premium_pdf">Work with pdf files</string>
+    <string name="alertdialog_premium_circle">Keep the circle outside the app</string>
+    <string name="alertdialog_premium_gradients">Use new gradients</string>
+    <string name="alertdialog_premium_ads">Delete ads</string>
+    <string name="alertdialog_premium_life">To life</string>
 
 
     <string name="service_current_hexa">Current hexadecimal value</string>
@@ -92,11 +109,14 @@
     <string name="settings_contact">Contact the support</string>
     <string name="settings_legacy">Legacy</string>
     <string name="settings_gradients_tuto_nograd">No gradients detected</string>
-    <string name="settings_gradients_tuto_howto">If you haven\'t created gradients this is how you should do :</string>
     <string name="settings_gradients_tuto1">1 - Go to the palette</string>
     <string name='settings_gradents_tuto2'>2 - Pick a color and click on \"create a gradient\"</string>
     <string name="settings_gradients_tuto3">3 - Choose a name and click on \"add\"</string>
+    <string name="settings_support_intenttitle">Send email</string>
+    <string name="settings_support_title">ColorPicker - Contact</string>
 
-    <string name="support_email">valentinverst.developer@gmail.com</string>
+    <string name="support_email" translatable="false">valentinverst.developer@gmail.com</string>
+    <string name="settings_support_emailcontent">Here are some anonymous info. You can delete what ever you want but please understand it we will be much more easier to help you if you don\'t delete it</string>
+    <string name="settings_gradients_tuto_howto">If you haven\'t created a gradient this is what you should do :</string>
     <!--Replace by app name-->
 </resources>

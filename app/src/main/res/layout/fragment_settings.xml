@@ -13,20 +13,33 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/settings_user_experience"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/sttingGradientListener"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/import_rounded_corner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sttingTextUX" />
 
     <ImageView
         android:id="@+id/sttingImgGradient"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="@+id/sttingTextUX"
-        app:layout_constraintTop_toBottomOf="@+id/sttingTextUX"
+        android:tint="@color/Theme1_Accent"
+        app:layout_constraintBottom_toBottomOf="@+id/sttingGradientListener"
+        app:layout_constraintStart_toStartOf="@+id/sttingGradientListener"
+        app:layout_constraintTop_toTopOf="@+id/sttingGradientListener"
         app:srcCompat="@drawable/gradient_icon" />
 
     <TextView
@@ -35,20 +48,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/settings_gradient"
-        android:textColor="@color/Theme1_TextBlack"
+        android:textColor="@color/Theme1_text"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/sttingImgGradient"
         app:layout_constraintStart_toEndOf="@+id/sttingImgGradient"
         app:layout_constraintTop_toTopOf="@+id/sttingImgGradient" />
-
-    <View
-        android:id="@+id/sttingGradientListener"
-        android:layout_width="0dp"
-        android:layout_height="59dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sttingTextGradient"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sttingTextGradient" />
 
     <ImageView
         android:id="@+id/sttingImgCirclePicker"
@@ -84,28 +88,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/sttingTextCirclePicker" />
 
+    <View
+        android:id="@+id/aboutBackground"
+        android:layout_width="0dp"
+        android:layout_height="118dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/import_rounded_corner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sttingTextAbout" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="65dp"
+        android:layout_marginEnd="65dp"
+        android:background="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/aboutBackground"
+        app:layout_constraintEnd_toEndOf="@+id/aboutBackground"
+        app:layout_constraintStart_toStartOf="@+id/aboutBackground"
+        app:layout_constraintTop_toTopOf="@+id/aboutBackground" />
+
     <TextView
         android:id="@+id/sttingTextAbout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/settings_about"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sttingImgGradient" />
+        app:layout_constraintTop_toBottomOf="@+id/sttingGradientListener" />
+
+    <View
+        android:id="@+id/sttingRateListener"
+        android:layout_width="0dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/aboutBackground" />
 
     <ImageView
         android:id="@+id/sttingImgRate"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:tint="#000000"
-        app:layout_constraintStart_toStartOf="@+id/sttingTextAbout"
-        app:layout_constraintTop_toBottomOf="@+id/sttingTextAbout"
+        android:layout_marginTop="8dp"
+        android:tint="@android:color/holo_orange_light"
+        app:layout_constraintBottom_toTopOf="@+id/view4"
+        app:layout_constraintStart_toStartOf="@+id/aboutBackground"
+        app:layout_constraintTop_toTopOf="@+id/aboutBackground"
         app:srcCompat="@android:drawable/btn_star" />
 
     <TextView
@@ -114,30 +153,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/settings_rate_app"
-        android:textColor="@color/Theme1_TextBlack"
+        android:textColor="@color/Theme1_text"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/sttingImgRate"
         app:layout_constraintStart_toEndOf="@+id/sttingImgRate"
         app:layout_constraintTop_toTopOf="@+id/sttingImgRate" />
-
-    <View
-        android:id="@+id/sttingRateListener"
-        android:layout_width="0dp"
-        android:layout_height="59dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sttingTextRate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sttingTextRate" />
 
     <ImageView
         android:id="@+id/sttingImgSupport"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
-        android:tint="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/sttingTextSupportMail"
-        app:layout_constraintStart_toStartOf="@+id/sttingTextAbout"
-        app:layout_constraintTop_toTopOf="@+id/sttingTextSupport"
+        android:tint="@android:color/holo_green_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/aboutBackground"
+        app:layout_constraintStart_toStartOf="@+id/sttingContactListener"
+        app:layout_constraintTop_toBottomOf="@+id/view4"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
     <TextView
@@ -145,43 +175,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
         android:text="@string/settings_contact"
-        android:textColor="@color/Theme1_TextBlack"
+        android:textColor="@color/Theme1_text"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/sttingImgSupport"
         app:layout_constraintStart_toEndOf="@+id/sttingImgSupport"
-        app:layout_constraintTop_toBottomOf="@+id/sttingImgRate" />
-
-    <TextView
-        android:id="@+id/sttingTextSupportMail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/support_email"
-        android:textColor="@color/Theme1_Primary"
-        android:textSize="12sp"
-        app:layout_constraintStart_toStartOf="@+id/sttingTextSupport"
-        app:layout_constraintTop_toBottomOf="@+id/sttingTextSupport" />
+        app:layout_constraintTop_toTopOf="@+id/sttingImgSupport" />
 
     <View
         android:id="@+id/sttingContactListener"
         android:layout_width="0dp"
         android:layout_height="59dp"
-        app:layout_constraintBottom_toBottomOf="@+id/sttingImgSupport"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/aboutBackground"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/sttingImgSupport" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/sttingTextLegacy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="@string/settings_legacy"
-        android:textColor="@color/colorPrimary"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sttingImgSupport" />
+        app:layout_constraintTop_toBottomOf="@+id/aboutBackground" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@
         android:id="@+id/actionBar"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="#3d3D3D"
+        android:background="@color/Theme1_Primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

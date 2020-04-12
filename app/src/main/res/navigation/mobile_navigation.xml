@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_import"
-        android:name="com.vvdev.colorpicker.fragment.BottomBar.Import"
+        android:name="com.vvdev.coolor.fragment.BottomBar.Import"
         android:label="@string/nav_menu_Import"
         tools:layout="@layout/fragment_import">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_palette"
-        android:name="com.vvdev.colorpicker.fragment.BottomBar.Palette"
+        android:name="com.vvdev.coolor.fragment.BottomBar.Palette"
         android:label="@string/nav_menu_Palette"
         tools:layout="@layout/fragment_palette">
         <action
