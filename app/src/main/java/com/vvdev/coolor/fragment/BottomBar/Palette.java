@@ -10,6 +10,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.fragment.GradientsUserManager;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.alertdialog.ColorAddDialog;
 import com.vvdev.coolor.ui.alertdialog.ColorPickFromWheelDialog;
@@ -19,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +31,7 @@ public class Palette extends Fragment {
     private FloatingActionButton actionButtonPickFromWheel;
     private FloatingActionButton actionButtonDeleteAll;
     private FloatingActionButton actionButtonAddColor;
+    private FloatingActionButton actionButtonGradientsMenu;
 
     private ConstraintLayout tutorial;
     private RecyclerView recyclerView;
@@ -50,10 +53,11 @@ public class Palette extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        actionMenu = view.findViewById(R.id.ActionButtonMenu);
-        actionButtonPickFromWheel = view.findViewById(R.id.ActionButtonPickFromWheel);
-        actionButtonDeleteAll = view.findViewById(R.id.ActionButtonDeleteAll);
-        actionButtonAddColor = view.findViewById(R.id.ActionButtonAdd);
+        actionMenu = view.findViewById(R.id.PaletteABMenu);
+        actionButtonPickFromWheel = view.findViewById(R.id.PaletteABPickFromWheel);
+        actionButtonDeleteAll = view.findViewById(R.id.PaletteABButtonDeleteAll);
+        actionButtonAddColor = view.findViewById(R.id.PaletteABButtonAdd);
+        actionButtonGradientsMenu = view.findViewById(R.id.PaletteABGradientsMenu);
         tutorial = view.findViewById(R.id.PaletteTuto);
         recyclerView = view.findViewById(R.id.pRecyclerView);
 
@@ -120,6 +124,13 @@ public class Palette extends Fragment {
                 cad.show();
             }
         });
+
+        actionButtonGradientsMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                doFragmentTransaction(new GradientsUserManager());
+            }
+        });
     }
 
     public void showTutorial(){
@@ -144,7 +155,25 @@ public class Palette extends Fragment {
         return this.paletteRVAdapter;
     }
 
-    public void setPaletteRVAdapter(PaletteRVAdapter rvAdapter){
+    public void setPaletteRVAdapter(PaletteRVAdapter rvAdapter) {
         this.paletteRVAdapter = paletteRVAdapter;
+    }
+
+    private void doFragmentTransaction(Fragment fragment){
+        //switching fragment
+        if (fragment != null) {
+            String backStateName = fragment.getClass().getName();
+
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+            boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0); //https://stackoverflow.com/questions/18305945/how-to-resume-fragment-from-backstack-if-exists
+
+            if (!fragmentPopped){ //fragment not in back stack, create it.
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .addToBackStack(backStateName)
+                        .replace(R.id.nav_host_fragment, fragment)
+                        .commit();
+            }
+        }
     }
 }

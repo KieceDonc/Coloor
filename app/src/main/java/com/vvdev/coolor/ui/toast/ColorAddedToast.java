@@ -1,4 +1,4 @@
-package com.vvdev.coolor.ui;
+package com.vvdev.coolor.ui.toast;
 
 import android.app.Activity;
 import android.graphics.Bitmap;

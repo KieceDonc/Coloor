@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private BottomNavigationView navView;
     private ConstraintLayout actionBar;
-    private ConstraintLayout circlePickerStartConstraintLayout;
 
     private ImageView startSettings;
     private ImageView appIcon;
@@ -57,16 +56,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navView.setSelectedItemId(R.id.navigation_palette);
         navView.setOnNavigationItemSelectedListener(this);
 
-        circlePickerStartConstraintLayout = findViewById(R.id.circlePickerStartConstraintLayout);
-        circlePickerStartConstraintLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(wmCirclePickerView==null&&!isCirclePickerActivityRunning){
-                    startCirclePickerService();
-                    Log.e("MainActivity","Bug detected, isCPRunning = true and isCirclePickerActivityRunning = false but no circle view attached.\nisCPRunning have been set to false and startCirPickerService have been started");
-                }
-            }
-        });
         actionBar = findViewById(R.id.actionBar);
         startSettings = findViewById(R.id.settings);
 
@@ -78,8 +67,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         });
 
         appIcon = findViewById(R.id.imageViewLogo);
-        Glide.with(this).load(R.drawable.ic_launcher_square).centerCrop().into(appIcon);
-
+        Glide.with(this).load(R.drawable.ic_launcher).into(appIcon);
     }
 
     @Override
@@ -194,20 +182,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void showCirclePickerStartButton(){
         if(!isCirclePickerStartButtonVisible()){
-            navView.getMenu().getItem(1).setVisible(true);
-            circlePickerStartConstraintLayout.setVisibility(View.VISIBLE);
+            navView.getMenu().getItem(1).getActionView().setVisibility(View.INVISIBLE);
         }
     }
 
     public void hideCirclePickerStartButton(){
         if(isCirclePickerStartButtonVisible()){
-            navView.getMenu().getItem(1).setVisible(false);
-            circlePickerStartConstraintLayout.setVisibility(View.INVISIBLE);
+            navView.getMenu().getItem(1).getActionView().setVisibility(View.VISIBLE);
         }
     }
 
     public boolean isCirclePickerStartButtonVisible(){
-        return navView.getVisibility()==View.VISIBLE&&circlePickerStartConstraintLayout.getVisibility()==View.VISIBLE;
+        return navView.getVisibility()==View.VISIBLE&&navView.getMenu().getItem(2).getActionView().getVisibility()==View.VISIBLE;
     }
 
     public static class Instance{

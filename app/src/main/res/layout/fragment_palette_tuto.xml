@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-
+    <!-- TODO change tutorial cuz you created a new feature that permit user to add gradients throw the gradients menu -->
     <View
         android:id="@+id/view7"
         android:layout_width="0dp"

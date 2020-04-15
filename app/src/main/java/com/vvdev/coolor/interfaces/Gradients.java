@@ -40,13 +40,13 @@ public class Gradients {
         return value;
     }
 
-    public void addGradient( Gradient gradient){
+    public void add(Gradient gradient){
         ArrayList<Gradient> gradients = getSavedGradients();
         gradients.add(gradient);
-        new SavedData(activity).saveGradients(gradients);
+        SavedData.getInstance(activity).saveGradients(gradients);
     }
 
-    public void removeGradient(Gradient gradient){
+    public void remove(Gradient gradient){
         ArrayList<Gradient> gradients = getSavedGradients();
         int cmpt = 0;
         boolean removed = false;
@@ -59,11 +59,15 @@ public class Gradients {
             cmpt++;
         }while(cmpt<gradients.size()&&!removed);
         if(removed){
-            new SavedData(activity).saveGradients(gradients);
+            SavedData.getInstance(activity).saveGradients(gradients);
         }
     }
 
-    public ArrayList<String> getAllGradientsName(){
+    public void removeAll(){
+        SavedData.getInstance(activity).saveGradients(new ArrayList<Gradient>()); // we create a new instance and save it so the old one got deleted;
+    }
+
+    public ArrayList<String> getAllName(){
         ArrayList<Gradient> gradients = getSavedGradients();
         ArrayList<String> gradientsName = new ArrayList<>();
         for(int x=0;x<gradients.size();x++){
@@ -72,7 +76,7 @@ public class Gradients {
         return gradientsName;
     }
 
-    public ArrayList<Gradient> getAllCustomGradients(){
+    public ArrayList<Gradient> getAllCustom(){
         ArrayList<Gradient> gradients = getSavedGradients();
         ArrayList<Gradient> toReturn = new ArrayList<>();
         for(int x=5;x<gradients.size();x++){
@@ -81,8 +85,17 @@ public class Gradients {
         return toReturn;
     }
 
+    public int size(){
+        ArrayList<Gradient> gradients = getSavedGradients();
+        if(gradients==null){
+            return -1;
+        }else{
+            return gradients.size();
+        }
+    }
+
     public ArrayList<Gradient> getSavedGradients(){
-        return new SavedData(activity).getSavedGradients();
+        return SavedData.getInstance(activity).getSavedGradients();
     }
 
     public static Gradients getInstance(Activity activity){

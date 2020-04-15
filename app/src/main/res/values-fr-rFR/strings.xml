@@ -23,7 +23,7 @@
     <string name="request_permission">Vous devez donner la permission \"camera\"</string>
     <string name="settings_support_emailcontent">Voici des informations anonymes. Vous pouvez supprimer ce que vous voulez mais veuillez comprend qu\'il serra plus facile d\'identifier le problème avec ses données</string>
     <string name="settings_support_intenttitle">Envoyer un email</string>
-    <string name="settings_gradients_tuto_nograd">Pas de dégradés détecté</string>
+    <string name="gradients_tuto_nograd">Pas de dégradés détecté</string>
     <string name="settings_gradients_tuto_howto">Si vous n\'avez pas créé de dégradé voici ce que vous devriez faire :</string>
     <string name="settings_legacy">Légalité</string>
     <string name="settings_contact">Contacter le support</string>

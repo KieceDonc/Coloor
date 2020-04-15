@@ -1,92 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/Theme1_DefaultBackground">
 
-    <include
-        android:id="@+id/PaletteTuto"
-        layout="@layout/fragment_palette_tuto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gradientsRV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:visibility="invisible"
+    <include
+        android:id="@+id/gradientsTuto"
+        layout="@layout/fragment_gradients_tuto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/PaletteABMenu"
+        android:id="@+id/GradientsABMenu"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/action_button"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:src="@drawable/fab_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/pRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:menu_colorNormal="#000000"
         fab:menu_colorPressed="#7f7f7f">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/PaletteABGradientsMenu"
+            android:id="@+id/GradientsABAddFromPremium"
             android:layout_width="@dimen/action_button"
             android:layout_height="@dimen/action_button"
             android:src="@drawable/abc_vector_test"
-            app:fab_colorNormal="@color/Theme1_Secondary"
+            app:fab_colorNormal="@color/Theme1_Premium"
             app:fab_colorPressed="#7f7f7f"
-            app:fab_label="@string/palette_access_gradients_menu"
+            app:fab_label="Add premium gradients"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/PaletteABPickFromWheel"
-            android:layout_width="@dimen/action_button"
-            android:layout_height="@dimen/action_button"
-            android:src="@drawable/abc_vector_test"
-            fab:fab_colorNormal="@color/Theme1_Secondary"
-            fab:fab_colorPressed="#7f7f7f"
-            fab:fab_label="@string/palette_pick_from_wheel"
-            fab:fab_size="mini"
-            fab:menu_colorNormal="#000000" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/PaletteABButtonDeleteAll"
-            android:layout_width="@dimen/action_button"
-            android:layout_height="@dimen/action_button"
-            android:src="@drawable/abc_vector_test"
-            app:fab_colorNormal="@color/Theme1_Secondary"
-            app:fab_colorPressed="#7f7f7f"
-            app:fab_label="@string/palette_delete_all_color"
-            app:fab_size="mini"
-            fab:menu_colorNormal="#000000" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/PaletteABButtonAdd"
+            android:id="@+id/GradientsABButtonAddFromColor"
             android:layout_width="@dimen/action_button"
             android:layout_height="@dimen/action_button"
             android:src="@drawable/abc_vector_test"
             android:visibility="visible"
             app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
-            app:fab_label="@string/palette_add_hexa"
+            app:fab_label="Add hexa color"
+            app:fab_size="mini"
+            fab:menu_colorNormal="#000000" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/GradientsABButtonDeleteAll"
+            android:layout_width="@dimen/action_button"
+            android:layout_height="@dimen/action_button"
+            android:src="@drawable/abc_vector_test"
+            app:fab_colorNormal="@color/Theme1_Secondary"
+            app:fab_colorPressed="#7f7f7f"
+            app:fab_label="Delete all colors"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 
     </com.github.clans.fab.FloatingActionMenu>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,20 +44,26 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
 
     @Override
     public int getItemCount() {
-        return gradients.getAllCustomGradients().size();
+        return gradients.getAllCustom().size();
     }
 
     @Override
     public MyViewHolderGradient onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.fragment_settings_gradients_itemrecycle, parent, false);
+        View view = inflater.inflate(R.layout.fragment_gradients_itemrecycle, parent, false);
         return new MyViewHolderGradient(view);
     }
 
     @Override
     public void onBindViewHolder(MyViewHolderGradient holder, int position) {
-        Gradient currentGradient = gradients.getAllCustomGradients().get(position);
+        Gradient currentGradient = gradients.getAllCustom().get(position);
         holder.display(currentGradient);
+    }
+
+    public void removedItem(int position){
+        recyclerView.getAdapter().notifyItemRemoved(position);
+        recyclerView.getAdapter().notifyItemRangeChanged(position,gradients.getAllCustom().size());
+        listener.onGradientDeleted();
     }
 
     public class MyViewHolderGradient extends RecyclerView.ViewHolder {
@@ -109,10 +115,8 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
                         itemDeleted = true;
                         Log.i(TAG, "gradient start to delete");
                         int position = getLayoutPosition();
-                        gradients.removeGradient(currentGradient);
-                        recyclerView.getAdapter().notifyItemRemoved(position);
-                        recyclerView.getAdapter().notifyItemRangeChanged(position,gradients.getAllCustomGradients().size());
-                        listener.onGradientDeleted();
+                        gradients.remove(currentGradient);
+                        removedItem(position);
                     }
                 }
             });

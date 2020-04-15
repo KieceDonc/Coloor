@@ -9,7 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.fragment.BottomBar.Palette;
-import com.vvdev.coolor.ui.ColorAddedToast;
+import com.vvdev.coolor.ui.toast.ColorAddedToast;
 import com.vvdev.coolor.ui.adapter.PaletteRVAdapter;
 
 import java.util.ArrayList;
@@ -24,6 +24,10 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
     private SharedPreferences mPrefs;
     private Activity activity;
     private static final String PREFS_TAG = "SharedPrefs";
+
+    public static SavedData getInstance(Activity activity){
+        return new SavedData(activity);
+    }
 
     public SavedData(Activity activity){
         mPrefs = activity.getApplicationContext().getSharedPreferences(PREFS_TAG, Context.MODE_PRIVATE);
@@ -164,6 +168,4 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         public ArrayList<ColorSpec> colorsSP;
         public ArrayList<Gradient> gradients; // [0] = name, [1] = hex value;
     }
-
-
 }

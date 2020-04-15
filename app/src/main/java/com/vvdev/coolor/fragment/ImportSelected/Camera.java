@@ -983,7 +983,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
             case R.id.getpicture: {
                 String rawHexValue = TVHexValue.getText().toString();
                 String hexValue = rawHexValue.substring(5);
-                new SavedData(getActivity()).addColor(hexValue);
+                SavedData.getInstance(getActivity()).addColor(hexValue);
                 break;
             }
             case R.id.info: {

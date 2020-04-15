@@ -4,7 +4,7 @@
     <string name="nav_menu_Camera">Camera</string>
     <string name="nav_menu_Import">Import</string>
     <string name="nav_menu_Palette">Palette</string>
-    <string name="nav_menu_PhonePicker">Phone picker</string>
+    <string name="nav_menu_PhonePicker">Circle picker</string>
 
     <string name="request_permission">You need to give camera permission</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
@@ -24,7 +24,6 @@
     <string name="HEX" translatable="false">HEX:</string>
     <string name="HSV" translatable="false">HSV:</string>
     <string name="RGB" translatable="false">RGB:</string>
-    <string name="paletteItemMore" translatable="false"><![CDATA[<]]></string>
 
     <string name="circle_picker_activity_title">Permission request</string>
     <string name="circle_picker_activity_message">To use this feature, you need to give the permission to draw over all application, do you want to give the permission ?</string>
@@ -32,7 +31,7 @@
     <!-- Example : #000000 haven been added to the palette-->
 
     <string name="import_error_file">Error, invalid file extension</string>
-    
+
     <string name="import_from_pdf">From a PDF</string>
     <string name="import_from_camera">From your camera</string>
     <string name="import_from_files">From your files</string>
@@ -59,10 +58,15 @@
     <string name="ColorSpec_Triadic">Triadic</string>
     <string name="ColorSpec_Complementary">Complementary</string>
 
+    <string name="palette_access_gradients_menu">Access to gradients menu</string>
+    <string name="palette_pick_from_wheel">Pick color from wheel</string>
+    <string name="palette_delete_all_color">Delete all colors</string>
+    <string name="palette_add_hexa">Add color from hexadecimal</string>
     <string name="palette_more_gradient">Gradient -</string>
     <string name="palette_more_information">More information</string>
     <string name="palette_more_gradient_create">Create a gradient</string>
     <string name="palette_more_share">Share</string>
+    <string name="paletteItemMore" translatable="false"><![CDATA[<]]></string>
 
     <string name="alertdialog_addcolor_add">Add</string>
 
@@ -83,7 +87,7 @@
 
     <string name="alertdialog_premium_title">Want to help us ?</string>
     <string name="alertdialog_premium_whyyoushloud">Switching to the premium version will permit us to improve and release new features !</string>
-    <string name="alertdialog_premium_title2">As a premium user you could</string>
+    <string name="alertdialog_premium_title2">As a premium user you could :</string>
     <string name="alertdialog_premium_pdf">Work with pdf files</string>
     <string name="alertdialog_premium_circle">Keep the circle outside the app</string>
     <string name="alertdialog_premium_gradients">Use new gradients</string>
@@ -99,7 +103,12 @@
     <string name="service_hide">HIDE</string>
     <string name="service_show">SHOW</string>
 
-    <string name="share_self_promo">- Sent from ColorPicker. An app for android</string>
+    <string name="share_self_promo">- Sent from Coolor. An app for android</string>
+
+    <string name="gradients_tuto_nograd">No gradients detected</string>
+    <string name="gradients_tuto1">1 - Go to the palette</string>
+    <string name="gradents_tuto2">2 - Pick a color and click on \"create a gradient\"</string>
+    <string name="gradients_tuto3">3 - Choose a name and click on \"add\"</string>
 
     <string name="settings_user_experience">User experience</string>
     <string name="settings_circle">Modify circle picker color size</string>
@@ -108,15 +117,25 @@
     <string name="settings_rate_app">Rate the app</string>
     <string name="settings_contact">Contact the support</string>
     <string name="settings_legacy">Legacy</string>
-    <string name="settings_gradients_tuto_nograd">No gradients detected</string>
-    <string name="settings_gradients_tuto1">1 - Go to the palette</string>
-    <string name='settings_gradents_tuto2'>2 - Pick a color and click on \"create a gradient\"</string>
-    <string name="settings_gradients_tuto3">3 - Choose a name and click on \"add\"</string>
     <string name="settings_support_intenttitle">Send email</string>
     <string name="settings_support_title">ColorPicker - Contact</string>
 
     <string name="support_email" translatable="false">valentinverst.developer@gmail.com</string>
     <string name="settings_support_emailcontent">Here are some anonymous info. You can delete what ever you want but please understand it we will be much more easier to help you if you don\'t delete it</string>
     <string name="settings_gradients_tuto_howto">If you haven\'t created a gradient this is what you should do :</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <!--Replace by app name-->
 </resources>

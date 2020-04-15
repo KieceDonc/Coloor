@@ -375,7 +375,7 @@ public class CirclePickerView extends ImageView {
 
     public void saveCurrentColor(){
         Activity activity = (Activity) getContext();
-        new SavedData(activity).addColor(mColorHexa);
+        SavedData.getInstance(activity).addColor(mColorHexa);
     }
 
     public void zoomIn(){

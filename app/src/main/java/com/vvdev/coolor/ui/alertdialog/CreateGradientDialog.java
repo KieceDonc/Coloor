@@ -24,6 +24,8 @@ public class CreateGradientDialog extends Dialog {
 
     private static final String TAG = CreateGradientDialog.class.getName();
 
+    private setOnGradientSaved listener;
+
     private ColorSpec currentColor;
 
     private Activity activity;
@@ -38,10 +40,21 @@ public class CreateGradientDialog extends Dialog {
     private String lengthError="lengthError";
     private String nameAlreadyInDataBase="nameAlreadyInDataBase";
 
+    public interface setOnGradientSaved{
+        void onGradientSaved();
+    }
+
     public CreateGradientDialog(@NonNull Activity activity,@NonNull ColorSpec currentColor) {
         super(activity);
         this.activity = activity;
         this.currentColor = currentColor;
+    }
+
+    public CreateGradientDialog(@NonNull Activity activity,@NonNull ColorSpec currentColor,setOnGradientSaved listener) {
+        super(activity);
+        this.activity = activity;
+        this.currentColor = currentColor;
+        this.listener=listener;
     }
 
     @Override
@@ -83,8 +96,12 @@ public class CreateGradientDialog extends Dialog {
             public void onClick(View v) {
                 String canBeSave = canBeSave();
                 if(canBeSave==null){
-                    Gradients.getInstance(activity).addGradient(new Gradient(userInput.getText().toString(),currentColor.getHexa()));
-                    updateSpinnersViewInAdapter();
+                    Gradients.getInstance(activity).add(new Gradient(userInput.getText().toString(),currentColor.getHexa()));
+                    if(listener!=null){
+                        listener.onGradientSaved();
+                    }else{
+                        updateSpinnersViewInAdapter();
+                    }
                     dismiss();
                 }else{
                     if(canBeSave.equals(lengthError)){
@@ -143,16 +160,25 @@ public class CreateGradientDialog extends Dialog {
         }
     }
 
+
+    /**
+     * Check if the name chosen by the user can the save
+     * @return error type ( if no error return null )
+     */
     private String canBeSave(){
         String stringUserInput = userInput.getText().toString();
-        if(stringUserInput.length()>0&&!stringUserInput.equals((activity.getResources().getString(R.string.alertdialog_gradient_choose_name)))){
-            if(Gradients.getInstance(activity).getGradientValueByName(stringUserInput)==null){
-                return null;
+        if(Gradients.getInstance(activity).size()>0){
+            if(stringUserInput.length()>0&&!stringUserInput.equals((activity.getResources().getString(R.string.alertdialog_gradient_choose_name)))){
+                if(Gradients.getInstance(activity).getGradientValueByName(stringUserInput)==null){
+                    return null;
+                }else{
+                    return nameAlreadyInDataBase;
+                }
             }else{
-                return nameAlreadyInDataBase;
+                return lengthError;
             }
         }else{
-            return lengthError;
+            return null;
         }
     }
 

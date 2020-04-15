@@ -20,6 +20,7 @@ import com.vvdev.coolor.fragment.ImportSelected.Files_IS;
 import com.vvdev.coolor.fragment.ImportSelected.PDF;
 import com.vvdev.coolor.interfaces.FilesExtensionType;
 import com.vvdev.coolor.ui.alertdialog.DownloadFileAlertDialog;
+import com.vvdev.coolor.ui.alertdialog.DownloadInfoDialog;
 
 import java.io.File;
 
@@ -61,6 +62,7 @@ public class Import extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.importFile).setOnClickListener(this);    // set file rectangle on click listener
         view.findViewById(R.id.importPDF).setOnClickListener(this);     // set pdf rectangle on click listener
         view.findViewById(R.id.importInternet).setOnClickListener(this);// set internet rectangle on click listener
+        view.findViewById(R.id.importInternet).setOnClickListener(this);
     }
 
     @Override
@@ -102,6 +104,11 @@ public class Import extends Fragment implements View.OnClickListener {
                 }else{
                     askReadAndWritePermissions(REQUEST_CODE_PERM_INTERNET);
                 }
+                break;
+            }
+            case R.id.importIntentInfo:{
+                DownloadInfoDialog downloadInfoDialog = new DownloadInfoDialog(getContext());
+                downloadInfoDialog.show();
                 break;
             }
         }

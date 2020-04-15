@@ -12,6 +12,7 @@ import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorListener;
 import com.skydoves.colorpickerview.sliders.BrightnessSlideBar;
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.interfaces.ColorSpec;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.SavedData;
 
@@ -22,6 +23,8 @@ public class ColorPickFromWheelDialog extends Dialog {
 
     private Activity activity;
 
+    private setOnColorChoose listener;
+
     private ColorPickerView wheel;
     private BrightnessSlideBar brightnessSlideBar;
     private TextView hexValue;
@@ -30,9 +33,20 @@ public class ColorPickFromWheelDialog extends Dialog {
     private View preview;
 
     private String currentHex = "";
+
+    public interface setOnColorChoose{
+        void onColorChoose(ColorSpec colorChosen);
+    }
+
     public ColorPickFromWheelDialog(@NonNull Activity activity) {
         super(activity);
         this.activity = activity;
+    }
+
+    public ColorPickFromWheelDialog(@NonNull Activity activity,setOnColorChoose listener) {
+        super(activity);
+        this.activity = activity;
+        this.listener = listener;
     }
 
     @Override
@@ -73,8 +87,17 @@ public class ColorPickFromWheelDialog extends Dialog {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SavedData(activity).addColor(currentHex);
-                dismiss();
+                // first plz refer to https://stackoverflow.com/questions/12139335/what-is-difference-between-dialoginterface-dismiss-and-dialoginterface-can
+                // Your first calling listener.onColorChoose() so you can get back the color chosen. Then you call cancel() so it call DialogInterface.OnCancelListener and you know when
+                // your dialog been destroy
+                // you can not do listener.onColorChoose() and then dismiss()
+                if(listener!=null){
+                    listener.onColorChoose(new ColorSpec(currentHex));
+                    cancel();
+                }else{
+                    SavedData.getInstance(activity).addColor(currentHex);
+                    dismiss();
+                }
             }
         });
     }

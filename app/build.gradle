@@ -33,7 +33,7 @@ android {
     viewBinding.enabled = true
 }
 
-dependencies{
+dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
@@ -43,14 +43,17 @@ dependencies{
     implementation 'androidx.navigation:navigation-ui:2.3.0-alpha04'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0' // glide
+    implementation 'androidx.preference:preference:1.1.0-rc01'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0' // glide
     implementation 'de.hdodenhof:circleimageview:3.0.2' // circle image view
     implementation 'com.github.barteksc:android-pdf-viewer:3.2.0-beta.1' // android pdf view
     implementation 'com.google.code.gson:gson:2.8.5' // save object Shared Preferences
-    implementation 'com.devbrackets.android:exomedia:4.0.0' // video view library ( with controllers ) DO NOT UPDATE THIS LIBRARY, TRUST ME, YOU WILL REGRET THAT.
+    implementation 'com.devbrackets.android:exomedia:4.0.0'
+    // video view library ( with controllers ) DO NOT UPDATE THIS LIBRARY, TRUST ME, YOU WILL REGRET THAT.
     implementation 'com.mindorks.android:prdownloader:0.6.0' // file downloader library
     implementation 'com.github.clans:fab:1.6.4' // floating button library
-    implementation "com.github.skydoves:colorpickerview:2.1.6" // used for picker color ( adding color )
+    implementation "com.github.skydoves:colorpickerview:2.1.6"
+    // used for picker color ( adding color )
     implementation 'com.google.firebase:firebase-analytics:17.3.0' // firebase
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'// crashAnalytics
     implementation 'com.google.firebase:firebase-perf:19.0.5' // performance firebase

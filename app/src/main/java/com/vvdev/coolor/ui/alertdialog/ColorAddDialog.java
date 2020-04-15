@@ -89,7 +89,7 @@ public class ColorAddDialog extends Dialog implements View.OnClickListener {
         findViewById(R.id.AddColorAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SavedData(activity).addColor(currentHexValue);
+                SavedData.getInstance(activity).addColor(currentHexValue);
                 Log.i(TAG,"dismiss");
                 dismiss();
             }

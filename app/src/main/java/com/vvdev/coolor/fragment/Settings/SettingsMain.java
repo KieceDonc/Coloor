@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.wallet.IsReadyToPayRequest;
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
 import com.google.android.gms.wallet.WalletConstants;
 import com.vvdev.coolor.BuildConfig;
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.fragment.GradientsUserManager;
 
 import java.util.Date;
 
@@ -46,7 +46,7 @@ public class SettingsMain extends Fragment {
         gradientsListener.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doFragmentTransaction(new SettingsGradients());
+                doFragmentTransaction(new GradientsUserManager());
             }
         });
 

@@ -53,7 +53,7 @@
     <View
         android:id="@+id/view"
         android:layout_width="0dp"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
         android:background="@color/Theme1_Primary"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,9 +71,10 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:visibility="visible"
             app:backgroundTint="#FFFFFF"
+            app:itemIconSize="22dp"
             app:itemIconTint="@drawable/botton_navigation_view_color"
             app:menu="@menu/bottom_nav_menu">
 
@@ -94,16 +95,6 @@
         app:navGraph="@navigation/mobile_navigation">
 
     </androidx.fragment.app.FragmentContainerView>
-
-    <include
-        android:id="@+id/circlePickerStartConstraintLayout"
-        layout="@layout/activity_main_circlepicker"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout2"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     <!--TODO replace all icon because you don't have authors permissions-->

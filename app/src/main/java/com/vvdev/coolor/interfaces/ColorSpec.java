@@ -153,7 +153,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
                 getTriadic(),
                 getComplementary()));
         if(MainActivity.Instance.getMainActivityInstance()!=null){
-            ArrayList<Gradient> customGradients = Gradients.getInstance(MainActivity.Instance.getMainActivityInstance()).getAllCustomGradients();
+            ArrayList<Gradient> customGradients = Gradients.getInstance(MainActivity.Instance.getMainActivityInstance()).getAllCustom();
             for(int x=0;x<customGradients.size();x++){
                 toReturn.add(ColorUtility.gradientApproximatelyGenerator(getHexa(),customGradients.get(x).getHexaValue(),6));
             }

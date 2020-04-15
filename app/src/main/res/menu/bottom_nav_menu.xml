@@ -8,8 +8,8 @@
 
     <item
         android:id="@+id/navigation_circle_picker"
-        android:icon="@null"
-        android:title="@null" />
+        android:icon="@drawable/pipette_icon_icons_com_65005"
+        android:title="@string/nav_menu_PhonePicker" />
 
     <item
         android:id="@+id/navigation_palette"

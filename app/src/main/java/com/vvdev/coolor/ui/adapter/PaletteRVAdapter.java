@@ -212,7 +212,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
             hexa.setText(toHexa);
 
             // setup extend spinner
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getInstance(activity).getAllGradientsName());
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getInstance(activity).getAllName());
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             extendSpinner.setAdapter(spinnerAdapter);
 
@@ -282,7 +282,7 @@ public class PaletteRVAdapter extends RecyclerView.Adapter<PaletteRVAdapter.MyVi
         }
 
         public void updateSpinners(){
-            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getInstance(activity).getAllGradientsName());
+            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, Gradients.getInstance(activity).getAllName());
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             extendSpinner.setAdapter(spinnerAdapter);
         }

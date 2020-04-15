@@ -96,7 +96,7 @@
             app:srcCompat="@drawable/internet_icon" />
 
         <ImageView
-            android:id="@+id/imageView14"
+            android:id="@+id/importIntentInfo"
             android:layout_width="20dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16dp"
