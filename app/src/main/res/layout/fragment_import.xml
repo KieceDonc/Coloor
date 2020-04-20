@@ -95,16 +95,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/internet_icon" />
 
-        <ImageView
-            android:id="@+id/importIntentInfo"
-            android:layout_width="20dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="16dp"
-            android:tint="@color/Theme1_Secondary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_dialog_info" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -177,5 +167,16 @@
             app:layout_constraintStart_toEndOf="@+id/imageView13"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/importIntentInfo"
+        android:layout_width="20dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:tint="@color/Theme1_Secondary"
+        app:layout_constraintBottom_toBottomOf="@+id/importInternet"
+        app:layout_constraintEnd_toEndOf="@+id/importInternet"
+        app:layout_constraintTop_toTopOf="@+id/importInternet"
+        app:srcCompat="@android:drawable/ic_dialog_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

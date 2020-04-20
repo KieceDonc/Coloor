@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.fragment.TabHost.ColorsTab;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.Gradient;
 import com.vvdev.coolor.interfaces.Gradients;
@@ -117,6 +118,7 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
                         int position = getLayoutPosition();
                         gradients.remove(currentGradient);
                         removedItem(position);
+                        ColorsTab.Instance.get().getColorsTabRVAdapter().updateSpinner();
                     }
                 }
             });

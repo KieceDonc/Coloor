@@ -1,23 +1,15 @@
 <resources>
-    <string name="app_name">Coolor</string>
+    <string name="app_name" translatable="false">Coolor</string>
 
     <string name="nav_menu_Camera">Camera</string>
     <string name="nav_menu_Import">Import</string>
     <string name="nav_menu_Palette">Palette</string>
-    <string name="nav_menu_PhonePicker">Circle picker</string>
+
+    <string name="tab_colors">Colors</string>
+    <string name="tab_gradients">Gradients</string>
 
     <string name="request_permission">You need to give camera permission</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
-    <string name="intro_message">
-        <![CDATA[
-
-
-            This sample demonstrates the basic use of Camera2 API. Check the source code to see how
-            you can display camera preview and take pictures.
-
-
-        ]]>
-    </string>
 
     <string name="permission_denied">Permission denied, task cancel</string>
 
@@ -31,7 +23,6 @@
     <!-- Example : #000000 haven been added to the palette-->
 
     <string name="import_error_file">Error, invalid file extension</string>
-
     <string name="import_from_pdf">From a PDF</string>
     <string name="import_from_camera">From your camera</string>
     <string name="import_from_files">From your files</string>
@@ -47,26 +38,26 @@
     <string name="import_internet_invalid_url">Invalid url address</string>
     <string name="import_internet_basic_error">Error while downloading, please retry</string>
 
-    <string name="tuto_title">How to start</string>
-    <string name="tuto_circlepicker">This icon is moveable wheel which allow you to pick the color of any pixel on your screen</string>
-    <string name="tuto_import">The import menu permit you to pick a color from an image, video, pdf, camera or direct link to a file</string>
-    <string name="tuto_palette">The palette store your colors and unleash your creativity through her features</string>
-
     <string name="ColorSpec_Shades">Shades</string>
     <string name="ColorSpec_Tones">Tones</string>
     <string name="ColorSpec_Tints">Tints</string>
     <string name="ColorSpec_Triadic">Triadic</string>
     <string name="ColorSpec_Complementary">Complementary</string>
 
-    <string name="palette_access_gradients_menu">Access to gradients menu</string>
-    <string name="palette_pick_from_wheel">Pick color from wheel</string>
-    <string name="palette_delete_all_color">Delete all colors</string>
-    <string name="palette_add_hexa">Add color from hexadecimal</string>
-    <string name="palette_more_gradient">Gradient -</string>
-    <string name="palette_more_information">More information</string>
-    <string name="palette_more_gradient_create">Create a gradient</string>
-    <string name="palette_more_share">Share</string>
-    <string name="paletteItemMore" translatable="false"><![CDATA[<]]></string>
+    <string name="colors_tab_tuto_title">How to start</string>
+    <string name="colors_tab_tuto_circlepicker">This icon allow you to pick the color of any pixel on your screen</string>
+    <string name="colors_tabs_tuto_import">The import menu permit you to pick a color from an image, video, pdf, camera or direct link to a file</string>
+    <string name="colors_tab_tuto_colors">The palette store your colors and unleash your creativity through her features</string>
+    <string name="colors_tab_tuto_gradients">This menu let you handle and create custom gradients</string>
+    <string name="colors_tab_pick_from_pixel">Pick from your phone pixels</string>
+    <string name="colors_tab_pick_from_wheel">Pick from wheel</string>
+    <string name="colors_tab_delete_all_color">Delete all colors</string>
+    <string name="colors_tab_add_hexa">Hexadecimal</string>
+    <string name="colors_tab_more_gradient">Gradient -</string>
+    <string name="colors_tab_more_information">More information</string>
+    <string name="colors_tab_more_gradient_create">Create a gradient</string>
+    <string name="colors_tab_more_share">Share</string>
+    <string name="colors_tab_item_more" translatable="false"><![CDATA[<]]></string>
 
     <string name="alertdialog_addcolor_add">Add</string>
 
@@ -94,7 +85,6 @@
     <string name="alertdialog_premium_ads">Delete ads</string>
     <string name="alertdialog_premium_life">To life</string>
 
-
     <string name="service_current_hexa">Current hexadecimal value</string>
     <string name="service_waiting_permission">Waiting for permission to be given</string>
     <string name="service_stop">STOP</string>
@@ -106,9 +96,7 @@
     <string name="share_self_promo">- Sent from Coolor. An app for android</string>
 
     <string name="gradients_tuto_nograd">No gradients detected</string>
-    <string name="gradients_tuto1">1 - Go to the palette</string>
-    <string name="gradents_tuto2">2 - Pick a color and click on \"create a gradient\"</string>
-    <string name="gradients_tuto3">3 - Choose a name and click on \"add\"</string>
+    <string name="gradients_tuto1">Your custom gradient must have a name and an associated color. After creating it, choose a color in the colors tab, choose the gradient and you get a gradient from the selected color to the color of the gradient</string>
 
     <string name="settings_user_experience">User experience</string>
     <string name="settings_circle">Modify circle picker color size</string>

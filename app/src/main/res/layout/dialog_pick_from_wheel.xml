@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#EEEEEE">
+
+    <com.skydoves.colorpickerview.ColorPickerView
+        android:id="@+id/PickFromWheelPickerView"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:palette="@drawable/palette"
+        app:selector="@drawable/wheel">
+
+    </com.skydoves.colorpickerview.ColorPickerView>
+
+    <com.skydoves.colorpickerview.sliders.BrightnessSlideBar
+        android:id="@+id/PickFromWheelBrightnessSlide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:borderColor_BrightnessSlider="@android:color/darker_gray"
+        app:borderSize_BrightnessSlider="5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PickFromWheelPickerView"
+        app:selector_BrightnessSlider="@drawable/wheel" />
+
+    <TextView
+        android:id="@+id/PickFromWheelOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/alertdialog_pickwheel_ok"
+        android:textColor="@color/Theme1_Secondary"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/PickFromWheelPreview" />
+
+    <TextView
+        android:id="@+id/PickFromWheelCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/alertdialog_pickwheel_cancel"
+        android:textColor="@color/Theme1_Secondary"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/PickFromWheelOk"
+        app:layout_constraintTop_toTopOf="@+id/PickFromWheelOk" />
+
+    <View
+        android:id="@+id/PickFromWheelPreview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/black_border"
+        app:layout_constraintEnd_toEndOf="@+id/PickFromWheelHexValue"
+        app:layout_constraintStart_toStartOf="@+id/PickFromWheelHexValue"
+        app:layout_constraintTop_toBottomOf="@+id/PickFromWheelHexValue" />
+
+    <TextView
+        android:id="@+id/PickFromWheelHexValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="#FFFFFF"
+        android:textColor="@color/Theme1_Secondary"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/PickFromWheelBrightnessSlide"
+        app:layout_constraintStart_toStartOf="@+id/PickFromWheelBrightnessSlide"
+        app:layout_constraintTop_toBottomOf="@+id/PickFromWheelBrightnessSlide" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

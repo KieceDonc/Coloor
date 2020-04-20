@@ -9,8 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.activity.MainActivity;
-import com.vvdev.coolor.fragment.BottomBar.Palette;
+import com.vvdev.coolor.fragment.TabHost.ColorsTab;
 import com.vvdev.coolor.interfaces.ColorSpec;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.Gradient;
@@ -60,7 +59,7 @@ public class CreateGradientDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alertdialog_create_gradient);
+        setContentView(R.layout.dialog_create_gradient);
 
         userInput = findViewById(R.id.cgInputName);
 
@@ -99,9 +98,8 @@ public class CreateGradientDialog extends Dialog {
                     Gradients.getInstance(activity).add(new Gradient(userInput.getText().toString(),currentColor.getHexa()));
                     if(listener!=null){
                         listener.onGradientSaved();
-                    }else{
-                        updateSpinnersViewInAdapter();
                     }
+                    updateSpinnersViewInAdapter();
                     dismiss();
                 }else{
                     if(canBeSave.equals(lengthError)){
@@ -183,11 +181,11 @@ public class CreateGradientDialog extends Dialog {
     }
 
     public void updateSpinnersViewInAdapter(){
-        Palette palette = MainActivity.Instance.getPaletteInstance();
-        if(palette!=null){
-            if(palette.getRecycleView()!=null){
-                if(palette.getPaletteRVAdapter()!=null){
-                    palette.getPaletteRVAdapter().updateSpinner();
+        ColorsTab colorsTab = ColorsTab.Instance.get();
+        if(colorsTab!=null){
+            if(colorsTab.getRecycleView()!=null){
+                if(colorsTab.getColorsTabRVAdapter()!=null){
+                    colorsTab.getColorsTabRVAdapter().updateSpinner();
                 }
             }
         }

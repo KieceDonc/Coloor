@@ -37,7 +37,7 @@
         android:src="@drawable/fab_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu_colorNormal="#000000"
+        app:menu_colorNormal="@color/Theme1_Primary"
         fab:menu_colorPressed="#7f7f7f">
 
         <com.github.clans.fab.FloatingActionButton
@@ -59,7 +59,7 @@
             android:visibility="visible"
             app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Add hexa color"
+            app:fab_label="Add gradient"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 
@@ -70,7 +70,7 @@
             android:src="@drawable/abc_vector_test"
             app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Delete all colors"
+            app:fab_label="Delete all gradients"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 

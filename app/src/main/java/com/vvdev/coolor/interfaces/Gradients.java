@@ -65,6 +65,7 @@ public class Gradients {
 
     public void removeAll(){
         SavedData.getInstance(activity).saveGradients(new ArrayList<Gradient>()); // we create a new instance and save it so the old one got deleted;
+        firstSetup();
     }
 
     public ArrayList<String> getAllName(){

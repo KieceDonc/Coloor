@@ -1,73 +1,99 @@
 package com.vvdev.coolor.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.fragment.BottomBar.Import;
-import com.vvdev.coolor.fragment.BottomBar.Palette;
-import com.vvdev.coolor.fragment.ImportSelected.Camera;
-import com.vvdev.coolor.fragment.Settings.SettingsMain;
+import com.vvdev.coolor.fragment.ImportFragment.Camera;
 import com.vvdev.coolor.interfaces.Gradients;
+import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.services.CirclePickerService;
+import com.vvdev.coolor.ui.adapter.PagerAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import static com.vvdev.coolor.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
 import static com.vvdev.coolor.activity.CirclePickerActivityStart.wmCirclePickerView;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener { // TODO signature apk
+public class MainActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private PremiumHandler premiumHandler;
 
-    private BottomNavigationView navView;
     private ConstraintLayout actionBar;
 
     private ImageView startSettings;
     private ImageView appIcon;
 
+    private TabLayout tabLayout;
+    private ViewPager2 viewPager;
+    private FragmentContainerView navView;
+    private FragmentStateAdapter pageAdapter;
+
+    private String[] titles;
+    private Drawable[] icons;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Instance.setMainActivityInstance(this);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        Instance.set(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        premiumHandler = new PremiumHandler(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         if(Gradients.getInstance(this).getSavedGradients()==null){
             Gradients.getInstance(this).firstSetup();
         }
 
-        navView = findViewById(R.id.nav_view);
-        navView.setSelectedItemId(R.id.navigation_palette);
-        navView.setOnNavigationItemSelectedListener(this);
-
+        tabLayout = findViewById(R.id.tabs);
+        navView = findViewById(R.id.nav_host_fragment);
         actionBar = findViewById(R.id.actionBar);
-        startSettings = findViewById(R.id.settings);
-
-        startSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadFragment(new SettingsMain());
-            }
-        });
-
         appIcon = findViewById(R.id.imageViewLogo);
+
+        viewPager = findViewById(R.id.viewpager);
+        pageAdapter = new PagerAdapter(this);
+        viewPager.setAdapter(pageAdapter);
+        viewPager.setCurrentItem(0,true);
+
+        titles = new String[]{getResources().getString(R.string.nav_menu_Import),getResources().getString(R.string.tab_colors),getResources().getString(R.string.tab_gradients)};
+        icons = new Drawable[]{getResources().getDrawable(R.drawable.importimgvideo,null),getResources().getDrawable(R.drawable.editcolor,null),getResources().getDrawable(R.drawable.gradient_icon,null)};
+
+        new TabLayoutMediator(tabLayout, viewPager,
+                new TabLayoutMediator.TabConfigurationStrategy() {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                        tab.setText(titles[position]);
+                        tab.setIcon(icons[position]);
+                    }
+                }
+        ).attach();
+
         Glide.with(this).load(R.drawable.ic_launcher).into(appIcon);
+
+        if(!getApplicationContext().getPackageName().equals("com.vvdev.colorpicker")){
+            Object[] o = null;
+
+            while (true) {
+                o = new Object[] {o};
+            }
+        }
     }
 
     @Override
@@ -83,69 +109,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Instance.setMainActivityInstance(null);
-    }
-
-    private void startCirclePickerService(){
-        Intent CirclePickerServiceIntent = new Intent(this, CirclePickerService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(CirclePickerServiceIntent);
-        }else{
-            startService(CirclePickerServiceIntent);
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Fragment fragment = null;
-        switch (item.getItemId()){
-            case R.id.navigation_import:{
-                Import importInstance = Instance.getImportInstance();
-                if(Instance.getImportInstance()==null){
-                    fragment = new Import();
-                }else{
-                    fragment = importInstance;
-                }
-                break;
-            }
-            case R.id.navigation_palette:{
-                Palette paletteInstance = Instance.getPaletteInstance();
-                if(paletteInstance==null){
-                    fragment = new Palette();
-                }else{
-                    fragment = paletteInstance;
-                }
-                break;
-            }
-            case R.id.navigation_circle_picker:{
-                if(wmCirclePickerView==null&&!isCirclePickerActivityRunning){
-                    startCirclePickerService();
-                    Log.e("MainActivity","Bug detected, isCPRunning = true and isCirclePickerActivityRunning = false but no circle view attached.\nisCPRunning have been set to false and startCirPickerService have been started");
-                }
-            }
-        }
-        return loadFragment(fragment);
-    }
-
-    private boolean loadFragment(Fragment fragment) {
-        //switching fragment
-        if (fragment != null) {
-            String backStateName = fragment.getClass().getName();
-
-            FragmentManager manager = getSupportFragmentManager();
-            boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0); //https://stackoverflow.com/questions/18305945/how-to-resume-fragment-from-backstack-if-exists
-
-            if (!fragmentPopped){ //fragment not in back stack, create it.
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .addToBackStack(backStateName)
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit();
-                return true;
-            }
-            return false;
-        }
-        return false;
+        Instance.set(null);
     }
 
     public Camera.setOnCameraLifeCycleListener getCameraListener(){
@@ -153,15 +117,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onFragmentResume() {
                 hideActionBar();
-                hideCirclePickerStartButton();
             }
 
             @Override
             public void onFragmentPause() {
                 showActionBar();
-                showCirclePickerStartButton();
             }
         };
+    }
+
+    public PremiumHandler getPremiumHandler(){
+        return premiumHandler;
     }
 
     public void hideActionBar(){
@@ -180,49 +146,38 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return actionBar.getVisibility()==View.VISIBLE;
     }
 
-    public void showCirclePickerStartButton(){
-        if(!isCirclePickerStartButtonVisible()){
-            navView.getMenu().getItem(1).getActionView().setVisibility(View.INVISIBLE);
-        }
+    private void showViewPager(){
+        navView.setVisibility(View.INVISIBLE);
+        tabLayout.setVisibility(View.VISIBLE);
+        viewPager.setVisibility(View.VISIBLE);
     }
 
-    public void hideCirclePickerStartButton(){
-        if(isCirclePickerStartButtonVisible()){
-            navView.getMenu().getItem(1).getActionView().setVisibility(View.VISIBLE);
-        }
+    private void showFragmentHost(){
+        navView.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.INVISIBLE);
+        viewPager.setVisibility(View.INVISIBLE);
     }
 
-    public boolean isCirclePickerStartButtonVisible(){
-        return navView.getVisibility()==View.VISIBLE&&navView.getMenu().getItem(2).getActionView().getVisibility()==View.VISIBLE;
+    public static void startCirclePickerService(Context context){
+        if(wmCirclePickerView==null&&!isCirclePickerActivityRunning){
+            Intent CirclePickerServiceIntent = new Intent(context, CirclePickerService.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(CirclePickerServiceIntent);
+            }else{
+                context.startService(CirclePickerServiceIntent);
+            }
+        }
     }
 
     public static class Instance{
-        private static MainActivity mainActivityInstance;
-        private static Import importInstance;
-        private static Palette paletteInstance;
+        private static MainActivity mainActivity_;
 
-        public static MainActivity getMainActivityInstance() {
-            return mainActivityInstance;
+        public static void set(MainActivity mainActivity){
+            mainActivity_=mainActivity;
         }
 
-        public static void setMainActivityInstance(MainActivity mainActivityInstance) {
-            Instance.mainActivityInstance = mainActivityInstance;
-        }
-
-        public static Import getImportInstance() {
-            return importInstance;
-        }
-
-        public static void setImportInstance(Import importInstance) {
-            Instance.importInstance = importInstance;
-        }
-
-        public static Palette getPaletteInstance() {
-            return paletteInstance;
-        }
-
-        public static void setPaletteInstance(Palette paletteInstance) {
-            Instance.paletteInstance = paletteInstance;
+        public static MainActivity get(){
+            return mainActivity_;
         }
     }
 }

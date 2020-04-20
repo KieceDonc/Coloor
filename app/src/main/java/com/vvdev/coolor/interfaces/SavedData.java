@@ -7,10 +7,9 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.vvdev.coolor.activity.MainActivity;
-import com.vvdev.coolor.fragment.BottomBar.Palette;
+import com.vvdev.coolor.fragment.TabHost.ColorsTab;
 import com.vvdev.coolor.ui.toast.ColorAddedToast;
-import com.vvdev.coolor.ui.adapter.PaletteRVAdapter;
+import com.vvdev.coolor.ui.adapter.ColorsTabRVAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,11 +38,11 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         colors.add(new ColorSpec(color));
         saveColors();
         ColorAddedToast.show(activity,activity.getLayoutInflater(),color);
-        Palette palette = getPaletteInstance();
-        if(palette!=null){
-            palette.getRecycleView().getAdapter().notifyItemInserted(getColorsSize()-1);
+        ColorsTab colorsTab = getColorsTabInstance();
+        if(colorsTab!=null){
+            colorsTab.getRecycleView().getAdapter().notifyItemInserted(getColorsSize()-1);
             if(getColorsSize()==1){
-                palette.showColors();
+                colorsTab.showColors();
             }
         }
         Log.i(TAG,"color added. Hexa value = "+color);
@@ -53,12 +52,12 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         if(position<=getColorsSize()-1){
             colors.remove(position);
             saveColors();
-            Palette palette = getPaletteInstance();
-            if(palette!=null){
-                palette.getRecycleView().getAdapter().notifyItemRemoved(position);
-                palette.getRecycleView().getAdapter().notifyItemRangeChanged(position,getColorsSize());
+            ColorsTab colorsTab = getColorsTabInstance();
+            if(colorsTab!=null){
+                colorsTab.getRecycleView().getAdapter().notifyItemRemoved(position);
+                colorsTab.getRecycleView().getAdapter().notifyItemRangeChanged(position,getColorsSize());
                 if(getColorsSize()==0){
-                    palette.showTutorial();
+                    colorsTab.showTutorial();
                 }
             }
             Log.i(TAG,"color deleted at position :"+position+". Size list ="+getColorsSize());
@@ -70,13 +69,13 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
     public void clearColors(){
         colors.clear();
         saveColors();
-        Palette palette = getPaletteInstance();
-        if(palette!=null){
-            PaletteRVAdapter PaletteRVAdapter = new PaletteRVAdapter(activity);
-            palette.getRecycleView().setAdapter(PaletteRVAdapter);
-            palette.getActionMenu().showMenuButton(true);
-            palette.setPaletteRVAdapter(PaletteRVAdapter);
-            palette.showTutorial();
+        ColorsTab colorsTab = getColorsTabInstance();
+        if(colorsTab!=null){
+            ColorsTabRVAdapter ColorsTabRVAdapter = new ColorsTabRVAdapter(activity);
+            colorsTab.getRecycleView().setAdapter(ColorsTabRVAdapter);
+            colorsTab.getActionMenu().showMenuButton(true);
+            colorsTab.setColorsTabRVAdapter(ColorsTabRVAdapter);
+            colorsTab.showTutorial();
         }
         Log.i(TAG,"all colors deleted ( clearColors() ) ");
     }
@@ -149,8 +148,8 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         }
     }
 
-    public Palette getPaletteInstance(){
-        return MainActivity.Instance.getPaletteInstance();
+    public ColorsTab getColorsTabInstance(){
+        return ColorsTab.Instance.get();
     }
 
     public String toString(){

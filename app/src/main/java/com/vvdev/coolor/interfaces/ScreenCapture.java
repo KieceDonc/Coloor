@@ -1,6 +1,5 @@
 package com.vvdev.coolor.interfaces;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
@@ -35,7 +34,6 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
 
     private OnCaptureListener mCaptureListener = null;
 
-
     public interface OnCaptureListener {
         void onScreenCaptureSuccess(Bitmap bitmap);
 
@@ -46,15 +44,14 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         this.mCaptureListener = captureListener;
     }
 
-    private Context context;
-    public ScreenCapture(int mWindowHeight, int mWindowWidth, int mScreenDensity, Context context) {
+
+    public ScreenCapture(int mWindowHeight, int mWindowWidth, int mScreenDensity) {
 
         this.mWindowHeight=mWindowHeight;
         this.mWindowWidth=mWindowWidth;
         this.mScreenDensity=mScreenDensity;
         createEnvironment();
         mMediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, resultData);
-        this.context=context;
     }
 
     private void createEnvironment() {
@@ -99,6 +96,12 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         }
     }
 
+    private void stopMediaProjection(){
+        if(mMediaProjection!=null){
+            mMediaProjection.stop();
+        }
+    }
+
     public boolean startScreenCapture() {
         Log.i(TAG, "Start screen capture");
         if (mMediaProjection != null) {
@@ -134,5 +137,23 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
     public static void setUpMediaProjection(int mResultCode,Intent mResultData) {
         resultCode = mResultCode;
         resultData = mResultData;
+    }
+
+    public void stop(){
+        stopScreenCapture();
+        stopMediaProjection();
+        Instance.set(null);
+    }
+
+    public static class Instance{
+        private static ScreenCapture screenCapture_;
+
+        public static void set(ScreenCapture screenCapture){
+            screenCapture_=screenCapture;
+        }
+
+        public static ScreenCapture get(){
+            return screenCapture_;
+        }
     }
 }

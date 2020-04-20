@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ColorPicker</string>
     <string name="import_internet_url_text">Copier votre lien</string>
     <string name="permission_denied">Permission refusée, tâche annulée</string>
     <string name="nav_menu_Palette">Palette</string>
@@ -42,10 +41,12 @@
     <string name="alertdialog_gradient_add">Ajouter</string>
     <string name="alertdialog_pickwheel_ok">Ok</string>
     <string name="alertdialog_pickwheel_cancel">Annuler</string>
-    <string name="palette_more_share">Partager</string>
-    <string name="palette_more_gradient_create">Crée un dégradé</string>
-    <string name="palette_more_information">Plus d\'informations</string>
-    <string name="palette_more_gradient">Dégradé -</string>
-    <string name="tuto_title">Comment commencer</string>
-    <string name="tuto_circlepicker">Ce logo est un cercle qui se déplace et qui vous permet te détecter la couleur de chaque pixel sur votre écran</string>
+    <string name="colors_tab_more_share">Partager</string>
+    <string name="colors_tab_more_gradient_create">Crée un dégradé</string>
+    <string name="colors_tab_more_information">Plus d\'informations</string>
+    <string name="colors_tab_more_gradient">Dégradé -</string>
+    <string name="colors_tab_tuto_title">Comment commencer</string>
+    <string name="colors_tab_tuto_circlepicker">Ce logo vous permet te détecter la couleur de n\'importe quel pixel sur votre écran</string>
+    <string name="colors_tab_tuto_gradients">Ce menu vous permet de gérer / créer les dégradés personnalisés</string>
+    <string name="gradients_tuto1">Votre dégradé personnalisé doit avoir un nom et une couleur associée. Après l\'avoir crée, choissisez une couleur dans la tabulation "couleur", choissisez le dégradé et vous obtenez un dégradé de la couleur sélectionné à la couleur du dégradé</string>
 </resources>

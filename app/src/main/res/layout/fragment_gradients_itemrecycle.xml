@@ -30,23 +30,19 @@
             android:text="@string/alertdialog_gradient_toShades"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
             app:layout_constraintStart_toEndOf="@+id/gradientColorPreview"
-            app:layout_constraintTop_toBottomOf="@+id/gradientName"
-            app:layout_constraintVertical_bias="0.576" />
+            app:layout_constraintTop_toBottomOf="@+id/gradientName" />
 
         <TextView
             android:id="@+id/gradients2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="12dp"
             android:text="@string/alertdialog_gradient_toTints"
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
-            app:layout_constraintStart_toEndOf="@+id/gradientColorPreview"
-            app:layout_constraintTop_toBottomOf="@+id/gradients" />
+            app:layout_constraintBottom_toBottomOf="@+id/gradientColorPreview"
+            app:layout_constraintStart_toEndOf="@+id/gradientColorPreview" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/gradientColorPreview"

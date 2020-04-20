@@ -16,6 +16,8 @@ import android.view.WindowManager;
 
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.CirclePickerActivityStart;
+import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.interfaces.ScreenCapture;
 import com.vvdev.coolor.ui.customview.CirclePickerView;
 
 import java.util.Timer;
@@ -239,6 +241,10 @@ public class CirclePickerService extends Service {
         }
         wmCirclePickerView=null;
         Instance.set(null);
+        ScreenCapture screenCapture = ScreenCapture.Instance.get();
+        if(screenCapture!=null){
+            screenCapture.stop();
+        }
         stopForeground(true);
     }
 

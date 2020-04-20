@@ -27,6 +27,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/import_rounded_corner"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sttingTextUX" />
@@ -37,6 +38,7 @@
         android:layout_height="35dp"
         android:layout_marginStart="16dp"
         android:tint="@color/Theme1_Accent"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/sttingGradientListener"
         app:layout_constraintStart_toStartOf="@+id/sttingGradientListener"
         app:layout_constraintTop_toTopOf="@+id/sttingGradientListener"
@@ -50,6 +52,7 @@
         android:text="@string/settings_gradient"
         android:textColor="@color/Theme1_text"
         android:textSize="18sp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/sttingImgGradient"
         app:layout_constraintStart_toEndOf="@+id/sttingImgGradient"
         app:layout_constraintTop_toTopOf="@+id/sttingImgGradient" />

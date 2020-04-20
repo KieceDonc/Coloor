@@ -29,6 +29,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.interfaces.ScreenCapture;
@@ -182,7 +183,8 @@ public class CirclePickerView extends ImageView {
 
             DisplayMetrics metrics = new DisplayMetrics();
             display.getMetrics(metrics);
-            mScreenCapture = new ScreenCapture(mPhoneHeight,mPhoneWidth,metrics.densityDpi,getContext());
+            ScreenCapture.Instance.set(new ScreenCapture(mPhoneHeight,mPhoneWidth,metrics.densityDpi));
+            mScreenCapture = ScreenCapture.Instance.get();
             mScreenCapture.setCaptureListener(mCaptureListener);
 
             closeButton = wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton);
