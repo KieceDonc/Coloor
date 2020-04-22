@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.databinding.FragmentColorTabItemrecycleBinding;
+import com.vvdev.coolor.databinding.FragmentColorsTabItemrecycleExtendBinding;
 import com.vvdev.coolor.fragment.TabHost.ColorsTab;
 import com.vvdev.coolor.interfaces.ColorSpec;
 import com.vvdev.coolor.interfaces.ColorUtility;
@@ -49,8 +51,8 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
     @Override
     public MyViewHolderPalette onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.fragment_color_tab_itemrecycle, parent, false);
-        return new MyViewHolderPalette(view);
+        FragmentColorTabItemrecycleBinding binding = FragmentColorTabItemrecycleBinding.inflate(inflater, parent, false);
+        return new MyViewHolderPalette(binding);
     }
 
     @Override
@@ -83,53 +85,44 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
         private ArrayList<View> generate = new ArrayList<>();
 
         private Spinner extendSpinner;
-        private ArrayList<ConstraintLayout> extendInclude = new ArrayList<>();
-        private ArrayList<View> extendView = new ArrayList<>();
-        private ArrayList<TextView> extendHex = new ArrayList<>();
-        private ArrayList<TextView> extendRGB = new ArrayList<>();
+        private ArrayList<FragmentColorsTabItemrecycleExtendBinding> extendInclude = new ArrayList<com.vvdev.coolor.databinding.FragmentColorsTabItemrecycleExtendBinding>();
 
         private String  spinnerCurrentName="";
 
         private boolean itemDeleted = false; // used to prevent bug. User can spam click the trash button and it delete multiple colors in colors data.
 
-        public MyViewHolderPalette(final View itemView) { //
-            super(itemView);
+        public MyViewHolderPalette(final FragmentColorTabItemrecycleBinding binding) { //
+            super(binding.getRoot());
 
             myViewHolderPaletteArrayList.add(this);
 
-            colorPreview = itemView.findViewById(R.id.piColorPreview);
+            colorPreview = binding.piColorPreview;
 
-            colorName = itemView.findViewById(R.id.piColorName);
-            hsv = itemView.findViewById(R.id.piHSV);
-            rgb = itemView.findViewById(R.id.piRGB);
-            hexa = itemView.findViewById(R.id.piHex);
-            more = itemView.findViewById(R.id.piMore);
-            trash = itemView.findViewById(R.id.piTrash);
-            moreInformation = itemView.findViewById(R.id.piExtendMoreInformation);
-            createGradient = itemView.findViewById(R.id.piExtendMoreCreateGradient);
+            colorName = binding.piColorName;
+            hsv = binding.piHSV;
+            rgb = binding.piRGB;
+            hexa = binding.piHex;
+            more = binding.piMore;
+            trash = binding.piTrash;
+            moreInformation = binding.piExtendMoreInformation;
+            createGradient = binding.piExtendMoreCreateGradient;
 
-            generate.add(itemView.findViewById(R.id.piGenerate0));
-            generate.add(itemView.findViewById(R.id.piGenerate1));
-            generate.add(itemView.findViewById(R.id.piGenerate2));
-            generate.add(itemView.findViewById(R.id.piGenerate3));
-            generate.add(itemView.findViewById(R.id.piGenerate4));
-            generate.add(itemView.findViewById(R.id.piGenerate5));
+            generate.add(binding.piGenerate0);
+            generate.add(binding.piGenerate1);
+            generate.add(binding.piGenerate2);
+            generate.add(binding.piGenerate3);
+            generate.add(binding.piGenerate4);
+            generate.add(binding.piGenerate5);
 
-            piExtend = itemView.findViewById(R.id.piExtend);
+            piExtend = binding.piExtend;
 
-            extendSpinner = itemView.findViewById(R.id.piSpinner);
-            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate0));
-            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate1));
-            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate2));
-            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate3));
-            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate4));
-            extendInclude.add((ConstraintLayout) itemView.findViewById(R.id.piExtendGenerate5));
-
-            for (int x = 0; x < extendInclude.size(); x++) {
-                extendView.add(extendInclude.get(x).findViewById(R.id.piExtendView));
-                extendHex.add((TextView) extendInclude.get(x).findViewById(R.id.piExtendHex));
-                extendRGB.add((TextView) extendInclude.get(x).findViewById(R.id.piExtendRGB));
-            }
+            extendSpinner = binding.piSpinner;
+            extendInclude.add(binding.piExtendGenerate0);
+            extendInclude.add(binding.piExtendGenerate1);
+            extendInclude.add(binding.piExtendGenerate2);
+            extendInclude.add(binding.piExtendGenerate3);
+            extendInclude.add(binding.piExtendGenerate4);
+            extendInclude.add(binding.piExtendGenerate5);
 
             more.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -244,10 +237,10 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
          */
         private void showNumberExtendInclude(int number) {
             for (int x = 0; x < number; x++) {
-                extendInclude.get(x).setVisibility(View.VISIBLE);
+                extendInclude.get(x).getRoot().setVisibility(View.VISIBLE);
             }
             for (int x = number; x < extendInclude.size(); x++) {
-                extendInclude.get(x).setVisibility(View.INVISIBLE);
+                extendInclude.get(x).getRoot().setVisibility(View.INVISIBLE);
             }
             //piExtend.setLayoutParams(new ConstraintLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT));
         }
@@ -259,11 +252,11 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
          */
         private void changeExtendInclude(String[] colors) {
             for (int x = 0; x < colors.length; x++) {
-                extendView.get(x).setBackgroundColor(Color.parseColor(colors[x]));
-                extendHex.get(x).setText(colors[x]);
+                extendInclude.get(x).piExtendView.setBackgroundColor(Color.parseColor(colors[x]));
+                extendInclude.get(x).piExtendHex.setText(colors[x]);
                 int[] rgbOfColor = ColorUtility.getRGBFromHex(colors[x]);
                 String rgbText = rgbOfColor[0] + ", " + rgbOfColor[1] + "," + rgbOfColor[2];
-                extendRGB.get(x).setText(rgbText);
+                extendInclude.get(x).piExtendRGB.setText(rgbText);
             }
         }
 
@@ -274,16 +267,17 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
          */
         private void updateListener(final String[] colors) {
             for (int x = 0; x < extendInclude.size(); x++) {
-                if (extendInclude.get(x).getVisibility() == View.VISIBLE) {
+
+                if (extendInclude.get(x).getRoot().getVisibility() == View.VISIBLE) {
                     final String currentColor = colors[x];
-                    extendInclude.get(x).setOnClickListener(new View.OnClickListener() {
+                    extendInclude.get(x).getRoot().setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             new SavedData(activity).addColor(currentColor);
                         }
                     });
                 } else {
-                    extendInclude.get(x).setOnClickListener(null);
+                    extendInclude.get(x).getRoot().setOnClickListener(null);
                 }
             }
         }

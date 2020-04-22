@@ -363,7 +363,7 @@ public class CirclePickerView extends ImageView {
     }
 
     private void updateNotificationHex(){
-        CirclePickerService service = CirclePickerService.Instance.getInstance();
+        CirclePickerService service = CirclePickerService.Instance.get();
         if(service!=null){
             try{
                 service.updateHexaValue(mColorHexa);

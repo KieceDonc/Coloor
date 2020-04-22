@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/CameraLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Theme1_DefaultBackground">
+
+    <TextView
+        android:id="@+id/HsvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        android:textColor="@color/Theme1_TextBlack"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/RGBValue"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/RGBValue"
+        app:layout_constraintTop_toBottomOf="@+id/RGBValue" />
+
+    <TextView
+        android:id="@+id/RGBValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="190dp"
+        android:text="-"
+        android:textColor="@color/Theme1_TextBlack"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ColorName"
+        app:layout_constraintStart_toEndOf="@+id/ColorPreview"
+        app:layout_constraintTop_toTopOf="@+id/ColorName"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/ColorPreview"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#000000"
+        android:clickable="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/HexValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="-"
+        android:textColor="@color/Theme1_TextBlack"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/ColorName"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/ColorName"
+        app:layout_constraintTop_toBottomOf="@+id/ColorName" />
+
+    <TextView
+        android:id="@+id/ColorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:text="-"
+        android:textColor="@color/Theme1_TextBlack"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/ColorPreview"
+        app:layout_constraintStart_toEndOf="@+id/ColorPreview"
+        app:layout_constraintTop_toTopOf="@+id/ColorPreview"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <View
+        android:id="@+id/TextureViewBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#525661"
+        android:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/TextureViewCamera"
+        app:layout_constraintEnd_toEndOf="@+id/TextureViewCamera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/TextureViewCamera" />
+
+
+    <com.vvdev.coolor.ui.customview.AutoFitTextureView
+        android:id="@+id/TextureViewCamera"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/getpicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ColorPreview"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:tint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/TextureViewBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/TextureViewBackground"
+        app:layout_constraintTop_toTopOf="@+id/TextureViewBackground"
+        app:layout_constraintVertical_bias="0.498"
+        app:srcCompat="@drawable/camera_plus_icon" />
+
+    <ImageView
+        android:id="@+id/SwitchCamera"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerInside"
+        android:tint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/getpicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/getpicture"
+        app:srcCompat="@drawable/icon_camera_switching" />
+
+    <Button
+        android:id="@+id/getpicture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/blankcircle"
+        android:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

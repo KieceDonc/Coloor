@@ -196,7 +196,7 @@
             android:id="@+id/piHSV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="128dp"
+            android:layout_marginStart="135dp"
             android:text="HSV : 255, 255, 255 "
             android:textColor="@android:color/black"
             android:textSize="12sp"
@@ -310,7 +310,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/piMore"
             app:layout_constraintEnd_toStartOf="@+id/piMore"
             app:layout_constraintTop_toTopOf="@+id/piMore"
-            app:srcCompat="@drawable/trash" />
+            app:srcCompat="@drawable/trash_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

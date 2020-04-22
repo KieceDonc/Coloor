@@ -1,124 +1,179 @@
 package com.vvdev.coolor.interfaces;
 
 import android.app.Activity;
-import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.android.billingclient.api.AcknowledgePurchaseParams;
-import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.SkuDetails;
-import com.android.billingclient.api.SkuDetailsParams;
-import com.android.billingclient.api.SkuDetailsResponseListener;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.revenuecat.purchases.EntitlementInfo;
+import com.revenuecat.purchases.EntitlementInfos;
+import com.revenuecat.purchases.Offerings;
+import com.revenuecat.purchases.Package;
+import com.revenuecat.purchases.PurchaserInfo;
+import com.revenuecat.purchases.Purchases;
+import com.revenuecat.purchases.PurchasesError;
+import com.revenuecat.purchases.interfaces.Callback;
+import com.revenuecat.purchases.interfaces.MakePurchaseListener;
+import com.revenuecat.purchases.interfaces.ReceiveOfferingsListener;
+import com.revenuecat.purchases.interfaces.ReceivePurchaserInfoListener;
+import com.revenuecat.purchases.interfaces.UpdatedPurchaserInfoListener;
 import com.vvdev.coolor.ui.alertdialog.PremiumDialog;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
-public class PremiumHandler {
+public class PremiumHandler{
 
+    private setOnPurchaseListener listener;
+
+    private PremiumHandler _this = this;
     private PremiumDialog premiumDialog;
-    private BillingClient billingClient;
-    private List<SkuDetails> _skuDetailsList;
-    private Context context;
 
-    public PremiumHandler(Context context){
-        this.context = context;
-        setupBillingClient();
-        /*if(alreadyPurchase()){
-            this.listener.onPurchaseOK();
-        }else{
-            startPurchase();
-        }*/
+    private Package lifeTimePackage;
+
+    private final Activity activity;
+    private String price="";
+    private boolean isPremium=false;
+    private boolean isBillingSupported=false;
+
+    public interface setOnPurchaseListener{
+        void onPurchaseCompleted();
+        void onPurchaseCanceled();
+        void onPurchaseError();
     }
 
-    private void setupBillingClient(){
-        billingClient = BillingClient.newBuilder(context).enablePendingPurchases().setListener(purchasesUpdatedListener).build();
-        billingClient.startConnection(new BillingClientStateListener() {
+    public PremiumHandler(Activity activity,setOnPurchaseListener listener){
+        this.activity = activity;
+        this.listener = listener;
+        setup();
+    }
+
+    private void setup(){
+        Purchases.isBillingSupported(activity, new Callback<Boolean>() {
             @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
-                if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                    List<String> skuList = new ArrayList<>();
-                    skuList.add("colorpremiumtest");
-                    SkuDetailsParams.Builder params = SkuDetailsParams.newBuilder();
-                    params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP);
-                    billingClient.querySkuDetailsAsync(params.build(),
-                            new SkuDetailsResponseListener() {
-                                @Override
-                                public void onSkuDetailsResponse(BillingResult billingResult,
-                                                                 List<SkuDetails> skuDetailsList) {
-                                    // Process the result.
-                                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
-                                        _skuDetailsList=skuDetailsList;
+            public void onReceived(final Boolean isSupported) {
+                isBillingSupported = isSupported;
+                if(!isBillingSupported){
+                    ToastGoogleBillingNotSupport();
+                }else{
+                    Purchases.getSharedInstance().getPurchaserInfo(new ReceivePurchaserInfoListener() {
+                        @Override
+                        public void onReceived(@NonNull PurchaserInfo purchaserInfo) {
+                            Log.e("test",purchaserInfo.getActiveSubscriptions().toString());
+                            EntitlementInfo entitlementInfo = purchaserInfo.getEntitlements().get("pro");
+                            if(entitlementInfo!=null){
+                                Log.e("test",purchaserInfo.getEntitlements().getAll().toString());
+                                isPremium = entitlementInfo.isActive();
+                            }
+                            if(!isPremium){
+                                Purchases.getSharedInstance().getOfferings(new ReceiveOfferingsListener() {
+                                    @Override
+                                    public void onReceived(@NonNull Offerings offerings) {
+                                        if(offerings.getCurrent()!=null){
+                                            lifeTimePackage= offerings.getCurrent().getLifetime();
+                                            price = lifeTimePackage.getProduct().getPrice();
+                                        }
                                     }
-                                }
-                            });
+
+                                    @Override
+                                    public void onError(@NonNull PurchasesError error) {
+                                        Toast.makeText(_this.activity,error.getMessage(),Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }
+
+                        @Override
+                        public void onError(@NonNull PurchasesError error) {
+                            Toast.makeText(_this.activity,error.getMessage(),Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
             }
         });
     }
 
-
     public boolean isPremium(){
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        return false;
+        return isPremium;
     }
 
-    public void showDialog(Activity activity){
-        if(billingClient.isReady()){
-            premiumDialog = new PremiumDialog(context,billingClient,_skuDetailsList,activity);
-            premiumDialog.show();
+    public String getPrice(){
+        if(price!=null||!isBillingSupported){
+            return price;
+        }else{
+            return "error";
         }
     }
 
+    public void setListener(setOnPurchaseListener listener){
+        this.listener = listener;
+    }
 
-    private PurchasesUpdatedListener purchasesUpdatedListener = new PurchasesUpdatedListener() {
-        @Override
-        public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
-                    && list != null) {
-                for (Purchase purchase : list) {
-                    handlePurchase(purchase);
-                }
-            } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.USER_CANCELED) {
-                // Handle an error caused by a user cancelling the purchase flow.
-            } else {
-                // Handle any other error codes.
+    public void makePurchase(){
+        if(isBillingSupported){
+            if(lifeTimePackage!=null){
+                Purchases.getSharedInstance().purchasePackage(
+                        activity,
+                        lifeTimePackage, new MakePurchaseListener() {
+                            @Override
+                            public void onCompleted(@NonNull Purchase purchase, @NonNull PurchaserInfo purchaserInfo) {
+                                EntitlementInfo entitlementInfo = purchaserInfo.getEntitlements().get("pro");
+                                if(entitlementInfo!=null){
+                                    if (entitlementInfo.isActive()) {
+                                        Log.e("test","isActive");
+                                        purchaseCompleted();
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(@NonNull PurchasesError error, boolean userCancelled) {
+                                if(userCancelled){
+                                    purchaseCanceled();
+                                }else{
+                                    purchaseError(error);
+                                }
+                            }
+                        }
+                );
             }
+        }else{
+            ToastGoogleBillingNotSupport();
         }
-    };
+    }
 
-    private void handlePurchase(Purchase purchase) {
-        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-            // Grant entitlement to the user.
+    public void showPremiumDialog(){
+        premiumDialog = new PremiumDialog(activity,_this);
+        premiumDialog.show();
+    }
 
-            // Acknowledge the purchase if it hasn't already been acknowledged.
-            if (!purchase.isAcknowledged()) {
-                AcknowledgePurchaseParams acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.getPurchaseToken()).build();
-                billingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
-                    @Override
-                    public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
-                        premiumDialog.dismiss();
-                    }
-                });
-            }else{
-                premiumDialog.dismiss();
-            }
+    private void purchaseCompleted(){
+        Toast.makeText(activity,"Premium version unlock !",Toast.LENGTH_LONG).show();
+        isPremium = true;
+        if(premiumDialog!=null){
+            premiumDialog.dismiss();
         }
+        if(listener!=null){
+            listener.onPurchaseCompleted();
+        }
+    }
+
+    private void purchaseCanceled(){
+        Toast.makeText(activity,"Purchase canceled",Toast.LENGTH_LONG).show();
+        if(listener!=null){
+            listener.onPurchaseCanceled();
+        }
+    }
+
+    private void purchaseError(PurchasesError error){
+        Toast.makeText(activity,error.getMessage(),Toast.LENGTH_LONG).show();
+        if(listener!=null){
+            listener.onPurchaseError();
+        }
+    }
+
+    private void ToastGoogleBillingNotSupport(){
+        Toast.makeText(activity, "Google play billing service isn't supported", Toast.LENGTH_LONG).show();
     }
 }

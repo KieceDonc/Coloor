@@ -309,7 +309,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/piColorName"
             app:layout_constraintStart_toEndOf="@+id/piColorName"
             app:layout_constraintTop_toTopOf="@+id/piColorName"
-            app:srcCompat="@drawable/trash" />
+            app:srcCompat="@drawable/trash_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

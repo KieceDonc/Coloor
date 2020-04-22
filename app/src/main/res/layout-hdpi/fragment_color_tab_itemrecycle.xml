@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:elevation="8dp"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/itemMain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="77dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/itemMain" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/piExtend"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/palette_ir_extend_background"
+        android:paddingTop="5dp"
+        android:paddingBottom="16dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline">
+
+        <Spinner
+            android:id="@+id/piSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="24dp"
+            android:tint="@color/Theme1_Primary"
+            app:layout_constraintBottom_toBottomOf="@+id/piSpinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/piSpinner"
+            app:srcCompat="@drawable/gradient_icon" />
+
+        <include
+            android:id="@+id/piExtendGenerate0"
+            layout="@layout/fragment_colors_tab_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
+
+        <include
+            android:id="@+id/piExtendGenerate1"
+            layout="@layout/fragment_colors_tab_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
+
+        <include
+            android:id="@+id/piExtendGenerate2"
+            layout="@layout/fragment_colors_tab_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
+
+        <include
+            android:id="@+id/piExtendGenerate3"
+            layout="@layout/fragment_colors_tab_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate0" />
+
+        <include
+            android:id="@+id/piExtendGenerate4"
+            layout="@layout/fragment_colors_tab_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate1" />
+
+        <include
+            android:id="@+id/piExtendGenerate5"
+            layout="@layout/fragment_colors_tab_itemrecycle_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate2" />
+
+        <TextView
+            android:id="@+id/piExtendMoreInformation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/colors_tab_more_information"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" />
+
+        <TextView
+            android:id="@+id/piExtendMoreCreateGradient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/colors_tab_more_gradient_create"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toStartOf="@+id/piExtendMoreInformation"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" />
+
+        <TextView
+            android:id="@+id/piExtendMoreShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/colors_tab_more_share"
+            android:textColor="#000000"
+            android:visibility="gone"
+            app:layout_constraintEnd_toStartOf="@+id/piExtendMoreInformation"
+            app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" />
+
+        <!-- TODO implement this feature -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemMain"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/palette_ir_background"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/piColorPreview"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="8dp"
+            android:src="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/piColorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Black"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/piHSV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="120dp"
+            android:text="HSV : 255, 255, 255 "
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/piHex"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="@+id/piHex" />
+
+        <TextView
+            android:id="@+id/piRGB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="RGB : 255, 255, 255 "
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toBottomOf="@+id/piHex" />
+
+        <TextView
+            android:id="@+id/piHex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:text="Hexa : #000000 "
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toBottomOf="@+id/piColorName" />
+
+        <TextView
+            android:id="@+id/piMore"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:gravity="center"
+            android:text="@string/colors_tab_item_more"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/piGenerate0"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/piRGB"
+            app:layout_constraintStart_toStartOf="@+id/piHSV"
+            app:layout_constraintTop_toTopOf="@+id/piRGB" />
+
+        <View
+            android:id="@+id/piGenerate1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF202020"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate0"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0" />
+
+        <View
+            android:id="@+id/piGenerate2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF808080"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate1"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/piGenerate3"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF606060"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate2"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/piGenerate4"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FF404040"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate3"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <View
+            android:id="@+id/piGenerate5"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:background="#FFA0A0A0"
+            app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate4"
+            app:layout_constraintTop_toTopOf="@+id/piGenerate0"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/piTrash"
+            android:layout_width="20dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:tint="@color/Theme1_Accent"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorName"
+            app:layout_constraintStart_toEndOf="@+id/piColorName"
+            app:layout_constraintTop_toTopOf="@+id/piColorName"
+            app:srcCompat="@drawable/trash_icon" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

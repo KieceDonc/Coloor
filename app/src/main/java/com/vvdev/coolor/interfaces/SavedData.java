@@ -112,6 +112,32 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         }
     }
 
+    public static String getNormalPackageName(){
+        String toReturn ="";
+        toReturn+="c";
+        toReturn+="o";
+        toReturn+="m";
+        toReturn+=".";
+        toReturn+="v";
+        toReturn+="v";
+        toReturn+="d";
+        toReturn+="e";
+        toReturn+="v";
+        toReturn+=".";
+        toReturn+="c";
+        toReturn+="o";
+        toReturn+="l";
+        toReturn+="o";
+        toReturn+="r";
+        toReturn+="p";
+        toReturn+="i";
+        toReturn+="c";
+        toReturn+="k";
+        toReturn+="e";
+        toReturn+="r";
+        return toReturn;
+    }
+
     public ArrayList<ColorSpec> getShortedColors(){
         ArrayList<ColorSpec> colors = getColors();
         Collections.sort(colors, new Comparator<ColorSpec>() {

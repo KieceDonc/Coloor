@@ -74,7 +74,7 @@
         android:text="@string/gradients_tuto1"
         android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintStart_toStartOf="parent"

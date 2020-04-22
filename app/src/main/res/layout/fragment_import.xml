@@ -4,7 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/Theme1_DefaultBackground">
+
+    <com.github.clans.fab.FloatingActionButton
+        android:id="@+id/importTabABCirclePicker"
+        android:layout_width="@dimen/action_button"
+        android:layout_height="@dimen/action_button"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/icon_fab_pipette"
+        android:tintMode="src_over"
+        app:fab_colorNormal="@color/Theme1_Primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        fab:fab_colorPressed="#7f7f7f"
+        fab:fab_label="@string/colors_tab_pick_from_pixel" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineCenter"
@@ -57,7 +72,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/premium_badge" />
+            app:srcCompat="@drawable/icon_premium" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,6 +83,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:background="@drawable/import_rounded_corner"
+        android:elevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/importFile">
@@ -86,8 +102,8 @@
 
         <ImageView
             android:id="@+id/importInternetImg2"
-            android:layout_width="25dp"
-            android:layout_height="28dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginStart="16dp"
             android:tint="@color/Theme1_Secondary"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -173,6 +189,7 @@
         android:layout_width="20dp"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
+        android:elevation="1dp"
         android:tint="@color/Theme1_Secondary"
         app:layout_constraintBottom_toBottomOf="@+id/importInternet"
         app:layout_constraintEnd_toEndOf="@+id/importInternet"

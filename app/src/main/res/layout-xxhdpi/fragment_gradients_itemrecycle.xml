@@ -25,7 +25,7 @@
             android:id="@+id/gradients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             android:text="@string/alertdialog_gradient_toShades"
             android:textColor="@android:color/black"
@@ -37,7 +37,7 @@
             android:id="@+id/gradients2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:text="@string/alertdialog_gradient_toTints"
             android:textColor="@android:color/black"
             android:textSize="12sp"
@@ -72,14 +72,14 @@
 
         <ImageView
             android:id="@+id/gradientTrash"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
             android:layout_marginEnd="8dp"
             android:tint="@color/Theme1_Accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/trash" />
+            app:srcCompat="@drawable/trash_icon" />
 
         <include
             android:id="@+id/gradientIncludeBlack"

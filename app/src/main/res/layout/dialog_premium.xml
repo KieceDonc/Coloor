@@ -14,7 +14,7 @@
         android:tint="@color/Theme1_Premium"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/premium_badge" />
+        app:srcCompat="@drawable/icon_premium" />
 
     <TextView
         android:id="@+id/textView6"
@@ -126,7 +126,7 @@
         android:tint="@color/Theme1_Secondary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
-        app:srcCompat="@drawable/pipette_icon_icons_com_65005" />
+        app:srcCompat="@drawable/pipette" />
 
     <ImageView
         android:id="@+id/imageView10"

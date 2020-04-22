@@ -71,7 +71,7 @@
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/pipette_icon_icons_com_65005" />
+        app:srcCompat="@drawable/pipette" />
 
     <TextView
         android:id="@+id/textView"
@@ -82,7 +82,7 @@
         android:text="@string/colors_tab_tuto_circlepicker"
         android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -97,7 +97,7 @@
         android:text="@string/colors_tabs_tuto_import"
         android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintHorizontal_bias="0.0"
@@ -113,7 +113,7 @@
         android:text="The palette store your colors and unleash your creativity through her features"
         android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -123,17 +123,17 @@
         android:id="@+id/imageView3"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:srcCompat="@drawable/importimgvideo" />
+        app:srcCompat="@drawable/import_icon" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="48dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
@@ -149,7 +149,7 @@
         android:text="@string/colors_tab_tuto_gradients"
         android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
-        android:textSize="12sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView17"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintHorizontal_bias="0.0"
@@ -160,7 +160,7 @@
         android:id="@+id/imageView17"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="48dp"
         android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"

@@ -140,7 +140,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
 
                 CirclePickerService.circleStarted=true;
-                CirclePickerService.Instance.getInstance().setOnClickListenerOutsideButton(); // used to set on click listener the close button
+                CirclePickerService.Instance.get().setOnClickListenerOutsideButton(); // used to set on click listener the close button
             }
         }, 250);
         finish();

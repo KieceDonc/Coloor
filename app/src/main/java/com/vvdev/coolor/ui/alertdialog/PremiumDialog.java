@@ -20,6 +20,8 @@ import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.interfaces.PremiumHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,21 +35,18 @@ public class PremiumDialog extends Dialog {
     private ConstraintLayout wantToPurchase;
     private TextView priceTV;
 
-    public PremiumDialog(@NonNull Context context, final BillingClient billingClient, final List<SkuDetails> skuDetailsList, final Activity activity) {
+    public PremiumDialog(@NonNull Context context, final PremiumHandler premiumHandler) {
         super(context);
         setContentView(R.layout.dialog_premium);
 
         wantToPurchase = findViewById(R.id.premium_purchase);
         priceTV = findViewById(R.id.price);
 
-        priceTV.setText(skuDetailsList.get(0).getPrice());
+        priceTV.setText(premiumHandler.getPrice());
         wantToPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                BillingFlowParams flowParams = BillingFlowParams.newBuilder()
-                        .setSkuDetails(skuDetailsList.get(0))
-                        .build();
-                billingClient.launchBillingFlow(activity,flowParams);
+                premiumHandler.makePurchase();
             }
         });
     }

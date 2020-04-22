@@ -1,5 +1,8 @@
 package com.vvdev.coolor.fragment.TabHost;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +13,7 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.databinding.FragmentColorTabBinding;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.alertdialog.AddFromHex;
 import com.vvdev.coolor.ui.alertdialog.PickFromWheel;
@@ -27,7 +31,6 @@ public class ColorsTab extends Fragment {
 
     private final static String TAG = ColorsTab.class.getName();
 
-    private FloatingActionButton actionButtonCirclePicker;
     private FloatingActionButton actionButtonPickFromWheel;
     private FloatingActionButton actionButtonDeleteAll;
     private FloatingActionButton actionButtonAddColor;
@@ -45,18 +48,23 @@ public class ColorsTab extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_color_tab, container, false);
-        actionButtonCirclePicker = view.findViewById(R.id.ColorTabABCirclePicker);
-        actionMenu = view.findViewById(R.id.PaletteABMenu);
-        actionButtonPickFromWheel = view.findViewById(R.id.ColorTabABPickFromWheel);
-        actionButtonDeleteAll = view.findViewById(R.id.ColorTabABButtonDeleteAll);
-        actionButtonAddColor = view.findViewById(R.id.ColorTabABButtonAdd);
-        tutorial = view.findViewById(R.id.ColorTabTuto);
-        recyclerView = view.findViewById(R.id.pRecyclerView);
+        FragmentColorTabBinding binding = FragmentColorTabBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        //View view = inflater.inflate(R.layout.fragment_color_tab, container, false);
+        actionMenu = binding.PaletteABMenu;
+        actionButtonPickFromWheel = binding.ColorTabABPickFromWheel;
+        actionButtonDeleteAll = binding.ColorTabABButtonDeleteAll;
+        actionButtonAddColor = binding.ColorTabABButtonAdd;
+        tutorial = binding.ColorTabTuto.getRoot().findViewById(R.id.ColorTabTuto);
+        recyclerView = binding.pRecyclerView;
 
         setupPaletteRecycleView();
         setupActionButtonListener();
+
+        SavedData temp = SavedData.getInstance(getActivity());
+        if(temp.getColorsSize()>0){
+            showColors();
+        }
 
         return view;
     }
@@ -69,10 +77,6 @@ public class ColorsTab extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SavedData temp = SavedData.getInstance(getActivity());
-        if(temp.getColorsSize()>0){
-            showColors();
-        }
     }
 
     @Override
@@ -82,13 +86,6 @@ public class ColorsTab extends Fragment {
     }
 
     private void setupActionButtonListener(){
-
-        actionButtonCirclePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.startCirclePickerService(getContext());
-            }
-        });
         actionButtonPickFromWheel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,22 +157,10 @@ public class ColorsTab extends Fragment {
         this.colorsTabRVAdapter = colorsTabRVAdapter;
     }
 
-    private void doFragmentTransaction(Fragment fragment){
-        //switching fragment
-        if (fragment != null) {
-            String backStateName = fragment.getClass().getName();
-
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-            boolean fragmentPopped = manager.popBackStackImmediate (backStateName, 0); //https://stackoverflow.com/questions/18305945/how-to-resume-fragment-from-backstack-if-exists
-
-            if (!fragmentPopped){ //fragment not in back stack, create it.
-                getActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .addToBackStack(backStateName)
-                        .replace(R.id.nav_host_fragment, fragment)
-                        .commit();
-            }
-        }
+    private Drawable resizeToActionButton(Drawable image) {
+        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 50, 50, false);
+        return new BitmapDrawable(getResources(), bitmapResized);
     }
 
     public static class Instance{

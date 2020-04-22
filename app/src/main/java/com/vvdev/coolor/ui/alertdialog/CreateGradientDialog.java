@@ -63,13 +63,19 @@ public class CreateGradientDialog extends Dialog {
 
         userInput = findViewById(R.id.cgInputName);
 
+        final String userInputS = userInput.getText().toString();
+
         userInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(userInput.getTextColors().equals(activity.getResources().getColor(R.color.import_internet_url_text_error))){
                     userInput.setTextColor(Color.BLACK);
                     userInput.setText("");
-                }else if(userInput.getText().toString().equals(activity.getResources().getString(R.string.alertdialog_gradient_choose_name))){
+                }else if(userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_choose_name))
+                        ||
+                        userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_mustchoose_name))
+                        ||
+                        userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_name_alreadytaken))){
                     userInput.setText("");
                 }
             }

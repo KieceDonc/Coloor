@@ -32,8 +32,10 @@
         app:tabGravity="fill"
         app:tabIconTint="@color/Theme1_text"
         app:tabIndicatorColor="@color/Theme1_Secondary"
-        app:tabMode="fixed"
         app:tabInlineLabel="true"
+        app:tabMode="fixed"
+        app:tabPaddingEnd="6dp"
+        app:tabPaddingStart="6dp"
         app:tabSelectedTextColor="@color/Theme1_text"
         app:tabTextColor="@color/Theme1_text" />
 
@@ -79,6 +81,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/mail"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:tint="#ffffff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/email_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

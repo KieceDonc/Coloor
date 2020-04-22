@@ -16,7 +16,6 @@ import android.view.WindowManager;
 
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.CirclePickerActivityStart;
-import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.ScreenCapture;
 import com.vvdev.coolor.ui.customview.CirclePickerView;
 
@@ -102,7 +101,7 @@ public class CirclePickerService extends Service {
         String message = getApplicationContext().getString(R.string.service_waiting_permission);
 
 
-        Notification notification = notificationBuilder.setSmallIcon(R.drawable.pipette_icon_icons_com_65005)
+        Notification notification = notificationBuilder.setSmallIcon(R.drawable.pipette)
                 .setContentText(message)
                 .setSound(null)
                 .setVibrate(null)
@@ -256,7 +255,7 @@ public class CirclePickerService extends Service {
         }
 
 
-        public static CirclePickerService getInstance() {
+        public static CirclePickerService get() {
             return instance;
         }
     }

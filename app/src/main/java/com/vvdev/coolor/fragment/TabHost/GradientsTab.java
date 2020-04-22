@@ -11,6 +11,7 @@ import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.ColorSpec;
 import com.vvdev.coolor.interfaces.Gradients;
+import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.ui.adapter.GradientsRVAdapter;
 import com.vvdev.coolor.ui.alertdialog.PickFromWheel;
 import com.vvdev.coolor.ui.alertdialog.CreateGradientDialog;
@@ -116,7 +117,12 @@ public class GradientsTab extends Fragment {
         actionButtonAddPremium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.Instance.get().getPremiumHandler().showDialog(getActivity());
+                PremiumHandler premiumHandler = MainActivity.Instance.get().getPremiumHandler();
+                if(premiumHandler.isPremium()){
+
+                }else{
+                    premiumHandler.showPremiumDialog();
+                }
             }
         });
     }

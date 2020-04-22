@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.shockwave.**
+-keep class com.revenuecat.purchases.** { *; }

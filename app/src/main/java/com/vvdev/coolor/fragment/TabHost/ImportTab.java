@@ -14,6 +14,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.fragment.ImportFragment.Camera;
 import com.vvdev.coolor.fragment.ImportFragment.Files_IS;
 import com.vvdev.coolor.fragment.ImportFragment.PDF;
@@ -62,6 +63,7 @@ public class ImportTab extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.importPDF).setOnClickListener(this);     // set pdf rectangle on click listener
         view.findViewById(R.id.importInternet).setOnClickListener(this);// set internet rectangle on click listener
         view.findViewById(R.id.importInternet).setOnClickListener(this);
+        view.findViewById(R.id.importTabABCirclePicker).setOnClickListener(this);
     }
 
     @Override
@@ -107,6 +109,10 @@ public class ImportTab extends Fragment implements View.OnClickListener {
                 }else{
                     askReadAndWritePermissions(REQUEST_CODE_PERM_INTERNET);
                 }
+                break;
+            }
+            case R.id.importTabABCirclePicker:{
+                MainActivity.startCirclePickerService(getContext());
                 break;
             }
         }
@@ -238,8 +244,12 @@ public class ImportTab extends Fragment implements View.OnClickListener {
     }
 
     private void loadCamera(){
-        Camera cameraFragment= new Camera();
-        doFragmentTransaction(cameraFragment);
+        try{
+            Camera cameraFragment= new Camera();
+            doFragmentTransaction(cameraFragment);
+        }catch (RuntimeException ex){
+            Toast.makeText(getContext(),"Error while loading camera",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void loadFile(Uri path){

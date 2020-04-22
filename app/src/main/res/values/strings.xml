@@ -47,12 +47,12 @@
     <string name="colors_tab_tuto_title">How to start</string>
     <string name="colors_tab_tuto_circlepicker">This icon allow you to pick the color of any pixel on your screen</string>
     <string name="colors_tabs_tuto_import">The import menu permit you to pick a color from an image, video, pdf, camera or direct link to a file</string>
-    <string name="colors_tab_tuto_colors">The palette store your colors and unleash your creativity through her features</string>
+    <string name="colors_tab_tuto_colors">The color tabulation store your colors and unleash your creativity through her features</string>
     <string name="colors_tab_tuto_gradients">This menu let you handle and create custom gradients</string>
     <string name="colors_tab_pick_from_pixel">Pick from your phone pixels</string>
     <string name="colors_tab_pick_from_wheel">Pick from wheel</string>
     <string name="colors_tab_delete_all_color">Delete all colors</string>
-    <string name="colors_tab_add_hexa">Hexadecimal</string>
+    <string name="colors_tab_add_hexa" translatable="false">Hexadecimal</string>
     <string name="colors_tab_more_gradient">Gradient -</string>
     <string name="colors_tab_more_information">More information</string>
     <string name="colors_tab_more_gradient_create">Create a gradient</string>
@@ -61,8 +61,8 @@
 
     <string name="alertdialog_addcolor_add">Add</string>
 
-    <string name="alertdialog_pickwheel_cancel">Cancel</string>
-    <string name="alertdialog_pickwheel_ok">Ok</string>
+    <string name="alertdialog_pickwheel_cancel">Dismiss</string>
+    <string name="alertdialog_pickwheel_ok">Add</string>
 
     <string name="alertdialog_gradient_from">From :</string>
     <string name="alertdialog_gradient_toShades">Shades :</string>
@@ -80,10 +80,10 @@
     <string name="alertdialog_premium_whyyoushloud">Switching to the premium version will permit us to improve and release new features !</string>
     <string name="alertdialog_premium_title2">As a premium user you could :</string>
     <string name="alertdialog_premium_pdf">Work with pdf files</string>
-    <string name="alertdialog_premium_circle">Keep the circle outside the app</string>
+    <string name="alertdialog_premium_circle">Keep the pixel detector outside the app</string>
     <string name="alertdialog_premium_gradients">Use new gradients</string>
     <string name="alertdialog_premium_ads">Delete ads</string>
-    <string name="alertdialog_premium_life">To life</string>
+    <string name="alertdialog_premium_life">Lifetime</string>
 
     <string name="service_current_hexa">Current hexadecimal value</string>
     <string name="service_waiting_permission">Waiting for permission to be given</string>
@@ -96,7 +96,7 @@
     <string name="share_self_promo">- Sent from Coolor. An app for android</string>
 
     <string name="gradients_tuto_nograd">No gradients detected</string>
-    <string name="gradients_tuto1">Your custom gradient must have a name and an associated color. After creating it, choose a color in the colors tab, choose the gradient and you get a gradient from the selected color to the color of the gradient</string>
+    <string name="gradients_tuto1">"After creating your custom gradient, choose a color in the colors tab, and select your gradients. "</string>
 
     <string name="settings_user_experience">User experience</string>
     <string name="settings_circle">Modify circle picker color size</string>
