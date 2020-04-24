@@ -20,5 +20,6 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-keep class com.vvdev.coloor.services.CirclePickerService
 -keep class com.shockwave.**
--keep class com.revenuecat.purchases.** { *; }
+-keep class com.android.vending.billing.**

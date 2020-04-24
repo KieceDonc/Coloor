@@ -6,12 +6,20 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.PixelFormat;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 
 import com.vvdev.coolor.R;
@@ -27,18 +35,34 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+import static android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
+import static android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+import static com.vvdev.coolor.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
 import static com.vvdev.coolor.activity.CirclePickerActivityStart.wmCirclePickerView;
 
 public class CirclePickerService extends Service {
 
-    public static boolean waitingForResult = true;
-    public static boolean circleStarted = false;
+    public boolean waitingForResult = true;
+    public boolean circleStarted = false;
 
     private final static String TAG = CirclePickerService.class.getName();
     private final static String CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID = "Circle_picker_channel_id";
     private final static String INTENT_ACTION_STOP = "STOP";
     private final static String INTENT_ACTION_HIDE = "HIDE";
     private final static String INTENT_ACTION_SHOW = "SHOW";
+    private final static String INTENT_ACTION_START = "START";
+    private final static int NOTIFICATION_ID = 1;
+
+    private CirclePickerView bitmapUpdater;
+    private ImageView closeButton;
+    private ImageView saveButton;
+    private ImageView zoomInButton;
+    private ImageView zoomOutButton;
+
+
     private NotificationCompat.Builder notificationBuilder; // use to update hexa value, plz refer to https://stackoverflow.com/questions/14885368/update-text-of-notification-not-entire-notification
     private String oldHexValue; // need to save last hex value received so we can refresh notification when user clicked on hide / show
     private int isHideOrShow = 0 ; // 0 = hide, 1 = show
@@ -56,22 +80,17 @@ public class CirclePickerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(intent!=null){
-
-            if(intent.getAction()!=null&&intent.getAction().equals(INTENT_ACTION_STOP)){
+        if(intent!=null&&intent.getAction()!=null){
+            if(intent.getAction().equals(INTENT_ACTION_STOP)){
                 Log.i(TAG,"intent STOP detected");
                 stopService();
-            }else if(intent.getAction()!=null&&intent.getAction().equals(INTENT_ACTION_HIDE)){
+            }else if(intent.getAction().equals(INTENT_ACTION_HIDE)){
                 Log.i(TAG,"intent HIDE detected");
-                isHideOrShow=1;
-                wmCirclePickerView.setVisibility(View.GONE);
-                updateHexaValue(oldHexValue);
-            }else if(intent.getAction()!=null&&intent.getAction().equals(INTENT_ACTION_SHOW)){
+                hideCirclePicker();
+            }else if(intent.getAction().equals(INTENT_ACTION_SHOW)){
                 Log.i(TAG,"intent SHOW detected");
-                isHideOrShow=0;
-                wmCirclePickerView.setVisibility(View.VISIBLE);
-                updateHexaValue(oldHexValue);
-            }else{
+                showCirclePicker();
+            }else if(intent.getAction().equals(INTENT_ACTION_START)){
                 Instance.set(this);
                 startCirclePicker();
                 notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID );
@@ -80,6 +99,12 @@ public class CirclePickerService extends Service {
 
         }
         return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Instance.set(null);
     }
 
     private void notificationFirstBuild(){
@@ -109,7 +134,7 @@ public class CirclePickerService extends Service {
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .build();
 
-        startForeground(1, notification);
+        startForeground(NOTIFICATION_ID, notification);
     }
 
     /**
@@ -140,11 +165,12 @@ public class CirclePickerService extends Service {
     /**
      * used to set on click listener the close button of circle picker view
      */
-    public void setOnClickListenerOutsideButton(){
-        if(wmCirclePickerView!=null){
-            final CirclePickerView cpv = wmCirclePickerView.findViewById(R.id.CirclePicker);
+    public void setup(){
+        if(canWorkOnCPVView()){
+            bitmapUpdater = wmCirclePickerView.findViewById(R.id.CirclePicker);
 
-            wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton).setOnClickListener(new View.OnClickListener() {
+            closeButton = wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton);
+            closeButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i(TAG,"Close button pressed, stopping service");
@@ -152,40 +178,50 @@ public class CirclePickerService extends Service {
                 }
             });
 
-            wmCirclePickerView.findViewById(R.id.CirclePickerSave).setOnClickListener(new View.OnClickListener() {
+            saveButton = wmCirclePickerView.findViewById(R.id.CirclePickerSave);
+            saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i(TAG,"save button clicked");
-                    cpv.saveCurrentColor();
+                    bitmapUpdater.saveCurrentColor();
                 }
             });
 
-            wmCirclePickerView.findViewById(R.id.CirclePickerZoomIn).setOnClickListener(new View.OnClickListener() {
+            zoomInButton = wmCirclePickerView.findViewById(R.id.CirclePickerZoomIn);
+            zoomInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i(TAG,"zoom in button clicked");
-                    cpv.zoomIn();
+                    bitmapUpdater.zoomIn();
                 }
             });
 
-            wmCirclePickerView.findViewById(R.id.CirclePickerZoomOut).setOnClickListener(new View.OnClickListener() {
+            zoomOutButton =wmCirclePickerView.findViewById(R.id.CirclePickerZoomOut);
+            zoomOutButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.i(TAG,"zoom out button clicked");
-                    cpv.zoomOut();
+                    bitmapUpdater.zoomOut();
                 }
             });
-        }else{
-            throw new RuntimeException("Couldn't set outside circle picker view button on click listener because wmCirclePickerView is null");
         }
     }
 
+
     private void startCirclePicker() {
-        waitingForResult = true;
-        Intent startCirclePickerIntent = new Intent(this, CirclePickerActivityStart.class);
-        startCirclePickerIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startCirclePickerIntent);
-        setWaitingForResult();
+        try{
+            waitingForResult = true;
+            Intent startCirclePickerIntent = new Intent(this, CirclePickerActivityStart.class);
+            startCirclePickerIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+            setWaitingForResult();
+            startActivity(startCirclePickerIntent);
+        }catch (NullPointerException | IllegalStateException ex){
+            if(ex.getMessage().equals("Cannot start already started MediaProjection")){
+                Toast.makeText(getApplicationContext(),"MediaProjection api already running, please stop it",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(),"enable to start circle picker",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void setWaitingForResult(){
@@ -200,7 +236,7 @@ public class CirclePickerService extends Service {
                     t.cancel();
                 }
             }
-        }, 0, 500);
+        }, 0, 750);
     }
 
     private PendingIntent shareIntent(String hexaValue){ // get sharing intent to share the color name TODO need to fix share or check if it's work on other devices, on samsung it doesn't work
@@ -232,6 +268,50 @@ public class CirclePickerService extends Service {
         return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
     }
 
+    public void hideCirclePicker(){ // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
+        if(canWorkOnCPVView()){
+            isHideOrShow=1;
+            bitmapUpdater.setVisibility(INVISIBLE);
+            closeButton.setVisibility(INVISIBLE);
+            saveButton.setVisibility(INVISIBLE);
+            zoomOutButton.setVisibility(INVISIBLE);
+            zoomInButton.setVisibility(INVISIBLE);
+            updateHexaValue(oldHexValue);
+        }
+    }
+
+    public void showCirclePicker(){  // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
+        if(canWorkOnCPVView()){
+            isHideOrShow=0;
+            bitmapUpdater.setVisibility(VISIBLE);
+            closeButton.setVisibility(VISIBLE);
+            saveButton.setVisibility(VISIBLE);
+            zoomOutButton.setVisibility(VISIBLE);
+            zoomInButton.setVisibility(VISIBLE);
+            updateHexaValue(oldHexValue);
+        }
+    }
+
+    public boolean canWorkOnCPVView(){ // CPV = circle picker view
+        if(!waitingForResult){
+            if(wmCirclePickerView!=null){
+                if(wmCirclePickerView.isAttachedToWindow()){
+                    return true;
+                }
+            }
+        }else{
+            return true;
+        }
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() { // solve dimmed problems
+            @Override
+            public void run() {
+                stopService();
+            }
+        }, 50);
+        return false;
+    }
+
     public void stopService(){
         Log.i(TAG,"stopping service");
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
@@ -244,6 +324,7 @@ public class CirclePickerService extends Service {
         if(screenCapture!=null){
             screenCapture.stop();
         }
+        NotificationManagerCompat.from(this).cancel(NOTIFICATION_ID);
         stopForeground(true);
     }
 
@@ -257,6 +338,19 @@ public class CirclePickerService extends Service {
 
         public static CirclePickerService get() {
             return instance;
+        }
+    }
+
+    public static void start(Context context){
+        if(wmCirclePickerView==null&&!isCirclePickerActivityRunning&&Instance.get()==null){
+            Intent CirclePickerServiceIntent = new Intent(context, CirclePickerService.class);
+            CirclePickerServiceIntent.setAction(INTENT_ACTION_START);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(CirclePickerServiceIntent);
+            }else{
+                context.startService(CirclePickerServiceIntent);
+            }
+
         }
     }
 

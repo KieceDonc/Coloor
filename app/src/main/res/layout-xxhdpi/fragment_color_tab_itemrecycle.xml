@@ -306,6 +306,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="8dp"
+            android:contentDescription="Trash icon"
             android:tint="@color/Theme1_Accent"
             app:layout_constraintBottom_toBottomOf="@+id/piMore"
             app:layout_constraintEnd_toStartOf="@+id/piMore"

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
@@ -71,7 +72,11 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         handler.postDelayed(new Runnable() { // used to solve a bug
             @Override
             public void run() {
-                CirclePickerService.waitingForResult=false;
+                CirclePickerService cps = CirclePickerService.Instance.get();
+                if(cps!=null){
+                    cps.waitingForResult=false;
+                    cps.setup();// used to set on click listener the close button
+                }
                 isCirclePickerActivityRunning=false;
             }
         }, 300);
@@ -99,7 +104,11 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     }
 
     private void permissionNotGiven(){
-        CirclePickerService.circleStarted=false;
+        CirclePickerService cps = CirclePickerService.Instance.get();
+        if(cps!=null){
+            cps.circleStarted=false;
+            cps.setup();// used to set on click listener the close button
+        }
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -139,10 +148,13 @@ public class CirclePickerActivityStart extends AppCompatActivity {
 
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
 
-                CirclePickerService.circleStarted=true;
-                CirclePickerService.Instance.get().setOnClickListenerOutsideButton(); // used to set on click listener the close button
+                CirclePickerService cps = CirclePickerService.Instance.get();
+                if(cps!=null){
+                    cps.circleStarted=true;
+                    cps.setup();// used to set on click listener the close button
+                }
             }
-        }, 250);
+        }, 300);
         finish();
     }
 

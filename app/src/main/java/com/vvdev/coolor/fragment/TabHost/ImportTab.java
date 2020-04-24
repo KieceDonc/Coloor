@@ -19,6 +19,7 @@ import com.vvdev.coolor.fragment.ImportFragment.Camera;
 import com.vvdev.coolor.fragment.ImportFragment.Files_IS;
 import com.vvdev.coolor.fragment.ImportFragment.PDF;
 import com.vvdev.coolor.interfaces.FilesExtensionType;
+import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.alertdialog.DownloadFile;
 import com.vvdev.coolor.ui.alertdialog.DownloadInfo;
 
@@ -112,7 +113,7 @@ public class ImportTab extends Fragment implements View.OnClickListener {
                 break;
             }
             case R.id.importTabABCirclePicker:{
-                MainActivity.startCirclePickerService(getContext());
+                CirclePickerService.start(getContext());
                 break;
             }
         }

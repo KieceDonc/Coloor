@@ -370,8 +370,6 @@ public class CirclePickerView extends ImageView {
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
-        }else{
-            throw new RuntimeException("memory leak in CirclePickerView");
         }
     }
 

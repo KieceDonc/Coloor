@@ -982,8 +982,10 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         switch (view.getId()) {
             case R.id.getpicture: {
                 String rawHexValue = TVHexValue.getText().toString();
-                String hexValue = rawHexValue.substring(5);
-                SavedData.getInstance(getActivity()).addColor(hexValue);
+                if(rawHexValue.length()>5){
+                    String hexValue = rawHexValue.substring(5);
+                    SavedData.getInstance(getActivity()).addColor(hexValue);
+                }
                 break;
             }
             case R.id.SwitchCamera:{

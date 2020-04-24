@@ -21,6 +21,8 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     private String[] tints;
     private String[] tones;
     private String[] shades;
+    private String[] compound;
+    private String[] analogous;
 
     public ColorSpec(int[] rgb) {
         setRGB(rgb);
@@ -45,6 +47,8 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         setTints(ColorUtility.gradientApproximatelyGenerator(getHexa(),Gradient.getTintsValue(),6));
         setTriadic(ColorUtility.getTriadicFromRGB(getRGB()));
         setComplementary(ColorUtility.getComplementaryFromRGB(getRGB()));
+        setCompound(ColorUtility.getAnalogousFromRGB(getRGB()));
+        setAnalogous(ColorUtility.getCompoundFromRGB(getRGB()));
     }
 
     /**
@@ -143,6 +147,22 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
 
     public void setCielab(int[] cielab) {
         this.cielab = cielab;
+    }
+
+    public String[] getCompound() {
+        return compound;
+    }
+
+    public void setCompound(String[] compound) {
+        this.compound = compound;
+    }
+
+    public String[] getAnalogous() {
+        return analogous;
+    }
+
+    public void setAnalogous(String[] analogous) {
+        this.analogous = analogous;
     }
 
     public ArrayList<String[]> getAllGeneratedColors(){

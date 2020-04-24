@@ -72,9 +72,10 @@
 
         <ImageView
             android:id="@+id/gradientTrash"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="25dp"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
+            android:contentDescription="Trash icon"
             android:tint="@color/Theme1_Accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

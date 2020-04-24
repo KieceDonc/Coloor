@@ -7,6 +7,8 @@ import android.widget.ImageView;
 
 import com.vvdev.coolor.ui.customview.AutoFitTextureView;
 
+import java.util.Arrays;
+
 import static java.lang.Integer.parseInt;
 
 public class ColorUtility {
@@ -78,7 +80,7 @@ public class ColorUtility {
             }
         }
         return new int[]{moyRED/cmptPixel,moyGREEN/cmptPixel,moyBLUE/cmptPixel};
-    }
+   }
 
     public static int[] getRGBAverageFromBitmap(Bitmap mBitmap){
         int Height = mBitmap.getHeight();
@@ -193,6 +195,9 @@ public class ColorUtility {
     }
 
     public static int[] getCMYKFromRGB(int[] rgb){ // https://fr.wikipedia.org/wiki/Quadrichromie
+        if(rgb[0]==0&&rgb[1]==0&&rgb[2]==0){
+            return new int[]{0,0,0,100};
+        }
         double r = rgb[0];
         double g = rgb[1];
         double b = rgb[2];
@@ -221,6 +226,12 @@ public class ColorUtility {
 
     public static int[] getLABFromRGB(int[] RGB) {
         //http://www.brucelindbloom.com
+
+        if(RGB[0]==0&&RGB[1]==0&&RGB[2]==0){
+            return new int[]{0,0,0};
+        }else if(RGB[0]==255&&RGB[1]==255&&RGB[2]==255){
+            return new int[]{100,0,0};
+        }
 
         int R = RGB[0];
         int G = RGB[1];
@@ -296,19 +307,24 @@ public class ColorUtility {
      * Converts an HSL color value to RGB. Conversion formula
      * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
      */
-    public static int[] getRGBFromHSL(int hsl[]) {
-        float alpha=1f;
+    public static int[] getRGBFromHSL(int[] hsl) {
         float h = hsl[0];
         float s = hsl[1];
         float l = hsl[2];
         if (s < 0.0f || s > 100.0f) {
-            String message = "Color parameter outside of expected range - Saturation";
-            throw new IllegalArgumentException(message);
+            if(s>100.0f){
+                s=100.0f;
+            }else{
+                s=0.0f;
+            }
         }
 
         if (l < 0.0f || l > 100.0f) {
-            String message = "Color parameter outside of expected range - Luminance";
-            throw new IllegalArgumentException(message);
+            if(l>100.0f){
+                l=100.0f;
+            }else{
+                l=0.0f;
+            }
         }
 
         // Formula needs all values between 0 - 1.
@@ -320,10 +336,11 @@ public class ColorUtility {
 
         float q = 0;
 
-        if (l < 0.5)
+        if (l < 0.5){
             q = l * (1 + s);
-        else
+        }else {
             q = (l + s) - (s * l);
+        }
 
         float p = 2 * l - q;
 
@@ -331,9 +348,9 @@ public class ColorUtility {
         float g = Math.max(0, HueToRGB(p, q, h));
         float b = Math.max(0, HueToRGB(p, q, h - (1.0f / 3.0f)));
 
-        r = Math.min(r, 1.0f);
-        g = Math.min(g, 1.0f);
-        b = Math.min(b, 1.0f);
+        r = Math.min(r, 1.0f)*255;
+        g = Math.min(g, 1.0f)*255;
+        b = Math.min(b, 1.0f)*255;
 
         return new int[]{(int) r, (int) g, (int) b};
     }
@@ -412,9 +429,9 @@ public class ColorUtility {
 
     public static String[] getTriadicFromRGB(int[] RGB){
 
-        String[] triadic = new String[3];
-        int[] triadic1 = new int[3];
-        int[] triadic2 = new int[3];
+        String[] triadic = new String[6];
+        int[] triadic1 = new int[5];
+        int[] triadic2 = new int[5];
 
         triadic1[1]=RGB[0];
         triadic2[2]=RGB[0];
@@ -426,8 +443,10 @@ public class ColorUtility {
         triadic[0]=getHexFromRGB(RGB);
         triadic[1]=ColorUtility.getHexFromRGB(triadic1);
         triadic[2]=ColorUtility.getHexFromRGB(triadic2);
+        //triadic[3]=getHexFromRGB(lighter(lessSaturation(RGB,20),30));
+        //triadic[4]=getHexFromRGB(darker(moreSaturation(triadic2,20),30));
 
-        return  triadic;
+        return new String[]{triadic[3],triadic[0],triadic[2],triadic[1],triadic[4]};
     }
 
     public static String[] getComplementaryFromRGB(int RGB[]){
@@ -442,6 +461,101 @@ public class ColorUtility {
         complementary[1]=ColorUtility.getHexFromRGB(complementaryRGB);
         return complementary;
     }
+
+
+    public static String[] getCompoundFromRGB(int RGB[]){
+        int[] hslComplementary = getHslFromRGB(getRGBFromHex(getComplementaryFromRGB(RGB)[1]));
+
+        int[] hsl1 = new int[3];
+        hsl1[0]=35+hslComplementary[1];
+        if (hsl1[0] > 359) {
+            hsl1[0]-=359;
+        }
+        hsl1[1]=hslComplementary[1];
+        hsl1[2]=hslComplementary[2];
+
+        int[] hsl2 = new int[3];
+        hsl2[0]=35+hslComplementary[1];
+        if (hsl2[0] < 0) {
+            hsl1[0]+=359;
+        }
+        hsl2[1]=hslComplementary[1];
+        hsl2[2]=hslComplementary[2];
+
+        return new String[]{getHexFromRGB(RGB),getHexFromRGB(getRGBFromHSL(hsl1)),getHexFromRGB(getRGBFromHSL(hsl2))};
+    }
+
+    public static String[] getAnalogousFromRGB(int[] RGB){
+        int[] hsl0 = getHslFromRGB(RGB);
+
+        int[] hsl1 = new int[3];
+        hsl1[0]=35+hsl0[1];
+        if (hsl1[0] > 359) {
+            hsl1[0]-=359;
+        }
+        hsl1[1]=hsl0[1];
+        hsl1[2]=hsl0[2];
+
+        int[] hsl2 = new int[3];
+        hsl2[0]=35+hsl0[1];
+        if (hsl2[0] < 0) {
+            hsl1[0]+=359;
+        }
+        hsl2[1]=hsl0[1];
+        hsl2[2]=hsl0[2];
+
+        return new String[]{getHexFromRGB(RGB),getHexFromRGB(getRGBFromHSL(hsl1)),getHexFromRGB(getRGBFromHSL(hsl2))};
+    }
+
+    public static int[] lighter(int[] RGB,int HowMuchLighter){
+        int[] hsl = getHslFromRGB(RGB);
+        hsl[2]+=HowMuchLighter;
+        if(hsl[2]>100){
+            hsl[2]=100;
+        }
+        return getRGBFromHSL(hsl);
+    }
+
+    public static int[] darker(int[] RGB,int HowMuchDarker){
+        int[] hsl = getHslFromRGB(RGB);
+        hsl[2]-=HowMuchDarker;
+        if(hsl[2]<0){
+            hsl[2]=0;
+        }
+        return getRGBFromHSL(hsl);
+    }
+
+    public static int[] moreSaturation(int[] RGB,int HowMuchOfSat){
+        int[] hsl = getHslFromRGB(RGB);
+        hsl[1]+=HowMuchOfSat;
+        if(hsl[1]>100){
+            hsl[1]=100;
+        }
+        return getRGBFromHSL(hsl);
+    }
+
+    public static int[] lessSaturation(int[] RGB,int HowMuchOfSat){
+        int[] hsl = getHslFromRGB(RGB);
+        hsl[1]-=HowMuchOfSat;
+        if(hsl[1]<0){
+            hsl[1]=0;
+        }
+        return getRGBFromHSL(hsl);
+    }
+
+    /**
+     *   darker : function (n) {
+     *     var x, rgb, color;
+     *     x = (n / 100 || 0.1);
+     *     this.lightness -= x;
+     *     if (this.lightness < 0) {this.lightness = 0;}
+     *     rgb = hslToRgb(this.hue, this.sat, this.lightness);
+     *     color = colorObject(rgb, this.opacity, this.hue, this.sat);
+     *     this.attachValues(color);
+     *   },
+     */
+
+
 
     // view-source:https://www.w3schools.com/colors/trycolorwheel.js ( satLight )
 // https://www.w3schools.com/colors/colors_monochromatic.asp

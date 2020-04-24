@@ -301,6 +301,7 @@
             android:layout_width="20dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
+            android:contentDescription="Trash icon"
             android:tint="@color/Theme1_Accent"
             app:layout_constraintBottom_toBottomOf="@+id/piColorName"
             app:layout_constraintStart_toEndOf="@+id/piColorName"

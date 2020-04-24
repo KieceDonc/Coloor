@@ -31,42 +31,44 @@
 
     <TextView
         android:id="@+id/AddColorTvD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="104dp"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:gravity="center|center_horizontal"
         android:text="#"
+        android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/AddColorTv0"
         app:layout_constraintTop_toBottomOf="@+id/AddColorPreview" />
 
     <TextView
         android:id="@+id/AddColorTv0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="67dp"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:gravity="center|center_horizontal"
         android:text="0"
+        android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/AddColorTv1"
         app:layout_constraintTop_toTopOf="@+id/AddColorTvD" />
 
     <TextView
         android:id="@+id/AddColorTv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:gravity="center|center_horizontal"
         android:text="0"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/AddColorTv2"
         app:layout_constraintTop_toTopOf="@+id/AddColorTvD" />
 
     <TextView
         android:id="@+id/AddColorTv2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:gravity="center|center_horizontal"
         android:text="0"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="24sp"
@@ -76,35 +78,35 @@
 
     <TextView
         android:id="@+id/AddColorTv3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:gravity="center|center_horizontal"
         android:text="0"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/AddColorTv2"
         app:layout_constraintTop_toTopOf="@+id/AddColorTvD" />
 
     <TextView
         android:id="@+id/AddColorTv4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:gravity="center|center_horizontal"
         android:text="0"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/AddColorTv3"
         app:layout_constraintTop_toTopOf="@+id/AddColorTvD" />
 
     <TextView
         android:id="@+id/AddColorTv5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="106dp"
+        android:layout_width="35dp"
+        android:layout_height="48dp"
+        android:gravity="center|center_horizontal"
         android:text="0"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toEndOf="@+id/AddColorTv4"
         app:layout_constraintTop_toTopOf="@+id/AddColorTvD" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -130,12 +132,12 @@
         android:id="@+id/AddColor1"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:tag="buttonHexaCode"
         android:text="1"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/AddColorTv2" />
+        app:layout_constraintTop_toBottomOf="@+id/AddColorTv1" />
 
     <Button
         android:id="@+id/AddColor6"

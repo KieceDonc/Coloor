@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:elevation="8dp"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemMain"
+        android:layout_width="0dp"
+        android:layout_height="91dp"
+        android:background="@drawable/palette_ir_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/gradients6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/gradients_with_examples"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@+id/gradientName"
+            app:layout_constraintStart_toEndOf="@+id/gradientName" />
+
+        <TextView
+            android:id="@+id/gradients7"
+            android:layout_width="60dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:text="@string/gradients_item_not_own"
+            android:textAlignment="center"
+            android:textColor="@color/Theme1_TextBlack"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/gradientPremium"
+            app:layout_constraintEnd_toStartOf="@+id/gradientPremium"
+            app:layout_constraintTop_toTopOf="@+id/gradientPremium" />
+
+        <TextView
+            android:id="@+id/gradientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Black"
+            android:textAllCaps="false"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/gradientTrash"
+            android:layout_width="25dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Trash icon"
+            android:tint="@color/Theme1_Accent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/trash_icon" />
+
+        <ImageView
+            android:id="@+id/gradientPremium"
+            android:layout_width="35dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Trash icon"
+            android:tint="@color/Theme1_Premium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/gradientTrash"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/icon_premium" />
+
+        <include
+            android:id="@+id/generateToRed"
+            layout="@layout/gradient_generatedesult_premium_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gradientName" />
+
+        <include
+            android:id="@+id/generatedToBlue"
+            layout="@layout/gradient_generatedesult_premium_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/generateToRed" />
+
+        <include
+            android:id="@+id/generatedToGreen"
+            layout="@layout/gradient_generatedesult_premium_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/generateToRed"
+            app:layout_constraintStart_toEndOf="@+id/generateToRed"
+            app:layout_constraintTop_toTopOf="@+id/generateToRed" />
+
+        <include
+            android:id="@+id/generatedToOrange"
+            layout="@layout/gradient_generatedesult_premium_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/generatedToBlue"
+            app:layout_constraintTop_toBottomOf="@+id/generatedToGreen" />
+
+        <include
+            android:id="@+id/generatedToPurple"
+            layout="@layout/gradient_generatedesult_premium_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/generatedToGreen"
+            app:layout_constraintStart_toEndOf="@+id/generatedToGreen"
+            app:layout_constraintTop_toTopOf="@+id/generatedToGreen" />
+
+        <include
+            android:id="@+id/generatedToCyan"
+            layout="@layout/gradient_generatedesult_premium_20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toEndOf="@+id/generatedToOrange"
+            app:layout_constraintTop_toBottomOf="@+id/generatedToPurple" />
+
+        <View
+            android:id="@+id/premiumListener"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/gradientPremium"
+            app:layout_constraintStart_toStartOf="@+id/gradients7"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

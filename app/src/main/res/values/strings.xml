@@ -43,6 +43,8 @@
     <string name="ColorSpec_Tints">Tints</string>
     <string name="ColorSpec_Triadic">Triadic</string>
     <string name="ColorSpec_Complementary">Complementary</string>
+    <string name="ColorSpec_Compound">Compound</string>
+    <string name="ColorSpec_Analogous">Analogous</string>
 
     <string name="colors_tab_tuto_title">How to start</string>
     <string name="colors_tab_tuto_circlepicker">This icon allow you to pick the color of any pixel on your screen</string>
@@ -76,6 +78,10 @@
     <string name="alertdialog_internet_pause">Pause</string>
     <string name="alertdialog_internet_resume">Resume</string>
 
+    <string name="alertdialog_internet_info_title">You must have the file extension at the end of the url</string>
+    <string name="alertdialog_internet_info_desc">for example : image.com/myimg</string>
+    <string name="alertdialog_internet_info_png">.png</string>
+
     <string name="alertdialog_premium_title">Want to help us ?</string>
     <string name="alertdialog_premium_whyyoushloud">Switching to the premium version will permit us to improve and release new features !</string>
     <string name="alertdialog_premium_title2">As a premium user you could :</string>
@@ -84,6 +90,8 @@
     <string name="alertdialog_premium_gradients">Use new gradients</string>
     <string name="alertdialog_premium_ads">Delete ads</string>
     <string name="alertdialog_premium_life">Lifetime</string>
+
+    <string name="camera_before_updating_value">-</string>
 
     <string name="service_current_hexa">Current hexadecimal value</string>
     <string name="service_waiting_permission">Waiting for permission to be given</string>
@@ -97,6 +105,8 @@
 
     <string name="gradients_tuto_nograd">No gradients detected</string>
     <string name="gradients_tuto1">"After creating your custom gradient, choose a color in the colors tab, and select your gradients. "</string>
+    <string name="gradients_with_examples">with some examples</string>
+    <string name="gradients_item_not_own">Item not owned</string>
 
     <string name="settings_user_experience">User experience</string>
     <string name="settings_circle">Modify circle picker color size</string>
@@ -106,7 +116,7 @@
     <string name="settings_contact">Contact the support</string>
     <string name="settings_legacy">Legacy</string>
     <string name="settings_support_intenttitle">Send email</string>
-    <string name="settings_support_title">ColorPicker - Contact</string>
+    <string name="settings_support_title">Coloor - Contact</string>
 
     <string name="support_email" translatable="false">valentinverst.developer@gmail.com</string>
     <string name="settings_support_emailcontent">Here are some anonymous info. You can delete what ever you want but please understand it we will be much more easier to help you if you don\'t delete it</string>

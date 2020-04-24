@@ -15,7 +15,8 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/MoreIHexa"
@@ -26,7 +27,8 @@
         android:text="HEX : #000000"
         android:textColor="@color/Theme1_Zero"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/MoreIColorName" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIColorName"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/MoreIRGB"
@@ -37,7 +39,8 @@
         android:text="RGB : 0,0,0"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIHexa" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreIHexa"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/MoreIHSV"
@@ -48,7 +51,8 @@
         android:text="HSV : 0°, 0%, 0%"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIRGB" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreIRGB"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/MoreIHSL"
@@ -59,7 +63,8 @@
         android:text="HSL : 0°, 0% , 0%"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIHSV" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreIHSV"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/MoreICMYK"
@@ -70,7 +75,8 @@
         android:text="CMYK : 0°, 0%, 0%, 0%"
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreIHSL" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreIHSL"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/MoreICIELAB"
@@ -81,7 +87,8 @@
         android:text="CIE LAB : "
         android:textColor="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreICMYK" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreICMYK"
+        tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate0"

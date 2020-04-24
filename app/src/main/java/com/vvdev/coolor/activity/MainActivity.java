@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,12 +13,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.revenuecat.purchases.Purchases;
 import com.vvdev.coolor.BuildConfig;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.ActivityMainBinding;
@@ -68,13 +69,18 @@ public class MainActivity extends AppCompatActivity {
         Instance.set(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        Purchases.setDebugLogsEnabled(true);
-        Purchases.configure(this, "BLOCZLbOXzjIfVvpvHlUiUscMbcslGPn");
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                mFirebaseAnalytics = FirebaseAnalytics.getInstance(Instance.get());
+                premiumHandler = new PremiumHandler(Instance.get(),null);
 
-        if(Gradients.getInstance(this).getSavedGradients()==null){
-            Gradients.getInstance(this).firstSetup();
-        }
+
+                if(Gradients.getInstance(Instance.get()).getSavedGradients()==null){
+                    Gradients.getInstance(Instance.get()).firstSetup();
+                }
+            }
+        });
 
 
         tabLayout = binding.tabs;
@@ -117,20 +123,11 @@ public class MainActivity extends AppCompatActivity {
         ).attach();
 
         viewPager.setCurrentItem(1); // color tab position
-
-        try{
-            Glide.with(this).load(R.drawable.ic_launcher).into(appIcon);
-        }catch (RuntimeException ex){
-            Bundle error = new Bundle();
-            error.putString("MainActivity","AppIconDraw");
-            mFirebaseAnalytics.logEvent("Error",error);
-        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        premiumHandler = new PremiumHandler(this,null);
     }
 
     @Override
@@ -147,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        premiumHandler.releaseBp();
     }
 
     public Camera.setOnCameraLifeCycleListener getCameraListener(){
@@ -194,18 +192,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setVisibility(View.INVISIBLE);
         viewPager.setVisibility(View.INVISIBLE);
     }
-
-    public static void startCirclePickerService(Context context){
-        if(wmCirclePickerView==null&&!isCirclePickerActivityRunning){
-            Intent CirclePickerServiceIntent = new Intent(context, CirclePickerService.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(CirclePickerServiceIntent);
-            }else{
-                context.startService(CirclePickerServiceIntent);
-            }
-        }
-    }
-
 
     private String userAnonymousInfo(){
         String toReturn = "Android version : "+android.os.Build.VERSION.SDK_INT;

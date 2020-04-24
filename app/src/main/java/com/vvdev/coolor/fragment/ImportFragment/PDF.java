@@ -29,11 +29,9 @@ import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.activity.CirclePickerActivityStart;
 import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.services.CirclePickerService;
-import com.vvdev.coolor.ui.customview.CirclePickerView;
 import com.vvdev.coolor.ui.customview.PDFEditText;
 
 import androidx.annotation.NonNull;
@@ -56,7 +54,9 @@ public class PDF extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        hideCirclePicker();
+        if(!MainActivity.Instance.get().getPremiumHandler().isPremium()){
+            hideCirclePicker();
+        }
         View view = inflater.inflate(R.layout.import_pdf, container, false);
 
         String toCheck = getArguments().getString(KEY_ARGUMENT_PDF_PATH); // get data send, plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
@@ -71,7 +71,7 @@ public class PDF extends Fragment {
                 if(!premiumHandler.isPremium()){
                     premiumHandler.showPremiumDialog();
                 }else{
-                    MainActivity.startCirclePickerService(getContext());
+                    CirclePickerService.start(getContext());
                 }
             }
         });
@@ -255,16 +255,14 @@ public class PDF extends Fragment {
     }
 
     private void hideCirclePicker(){
-        View circlePicker = CirclePickerActivityStart.wmCirclePickerView;
-        if(circlePicker!=null){
-            circlePicker.setVisibility(View.GONE);
+        if(CirclePickerService.Instance.get()!=null){
+            CirclePickerService.Instance.get().hideCirclePicker();
         }
     }
 
     private void showIfShouldCirclePicker(){
-        View circlePicker = CirclePickerActivityStart.wmCirclePickerView;
-        if(circlePicker!=null){
-            circlePicker.setVisibility(View.GONE);
+        if(CirclePickerService.Instance.get()!=null){
+            CirclePickerService.Instance.get().showCirclePicker();
         }
     }
 

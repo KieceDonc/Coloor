@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <View
@@ -50,7 +50,7 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="300dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/colors_tab_tuto_title"
         android:textAlignment="center"
@@ -68,6 +68,7 @@
         android:layout_height="25dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:contentDescription="Circle picker icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:srcCompat="@drawable/pipette" />
@@ -138,6 +139,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="42dp"
+        android:contentDescription="Import tab icon"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
@@ -148,6 +150,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="42dp"
+        android:contentDescription="Colors tab icon"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
@@ -159,6 +162,7 @@
         android:layout_height="25dp"
         android:layout_marginTop="42dp"
         android:layout_marginBottom="32dp"
+        android:contentDescription="Gradients tab icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"

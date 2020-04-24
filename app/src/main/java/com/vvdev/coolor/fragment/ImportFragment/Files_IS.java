@@ -13,6 +13,7 @@ import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.FilesExtensionType;
+import com.vvdev.coolor.services.CirclePickerService;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -42,7 +43,7 @@ public class Files_IS extends Fragment {
         startCirclePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.startCirclePickerService(getContext());
+                CirclePickerService.start(getContext());
             }
         });
 

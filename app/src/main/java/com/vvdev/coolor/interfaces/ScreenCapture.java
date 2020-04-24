@@ -51,7 +51,12 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         this.mWindowWidth=mWindowWidth;
         this.mScreenDensity=mScreenDensity;
         createEnvironment();
-        mMediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, resultData);
+        try {
+            mMediaProjection = mMediaProjectionManager.getMediaProjection(resultCode, resultData);
+        }catch (IllegalStateException ex){
+            Log.e(TAG,"Usually this error happend when media projection already started. Current error :\n"+ex.getMessage());
+        }
+
     }
 
     private void createEnvironment() {

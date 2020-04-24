@@ -9,6 +9,8 @@ import java.util.ArrayList;
 public class Gradients {
 
     private Activity activity;
+    public static final int NUM_NATIVE_GRAD = 7; // number of total native gradients
+    public static final int NUM_PREMIUM_GRAD = 2; // number of premium gradients
 
     public Gradients(Activity activity){
         this.activity = activity;
@@ -21,6 +23,8 @@ public class Gradients {
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Tints),Gradient.getTintsValue()));
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Triadic),null));
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Complementary),null));
+        gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Compound),null));
+        gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Analogous),null));
         new SavedData(activity).saveGradients(gradients);
     }
 
@@ -80,7 +84,16 @@ public class Gradients {
     public ArrayList<Gradient> getAllCustom(){
         ArrayList<Gradient> gradients = getSavedGradients();
         ArrayList<Gradient> toReturn = new ArrayList<>();
-        for(int x=5;x<gradients.size();x++){
+        for(int x=NUM_NATIVE_GRAD;x<gradients.size();x++){
+            toReturn.add(gradients.get(x));
+        }
+        return toReturn;
+    }
+
+    public ArrayList<Gradient> getAllPremium(){
+        ArrayList<Gradient> gradients = getSavedGradients();
+        ArrayList<Gradient> toReturn = new ArrayList<>();
+        for(int x=(NUM_NATIVE_GRAD-NUM_PREMIUM_GRAD);x<gradients.size();x++){
             toReturn.add(gradients.get(x));
         }
         return toReturn;

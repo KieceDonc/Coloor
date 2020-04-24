@@ -18,11 +18,15 @@ import com.vvdev.coolor.interfaces.Gradients;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.MyViewHolderGradient> {
+import static com.vvdev.coolor.interfaces.Gradients.NUM_NATIVE_GRAD;
+import static com.vvdev.coolor.interfaces.Gradients.NUM_PREMIUM_GRAD;
+
+public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.CustomGradientViewHolder> {
 
     private static final String TAG = GradientsRVAdapter.class.getName();
 
@@ -31,6 +35,8 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
     private final Gradients gradients;
 
     private final setOnGradientDeleted listener;
+
+    private boolean premiumGradCanBeSetup = true;
 
     public interface setOnGradientDeleted{
         void onGradientDeleted();
@@ -41,22 +47,30 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
         this.recyclerView = recyclerView;
         this.gradients = Gradients.getInstance(activity);
         this.listener = listener;
+        if (gradients.getAllPremium().size() == NUM_PREMIUM_GRAD) {
+            premiumGradCanBeSetup = true;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return gradients.getAllCustom().size();
+        if(premiumGradCanBeSetup){
+            return gradients.getAllPremium().size()+gradients.getAllCustom().size();
+        }else{
+            return gradients.getAllCustom().size();
+        }
     }
 
+    @NonNull
     @Override
-    public MyViewHolderGradient onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CustomGradientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.fragment_gradients_itemrecycle, parent, false);
-        return new MyViewHolderGradient(view);
+        return new CustomGradientViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolderGradient holder, int position) {
+    public void onBindViewHolder(CustomGradientViewHolder holder, int position) {
         Gradient currentGradient = gradients.getAllCustom().get(position);
         holder.display(currentGradient);
     }
@@ -67,7 +81,7 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
         listener.onGradientDeleted();
     }
 
-    public class MyViewHolderGradient extends RecyclerView.ViewHolder {
+    public class CustomGradientViewHolder extends RecyclerView.ViewHolder {
 
         private Gradient currentGradient;
 
@@ -83,7 +97,7 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
 
         private boolean itemDeleted = false; // prevent a bug
 
-        public MyViewHolderGradient(final View itemView) {
+        public CustomGradientViewHolder(final View itemView) {
             super(itemView);
 
             colorPreview = itemView.findViewById(R.id.gradientColorPreview);
