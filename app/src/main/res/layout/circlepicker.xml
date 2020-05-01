@@ -28,6 +28,7 @@
         android:background="#FF2222"
         android:contentDescription="close button icon"
         android:tint="#FFFFFF"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@id/CirclePicker"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_delete" />
@@ -40,6 +41,7 @@
         android:contentDescription="save button icon"
         android:scaleType="fitCenter"
         android:tint="#FFFFFF"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/CirclePicker"
         app:srcCompat="@drawable/save" />
@@ -52,6 +54,7 @@
         android:contentDescription="Zoom in button icon"
         android:scaleType="center"
         android:tint="#FFFFFF"
+        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
@@ -64,6 +67,7 @@
         android:contentDescription="Zoom out button icon"
         android:scaleType="centerInside"
         android:tint="#FFFFFF"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/moins" />

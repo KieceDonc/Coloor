@@ -23,9 +23,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.vvdev.coolor.interfaces.Gradients.NUM_NATIVE_GRAD;
-import static com.vvdev.coolor.interfaces.Gradients.NUM_PREMIUM_GRAD;
-
 public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.CustomGradientViewHolder> {
 
     private static final String TAG = GradientsRVAdapter.class.getName();
@@ -36,8 +33,6 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
 
     private final setOnGradientDeleted listener;
 
-    private boolean premiumGradCanBeSetup = true;
-
     public interface setOnGradientDeleted{
         void onGradientDeleted();
     }
@@ -47,18 +42,11 @@ public class GradientsRVAdapter extends RecyclerView.Adapter<GradientsRVAdapter.
         this.recyclerView = recyclerView;
         this.gradients = Gradients.getInstance(activity);
         this.listener = listener;
-        if (gradients.getAllPremium().size() == NUM_PREMIUM_GRAD) {
-            premiumGradCanBeSetup = true;
-        }
     }
 
     @Override
     public int getItemCount() {
-        if(premiumGradCanBeSetup){
-            return gradients.getAllPremium().size()+gradients.getAllCustom().size();
-        }else{
-            return gradients.getAllCustom().size();
-        }
+        return gradients.getAllCustom().size();
     }
 
     @NonNull

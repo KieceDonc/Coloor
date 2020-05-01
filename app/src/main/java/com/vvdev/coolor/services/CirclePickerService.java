@@ -1,6 +1,7 @@
 package com.vvdev.coolor.services;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,15 +9,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,16 +34,10 @@ import androidx.core.app.NotificationManagerCompat;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
-import static android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-import static android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
 import static com.vvdev.coolor.activity.CirclePickerActivityStart.isCirclePickerActivityRunning;
 import static com.vvdev.coolor.activity.CirclePickerActivityStart.wmCirclePickerView;
 
 public class CirclePickerService extends Service {
-
-    public boolean waitingForResult = true;
-    public boolean circleStarted = false;
 
     private final static String TAG = CirclePickerService.class.getName();
     private final static String CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID = "Circle_picker_channel_id";
@@ -55,6 +46,8 @@ public class CirclePickerService extends Service {
     private final static String INTENT_ACTION_SHOW = "SHOW";
     private final static String INTENT_ACTION_START = "START";
     private final static int NOTIFICATION_ID = 1;
+
+    private Handler handler = new Handler();
 
     private CirclePickerView bitmapUpdater;
     private ImageView closeButton;
@@ -67,9 +60,22 @@ public class CirclePickerService extends Service {
     private String oldHexValue; // need to save last hex value received so we can refresh notification when user clicked on hide / show
     private int isHideOrShow = 0 ; // 0 = hide, 1 = show
 
+    /**
+     * Used to wait the result of CirclePickerActivityStart if user has gave the permission or not
+     */
+    public boolean waitingForResult = true;
+
+    /**
+     * The CirclePickerView has started ? true = yes, false = no
+     */
+    public boolean circleStarted = false;
+    //public boolean tryToStartCirclePicker = false; TODO to active premium version
+
     @Override
     public void onCreate() {
         super.onCreate();
+        notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID );
+        notificationFirstBuild();
     }
 
     @Nullable
@@ -92,9 +98,9 @@ public class CirclePickerService extends Service {
                 showCirclePicker();
             }else if(intent.getAction().equals(INTENT_ACTION_START)){
                 Instance.set(this);
-                startCirclePicker();
-                notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_CIRCLE_PICKER_NOTIFICATION_ID );
                 notificationFirstBuild();
+                //tryToStartCirclePicker=true;TODO to active premium version
+                startCirclePicker();
             }
 
         }
@@ -134,7 +140,7 @@ public class CirclePickerService extends Service {
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .build();
 
-        startForeground(NOTIFICATION_ID, notification);
+        startForeground(NOTIFICATION_ID,notification);
     }
 
     /**
@@ -159,7 +165,7 @@ public class CirclePickerService extends Service {
         }
         Notification notification = notificationBuilder.build();
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(1, notification);
+        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
     /**
@@ -230,8 +236,16 @@ public class CirclePickerService extends Service {
             @Override
             public void run() {
                 if(!waitingForResult){
+                    //tryToStartCirclePicker=false; TODO to active premium
                     if(!circleStarted){
                         stopService();
+                    }else{
+                        handler.post(new Runnable() { // replace runOnUiThread
+                            @Override
+                            public void run() {
+                                bitmapUpdater.readyToInit();
+                            }
+                        });
                     }
                     t.cancel();
                 }
@@ -250,7 +264,11 @@ public class CirclePickerService extends Service {
         return PendingIntent.getActivity(getApplicationContext(), 0, chooserIntent, 0);
     }
 
-    private PendingIntent stopIntent(){ // use to send a call in OnStartCommand
+    /**
+     * Used to send a stop call in OnStartCommand
+     * @return Pending intent to stop service
+     */
+    private PendingIntent stopIntent(){
         Intent mIntent = new Intent(getApplicationContext(), CirclePickerService.class);
         mIntent.setAction(INTENT_ACTION_STOP);
         return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
@@ -268,6 +286,10 @@ public class CirclePickerService extends Service {
         return PendingIntent.getService(getApplicationContext(), 0, mIntent, 0) ;
     }
 
+    /**
+     * Make invisible wmCirclePickerView
+     * You must use this method to hide this wmCirclePickerView also you will face a bug with MediaProjection API
+     */
     public void hideCirclePicker(){ // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
         if(canWorkOnCPVView()){
             isHideOrShow=1;
@@ -280,6 +302,10 @@ public class CirclePickerService extends Service {
         }
     }
 
+    /**
+     * Make visible wmCirclePickerView
+     * You must use this method to show this wmCirclePickerView also you will face a bug with MediaProjection API
+     */
     public void showCirclePicker(){  // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
         if(canWorkOnCPVView()){
             isHideOrShow=0;

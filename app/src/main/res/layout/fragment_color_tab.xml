@@ -57,17 +57,6 @@
             fab:menu_colorNormal="#000000" />
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/ColorTabABButtonDeleteAll"
-            android:layout_width="@dimen/action_button"
-            android:layout_height="@dimen/action_button"
-            android:src="@drawable/icon_fab_delete"
-            app:fab_colorNormal="@color/Theme1_Secondary"
-            app:fab_colorPressed="#7f7f7f"
-            app:fab_label="@string/colors_tab_delete_all_color"
-            app:fab_size="mini"
-            fab:menu_colorNormal="#000000" />
-
-        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/ColorTabABButtonAdd"
             android:layout_width="@dimen/action_button"
             android:layout_height="@dimen/action_button"
@@ -76,6 +65,17 @@
             app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
             app:fab_label="@string/colors_tab_add_hexa"
+            app:fab_size="mini"
+            fab:menu_colorNormal="#000000" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/ColorTabABButtonDeleteAll"
+            android:layout_width="@dimen/action_button"
+            android:layout_height="@dimen/action_button"
+            android:src="@drawable/icon_fab_delete"
+            app:fab_colorNormal="@color/Theme1_Secondary"
+            app:fab_colorPressed="#7f7f7f"
+            app:fab_label="@string/colors_tab_delete_all_color"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 

@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.databinding.FragmentColorTabBinding;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.alertdialog.AddFromHex;
@@ -23,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 

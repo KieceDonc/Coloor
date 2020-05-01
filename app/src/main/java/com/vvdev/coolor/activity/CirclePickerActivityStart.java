@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.PixelFormat;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
@@ -107,7 +106,6 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         CirclePickerService cps = CirclePickerService.Instance.get();
         if(cps!=null){
             cps.circleStarted=false;
-            cps.setup();// used to set on click listener the close button
         }
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
         finish();
@@ -142,9 +140,6 @@ public class CirclePickerActivityStart extends AppCompatActivity {
 
                 LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                 wmCirclePickerView = inflater.inflate(R.layout.circlepicker, null);
-
-                CirclePickerView cpv = wmCirclePickerView.findViewById(R.id.CirclePicker);
-                cpv.initWithCustomParams();
 
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
 

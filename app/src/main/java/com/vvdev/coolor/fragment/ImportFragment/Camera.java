@@ -1,4 +1,5 @@
 package com.vvdev.coolor.fragment.ImportFragment;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -45,6 +46,7 @@ import android.widget.Toast;
 
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.fragment.TabHost.ImportTab;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.customview.AutoFitTextureView;
@@ -475,6 +477,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MainActivity.Instance.get().showFragmentHost();
         return inflater.inflate(R.layout.fragment_camera, container, false);
     }
 
@@ -538,7 +541,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         HandlerCameraTop.removeCallbacks(RunnableCameraTop);
         super.onPause();
         lifeCycleListener.onFragmentPause();
-
+        MainActivity.Instance.get().showViewPager();
     }
 
     private void requestCameraPermission() {

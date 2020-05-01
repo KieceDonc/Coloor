@@ -7,8 +7,6 @@ import android.widget.ImageView;
 
 import com.vvdev.coolor.ui.customview.AutoFitTextureView;
 
-import java.util.Arrays;
-
 import static java.lang.Integer.parseInt;
 
 public class ColorUtility {
@@ -446,10 +444,10 @@ public class ColorUtility {
         //triadic[3]=getHexFromRGB(lighter(lessSaturation(RGB,20),30));
         //triadic[4]=getHexFromRGB(darker(moreSaturation(triadic2,20),30));
 
-        return new String[]{triadic[3],triadic[0],triadic[2],triadic[1],triadic[4]};
+        return new String[]{triadic[0],triadic[1],triadic[2]};
     }
 
-    public static String[] getComplementaryFromRGB(int RGB[]){
+    public static String[] getComplementaryFromRGB(int[] RGB){
         String[] complementary = new String[2];
         int[] complementaryRGB = new int[3];
 
@@ -463,11 +461,12 @@ public class ColorUtility {
     }
 
 
-    public static String[] getCompoundFromRGB(int RGB[]){
+    private final static int rota = 75;
+    public static String[] getCompoundFromRGB(int[] RGB){
         int[] hslComplementary = getHslFromRGB(getRGBFromHex(getComplementaryFromRGB(RGB)[1]));
 
         int[] hsl1 = new int[3];
-        hsl1[0]=35+hslComplementary[1];
+        hsl1[0]=rota+hslComplementary[0];
         if (hsl1[0] > 359) {
             hsl1[0]-=359;
         }
@@ -475,7 +474,7 @@ public class ColorUtility {
         hsl1[2]=hslComplementary[2];
 
         int[] hsl2 = new int[3];
-        hsl2[0]=35+hslComplementary[1];
+        hsl2[0]=-rota+hslComplementary[0];
         if (hsl2[0] < 0) {
             hsl1[0]+=359;
         }
@@ -489,7 +488,7 @@ public class ColorUtility {
         int[] hsl0 = getHslFromRGB(RGB);
 
         int[] hsl1 = new int[3];
-        hsl1[0]=35+hsl0[1];
+        hsl1[0]=rota+hsl0[0];
         if (hsl1[0] > 359) {
             hsl1[0]-=359;
         }
@@ -497,7 +496,7 @@ public class ColorUtility {
         hsl1[2]=hsl0[2];
 
         int[] hsl2 = new int[3];
-        hsl2[0]=35+hsl0[1];
+        hsl2[0]=-rota+hsl0[0];
         if (hsl2[0] < 0) {
             hsl1[0]+=359;
         }

@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.FragmentColorTabItemrecycleBinding;
 import com.vvdev.coolor.databinding.FragmentColorsTabItemrecycleExtendBinding;
 import com.vvdev.coolor.fragment.TabHost.ColorsTab;
@@ -26,6 +25,7 @@ import com.vvdev.coolor.ui.alertdialog.CreateGradientDialog;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,6 +48,7 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
         return new SavedData(activity).getColorsSize();
     }
 
+    @NonNull
     @Override
     public MyViewHolderPalette onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -147,6 +148,7 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
                         int position = getLayoutPosition();
                         savedData.removeColor(position);
                         ColorsTab.Instance.get().getActionMenu().showMenuButton(true);
+                        itemDeleted=false;
                     }
                 }
             });

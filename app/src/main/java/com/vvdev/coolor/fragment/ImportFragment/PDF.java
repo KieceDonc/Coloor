@@ -30,6 +30,7 @@ import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.fragment.TabHost.ImportTab;
 import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.customview.PDFEditText;
@@ -54,9 +55,11 @@ public class PDF extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        if(!MainActivity.Instance.get().getPremiumHandler().isPremium()){
+
+        MainActivity.Instance.get().showFragmentHost();
+        /*if(!MainActivity.Instance.get().getPremiumHandler().isPremium()){TODO to active premium version
             hideCirclePicker();
-        }
+        }*/
         View view = inflater.inflate(R.layout.import_pdf, container, false);
 
         String toCheck = getArguments().getString(KEY_ARGUMENT_PDF_PATH); // get data send, plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
@@ -67,12 +70,12 @@ public class PDF extends Fragment {
         startCirclePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PremiumHandler premiumHandler = MainActivity.Instance.get().getPremiumHandler();
+                /*PremiumHandler premiumHandler = MainActivity.Instance.get().getPremiumHandler();TODO to active premium version
                 if(!premiumHandler.isPremium()){
                     premiumHandler.showPremiumDialog();
-                }else{
+                }else{*/
                     CirclePickerService.start(getContext());
-                }
+                //}
             }
         });
         pdfView = view.findViewById(R.id.pdfView);
@@ -83,6 +86,12 @@ public class PDF extends Fragment {
         setupInputDesirePage();
 
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.Instance.get().showViewPager();
     }
 
     @Override
@@ -254,11 +263,11 @@ public class PDF extends Fragment {
         });
     }
 
-    private void hideCirclePicker(){
+    /*private void hideCirclePicker(){TODO to active premium version
         if(CirclePickerService.Instance.get()!=null){
             CirclePickerService.Instance.get().hideCirclePicker();
         }
-    }
+    }*/
 
     private void showIfShouldCirclePicker(){
         if(CirclePickerService.Instance.get()!=null){

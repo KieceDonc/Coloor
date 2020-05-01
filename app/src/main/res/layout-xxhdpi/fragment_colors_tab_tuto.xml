@@ -111,7 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="24dp"
-        android:text="The palette store your colors and unleash your creativity through her features"
+        android:text="@string/colors_tab_tuto_colors"
         android:textAlignment="center"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="16sp"

@@ -7,6 +7,52 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:background="@color/Theme1_DefaultBackground">
 
+    <!--
+        <View
+            android:id="@+id/backgroundAds"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/Theme1_TextBlack"
+            app:layout_constraintBottom_toBottomOf="@+id/view9"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            fab:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            fab:adSize="BANNER"
+            fab:adUnitId="ca-app-pub-2918880797074227/8872465469" />
+
+        <ImageView
+            android:id="@+id/deleteAdsListener"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:tint="#ffffff"
+            app:layout_constraintBottom_toBottomOf="@+id/adView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/adView"
+            app:layout_constraintTop_toTopOf="@+id/adView"
+            fab:srcCompat="@android:drawable/ic_delete" />
+
+
+        <View
+            android:id="@+id/view9"
+            android:layout_width="20dp"
+            android:layout_height="4dp"
+            app:layout_constraintTop_toBottomOf="@+id/adView"
+            fab:layout_constraintEnd_toEndOf="parent"
+            fab:layout_constraintStart_toStartOf="parent" />-->
+
     <com.github.clans.fab.FloatingActionButton
         android:id="@+id/importTabABCirclePicker"
         android:layout_width="@dimen/action_button"
@@ -28,6 +74,16 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
 
+    <View
+        android:id="@+id/importInternetListener"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/importInternet"
+        app:layout_constraintEnd_toStartOf="@+id/importIntentInfo"
+        app:layout_constraintStart_toStartOf="@+id/importInternet"
+        app:layout_constraintTop_toTopOf="@+id/importInternet" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/importPDF"
         android:layout_width="0dp"
@@ -47,7 +103,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="16dp"
             android:contentDescription="Pdf icon"
-            android:tint="@color/Theme1_Premium"
+            android:tint="@color/Theme1_Secondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -64,16 +120,6 @@
             app:layout_constraintStart_toEndOf="@+id/imageView7"
             app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
-        <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="16dp"
-            android:tint="@color/Theme1_Premium"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/icon_premium" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -86,6 +132,7 @@
         android:background="@drawable/import_rounded_corner"
         android:elevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/importFile">
 
@@ -200,5 +247,14 @@
         app:layout_constraintEnd_toEndOf="@+id/importInternet"
         app:layout_constraintTop_toTopOf="@+id/importInternet"
         app:srcCompat="@android:drawable/ic_dialog_info" />
+
+    <View
+        android:id="@+id/importInternetInfoListener"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/importIntentInfo"
+        app:layout_constraintEnd_toEndOf="@+id/importInternet"
+        app:layout_constraintStart_toEndOf="@+id/importInternetListener"
+        app:layout_constraintTop_toTopOf="@+id/importIntentInfo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

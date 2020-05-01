@@ -1,18 +1,18 @@
 package com.vvdev.coolor.fragment.ImportFragment;
 
+import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
-import com.vvdev.coolor.interfaces.FilesExtensionType;
+import com.vvdev.coolor.fragment.TabHost.ImportTab;
 import com.vvdev.coolor.services.CirclePickerService;
 
 import androidx.annotation.NonNull;
@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 public class Files_IS extends Fragment {
 
     public static final String KEY_ARGUMENT_FILES_PATH ="PathToAFile";
+
 
     private static String TAG = Files_IS.class.getName();
 
@@ -33,6 +34,8 @@ public class Files_IS extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        MainActivity.Instance.get().showFragmentHost();
+
         View view = inflater.inflate(R.layout.import_files, container, false);
         String toCheck = getArguments().getString(KEY_ARGUMENT_FILES_PATH);
         pathToFile = Uri.parse(toCheck);
@@ -47,27 +50,19 @@ public class Files_IS extends Fragment {
             }
         });
 
-        String fileExtension = FilesExtensionType.getFileExtension(getContext(),pathToFile);
-        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension); // get the type of the file*/
-        if(mimeType!=null){
-            if (mimeType.contains("image")) {
+        ContentResolver contentResolver = getContext().getContentResolver();
+        String type = contentResolver.getType(pathToFile);
+
+        if(type!=null){
+            if (type.contains("image")) {
                 //handle image
                 setupImg();
-            }else  if(mimeType.contains("video")) {
+            }else  if(type.contains("video")) {
                 //handle video
                 setupVid();
             }
         }else{
-            try{
-                setupImg();
-            }catch (Exception e1){
-                try {
-                    setupVid();
-                }catch (Exception e2){
-                    e1.printStackTrace();
-                    e2.printStackTrace();
-                }
-            }
+            setupImg();
         }
         return view;
     }
@@ -77,7 +72,13 @@ public class Files_IS extends Fragment {
 
     }
 
-    private void setupImg(){
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.Instance.get().showViewPager();
+    }
+
+    private void setupImg() {
         Vid.setVisibility(View.GONE);
         Img.setVisibility(View.VISIBLE);
 

@@ -1,23 +1,27 @@
 package com.vvdev.coolor.interfaces;
 
 import android.app.Activity;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.anjlab.android.iab.v3.BillingProcessor;
+/*import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.Constants;
 import com.anjlab.android.iab.v3.SkuDetails;
-import com.anjlab.android.iab.v3.TransactionDetails;
+import com.anjlab.android.iab.v3.TransactionDetails;*/
+import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.ui.alertdialog.PremiumDialog;
 
-public class PremiumHandler implements BillingProcessor.IBillingHandler {
+import java.util.ArrayList;
 
-    private setOnPurchaseListener listener;
+public class PremiumHandler /*implements BillingProcessor.IBillingHandler*/ {
+
+    private static ArrayList<setOnPurchaseListener> listenerList=new ArrayList<>();
 
     private PremiumHandler _this = this;
     private PremiumDialog premiumDialog;
 
-    private BillingProcessor bp;
+    //private BillingProcessor bp;
 
     private final Activity activity;
     private String productName="inapppurchasev1";
@@ -29,22 +33,18 @@ public class PremiumHandler implements BillingProcessor.IBillingHandler {
         void onPurchaseCompleted();
         void onPurchaseCanceled();
         void onPurchaseError();
+        void onPurchaseRestored();
     }
 
-    public PremiumHandler(Activity activity,setOnPurchaseListener listener){
+
+    public PremiumHandler(Activity activity) {
         this.activity = activity;
-        this.listener = listener;
-        setup();
-    }
-
-    private void setup(){
-        bp = new BillingProcessor(activity, "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjmmDHWbIXA3ZTgfFRQVUfx8XhrfYR2hyXMTsOO0prPlNvclwWPCAWsoCrvAd7PTaLntzNTQXjzNkYumRoj1BxzepiikTxYCpRLzy9LsqkuM6mDPvVVJsLifw0LIcK0qwe2/2A/IzDs59kUkzNyxzEAhpecDc3cTKYwWkYWFgQr0b/HI0IcQbAcXMD+mjDJoKn//yhSWIGxg5EeoZ4hJ+VboYrKeO6PnWeGGwOAJbgVfXuW7+9mPZwfaINVFtEPhMel1C8g400Q0/2MRRe3a3khEfaMht/uYYS7vUUwKL4FeRQ2V3/WBXNTCNi8O3eyzADtXI6DUL0H3LfTilLFZ1uQIDAQAB", this);
-        bp.initialize();
-        bp.loadOwnedPurchasesFromGoogle();
+        /*bp = new BillingProcessor(activity, "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjmmDHWbIXA3ZTgfFRQVUfx8XhrfYR2hyXMTsOO0prPlNvclwWPCAWsoCrvAd7PTaLntzNTQXjzNkYumRoj1BxzepiikTxYCpRLzy9LsqkuM6mDPvVVJsLifw0LIcK0qwe2/2A/IzDs59kUkzNyxzEAhpecDc3cTKYwWkYWFgQr0b/HI0IcQbAcXMD+mjDJoKn//yhSWIGxg5EeoZ4hJ+VboYrKeO6PnWeGGwOAJbgVfXuW7+9mPZwfaINVFtEPhMel1C8g400Q0/2MRRe3a3khEfaMht/uYYS7vUUwKL4FeRQ2V3/WBXNTCNi8O3eyzADtXI6DUL0H3LfTilLFZ1uQIDAQAB", this);
+        bp.initialize();*/
     }
 
 
-    @Override
+    /*@Override
     public void onProductPurchased(String productId, TransactionDetails details) {
         if(productId.equals(productName)){
             purchaseCompleted();
@@ -53,7 +53,6 @@ public class PremiumHandler implements BillingProcessor.IBillingHandler {
 
     @Override
     public void onPurchaseHistoryRestored() {
-
     }
 
     @Override
@@ -75,13 +74,30 @@ public class PremiumHandler implements BillingProcessor.IBillingHandler {
 
     @Override
     public void onBillingInitialized() {
+        if(bp.loadOwnedPurchasesFromGoogle()){
+            if(!isPremium()){
+                MainActivity.Instance.get().showGoToPro();
+                for(int x=0;x<listenerList.size();x++){
+                    setOnPurchaseListener currentListener = listenerList.get(x);
+                    if(currentListener!=null){
+                        currentListener.onPurchaseRestored();
+                    }
+                }
+            }
+        }
     }
 
     public boolean isPremium(){
+
         if(!isPremium){
             isPremium =  bp.isPurchased(productName);
         }
-        return isPremium;
+        return bp.isPurchased(productName);
+        return true;
+    }
+
+    public void googlePlayServiceError(){
+        isPremium=true;
     }
 
     public String getPrice(){
@@ -98,9 +114,10 @@ public class PremiumHandler implements BillingProcessor.IBillingHandler {
         }
     }
 
-    public void setListener(setOnPurchaseListener listener){
-        this.listener = listener;
+    public static void addListener(setOnPurchaseListener listener){
+        listenerList.add(listener);
     }
+
 
     public void makePurchase(){
         bp.purchase(activity, productName);
@@ -121,9 +138,13 @@ public class PremiumHandler implements BillingProcessor.IBillingHandler {
         if(premiumDialog!=null){
             premiumDialog.dismiss();
         }
-        if(listener!=null){
-            listener.onPurchaseCompleted();
+        for(int x=0;x<listenerList.size();x++){
+            setOnPurchaseListener currentListener = listenerList.get(x);
+            if(currentListener!=null){
+                currentListener.onPurchaseCompleted();
+            }
         }
+        MainActivity.Instance.get().hideGoToPro();
         bp.release();
     }
 
@@ -132,15 +153,22 @@ public class PremiumHandler implements BillingProcessor.IBillingHandler {
         if(premiumDialog!=null){
             premiumDialog.dismiss();
         }
-        if(listener!=null){
-            listener.onPurchaseCanceled();
+        for(int x=0;x<listenerList.size();x++){
+            setOnPurchaseListener currentListener = listenerList.get(x);
+            if(currentListener!=null){
+                currentListener.onPurchaseCanceled();
+            }
         }
+
     }
 
     private void purchaseError(String error){
         Toast.makeText(activity,error,Toast.LENGTH_LONG).show();
-        if(listener!=null){
-            listener.onPurchaseError();
+        for(int x=0;x<listenerList.size();x++){
+            setOnPurchaseListener currentListener = listenerList.get(x);
+            if(currentListener!=null){
+                currentListener.onPurchaseError();
+            }
         }
     }
 
@@ -152,6 +180,9 @@ public class PremiumHandler implements BillingProcessor.IBillingHandler {
         if (bp != null) {
             bp.release();
         }
-
     }
+
+    public boolean isInitialized(){
+        return bp.isInitialized();
+    }*/
 }

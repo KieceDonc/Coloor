@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "9975845633",
-    "firebase_url": "https://circlepicker.firebaseio.com",
-    "project_id": "circlepicker",
-    "storage_bucket": "circlepicker.appspot.com"
+    "project_number": "738247115837",
+    "firebase_url": "https://coloor-5413b.firebaseio.com",
+    "project_id": "coloor-5413b",
+    "storage_bucket": "coloor-5413b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:9975845633:android:f9cc038a73e8089906c100",
+        "mobilesdk_app_id": "1:738247115837:android:5a75bd6681548d52aa9654",
         "android_client_info": {
           "package_name": "com.vvdev.colorpicker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "9975845633-b57gp3t2efiabvmtk8lhh8dljvpbtt8e.apps.googleusercontent.com",
+          "client_id": "738247115837-9cms0fkge2itf5gigcjoprkqk8rma8hq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vvdev.colorpicker",
+            "certificate_hash": "200b68b8e345d4c49f6c34866abaca17f590f6c9"
+          }
+        },
+        {
+          "client_id": "738247115837-qnm35e43eq5a5765ic63m1ne074vsmk4.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAftYNhfFrCUt5gn50GACMMQc9O0Q-4GiQ"
+          "current_key": "AIzaSyAtf0fBvlKdhF38YmgT1q-7IAID8ukVRiw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "9975845633-b57gp3t2efiabvmtk8lhh8dljvpbtt8e.apps.googleusercontent.com",
+              "client_id": "738247115837-qnm35e43eq5a5765ic63m1ne074vsmk4.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -90,15 +90,6 @@ public class Gradients {
         return toReturn;
     }
 
-    public ArrayList<Gradient> getAllPremium(){
-        ArrayList<Gradient> gradients = getSavedGradients();
-        ArrayList<Gradient> toReturn = new ArrayList<>();
-        for(int x=(NUM_NATIVE_GRAD-NUM_PREMIUM_GRAD);x<gradients.size();x++){
-            toReturn.add(gradients.get(x));
-        }
-        return toReturn;
-    }
-
     public int size(){
         ArrayList<Gradient> gradients = getSavedGradients();
         if(gradients==null){

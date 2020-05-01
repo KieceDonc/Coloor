@@ -98,6 +98,22 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/email_icon" />
 
+        <ImageView
+            android:id="@+id/pro"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="14dp"
+            android:contentDescription="Support icon"
+            android:tint="#ffffff"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/mail"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/icon_fab_premium" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.fragment.app.FragmentContainerView

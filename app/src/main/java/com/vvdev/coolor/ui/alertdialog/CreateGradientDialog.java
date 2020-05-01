@@ -63,19 +63,13 @@ public class CreateGradientDialog extends Dialog {
 
         userInput = findViewById(R.id.cgInputName);
 
-        final String userInputS = userInput.getText().toString();
-
         userInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(userInput.getTextColors().equals(activity.getResources().getColor(R.color.import_internet_url_text_error))){
                     userInput.setTextColor(Color.BLACK);
                     userInput.setText("");
-                }else if(userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_choose_name))
-                        ||
-                        userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_mustchoose_name))
-                        ||
-                        userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_name_alreadytaken))){
+                }else if(userInputHaveForbiddenString()){
                     userInput.setText("");
                 }
             }
@@ -172,7 +166,7 @@ public class CreateGradientDialog extends Dialog {
     private String canBeSave(){
         String stringUserInput = userInput.getText().toString();
         if(Gradients.getInstance(activity).size()>0){
-            if(stringUserInput.length()>0&&!stringUserInput.equals((activity.getResources().getString(R.string.alertdialog_gradient_choose_name)))){
+            if(stringUserInput.length()>0&&!userInputHaveForbiddenString()){
                 if(Gradients.getInstance(activity).getGradientValueByName(stringUserInput)==null){
                     return null;
                 }else{
@@ -184,6 +178,15 @@ public class CreateGradientDialog extends Dialog {
         }else{
             return null;
         }
+    }
+
+    private boolean userInputHaveForbiddenString(){
+        final String userInputS = userInput.getText().toString();
+        return(userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_choose_name))
+                ||
+                userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_mustchoose_name))
+                ||
+                userInputS.equals(activity.getResources().getString(R.string.alertdialog_gradient_name_alreadytaken)));
     }
 
     public void updateSpinnersViewInAdapter(){

@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:text="@string/alertdialog_premium_gradients"
+        android:text="@string/alertdialog_premium_ads"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="14sp"
         android:textStyle="italic"
@@ -139,7 +139,7 @@
         android:tint="@color/Theme1_Secondary"
         app:layout_constraintStart_toStartOf="@+id/imageView9"
         app:layout_constraintTop_toBottomOf="@+id/imageView9"
-        app:srcCompat="@drawable/gradient_icon" />
+        app:srcCompat="@drawable/icon_ads_off" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/premium_purchase"

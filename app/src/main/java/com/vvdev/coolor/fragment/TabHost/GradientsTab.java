@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.databinding.FragmentColorTabBinding;
+import com.vvdev.coolor.databinding.FragmentGradientsBinding;
 import com.vvdev.coolor.interfaces.ColorSpec;
 import com.vvdev.coolor.interfaces.Gradients;
-import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.ui.adapter.GradientsRVAdapter;
 import com.vvdev.coolor.ui.alertdialog.PickFromWheel;
 import com.vvdev.coolor.ui.alertdialog.CreateGradientDialog;
@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class GradientsTab extends Fragment {
 
     private FloatingActionButton actionButtonDeleteAll;
-    private FloatingActionButton actionButtonAddPremium;
     private FloatingActionButton actionButtonAddFromColor;
 
     private RecyclerView recyclerView;
@@ -40,25 +39,26 @@ public class GradientsTab extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_gradients, container, false);
-    }
+        FragmentGradientsBinding binding = FragmentGradientsBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        actionButtonDeleteAll = binding.GradientsABButtonDeleteAll;
+        actionButtonAddFromColor = binding.GradientsABButtonAddFromColor;
 
-        actionButtonDeleteAll = view.findViewById(R.id.GradientsABButtonDeleteAll);
-        actionButtonAddPremium = view.findViewById(R.id.GradientsABAddFromPremium);
-        actionButtonAddFromColor = view.findViewById(R.id.GradientsABButtonAddFromColor);
-
-        recyclerView = view.findViewById(R.id.gradientsRV);
-        tuto = view.findViewById(R.id.gradientsTuto);
+        recyclerView = binding.gradientsRV;
+        tuto = (ConstraintLayout)binding.gradientsTuto.getRoot();
 
         if(Gradients.getInstance(getActivity()).getAllCustom().size()>0){
             setupGradientsRecycleView();
         }
 
         setupActionButtonListener();
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -111,18 +111,6 @@ public class GradientsTab extends Fragment {
                 });
 
                 pickFromWheel.show();
-            }
-        });
-
-        actionButtonAddPremium.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PremiumHandler premiumHandler = MainActivity.Instance.get().getPremiumHandler();
-                if(premiumHandler.isPremium()){
-
-                }else{
-                    premiumHandler.showPremiumDialog();
-                }
             }
         });
     }

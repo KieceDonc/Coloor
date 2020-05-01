@@ -1,29 +1,40 @@
 package com.vvdev.coolor.fragment.TabHost;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Toast;
 
+/*import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;TODO to active premium version
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;*/
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.activity.MainActivity;
+import com.vvdev.coolor.databinding.FragmentImportBinding;
 import com.vvdev.coolor.fragment.ImportFragment.Camera;
 import com.vvdev.coolor.fragment.ImportFragment.Files_IS;
 import com.vvdev.coolor.fragment.ImportFragment.PDF;
-import com.vvdev.coolor.interfaces.FilesExtensionType;
 import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.alertdialog.DownloadFile;
 import com.vvdev.coolor.ui.alertdialog.DownloadInfo;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 import androidx.annotation.NonNull;
 
@@ -46,6 +57,10 @@ public class ImportTab extends Fragment implements View.OnClickListener {
     private static final int REQUEST_CODE_PERM_FILES = 567;
     private static final int REQUEST_CODE_PERM_INTERNET = 568;
 
+    /*private AdView mAdView;
+    private View backgroundAds;TODO to active premium version
+    private View adsDeleteListener;*/
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,17 +69,49 @@ public class ImportTab extends Fragment implements View.OnClickListener {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState){
-        return inflater.inflate(R.layout.fragment_import, container, false);
+        FragmentImportBinding binding = FragmentImportBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+        binding.importCamera.setOnClickListener(this);  // set camera rectangle on click listener
+        binding.importFile.setOnClickListener(this);    // set file rectangle on click listener
+        binding.importPDF.setOnClickListener(this);     // set pdf rectangle on click listener
+        binding.importInternetInfoListener.setOnClickListener(this);// set internet rectangle on click listener
+        binding.importInternetListener.setOnClickListener(this);
+        binding.importTabABCirclePicker.setOnClickListener(this);
+        /*adsDeleteListener = binding.deleteAdsListener;TODO to active premium version
+        adsDeleteListener.setOnClickListener(this);
+        backgroundAds = binding.backgroundAds;
+        mAdView = binding.adView;
+        hideAds();
+        if(MainActivity.Instance.get().getPremiumHandler().isInitialized()){
+            setupAds();
+        }else{
+            PremiumHandler.addListener(new PremiumHandler.setOnPurchaseListener() {
+                @Override
+                public void onPurchaseCompleted() {
+                    hideAds();
+                }
+
+                @Override
+                public void onPurchaseCanceled() {
+
+                }
+
+                @Override
+                public void onPurchaseError() {
+
+                }
+
+                @Override
+                public void onPurchaseRestored() {
+                    setupAds();
+                }
+            });
+        }*/
+        return view;
     }
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
-        view.findViewById(R.id.importCamera).setOnClickListener(this);  // set camera rectangle on click listener
-        view.findViewById(R.id.importFile).setOnClickListener(this);    // set file rectangle on click listener
-        view.findViewById(R.id.importPDF).setOnClickListener(this);     // set pdf rectangle on click listener
-        view.findViewById(R.id.importInternet).setOnClickListener(this);// set internet rectangle on click listener
-        view.findViewById(R.id.importInternet).setOnClickListener(this);
-        view.findViewById(R.id.importTabABCirclePicker).setOnClickListener(this);
     }
 
     @Override
@@ -74,49 +121,54 @@ public class ImportTab extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.importIntentInfo:{
-                DownloadInfo downloadInfo = new DownloadInfo(getContext());
+        switch (v.getId()) {
+            case R.id.importInternetInfoListener: {
+                DownloadInfo downloadInfo = new DownloadInfo(getActivity());
                 downloadInfo.show();
                 break;
             }
-            case R.id.importPDF:{
-                if(isWriteAndWritePermissionGiven()){
+            case R.id.importPDF: {
+                if (isWriteAndWritePermissionGiven()) {
                     choosePDF();
-                }else{
+                } else {
                     askReadAndWritePermissions(REQUEST_CODE_PERM_PDF);
                 }
                 break;
             }
-            case R.id.importCamera:{
-                if(isReadPermissionGiven()){
+            case R.id.importCamera: {
+                if (isReadPermissionGiven()) {
                     loadCamera();
-                }else {
+                } else {
                     askCameraPermission(REQUEST_CODE_PERM_CAMERA);
                 }
                 break;
             }
-            case R.id.importFile:{
-                if(isWriteAndWritePermissionGiven()){
+            case R.id.importFile: {
+                if (isWriteAndWritePermissionGiven()) {
                     chooseFile();
-                }else{
+                } else {
                     askReadAndWritePermissions(REQUEST_CODE_PERM_FILES);
                 }
                 break;
             }
-            case R.id.importInternet:{
-                if(isWriteAndWritePermissionGiven()){
+            case R.id.importInternetListener: {
+                if (isWriteAndWritePermissionGiven()) {
                     chooseInternet();
-                }else{
+                } else {
                     askReadAndWritePermissions(REQUEST_CODE_PERM_INTERNET);
                 }
                 break;
             }
-            case R.id.importTabABCirclePicker:{
+            case R.id.importTabABCirclePicker: {
                 CirclePickerService.start(getContext());
                 break;
             }
         }
+        /*case R.id.deleteAdsListener:{
+            MainActivity.Instance.get().getPremiumHandler().showPremiumDialog();TODO to active premium version
+            break;
+            }
+        }*/
     }
 
     @Override
@@ -210,25 +262,28 @@ public class ImportTab extends Fragment implements View.OnClickListener {
     }
 
     private void chooseInternet(){
-        final Context c = getContext();
-        new DownloadFile(getContext(), getActivity(), new DownloadFile.setOnListener() {
+        final Context context = getContext();
+        final Activity activity = (Activity)context;
+        new DownloadFile(context, activity, new DownloadFile.setOnListener() {
             @Override
             public void onFileDownloaded(String filePath) {
 
             File downloadedFile = new File(filePath); // we get the file downloaded
             Uri uriDownloadedFile = Uri.fromFile(downloadedFile); // we get his uri
 
-            String extension = FilesExtensionType.getFileExtension(getContext(),uriDownloadedFile); // string extension of downloaded file
-            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension); // get the type of the file
-            if(mimeType!=null) {
-                if (mimeType.contains("image") || mimeType.contains("video")) {
+            ContentResolver contentResolver = context.getContentResolver();
+            String type = contentResolver.getType(uriDownloadedFile);
+
+            if(type!=null){
+                if (type.contains("image") || type.contains("video")) {
                     loadFile(uriDownloadedFile);
-                } else if (mimeType.contains("pdf")){
+                } else if (type.contains("pdf")){
                     loadPDF(uriDownloadedFile);
                 }
+            }else if(checkIsImage(context,uriDownloadedFile)){
+                loadFile(uriDownloadedFile);
             }else{
-                Log.e("Import","onFileDownloaded extension error\nFile path : "+filePath+"\nExtension : "+extension+"\nMimeType : null of course");
-                Toast.makeText(c,getActivity().getResources().getString(R.string.import_error_file),Toast.LENGTH_LONG).show();
+                invalidFileExtension();
             }
         }
         }).show();
@@ -281,6 +336,10 @@ public class ImportTab extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void invalidFileExtension(){
+        Toast.makeText(getContext(),getActivity().getResources().getString(R.string.import_error_file),Toast.LENGTH_LONG).show();
+    }
+
     private void askReadAndWritePermissions(int requestCode){
         requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE}, requestCode);
     }
@@ -303,5 +362,85 @@ public class ImportTab extends Fragment implements View.OnClickListener {
         return ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA ) == PackageManager.PERMISSION_GRANTED;
     }
 
+    public static boolean checkIsImage(Context context, Uri uri) {
+        ContentResolver contentResolver = context.getContentResolver();
+        // try to decode as image (bounds only)
+        InputStream inputStream = null;
+        try {
+            inputStream = contentResolver.openInputStream(uri);
+            if (inputStream != null) {
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                BitmapFactory.decodeStream(inputStream, null, options);
+                return options.outWidth > 0 && options.outHeight > 0;
+            }
+        } catch (IOException e) {
+            // ignore
+        } finally {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                FileUtils.closeQuietly(inputStream);
+            }
+        }
+
+        // default outcome if image not confirmed
+        return false;
+    }
+
+    /*public void setupAds(){TODO to active premium version
+        if(!MainActivity.Instance.get().getPremiumHandler().isPremium()){
+            MobileAds.initialize(getActivity(), new OnInitializationCompleteListener() {
+                @Override
+                public void onInitializationComplete(InitializationStatus initializationStatus) {
+                    AdRequest adRequest = new AdRequest.Builder().build();
+                    mAdView.loadAd(adRequest);
+                    mAdView.setAdListener(new AdListener() {
+                        @Override
+                        public void onAdLoaded() {
+                            showAds();
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(int errorCode) {
+                            hideAds();
+                        }
+
+                        @Override
+                        public void onAdOpened() {
+                            // Code to be executed when an ad opens an overlay that
+                            // covers the screen.
+                        }
+
+                        @Override
+                        public void onAdClicked() {
+                            // Code to be executed when the user clicks on an ad.
+                        }
+
+                        @Override
+                        public void onAdLeftApplication() {
+                            // Code to be executed when the user has left the app.
+                        }
+
+                        @Override
+                        public void onAdClosed() {
+                            // Code to be executed when the user is about to return
+                            // to the app after tapping on an ad.
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    private void showAds(){
+        backgroundAds.setVisibility(View.VISIBLE);
+        adsDeleteListener.setVisibility(View.VISIBLE);
+        mAdView.setVisibility(View.VISIBLE);
+    }
+
+    private void hideAds(){
+        backgroundAds.setVisibility(View.GONE);
+        adsDeleteListener.setVisibility(View.GONE);
+        mAdView.setVisibility(View.GONE);
+    }*/
 
 }

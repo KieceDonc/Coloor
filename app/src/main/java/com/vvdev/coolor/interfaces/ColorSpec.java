@@ -171,7 +171,9 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
                 getTones(),
                 getTints(),
                 getTriadic(),
-                getComplementary()));
+                getComplementary(),
+                getCompound(),
+                getAnalogous()));
         if(MainActivity.Instance.get()!=null){
             ArrayList<Gradient> customGradients = Gradients.getInstance(MainActivity.Instance.get()).getAllCustom();
             for(int x=0;x<customGradients.size();x++){

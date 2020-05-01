@@ -1,6 +1,5 @@
 package com.vvdev.coolor.ui.customview;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -29,7 +28,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.interfaces.ScreenCapture;
@@ -39,8 +37,7 @@ import static android.content.Context.WINDOW_SERVICE;
 import static com.vvdev.coolor.activity.CirclePickerActivityStart.wmCirclePickerParams;
 import static com.vvdev.coolor.activity.CirclePickerActivityStart.wmCirclePickerView;
 
-@SuppressLint("AppCompatCustomView")
-public class CirclePickerView extends ImageView {
+public class CirclePickerView extends androidx.appcompat.widget.AppCompatImageView implements View.OnTouchListener,ScaleGestureDetector.OnScaleGestureListener {
 
     private static final String TAG = CirclePickerView.class.getName();
 
@@ -48,15 +45,14 @@ public class CirclePickerView extends ImageView {
     private ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
         @Override
         public void onScreenCaptureSuccess(Bitmap bitmap) {
-
             mScreenBitmap = bitmap;
-            makeVisible();
+            CirclePickerService.Instance.get().showCirclePicker();
             inUpdateFinalBitmap=false;
 
             ((Activity) getContext()).runOnUiThread(new Runnable() { // use to solve a bug
                 @Override
                 public void run() {
-                    setupFinalBitmap();
+                    updateFinalBitmap();
                 }
             });
         }
@@ -67,15 +63,23 @@ public class CirclePickerView extends ImageView {
         }
     };
 
-    private ImageView closeButton;
-    private ImageView saveButton;
-    private ImageView zoomInButton;
-    private ImageView zoomOutButton;
+    private ScaleGestureDetector gestureScale;
 
     private BitmapShader mBitmapShader;
 
+    /**
+     * mFinalBitmap represent mScreenBitmap with black border added
+     */
     private Bitmap mFinalBitmap;
+
+    /**
+     * mScreenBitmap represent the bitmap screenshot of the device
+     */
     private Bitmap mScreenBitmap;
+
+    /**
+     * mBitmap present the bitmap inside the circle
+     */
     private Bitmap mBitmap;
 
     private Path mBorderCircle;
@@ -92,6 +96,7 @@ public class CirclePickerView extends ImageView {
 
     private Rect mBorderColorNameRect = new Rect();
     private Rect mBorderColorHexRect = new Rect();
+
 
     private String mColorName="";
     private String mColorHexa="";
@@ -112,11 +117,18 @@ public class CirclePickerView extends ImageView {
     private int mBorderColor;
     private int mMiddleLineStrokeWidth=3;
     private int mMiddleLineSize=convertDpToPx(10);
-    private int cmptErrorNullPointerException = 0; // used to prevent infinite loop in OnDraw
+
+    private int numFinger = 0;  // use to decked circle picker teleports bug
+    private int recViewLastX;
+    private int recViewLastY;
+    private int recViewFirstX;
+    private int recViewFirstY;
 
     private boolean mReady;
     private boolean mSetupPending=true;
     private boolean inUpdateFinalBitmap;
+    private boolean startInCircleArea=false;// use to continue moving even if user isn't in touchable area
+    private boolean zeroFingerSinceScale = true; // use to decked circle picker teleports bug
 
 
     public CirclePickerView(Context context) {
@@ -141,39 +153,33 @@ public class CirclePickerView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if (mBitmap == null) {
-            updateFinalBitmap();
-            return;
-        }
-
-        if(mBorderColor==Color.TRANSPARENT){
-            setup();
-        }
-
-        try {
-            canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
-            canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
-
-            canvas.drawTextOnPath(mColorName, mBorderCircle, mPositionBorderColorName, mBorderWidthDp, mBorderPaintText);
-            canvas.drawTextOnPath(mColorHexa, mBorderCircle, mPositionBorderHex, mBorderWidthDp, mBorderPaintText);
-
-            canvas.drawLine(mDrawableRect.centerX()-mMiddleLineSize,mDrawableRect.centerY(),mDrawableRect.centerX()+mMiddleLineSize,mDrawableRect.centerY(),mMiddleLinePaint);
-            canvas.drawLine(mDrawableRect.centerX(),mDrawableRect.centerY()-mMiddleLineSize,mDrawableRect.centerX(),mDrawableRect.centerY()+mMiddleLineSize,mMiddleLinePaint);
-        }catch (NullPointerException e){
-            if(cmptErrorNullPointerException==6){
-                throw new RuntimeException("OnDraw cmpt error NullPointerExeception = 6. It's too much");
+        if (mBitmap != null) {
+            if(mBorderColor==Color.TRANSPARENT){
+                setup();
             }
-            cmptErrorNullPointerException++;
-            e.printStackTrace();
-            init();
+
+            try {
+                canvas.drawCircle(mDrawableRect.centerX(), mDrawableRect.centerY(), mDrawableRadius, mBitmapPaint);
+                canvas.drawCircle(mBorderRect.centerX(), mBorderRect.centerY(), mBorderRadius, mBorderPaint);
+
+                canvas.drawTextOnPath(mColorName, mBorderCircle, mPositionBorderColorName, mBorderWidthDp, mBorderPaintText);
+                canvas.drawTextOnPath(mColorHexa, mBorderCircle, mPositionBorderHex, mBorderWidthDp, mBorderPaintText);
+
+                canvas.drawLine(mDrawableRect.centerX()-mMiddleLineSize,mDrawableRect.centerY(),mDrawableRect.centerX()+mMiddleLineSize,mDrawableRect.centerY(),mMiddleLinePaint);
+                canvas.drawLine(mDrawableRect.centerX(),mDrawableRect.centerY()-mMiddleLineSize,mDrawableRect.centerX(),mDrawableRect.centerY()+mMiddleLineSize,mMiddleLinePaint);
+            }catch (NullPointerException e){
+                e.printStackTrace();
+                init();
+            }
         }
+
     }
 
     private void init() {
         mReady=true;
     }
 
-    public void initWithCustomParams(){
+    public void readyToInit(){
         if (mSetupPending) {
             Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
             Point size = new Point();
@@ -183,19 +189,17 @@ public class CirclePickerView extends ImageView {
 
             DisplayMetrics metrics = new DisplayMetrics();
             display.getMetrics(metrics);
+
             ScreenCapture.Instance.set(new ScreenCapture(mPhoneHeight,mPhoneWidth,metrics.densityDpi));
             mScreenCapture = ScreenCapture.Instance.get();
             mScreenCapture.setCaptureListener(mCaptureListener);
 
-            closeButton = wmCirclePickerView.findViewById(R.id.CirclePickerCloseButton);
-            saveButton = wmCirclePickerView.findViewById(R.id.CirclePickerSave);
-            zoomInButton = wmCirclePickerView.findViewById(R.id.CirclePickerZoomIn);
-            zoomOutButton = wmCirclePickerView.findViewById(R.id.CirclePickerZoomOut);
-
-            updateFinalBitmap();
+            updateScreenBitmap();
 
             setup();
-            new CirclePickerView.UserInteractionHandler(getContext(), this); // used to set on listener circle picker interaction
+
+            gestureScale = new ScaleGestureDetector(getContext(), this);
+            setOnTouchListener(this); // used to set on listener circle picker interaction
             mSetupPending = false;
         }
     }
@@ -211,7 +215,7 @@ public class CirclePickerView extends ImageView {
         }
 
         if (mBitmap == null) {
-            updateFinalBitmap();
+            updateScreenBitmap();
             return;
         }
 
@@ -258,7 +262,6 @@ public class CirclePickerView extends ImageView {
         mBorderPaintText.setStyle(Paint.Style.FILL_AND_STROKE);
         mBorderPaintText.setColor(ColorUtility.pickTextColorBasedOnBackgroundColor(mBorderColor));
         mBorderPaintText.setTextSize(mBorderWidthPx);
-        //TODO put it in init()
 
         mBorderPaintText.getTextBounds(mColorName,0,mColorName.length(),mBorderColorNameRect);
         mBorderPaintText.getTextBounds(mColorHexa,0,mColorHexa.length(),mBorderColorHexRect);
@@ -268,7 +271,6 @@ public class CirclePickerView extends ImageView {
 
         updateShaderMatrix();
         invalidate();
-
     }
 
     private RectF calculateBounds() {
@@ -310,10 +312,10 @@ public class CirclePickerView extends ImageView {
     /**
      * Start the update of phone bitmap
      */
-    public void updateFinalBitmap(){
+    public void updateScreenBitmap(){
         if(!inUpdateFinalBitmap) {
             inUpdateFinalBitmap=true;
-            makeInvisible();
+            CirclePickerService.Instance.get().hideCirclePicker();
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() { // we delay by XXXXX ms to prevent circle picker view to capturing her self too much
                 public void run() {
@@ -326,7 +328,7 @@ public class CirclePickerView extends ImageView {
     /**
      * We get ScreenCapture bitmap and we create black border in mFinalBitmap so user can move to border
      */
-    private void setupFinalBitmap(){
+    private void updateFinalBitmap(){
         mFinalBitmap = Bitmap.createBitmap(mScreenBitmap.getWidth()+getWidth(), mScreenBitmap.getHeight()+getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas=new Canvas(mFinalBitmap);
         canvas.drawColor(Color.BLACK);
@@ -334,16 +336,15 @@ public class CirclePickerView extends ImageView {
         int top = getHeight()/2;
         canvas.drawBitmap(mScreenBitmap, left, top, null);
 
-        showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
-
+        update_mBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
     }
 
     /**
-     * update the circle picker bitmap
+     * update mBitmap
      * @param wmX
      * @param wmY
      */
-    private void showPickerBitmap(int wmX,int wmY){
+    private void update_mBitmap(int wmX,int wmY){
         if(mFinalBitmap!=null){
             int DesireXLocationOnScreen=mFinalBitmap.getWidth()/2+wmX-getWidth()/2;
             int DesireYLocationOnScreen=mFinalBitmap.getHeight()/2+wmY-getHeight()/2;
@@ -358,10 +359,13 @@ public class CirclePickerView extends ImageView {
             mBitmap = Bitmap.createBitmap(mFinalBitmap, DesireXLocationOnScreen+DesireX, DesireYLocationOnScreen+DesireY,DesireWidth,DesireHeight, matrix, true);
             setup();
         }else{
-            updateFinalBitmap();
+            updateScreenBitmap();
         }
     }
 
+    /**
+     * Update the hexadecimal value inside the notification
+     */
     private void updateNotificationHex(){
         CirclePickerService service = CirclePickerService.Instance.get();
         if(service!=null){
@@ -386,7 +390,7 @@ public class CirclePickerView extends ImageView {
         }
 
         scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
-        showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
+        update_mBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
     }
 
     public void zoomOut(){
@@ -396,228 +400,150 @@ public class CirclePickerView extends ImageView {
             scaleFactor+=0.025;
         }
         scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
-        showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
+        update_mBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
     }
 
-    private void makeInvisible(){ // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
-        this.setVisibility(INVISIBLE);
-        closeButton.setVisibility(INVISIBLE);
-        saveButton.setVisibility(INVISIBLE);
-        zoomOutButton.setVisibility(INVISIBLE);
-        zoomInButton.setVisibility(INVISIBLE);
+    @Override
+    public boolean onScale(ScaleGestureDetector detector) {
+        float detectorScaleFactor = detector.getScaleFactor();
+        if(detectorScaleFactor>1){ // inverse zoom - in / zoom -out
+            detectorScaleFactor=1-(detectorScaleFactor-1);
+        }else{
+            detectorScaleFactor=1+(1-detectorScaleFactor);
+        }
+        scaleFactor*=detectorScaleFactor;
+        scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
+        update_mBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
+        zeroFingerSinceScale=false;
+        return true;
     }
 
-    private void makeVisible(){ // used to avoid wmCirclePickerView.setVisibility(INVISIBLE) who's creating bugs
-        this.setVisibility(VISIBLE);
-        closeButton.setVisibility(VISIBLE);
-        saveButton.setVisibility(VISIBLE);
-        zoomOutButton.setVisibility(VISIBLE);
-        zoomInButton.setVisibility(VISIBLE);
+    @Override
+    public boolean onScaleBegin(ScaleGestureDetector detector) {
+        return false;
     }
 
-    private class UserInteractionHandler implements OnTouchListener, GestureDetector.OnGestureListener, GestureDetector.OnDoubleTapListener, ScaleGestureDetector.OnScaleGestureListener, OnDragListener {
+    @Override
+    public void onScaleEnd(ScaleGestureDetector detector) {
 
-        private GestureDetector gesture;
-        private ScaleGestureDetector gestureScale;
-        private boolean startInCircleArea=false;// use to continue moving even if user isn't in touchable area
-        private boolean zeroFingerSinceScale = true; // use to decked circle picker teleports bug
-        private int numFinger = 0;  // use to decked circle picker teleports bug
+    }
 
-        public UserInteractionHandler(Context c, View v){ // v always equals to circle picker view
-            gesture = new GestureDetector(c, this);
-            gestureScale = new ScaleGestureDetector(c, this);
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        gestureScale.onTouchEvent(event);
 
-            v.setOnTouchListener(this);
-            v.setOnDragListener(this);
-        }
-
-
-        @Override
-        public boolean onScale(ScaleGestureDetector detector) {
-            float detectorScaleFactor = detector.getScaleFactor();
-            if(detectorScaleFactor>1){ // inverse zoom - in / zoom -out
-                detectorScaleFactor=1-(detectorScaleFactor-1);
-            }else{
-                detectorScaleFactor=1+(1-detectorScaleFactor);
+        numFinger=event.getPointerCount();  // use to decked circle picker teleports bug
+        if(event.getAction()==MotionEvent.ACTION_DOWN||numFinger>0){ // use to continue moving even if user isn't in touchable area
+            if(inTouchableArea(event)){
+                startInCircleArea=true;
             }
-            scaleFactor*=detectorScaleFactor;
-            scaleFactor = Math.max(0.01f, Math.min(0.50,scaleFactor));
-            showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
-            zeroFingerSinceScale=false;
-            return true;
         }
+        onTouchEvent(event);
 
-        @Override
-        public boolean onScaleBegin(ScaleGestureDetector detector) {
-            return true;
-        }
-
-        @Override
-        public void onScaleEnd(ScaleGestureDetector detector) {
-        }
-
-        @Override
-        public boolean onDown(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public void onShowPress(MotionEvent e) {
-
-        }
-
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent event1, MotionEvent event2, float x, float y) {
-            return true;
-        }
-
-        @Override
-        public void onLongPress(MotionEvent e) {
-        }
-
-        @Override
-        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-            return false;
-        }
-
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
-            return false;
-        }
-
-        @Override
-        public boolean onDoubleTapEvent(MotionEvent e) {
-            return false;
-        }
-
-        int recViewLastX;
-        int recViewLastY;
-        int recViewFirstX;
-        int recViewFirstY;
-
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
-            gesture.onTouchEvent(event);
-            gestureScale.onTouchEvent(event);
-
-            numFinger=event.getPointerCount();  // use to decked circle picker teleports bug
-            if(event.getAction()==MotionEvent.ACTION_DOWN||numFinger>0){ // use to continue moving even if user isn't in touchable area
-                if(inTouchableArea(event.getX(),event.getY())){
-                    startInCircleArea=true;
-                }
+        if(event.getAction()==MotionEvent.ACTION_UP){  // use to decked circle picker teleports bug
+            numFinger--;
+            if(numFinger==0){// use to stop moving even if user isn't in touchable area
+                startInCircleArea=false;
             }
-            onTouchEvent(event);
-
-            if(event.getAction()==MotionEvent.ACTION_UP){  // use to decked circle picker teleports bug
-                numFinger--;
-                if(numFinger==0){// use to stop moving even if user isn't in touchable area
-                    startInCircleArea=false;
-                }
-                if(numFinger==0&&!zeroFingerSinceScale){
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            zeroFingerSinceScale=true;
-                        }
-                    }, 100);
-                }
+            if(numFinger==0&&!zeroFingerSinceScale){
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        zeroFingerSinceScale=true;
+                    }
+                }, 100);
             }
+        }
 
-            if(allowToMove(event)){
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN: {
+        if(allowToMove(event)){
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
 
-                        updateFinalBitmap();
+                    updateScreenBitmap();
+                    recViewLastX = (int) event.getRawX();
+                    recViewLastY = (int) event.getRawY();
+                    recViewFirstX = recViewLastX;
+                    recViewFirstY = recViewLastY;
+                    break;
+                }
+                case MotionEvent.ACTION_UP:{
+
+                    performClick();
+
+                }
+                case MotionEvent.ACTION_MOVE: {
+
+                    if (event.getPointerCount() == 1){
+
+                        int deltaX = (int) event.getRawX() - recViewLastX;
+                        int deltaY = (int) event.getRawY() - recViewLastY;
                         recViewLastX = (int) event.getRawX();
                         recViewLastY = (int) event.getRawY();
-                        recViewFirstX = recViewLastX;
-                        recViewFirstY = recViewLastY;
+                        wmCirclePickerParams.x += deltaX;
+                        wmCirclePickerParams.y += deltaY;
+
+                        int maxWidth = mFinalBitmap.getWidth()/2-(mFinalBitmap.getWidth()/2-mScreenBitmap.getWidth()/2);
+
+                        int toDeductY=mMiddleLineStrokeWidth;
+                        int toDeductX = mBorderWidthPx+mMiddleLineStrokeWidth*2;
+
+                        if(wmCirclePickerParams.x<(-1*maxWidth+toDeductX)){
+                            wmCirclePickerParams.x=(-1*maxWidth+toDeductX);
+                        }else if(wmCirclePickerParams.x>maxWidth-toDeductX){
+                            wmCirclePickerParams.x=maxWidth-toDeductX;
+                        }
+
+                        int maxHeight = mFinalBitmap.getHeight()/2-(mFinalBitmap.getHeight()/2-mScreenBitmap.getHeight()/2);
+                        if(wmCirclePickerParams.y<(-1*maxHeight+toDeductY)){
+                            wmCirclePickerParams.y=(-1*maxHeight+toDeductY);
+                        }
+                        if(wmCirclePickerParams.y>maxHeight){
+                            wmCirclePickerParams.y=maxHeight;
+                        }
+
+                        WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE);
+                        wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512 we move x and y
+                        update_mBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
                         break;
                     }
-                    case MotionEvent.ACTION_UP:{
-
-                        performClick();
-
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-
-                        if (event.getPointerCount() == 1){
-
-                            int deltaX = (int) event.getRawX() - recViewLastX;
-                            int deltaY = (int) event.getRawY() - recViewLastY;
-                            recViewLastX = (int) event.getRawX();
-                            recViewLastY = (int) event.getRawY();
-                            wmCirclePickerParams.x += deltaX;
-                            wmCirclePickerParams.y += deltaY;
-
-                            int maxWidth = mFinalBitmap.getWidth()/2-(mFinalBitmap.getWidth()/2-mScreenBitmap.getWidth()/2);
-
-                            int toDeductY=mMiddleLineStrokeWidth;
-                            int toDeductX = mBorderWidthPx+mMiddleLineStrokeWidth*2;
-
-                            if(wmCirclePickerParams.x<(-1*maxWidth+toDeductX)){
-                                wmCirclePickerParams.x=(-1*maxWidth+toDeductX);
-                            }else if(wmCirclePickerParams.x>maxWidth-toDeductX){
-                                wmCirclePickerParams.x=maxWidth-toDeductX;
-                            }
-
-                            int maxHeight = mFinalBitmap.getHeight()/2-(mFinalBitmap.getHeight()/2-mScreenBitmap.getHeight()/2);
-                            if(wmCirclePickerParams.y<(-1*maxHeight+toDeductY)){
-                                wmCirclePickerParams.y=(-1*maxHeight+toDeductY);
-                            }
-                            if(wmCirclePickerParams.y>maxHeight){
-                                wmCirclePickerParams.y=maxHeight;
-                            }
-
-                            WindowManager wm = (WindowManager) (getContext()).getSystemService(WINDOW_SERVICE);
-                            wm.updateViewLayout(wmCirclePickerView,wmCirclePickerParams); // https://stackoverflow.com/a/17133350/12577512 we move x and y
-                            showPickerBitmap(wmCirclePickerParams.x,wmCirclePickerParams.y);
-                            break;
-                        }
-                    }
-                    default: {
-                        return false;
-                    }
                 }
-                return true;
+                default: {
+                    return false;
+                }
             }
-            return false;
-        }
-
-        @Override
-        public boolean onDrag(View v, DragEvent event) {
             return true;
-
         }
-
-        private boolean allowToMove(MotionEvent event){
-            return (zeroFingerSinceScale
-                    &&
-                    !inUpdateFinalBitmap
-                    &&
-                    startInCircleArea||inTouchableArea(event.getX(),event.getY())); // (startInCircleArea||inTouchableArea(event.getX(),event.getY())) used to move circle;
-        }
-
-        private boolean inTouchableArea(float x, float y) {
-            if (mBorderRect.isEmpty()) {
-                return true;
-            }
-            return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
-        }
-
-
+        return false;
     }
+
+    /**
+     * Give the permission to move the CirclePickerView or not
+     * @param event
+     * @return true = can move, false = can't move
+     */
+    private boolean allowToMove(MotionEvent event){
+        return (zeroFingerSinceScale
+                &&
+                !inUpdateFinalBitmap
+                &&
+                startInCircleArea||inTouchableArea(event)); // (startInCircleArea||inTouchableArea(event.getX(),event.getY())) used to move circle;
+    }
+
+    /**
+     * Detect if MotionEven is inside CirclePickerView
+     * @param event
+     * @return true = MotionEvent is inside CirclePickerView, false = MotionEvent is outside CirclePickerView
+     */
+    private boolean inTouchableArea(MotionEvent event) {
+        float x=event.getX();
+        float y=event.getY();
+        if (mBorderRect.isEmpty()) {
+            return true;
+        }
+        return Math.pow(x - mBorderRect.centerX(), 2) + Math.pow(y - mBorderRect.centerY(), 2) <= Math.pow(mBorderRadius, 2);
+    }
+
 
 }
 

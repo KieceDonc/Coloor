@@ -58,8 +58,8 @@
     <string name="import_pdf_on">sur</string>
     <string name="import_pdf_select">Sélectionner un fichier pdf</string>
     <string name="import_files_select">Sélectionner une image / une vidéo</string>
-    <string name="colors_tabs_tuto_import">Le menu \"importer\" vous permet de détecter une couleur depuis une image, une vidéo, un fichier pdf, etc ...</string>
-    <string name="colors_tab_tuto_colors">La tabulation couleur enregistre vos couleurs et permet de débrider votre créativité à travers ses fonctionnalités</string>
+    <string name="colors_tabs_tuto_import">Le menu importer vous permet de détecter des couleurs</string>
+    <string name="colors_tab_tuto_colors">"La tabulation couleur enregistre vos couleurs "</string>
     <string name="colors_tab_pick_from_wheel">Choisir depuis une roue</string>
     <string name="colors_tab_pick_from_pixel">Détecter à partir des pixels de l\'appareil</string>
     <string name="colors_tab_delete_all_color">Supprimer toutes les couleurs</string>
@@ -75,4 +75,17 @@
     <string name="circle_picker_activity_message">Pour utiliser cette fonctionnalité, vous devez donner l\'autorisation de dessiner sur toutes les applications, voulez-vous donner l\'autorisation?</string>
     <string name="circle_picker_activity_cancel">Annuler</string>
     <string name="import_error_file">Erreur, extension du fichier invalide</string>
+    <string name="ColorSpec_Analogous">Analogue</string>
+    <string name="ColorSpec_Tones">Tonalités</string>
+    <string name="ColorSpec_Tints">Teintes</string>
+    <string name="ColorSpec_Shades">Nuances</string>
+    <string name="ColorSpec_Compound">Composé</string>
+    <string name="alertdialog_gradient_toShades">Nuances :</string>
+    <string name="alertdialog_gradient_toTints">Teintes :</string>
+    <string name="alertdialog_internet_info_title">Vous devez avoir l\'extension du fichier à la fin de l\'url</string>
+    <string name="alertdialog_internet_info_desc">Ex : image.com/monimage</string>
+    <string name="alertdialog_premium_ads">Supprimer les pubs</string>
+    <string name="settings_support_title">Coloor - Contact</string>
+    <string name="keep_circle_outside_app">Vous pouvez garder le cercle en dehors de l\'application en passant à la version pro</string>
+    <string name="gradients_delete_all">Supprimer tout les dégradés</string>
 </resources>

@@ -43,18 +43,6 @@
         fab:menu_colorPressed="#7f7f7f">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/GradientsABAddFromPremium"
-            android:layout_width="@dimen/action_button"
-            android:layout_height="@dimen/action_button"
-            android:padding="10dp"
-            android:src="@drawable/icon_fab_premium"
-            app:fab_colorNormal="@color/Theme1_Premium"
-            app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Add premium gradients"
-            app:fab_size="mini"
-            fab:menu_colorNormal="#000000" />
-
-        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/GradientsABButtonAddFromColor"
             android:layout_width="@dimen/action_button"
             android:layout_height="@dimen/action_button"
@@ -73,7 +61,7 @@
             android:src="@drawable/icon_fab_delete"
             app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Delete all gradients"
+            app:fab_label="@string/colors_tab_delete_all_color"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 

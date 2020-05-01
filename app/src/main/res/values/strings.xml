@@ -48,8 +48,8 @@
 
     <string name="colors_tab_tuto_title">How to start</string>
     <string name="colors_tab_tuto_circlepicker">This icon allow you to pick the color of any pixel on your screen</string>
-    <string name="colors_tabs_tuto_import">The import menu permit you to pick a color from an image, video, pdf, camera or direct link to a file</string>
-    <string name="colors_tab_tuto_colors">The color tabulation store your colors and unleash your creativity through her features</string>
+    <string name="colors_tabs_tuto_import">The import menu permit you to pick colors</string>
+    <string name="colors_tab_tuto_colors">"The color tabulation store your colors "</string>
     <string name="colors_tab_tuto_gradients">This menu let you handle and create custom gradients</string>
     <string name="colors_tab_pick_from_pixel">Pick from your phone pixels</string>
     <string name="colors_tab_pick_from_wheel">Pick from wheel</string>
@@ -78,9 +78,9 @@
     <string name="alertdialog_internet_pause">Pause</string>
     <string name="alertdialog_internet_resume">Resume</string>
 
-    <string name="alertdialog_internet_info_title">You must have the file extension at the end of the url</string>
-    <string name="alertdialog_internet_info_desc">for example : image.com/myimg</string>
-    <string name="alertdialog_internet_info_png">.png</string>
+    <string name="alertdialog_internet_info_title">You must have a file extension at the end of the url</string>
+    <string name="alertdialog_internet_info_desc">Ex : image.com/myimg</string>
+    <string name="alertdialog_internet_info_png" translatable="false">.png</string>
 
     <string name="alertdialog_premium_title">Want to help us ?</string>
     <string name="alertdialog_premium_whyyoushloud">Switching to the premium version will permit us to improve and release new features !</string>
@@ -88,10 +88,10 @@
     <string name="alertdialog_premium_pdf">Work with pdf files</string>
     <string name="alertdialog_premium_circle">Keep the pixel detector outside the app</string>
     <string name="alertdialog_premium_gradients">Use new gradients</string>
-    <string name="alertdialog_premium_ads">Delete ads</string>
+    <string name="alertdialog_premium_ads">Delete ads for ever</string>
     <string name="alertdialog_premium_life">Lifetime</string>
 
-    <string name="camera_before_updating_value">-</string>
+    <string name="camera_before_updating_value" translatable="false">-</string>
 
     <string name="service_current_hexa">Current hexadecimal value</string>
     <string name="service_waiting_permission">Waiting for permission to be given</string>
@@ -105,8 +105,7 @@
 
     <string name="gradients_tuto_nograd">No gradients detected</string>
     <string name="gradients_tuto1">"After creating your custom gradient, choose a color in the colors tab, and select your gradients. "</string>
-    <string name="gradients_with_examples">with some examples</string>
-    <string name="gradients_item_not_own">Item not owned</string>
+    <string name="gradients_delete_all">Delete all gradients</string>
 
     <string name="settings_user_experience">User experience</string>
     <string name="settings_circle">Modify circle picker color size</string>
@@ -121,19 +120,12 @@
     <string name="support_email" translatable="false">valentinverst.developer@gmail.com</string>
     <string name="settings_support_emailcontent">Here are some anonymous info. You can delete what ever you want but please understand it we will be much more easier to help you if you don\'t delete it</string>
     <string name="settings_gradients_tuto_howto">If you haven\'t created a gradient this is what you should do :</string>
+
+    <string name="keep_circle_outside_app">You can keep the circle outside of the app by upgrading to pro version</string>
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <!--Replace by app name-->
 </resources>
