@@ -2,6 +2,7 @@ package com.vvdev.coolor.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -113,11 +114,15 @@ public class MainActivity extends AppCompatActivity {
         binding.mail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto",getResources().getString(R.string.support_email), null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.settings_support_title));
+                startActivity(Intent.createChooser(emailIntent,  getResources().getString(R.string.settings_support_intenttitle)));
+                /*Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setType("text/plain");
                 intent.putExtra(Intent.EXTRA_EMAIL, getResources().getString(R.string.support_email));
                 intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.settings_support_title));
-                startActivity(Intent.createChooser(intent, getResources().getString(R.string.settings_support_intenttitle)));
+                startActivity(Intent.createChooser(intent, getResources().getString(R.string.settings_support_intenttitle)));*/
             }
         });
 

@@ -88,4 +88,5 @@
     <string name="settings_support_title">Coloor - Contact</string>
     <string name="keep_circle_outside_app">Vous pouvez garder le cercle en dehors de l\'application en passant à la version pro</string>
     <string name="gradients_delete_all">Supprimer tout les dégradés</string>
+    <string name="circle_picker_activity_yes">Oui</string>
 </resources>

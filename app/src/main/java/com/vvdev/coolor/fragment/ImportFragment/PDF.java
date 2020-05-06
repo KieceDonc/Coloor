@@ -53,6 +53,11 @@ public class PDF extends Fragment {
     private TextView numberOfPage;
     private Uri pathToPDF;
 
+    /**
+     * use to prevent the call of MainActivity.Instance.get().showViewPager() in OnPause() when starting CirclePickerActivityStart
+     */
+    private boolean shouldShowViewPager = true;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -74,7 +79,8 @@ public class PDF extends Fragment {
                 if(!premiumHandler.isPremium()){
                     premiumHandler.showPremiumDialog();
                 }else{*/
-                    CirclePickerService.start(getContext());
+                shouldShowViewPager=false;
+                CirclePickerService.start(getContext());
                 //}
             }
         });
@@ -91,7 +97,11 @@ public class PDF extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        MainActivity.Instance.get().showViewPager();
+        if(shouldShowViewPager){
+            MainActivity.Instance.get().showViewPager();
+        }else{
+            shouldShowViewPager=true;
+        }
     }
 
     @Override

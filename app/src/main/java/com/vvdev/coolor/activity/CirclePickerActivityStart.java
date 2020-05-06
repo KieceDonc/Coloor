@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.interfaces.ScreenCapture;
 import com.vvdev.coolor.services.CirclePickerService;
-import com.vvdev.coolor.ui.customview.CirclePickerView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -40,7 +39,6 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     public static View wmCirclePickerView;
     public static WindowManager.LayoutParams wmCirclePickerParams;
 
-    public static boolean isCirclePickerActivityRunning = false;
 
     private static final String TAG = CirclePickerActivityStart.class.getName();
     private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
@@ -50,11 +48,8 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       isCirclePickerActivityRunning = true;
-
         WindowManager.LayoutParams wp = getWindow().getAttributes();
         wp.dimAmount = 0f;
-
 
         if (!Settings.canDrawOverlays(this)) {
             showAlertDialog();
@@ -67,18 +62,6 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() { // used to solve a bug
-            @Override
-            public void run() {
-                CirclePickerService cps = CirclePickerService.Instance.get();
-                if(cps!=null){
-                    cps.waitingForResult=false;
-                    cps.setup();// used to set on click listener the close button
-                }
-                isCirclePickerActivityRunning=false;
-            }
-        }, 300);
     }
 
     @SuppressLint("NewApi")
@@ -103,10 +86,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     }
 
     private void permissionNotGiven(){
-        CirclePickerService cps = CirclePickerService.Instance.get();
-        if(cps!=null){
-            cps.circleStarted=false;
-        }
+        CirclePickerService.Instance.get().onCirclePickerPermissionDenied();
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
         finish();
     }
@@ -143,11 +123,13 @@ public class CirclePickerActivityStart extends AppCompatActivity {
 
                 wm.addView(wmCirclePickerView,wmCirclePickerParams);
 
-                CirclePickerService cps = CirclePickerService.Instance.get();
-                if(cps!=null){
-                    cps.circleStarted=true;
-                    cps.setup();// used to set on click listener the close button
-                }
+                Handler handler1 = new Handler();
+                handler1.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        CirclePickerService.Instance.get().onCirclePickerPermissionGiven();
+                    }
+                },50);
             }
         }, 300);
         finish();
@@ -169,11 +151,11 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 //set message
                 .setMessage(getResources().getString(R.string.circle_picker_activity_message))
                 //set positive button
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.circle_picker_activity_yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what would happen when positive button is clicked
-                        @SuppressLint("InlinedApi") Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName())); // we only call the alert dialog if we are SDK > 23
+                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName())); // we only call the alert dialog if we are SDK > 23
                         startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
                         dialogInterface.dismiss();
                     }

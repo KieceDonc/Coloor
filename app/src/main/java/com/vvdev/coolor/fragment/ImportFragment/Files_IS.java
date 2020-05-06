@@ -3,6 +3,7 @@ package com.vvdev.coolor.fragment.ImportFragment;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+
 public class Files_IS extends Fragment {
 
     public static final String KEY_ARGUMENT_FILES_PATH ="PathToAFile";
-
 
     private static String TAG = Files_IS.class.getName();
 
@@ -31,6 +32,11 @@ public class Files_IS extends Fragment {
     private ImageView Img;
     private VideoView Vid;
     private Uri pathToFile;
+
+    /**
+     * use to prevent the call of MainActivity.Instance.get().showViewPager() in OnPause() when starting CirclePickerActivityStart
+     */
+    private boolean shouldShowViewPager = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +52,7 @@ public class Files_IS extends Fragment {
         startCirclePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                shouldShowViewPager=false;
                 CirclePickerService.start(getContext());
             }
         });
@@ -75,7 +82,11 @@ public class Files_IS extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        MainActivity.Instance.get().showViewPager();
+        if(shouldShowViewPager){
+            MainActivity.Instance.get().showViewPager();
+        }else{
+            shouldShowViewPager=true;
+        }
     }
 
     private void setupImg() {

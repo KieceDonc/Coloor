@@ -232,9 +232,8 @@
 
         <TextView
             android:id="@+id/piMore"
-            android:layout_width="wrap_content"
+            android:layout_width="35dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="@string/colors_tab_item_more"
             android:textSize="30sp"
@@ -302,11 +301,12 @@
 
         <ImageView
             android:id="@+id/piTrash"
-            android:layout_width="25dp"
+            android:layout_width="35dp"
             android:layout_height="0dp"
             android:layout_marginTop="3dp"
-            android:layout_marginEnd="8dp"
             android:contentDescription="Trash icon"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
             android:tint="@color/Theme1_Accent"
             app:layout_constraintBottom_toBottomOf="@+id/piMore"
             app:layout_constraintEnd_toStartOf="@+id/piMore"

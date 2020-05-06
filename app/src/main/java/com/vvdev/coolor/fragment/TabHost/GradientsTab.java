@@ -48,9 +48,7 @@ public class GradientsTab extends Fragment {
         recyclerView = binding.gradientsRV;
         tuto = (ConstraintLayout)binding.gradientsTuto.getRoot();
 
-        if(Gradients.getInstance(getActivity()).getAllCustom().size()>0){
-            setupGradientsRecycleView();
-        }
+        setupGradientsRecycleView();
 
         setupActionButtonListener();
         return view;
@@ -77,7 +75,7 @@ public class GradientsTab extends Fragment {
             @Override
             public void onClick(View v) {
                 Gradients.getInstance(getActivity()).removeAll();
-                setupTuto();
+                showTuto();
             }
         });
 
@@ -116,24 +114,36 @@ public class GradientsTab extends Fragment {
     }
 
     private void setupGradientsRecycleView(){
-        tuto.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.VISIBLE);
+        if(Gradients.getInstance(getActivity()).getAllCustom().size()>0){
+            showRv();
+        }else{
+            showTuto();
+        }
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         gradientsRVAdapter = new GradientsRVAdapter(getActivity(), recyclerView, new GradientsRVAdapter.setOnGradientDeleted() {
             @Override
             public void onGradientDeleted() {
                 if(Gradients.getInstance(getActivity()).getAllCustom().size()==0){
-                    setupTuto();
+                    showTuto();
                 }
             }
         });
         recyclerView.setAdapter(gradientsRVAdapter);
     }
 
-    private void setupTuto(){
-        tuto.setVisibility(View.VISIBLE);
-        recyclerView.setVisibility(View.GONE);
+    private void showTuto(){
+        if(tuto.getVisibility()!=View.VISIBLE){
+            tuto.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    private void showRv(){
+        if(tuto.getVisibility()!=View.GONE){
+            tuto.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     public RecyclerView getRecycleView(){

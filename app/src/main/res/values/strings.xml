@@ -20,6 +20,7 @@
     <string name="circle_picker_activity_title">Permission request</string>
     <string name="circle_picker_activity_message">To use this feature, you need to give the permission to draw over all application, do you want to give the permission ?</string>
     <string name="circle_picker_activity_cancel">Cancel</string>
+    <string name="circle_picker_activity_yes">Yes</string>
     <!-- Example : #000000 haven been added to the palette-->
 
     <string name="import_error_file">Error, invalid file extension</string>
