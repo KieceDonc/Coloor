@@ -303,6 +303,7 @@
             android:id="@+id/piTrash"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginStart="8dp"
             android:contentDescription="Trash icon"
             android:padding="8dp"
             android:tint="@color/Theme1_Accent"

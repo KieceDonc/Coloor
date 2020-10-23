@@ -53,20 +53,6 @@
             fab:layout_constraintEnd_toEndOf="parent"
             fab:layout_constraintStart_toStartOf="parent" />-->
 
-    <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/importTabABCirclePicker"
-        android:layout_width="@dimen/action_button"
-        android:layout_height="@dimen/action_button"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/icon_fab_pipette"
-        android:tintMode="src_over"
-        app:fab_colorNormal="@color/Theme1_Primary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        fab:fab_colorPressed="#7f7f7f"
-        fab:fab_label="@string/colors_tab_pick_from_pixel" />
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineCenter"
         android:layout_width="wrap_content"

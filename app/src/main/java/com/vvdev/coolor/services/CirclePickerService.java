@@ -1,7 +1,6 @@
 package com.vvdev.coolor.services;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -116,7 +115,7 @@ public class CirclePickerService extends Service {
         String message = getApplicationContext().getString(R.string.service_waiting_permission);
 
 
-        Notification notification = notificationBuilder.setSmallIcon(R.drawable.pipette)
+        Notification notification = notificationBuilder.setSmallIcon(R.drawable.ic_pipette_notification)
                 .setContentText(message)
                 .setSound(null)
                 .setVibrate(null)
@@ -224,6 +223,7 @@ public class CirclePickerService extends Service {
         setup();
         if(canWorkOnCPVView()){
             circlePickerView.readyToInit();
+            Toast.makeText(getApplicationContext(), getString(R.string.service_you_can_keep_outside), Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -153,7 +153,7 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         return colors;
     }
 
-    public void saveGradients(ArrayList<Gradient> gradients){
+    public SavedData saveGradients(ArrayList<Gradient> gradients){
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
         Copy copy = new Copy();
@@ -161,6 +161,30 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         String json = gson.toJson(copy);
         prefsEditor.putString("gradientsArrayList", json);
         prefsEditor.commit();
+        if(ColorsTab.Instance.get()!=null&&ColorsTab.Instance.get().getColorsTabRVAdapter()!=null&&gradients.size()>=Gradients.NUM_NATIVE_GRAD){
+            ColorsTab.Instance.get().getColorsTabRVAdapter().updateSpinner();
+        }
+        return this;
+    }
+
+    /**
+     * Check if native custom grad have already been setup once
+     * @return true / false
+     */
+    public boolean isNativeCustomAlreadySetup(){
+        SharedPreferences prefs = activity.getPreferences(Context.MODE_PRIVATE);
+        return prefs.getBoolean("nativeCustomAlreadySetup",false);
+    }
+
+    /**
+     * method to update the value of "native custom grad have already been setup once"
+     * @param value true / false
+     */
+    public void updateNativeCustomAlreadySetup(boolean value){
+        SharedPreferences prefs = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("nativeCustomAlreadySetup", value);
+        editor.commit();
     }
 
     public ArrayList<Gradient> getSavedGradients(){

@@ -21,10 +21,6 @@ import androidx.annotation.NonNull;
 
 public class CreateGradientDialog extends Dialog {
 
-    private static final String TAG = CreateGradientDialog.class.getName();
-
-    private setOnGradientSaved listener;
-
     private ColorSpec currentColor;
 
     private Activity activity;
@@ -39,21 +35,10 @@ public class CreateGradientDialog extends Dialog {
     private String lengthError="lengthError";
     private String nameAlreadyInDataBase="nameAlreadyInDataBase";
 
-    public interface setOnGradientSaved{
-        void onGradientSaved();
-    }
-
     public CreateGradientDialog(@NonNull Activity activity,@NonNull ColorSpec currentColor) {
         super(activity);
         this.activity = activity;
         this.currentColor = currentColor;
-    }
-
-    public CreateGradientDialog(@NonNull Activity activity,@NonNull ColorSpec currentColor,setOnGradientSaved listener) {
-        super(activity);
-        this.activity = activity;
-        this.currentColor = currentColor;
-        this.listener=listener;
     }
 
     @Override
@@ -96,9 +81,6 @@ public class CreateGradientDialog extends Dialog {
                 String canBeSave = canBeSave();
                 if(canBeSave==null){
                     Gradients.getInstance(activity).add(new Gradient(userInput.getText().toString(),currentColor.getHexa()));
-                    if(listener!=null){
-                        listener.onGradientSaved();
-                    }
                     updateSpinnersViewInAdapter();
                     dismiss();
                 }else{

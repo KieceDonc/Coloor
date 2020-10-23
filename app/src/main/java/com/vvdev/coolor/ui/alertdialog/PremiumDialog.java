@@ -2,7 +2,6 @@ package com.vvdev.coolor.ui.alertdialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.vvdev.coolor.R;

@@ -30,8 +30,6 @@ import com.github.barteksc.pdfviewer.listener.OnTapListener;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
-import com.vvdev.coolor.fragment.TabHost.ImportTab;
-import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.customview.PDFEditText;
 

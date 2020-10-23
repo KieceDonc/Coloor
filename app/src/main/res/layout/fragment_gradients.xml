@@ -43,6 +43,18 @@
         fab:menu_colorPressed="#7f7f7f">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/GradientsABButtonDefaultCustom"
+            android:layout_width="@dimen/action_button"
+            android:layout_height="@dimen/action_button"
+            android:src="@drawable/ic_add_6dp_padding"
+            android:visibility="visible"
+            app:fab_label="@string/gradients_add_default"
+            fab:fab_colorNormal="@color/Theme1_Secondary"
+            fab:fab_colorPressed="#7f7f7f"
+            fab:fab_size="mini"
+            fab:menu_colorNormal="#000000" />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/GradientsABButtonAddFromColor"
             android:layout_width="@dimen/action_button"
             android:layout_height="@dimen/action_button"
@@ -50,7 +62,7 @@
             android:visibility="visible"
             app:fab_colorNormal="@color/Theme1_Secondary"
             app:fab_colorPressed="#7f7f7f"
-            app:fab_label="Add gradient"
+            app:fab_label="@string/gradients_add"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
 

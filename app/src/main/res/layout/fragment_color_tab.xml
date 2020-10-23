@@ -44,6 +44,16 @@
         app:menu_colorNormal="@color/Theme1_Third"
         fab:menu_colorPressed="#7f7f7f">
 
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/ColorTabABCirclePicker"
+            android:layout_width="@dimen/action_button"
+            android:layout_height="@dimen/action_button"
+            android:src="@drawable/ic_pipette_6dp_padding"
+            fab:fab_colorNormal="@color/Theme1_Secondary"
+            fab:fab_colorPressed="#7f7f7f"
+            fab:fab_label="@string/colors_tab_pick_from_pixel"
+            fab:fab_size="mini"
+            fab:menu_colorNormal="#000000" />
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/ColorTabABPickFromWheel"

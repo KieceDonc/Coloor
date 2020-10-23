@@ -28,7 +28,6 @@ import com.vvdev.coolor.databinding.FragmentImportBinding;
 import com.vvdev.coolor.fragment.ImportFragment.Camera;
 import com.vvdev.coolor.fragment.ImportFragment.Files_IS;
 import com.vvdev.coolor.fragment.ImportFragment.PDF;
-import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.alertdialog.DownloadFile;
 import com.vvdev.coolor.ui.alertdialog.DownloadInfo;
 
@@ -76,7 +75,6 @@ public class ImportTab extends Fragment implements View.OnClickListener {
         binding.importPDF.setOnClickListener(this);     // set pdf rectangle on click listener
         binding.importInternetInfoListener.setOnClickListener(this);// set internet rectangle on click listener
         binding.importInternetListener.setOnClickListener(this);
-        binding.importTabABCirclePicker.setOnClickListener(this);
         /*adsDeleteListener = binding.deleteAdsListener;TODO to active premium version
         adsDeleteListener.setOnClickListener(this);
         backgroundAds = binding.backgroundAds;
@@ -157,10 +155,6 @@ public class ImportTab extends Fragment implements View.OnClickListener {
                 } else {
                     askReadAndWritePermissions(REQUEST_CODE_PERM_INTERNET);
                 }
-                break;
-            }
-            case R.id.importTabABCirclePicker: {
-                CirclePickerService.start(getContext());
                 break;
             }
         }

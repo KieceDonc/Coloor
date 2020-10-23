@@ -302,15 +302,15 @@
         <ImageView
             android:id="@+id/piTrash"
             android:layout_width="35dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="3dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
             android:contentDescription="Trash icon"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:tint="@color/Theme1_Accent"
-            app:layout_constraintBottom_toBottomOf="@+id/piMore"
-            app:layout_constraintEnd_toStartOf="@+id/piMore"
-            app:layout_constraintTop_toTopOf="@+id/piMore"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorName"
+            app:layout_constraintStart_toEndOf="@+id/piColorName"
+            app:layout_constraintTop_toTopOf="@+id/piColorName"
             app:srcCompat="@drawable/trash_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,13 +19,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
-import android.view.DragEvent;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
 
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.interfaces.ColorUtility;

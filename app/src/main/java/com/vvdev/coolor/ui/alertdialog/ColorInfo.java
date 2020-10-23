@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.interfaces.ColorSpec;
@@ -103,22 +103,22 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
         TVColorName.setText(ColorUtility.nearestColor(currentColor.getHexa())[0]);
 
         String forHexa = "HEX : "+currentColor.getHexa();
-        TVHexa.setText(forHexa);
+        initTextViewColorCoding(TVHexa,forHexa,5);
 
         String forRGB = "RGB : "+currentColor.getRGB()[0]+", "+currentColor.getRGB()[1]+", "+currentColor.getRGB()[2];
-        TVRgb.setText(forRGB);
+        initTextViewColorCoding(TVRgb,forRGB,5);
 
         String forHSV = "HSV : "+currentColor.getHSV()[0]+"°, "+currentColor.getHSV()[1]+"%, "+currentColor.getHSV()[2]+"%";
-        TVHsv.setText(forHSV);
+        initTextViewColorCoding(TVHsv,forHSV,5);
 
         String forHSL = "HSL : "+currentColor.getHSL()[0]+"°, "+currentColor.getHSL()[1]+"%, "+currentColor.getHSL()[2]+"%";
-        TVHsl.setText(forHSL);
+        initTextViewColorCoding(TVHsl,forHSL,5);
 
         String forCMYK = "CMYK : "+currentColor.getCmyk()[0]+"%, "+currentColor.getCmyk()[1]+"%, "+currentColor.getCmyk()[2]+"%, "+currentColor.getCmyk()[3]+"%";
-        TVCMYK.setText(forCMYK);
+        initTextViewColorCoding(TVCMYK,forCMYK,6);
 
         String forCieLAB = "CIE LAB : "+currentColor.getCielab()[0]+", "+currentColor.getCielab()[1]+", "+currentColor.getCielab()[2];
-        TVCieLAB.setText(forCieLAB);
+        initTextViewColorCoding(TVCieLAB,forCieLAB,9);
 
         preview.setBackgroundColor(Color.parseColor(currentColor.getHexa()));
 
@@ -133,12 +133,30 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
         }
     }
 
+    /**
+     * init the text inside all color code ( like hex : #112233 ) and also set on click listener to copy the text to the text clipboard
+     * @param textView
+     * @param textColorCoding
+     * @param colorCodeStartAt
+     */
+    private void initTextViewColorCoding(TextView textView, final String textColorCoding, final int colorCodeStartAt){
+        textView.setText(textColorCoding);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStringToClipBoard(textColorCoding.substring(colorCodeStartAt));
+                String copiedToClipBoard = activity.getString(R.string.alertdialog_colorInfo_CopyToClipboard);
+                Toast.makeText(activity,copiedToClipBoard,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void initNewColor(String hexaValue){
         ColorSpec color = new ColorSpec(hexaValue);
         init(color);
     }
 
-    private void addStringToClipBoard(String toAdd){ // TODO add this feature
+    private void addStringToClipBoard(String toAdd){
         ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("", toAdd);
         if (clipboard != null) {

@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.vvdev.coolor.R;
-import com.vvdev.coolor.databinding.FragmentColorTabBinding;
+import com.github.clans.fab.FloatingActionMenu;
+import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.databinding.FragmentGradientsBinding;
 import com.vvdev.coolor.interfaces.ColorSpec;
 import com.vvdev.coolor.interfaces.Gradients;
@@ -25,8 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class GradientsTab extends Fragment {
 
-    private FloatingActionButton actionButtonDeleteAll;
+    private FloatingActionMenu actionMenu;
+    private FloatingActionButton actionButtonAddDefault;
     private FloatingActionButton actionButtonAddFromColor;
+    private FloatingActionButton actionButtonDeleteAll;
 
     private RecyclerView recyclerView;
     private GradientsRVAdapter gradientsRVAdapter;
@@ -35,6 +37,7 @@ public class GradientsTab extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Instance.set(this);
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -42,11 +45,13 @@ public class GradientsTab extends Fragment {
         FragmentGradientsBinding binding = FragmentGradientsBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        actionButtonDeleteAll = binding.GradientsABButtonDeleteAll;
+        actionMenu = binding.GradientsABMenu;
+        actionButtonAddDefault = binding.GradientsABButtonDefaultCustom;
         actionButtonAddFromColor = binding.GradientsABButtonAddFromColor;
+        actionButtonDeleteAll = binding.GradientsABButtonDeleteAll;
 
         recyclerView = binding.gradientsRV;
-        tuto = (ConstraintLayout)binding.gradientsTuto.getRoot();
+        tuto = (ConstraintLayout) binding.gradientsTuto.getRoot();
 
         setupGradientsRecycleView();
 
@@ -68,14 +73,19 @@ public class GradientsTab extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Instance.set(null);
     }
 
     private void setupActionButtonListener(){
-        actionButtonDeleteAll.setOnClickListener(new View.OnClickListener() {
+
+        actionButtonAddDefault.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Gradients.getInstance(getActivity()).removeAll();
-                showTuto();
+                Gradients gradients = Gradients.getInstance(MainActivity.Instance.get());
+                int startPosition = gradients.size()-1;
+                gradients.setupNativeCustomGrad();
+                int endPosition = gradients.size()-1;
+                getRecycleView().getAdapter().notifyItemRangeChanged(startPosition,endPosition); // used to update recycle view
             }
         });
 
@@ -97,12 +107,7 @@ public class GradientsTab extends Fragment {
                     @Override
                     public void onCancel(DialogInterface dialog) {
                         if(colorChosenHexValue[0]!=null){
-                            CreateGradientDialog createGradientDialog = new CreateGradientDialog(getActivity(), colorChosenHexValue[0], new CreateGradientDialog.setOnGradientSaved() {
-                                @Override
-                                public void onGradientSaved() {
-                                    setupGradientsRecycleView();
-                                }
-                            });
+                            CreateGradientDialog createGradientDialog = new CreateGradientDialog(getActivity(), colorChosenHexValue[0]);
                             createGradientDialog.show();
                         }
                     }
@@ -111,9 +116,18 @@ public class GradientsTab extends Fragment {
                 pickFromWheel.show();
             }
         });
+
+        actionButtonDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Gradients.getInstance(getActivity()).removeAll();
+                actionMenu.showMenuButton(true);
+                showTuto();
+            }
+        });
     }
 
-    private void setupGradientsRecycleView(){
+    public void setupGradientsRecycleView(){
         if(Gradients.getInstance(getActivity()).getAllCustom().size()>0){
             showRv();
         }else{
@@ -127,19 +141,31 @@ public class GradientsTab extends Fragment {
                 if(Gradients.getInstance(getActivity()).getAllCustom().size()==0){
                     showTuto();
                 }
+                actionMenu.showMenuButton(true);
             }
         });
         recyclerView.setAdapter(gradientsRVAdapter);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    actionMenu.hideMenuButton(true);
+                } else if (dy < 0) {
+                    actionMenu.showMenuButton(true);
+                }
+            }
+        });
     }
 
-    private void showTuto(){
+    public void showTuto(){
         if(tuto.getVisibility()!=View.VISIBLE){
             tuto.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         }
     }
 
-    private void showRv(){
+    public void showRv(){
         if(tuto.getVisibility()!=View.GONE){
             tuto.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
@@ -148,6 +174,18 @@ public class GradientsTab extends Fragment {
 
     public RecyclerView getRecycleView(){
         return recyclerView;
+    }
+
+    public static class Instance{
+        private static GradientsTab gradientsTab_;
+
+        public static void set(GradientsTab gradientsTab){
+            gradientsTab_=gradientsTab;
+        }
+
+        public static GradientsTab get(){
+            return gradientsTab_;
+        }
     }
 
 }

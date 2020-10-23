@@ -48,11 +48,11 @@
     <string name="ColorSpec_Analogous">Analogous</string>
 
     <string name="colors_tab_tuto_title">How to start</string>
-    <string name="colors_tab_tuto_circlepicker">This icon allow you to pick the color of any pixel on your screen</string>
+    <string name="colors_tab_tuto_circlepicker">This icon allow you to pick the color of any pixel</string>
     <string name="colors_tabs_tuto_import">The import menu permit you to pick colors</string>
     <string name="colors_tab_tuto_colors">"The color tabulation store your colors "</string>
     <string name="colors_tab_tuto_gradients">This menu let you handle and create custom gradients</string>
-    <string name="colors_tab_pick_from_pixel">Pick from your phone pixels</string>
+    <string name="colors_tab_pick_from_pixel">Pick from pixels</string>
     <string name="colors_tab_pick_from_wheel">Pick from wheel</string>
     <string name="colors_tab_delete_all_color">Delete all colors</string>
     <string name="colors_tab_add_hexa" translatable="false">Hexadecimal</string>
@@ -101,12 +101,22 @@
     <string name="service_share_title">Share your color !</string>
     <string name="service_hide">HIDE</string>
     <string name="service_show">SHOW</string>
+    <string name="service_you_can_keep_outside">You can keep the circle outside of the app</string>
 
     <string name="share_self_promo">- Sent from Coolor. An app for android</string>
 
+    <string name="gradients_add">Add gradients</string>
+    <string name="gradients_add_default">Add default gradients</string>
     <string name="gradients_tuto_nograd">No gradients detected</string>
     <string name="gradients_tuto1">"After creating your custom gradient, choose a color in the colors tab, and select your gradients. "</string>
+    <string name="gradients_native_custom_already_added">All default gradients are already saved </string>
     <string name="gradients_delete_all">Delete all gradients</string>
+    <string name="gradients_to_green">To green</string>
+    <string name="gradients_to_red">To red</string>
+    <string name="gradients_to_blue">To blue</string>
+    <string name="gradients_to_orange">To orange</string>
+    <string name="gradients_to_cyan">To cyan</string>
+    <string name="gradients_to_purple">To purple</string>
 
     <string name="settings_user_experience">User experience</string>
     <string name="settings_circle">Modify circle picker color size</string>
@@ -123,7 +133,7 @@
     <string name="settings_gradients_tuto_howto">If you haven\'t created a gradient this is what you should do :</string>
 
     <string name="keep_circle_outside_app">You can keep the circle outside of the app by upgrading to pro version</string>
-    <!-- Preference Titles -->
+    <string name="alertdialog_colorInfo_CopyToClipboard">Copied to clipboard</string><!-- Preference Titles -->
 
     <!-- Messages Preferences -->
 

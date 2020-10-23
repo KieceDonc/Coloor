@@ -46,7 +46,6 @@ import android.widget.Toast;
 
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
-import com.vvdev.coolor.fragment.TabHost.ImportTab;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.customview.AutoFitTextureView;

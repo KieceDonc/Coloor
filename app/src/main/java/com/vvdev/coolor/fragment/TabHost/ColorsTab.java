@@ -14,6 +14,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.FragmentColorTabBinding;
 import com.vvdev.coolor.interfaces.SavedData;
+import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.alertdialog.AddFromHex;
 import com.vvdev.coolor.ui.alertdialog.PickFromWheel;
 import com.vvdev.coolor.ui.adapter.ColorsTabRVAdapter;
@@ -29,6 +30,8 @@ public class ColorsTab extends Fragment {
 
     private final static String TAG = ColorsTab.class.getName();
 
+    private FloatingActionMenu actionMenu;
+    private FloatingActionButton actionButtonCirclePicker;
     private FloatingActionButton actionButtonPickFromWheel;
     private FloatingActionButton actionButtonDeleteAll;
     private FloatingActionButton actionButtonAddColor;
@@ -36,7 +39,6 @@ public class ColorsTab extends Fragment {
     private ConstraintLayout tutorial;
     private RecyclerView recyclerView;
     private ColorsTabRVAdapter colorsTabRVAdapter;
-    private FloatingActionMenu actionMenu;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class ColorsTab extends Fragment {
         actionButtonPickFromWheel = binding.ColorTabABPickFromWheel;
         actionButtonDeleteAll = binding.ColorTabABButtonDeleteAll;
         actionButtonAddColor = binding.ColorTabABButtonAdd;
+        actionButtonCirclePicker = binding.ColorTabABCirclePicker;
         tutorial = binding.ColorTabTuto.getRoot().findViewById(R.id.ColorTabTuto);
         recyclerView = binding.pRecyclerView;
 
@@ -80,10 +83,17 @@ public class ColorsTab extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Instance.set(this);
+        Instance.set(null);
     }
 
     private void setupActionButtonListener(){
+        actionButtonCirclePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CirclePickerService.start(getContext());
+            }
+        });
+
         actionButtonPickFromWheel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

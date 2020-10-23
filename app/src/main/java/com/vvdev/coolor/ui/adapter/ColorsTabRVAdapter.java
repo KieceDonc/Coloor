@@ -1,6 +1,9 @@
 package com.vvdev.coolor.ui.adapter;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
@@ -12,7 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.FragmentColorTabItemrecycleBinding;
 import com.vvdev.coolor.databinding.FragmentColorsTabItemrecycleExtendBinding;
 import com.vvdev.coolor.fragment.TabHost.ColorsTab;
@@ -187,6 +192,19 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
                     cgd.show();
                 }
             });
+
+            // show the alert dialog which give more information about the color coding
+            colorPreview.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ColorInfo cid = new ColorInfo(activity,currentColor);
+                    cid.show();
+                }
+            });
+
+            addToClipBoardOnClick(hsv,5);
+            addToClipBoardOnClick(rgb,5);
+            addToClipBoardOnClick(hexa,5);
         }
 
         public void display(ColorSpec colorSpec) {
@@ -281,6 +299,26 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
                 } else {
                     extendInclude.get(x).getRoot().setOnClickListener(null);
                 }
+            }
+        }
+
+        private void addToClipBoardOnClick(final TextView tv, final int colorCodeStartAt){
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String textColorCoding = tv.getText().toString();
+                    addStringToClipBoard(textColorCoding.substring(colorCodeStartAt));
+                    String copiedToClipBoard = activity.getString(R.string.alertdialog_colorInfo_CopyToClipboard);
+                    Toast.makeText(activity,copiedToClipBoard,Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        private void addStringToClipBoard(String toAdd){
+            ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("", toAdd);
+            if (clipboard != null) {
+                clipboard.setPrimaryClip(clip);
             }
         }
 

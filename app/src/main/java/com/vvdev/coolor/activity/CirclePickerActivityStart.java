@@ -74,20 +74,22 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 ScreenCapture.setUpMediaProjection(resultCode,data);
                 startCirclePicker();
             }else if(resultCode == Activity.RESULT_CANCELED){
-                permissionNotGiven();
+                permissionNotGiven(true);
             }
         }else if(requestCode == REQUEST_CODE_ACTION_MANAGE_OVERLAY){
             if(resultCode == Activity.RESULT_OK){
                 startCapture();
             }else{
-                permissionNotGiven();
+                permissionNotGiven(true);
             }
         }
     }
 
-    private void permissionNotGiven(){
+    private void permissionNotGiven(boolean showMsg){
         CirclePickerService.Instance.get().onCirclePickerPermissionDenied();
-        Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+        if(showMsg){
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+        }
         finish();
     }
 
@@ -158,6 +160,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName())); // we only call the alert dialog if we are SDK > 23
                         startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
                         dialogInterface.dismiss();
+                        permissionNotGiven(false);
                     }
                 })
                 //set negative button
@@ -166,7 +169,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //set what should happen when negative button is clicked
                         dialogInterface.dismiss();
-                        permissionNotGiven();
+                        permissionNotGiven(true);
                     }
                 })
                 .setCancelable(false);

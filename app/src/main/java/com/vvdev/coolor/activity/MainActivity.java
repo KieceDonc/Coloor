@@ -4,30 +4,21 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.ActivityMainBinding;
 import com.vvdev.coolor.fragment.ImportFragment.Camera;
-import com.vvdev.coolor.fragment.TabHost.ColorsTab;
 import com.vvdev.coolor.interfaces.Gradients;
 import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.interfaces.SavedData;
-import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.adapter.PagerAdapter;
-
-
-import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         Instance.set(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        Gradients gradients = Gradients.getInstance(Instance.get());
+        if(gradients.getSavedGradients()==null){
+            gradients.firstSetup();
+        }else if(!gradients.isNativeCustomGradSetup()){ // firstSetup() done but not setupNativeCustomGrad() ( before version v1.2.5 ) so we must check if user have already setup
+            gradients.setupNativeCustomGrad(); // if user haven't setup once we setup.
+        }
 
 
        /* int currentApiVersion = android.os.Build.VERSION.SDK_INT;
@@ -165,12 +163,6 @@ public class MainActivity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                if(Gradients.getInstance(Instance.get()).getSavedGradients()==null){
-                    Gradients.getInstance(Instance.get()).firstSetup();
-                    if(ColorsTab.Instance.get()!=null&&ColorsTab.Instance.get().getColorsTabRVAdapter()!=null){
-                        ColorsTab.Instance.get().getColorsTabRVAdapter().updateSpinner();
-                    }
-                }
                 /*if(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Instance.get()) == ConnectionResult.SUCCESS) {
                     premiumHandler = new PremiumHandler(MainActivity.Instance.get());
                 } else {

@@ -3,7 +3,6 @@ package com.vvdev.coolor.fragment.ImportFragment;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
-import com.vvdev.coolor.fragment.TabHost.ImportTab;
 import com.vvdev.coolor.services.CirclePickerService;
 
 import androidx.annotation.NonNull;
