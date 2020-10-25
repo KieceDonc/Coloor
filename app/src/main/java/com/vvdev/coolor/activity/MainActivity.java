@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         Instance.set(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Gradients gradients = Gradients.getInstance(Instance.get());

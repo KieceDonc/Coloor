@@ -70,10 +70,10 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:contentDescription="Circle picker icon"
-        android:tint="@color/Theme1_TextBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:srcCompat="@drawable/ic_pipette_padding_0dp" />
+        app:srcCompat="@drawable/ic_pipette_padding_0dp"
+        app:tint="@color/Theme1_TextBlack" />
 
     <TextView
         android:id="@+id/textView"

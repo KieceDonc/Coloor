@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.firebase-perf'
-apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.crashlytics'
+//apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 29
@@ -23,8 +24,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding true
+        viewBinding true
     }
     /*splits {
         abi {
