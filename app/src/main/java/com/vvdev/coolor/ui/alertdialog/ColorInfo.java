@@ -6,8 +6,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vvdev.coolor.R;
+import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.ColorSpec;
 import com.vvdev.coolor.interfaces.ColorUtility;
 
@@ -68,8 +72,8 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION); // not showing status & navigation bar*/
         setContentView(R.layout.dialog_moreinformation_main);
 
-        Window window = getWindow(); // fix bug for match_parent width
-        window.setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+        //getWindow().setLayout(Constraints.LayoutParams.WRAP_CONTENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+
 
         TVColorName = findViewById(R.id.MoreIColorName);
         TVHexa = findViewById(R.id.MoreIHexa);
@@ -86,7 +90,7 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
         generate4 = findViewById(R.id.MoreIPreviewGenerate4);
         generate5 = findViewById(R.id.MoreIPreviewGenerate5);
 
-        findViewById(R.id.MoreIOK).setOnClickListener(this);
+        findViewById(R.id.MoreIClose).setOnClickListener(this);
         generate0.setOnClickListener(this);
         generate1.setOnClickListener(this);
         generate2.setOnClickListener(this);
@@ -96,6 +100,9 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
 
         generate.add(generate0);generate.add(generate1);generate.add(generate2);generate.add(generate3);generate.add(generate4);generate.add(generate5);
 
+        int wantedWidth = (int) (getScreenWidth()*(3/5.0));
+        preview.getLayoutParams().width = wantedWidth;
+        preview.requestLayout();
         init(currentColor);
     }
 
@@ -167,7 +174,7 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.MoreIOK:{
+            case R.id.MoreIClose:{
                 Log.i(TAG,"Closing ColorInfoDialog with color"+currentColor.getHexa());
                 dismiss();
                 break;
@@ -193,5 +200,11 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
                 break;
             }
         }
+    }
+
+    private int getScreenWidth(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
     }
 }

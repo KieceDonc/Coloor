@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!--<uses-permission android:name="com.android.vending.BILLING" />-->
     <uses-feature android:name="android.hardware.camera.any" />
+    <!--<supports-screens android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true"
+        android:anyDensity="true" />-->
 
     <!--TODO update privacy police-->
 

@@ -2,8 +2,45 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/MoreIClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MoreICIELAB">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/MoreICircleOK"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="#FF000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/MoreITextViewOK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:textAlignment="center"
+            android:textColor="@color/Theme1_text"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/MoreICircleOK"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/MoreICircleOK" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/MoreIColorName"
@@ -20,25 +57,27 @@
 
     <TextView
         android:id="@+id/MoreIHexa"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="16dp"
         android:text="HEX : #000000"
-        android:textColor="@color/Theme1_Zero"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/MoreIColorName"
+        android:textAlignment="textStart"
+        android:textColor="@color/Theme1_TextBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
+        app:layout_constraintTop_toBottomOf="@+id/MoreIPreviewGenerate0"
         tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/MoreIRGB"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="RGB : 0,0,0"
+        android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
         app:layout_constraintTop_toBottomOf="@+id/MoreIHexa"
         tools:ignore="HardcodedText" />
 
@@ -46,13 +85,12 @@
         android:id="@+id/MoreIHSV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:text="HSV : 0°, 0%, 0%"
+        android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
-        app:layout_constraintEnd_toStartOf="@+id/MoreIPreview"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
         app:layout_constraintTop_toBottomOf="@+id/MoreIRGB"
         tools:ignore="HardcodedText" />
 
@@ -60,13 +98,12 @@
         android:id="@+id/MoreIHSL"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:text="HSL : 0°, 0% , 0%"
+        android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
-        app:layout_constraintEnd_toStartOf="@+id/MoreIPreview"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
         app:layout_constraintTop_toBottomOf="@+id/MoreIHSV"
         tools:ignore="HardcodedText" />
 
@@ -74,13 +111,12 @@
         android:id="@+id/MoreICMYK"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="CMYK : 0°, 0%, 0%, 0%"
+        android:text="CMYK : 100°, 100%, 100%, 100%"
+        android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
-        app:layout_constraintEnd_toStartOf="@+id/MoreIPreview"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
         app:layout_constraintTop_toBottomOf="@+id/MoreIHSL"
         tools:ignore="HardcodedText" />
 
@@ -88,85 +124,151 @@
         android:id="@+id/MoreICIELAB"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:text="CIE LAB : "
+        android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
-        app:layout_constraintEnd_toStartOf="@+id/MoreIPreview"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
         app:layout_constraintTop_toBottomOf="@+id/MoreICMYK"
         tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate0"
-        android:layout_width="24dp"
+        android:layout_width="0dp"
         android:layout_height="24dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:background="#AAAAAA"
+        app:layout_constraintEnd_toStartOf="@+id/MoreIPreviewGenerate1"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/MoreIPreview"
         app:layout_constraintTop_toBottomOf="@+id/MoreIPreview" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate1"
-        android:layout_width="24dp"
+        android:layout_width="0dp"
         android:layout_height="24dp"
         android:background="#AEEEEE"
+        app:layout_constraintEnd_toStartOf="@+id/MoreIPreviewGenerate2"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate0"
         app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate0" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate2"
-        android:layout_width="24dp"
+        android:layout_width="0dp"
         android:layout_height="24dp"
         android:background="#AAAAAA"
+        app:layout_constraintEnd_toStartOf="@+id/guideline7"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate1"
-        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate1" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate0" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate3"
-        android:layout_width="24dp"
+        android:layout_width="0dp"
         android:layout_height="24dp"
         android:background="#AEEEEE"
+        app:layout_constraintEnd_toStartOf="@+id/MoreIPreviewGenerate4"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate2"
-        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate2" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate0" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate4"
-        android:layout_width="24dp"
+        android:layout_width="0dp"
         android:layout_height="24dp"
         android:background="#AAAAAA"
+        app:layout_constraintEnd_toStartOf="@+id/MoreIPreviewGenerate5"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate3"
-        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate3" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate0" />
 
     <ImageView
         android:id="@+id/MoreIPreviewGenerate5"
-        android:layout_width="24dp"
+        android:layout_width="0dp"
         android:layout_height="24dp"
         android:background="#AEEEEE"
+        app:layout_constraintEnd_toEndOf="@+id/MoreIPreview"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/MoreIPreviewGenerate4"
-        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate4" />
+        app:layout_constraintTop_toTopOf="@+id/MoreIPreviewGenerate0" />
 
     <ImageView
         android:id="@+id/MoreIPreview"
-        android:layout_width="144dp"
-        android:layout_height="144dp"
-        android:layout_marginEnd="16dp"
-        android:background="#000000"
-        app:layout_constraintBottom_toBottomOf="@+id/MoreIHSL"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/MoreIHSV" />
-
-    <include
-        android:id="@+id/MoreIOK"
-        layout="@layout/dialog_moreinformation_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="24dp"
+        android:background="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/MoreICIELAB" />
+        app:layout_constraintTop_toBottomOf="@+id/MoreIColorName" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/imageView11"
+        android:layout_width="@dimen/alertDialog_colorInfo_copy_drawable"
+        android:layout_height="@dimen/alertDialog_colorInfo_copy_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/MoreIHexa"
+        app:layout_constraintEnd_toEndOf="@+id/MoreIPreview"
+        app:layout_constraintTop_toTopOf="@+id/MoreIHexa"
+        app:srcCompat="?attr/actionModeCopyDrawable"
+        app:tint="@color/Theme1_TextBlack" />
+
+    <ImageView
+        android:id="@+id/imageView16"
+        android:layout_width="@dimen/alertDialog_colorInfo_copy_drawable"
+        android:layout_height="@dimen/alertDialog_colorInfo_copy_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/MoreIRGB"
+        app:layout_constraintEnd_toEndOf="@+id/imageView11"
+        app:layout_constraintTop_toTopOf="@+id/MoreIRGB"
+        app:srcCompat="?attr/actionModeCopyDrawable"
+        app:tint="@color/Theme1_TextBlack" />
+
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="@dimen/alertDialog_colorInfo_copy_drawable"
+        android:layout_height="@dimen/alertDialog_colorInfo_copy_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/MoreIHSL"
+        app:layout_constraintEnd_toEndOf="@+id/imageView18"
+        app:layout_constraintTop_toTopOf="@+id/MoreIHSL"
+        app:srcCompat="?attr/actionModeCopyDrawable"
+        app:tint="@color/Theme1_TextBlack" />
+
+    <ImageView
+        android:id="@+id/imageView20"
+        android:layout_width="@dimen/alertDialog_colorInfo_copy_drawable"
+        android:layout_height="@dimen/alertDialog_colorInfo_copy_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/MoreICMYK"
+        app:layout_constraintEnd_toEndOf="@+id/imageView19"
+        app:layout_constraintTop_toTopOf="@+id/MoreICMYK"
+        app:srcCompat="?attr/actionModeCopyDrawable"
+        app:tint="@color/Theme1_TextBlack" />
+
+    <ImageView
+        android:id="@+id/imageView18"
+        android:layout_width="@dimen/alertDialog_colorInfo_copy_drawable"
+        android:layout_height="@dimen/alertDialog_colorInfo_copy_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/MoreIHSV"
+        app:layout_constraintEnd_toEndOf="@+id/imageView16"
+        app:layout_constraintTop_toTopOf="@+id/MoreIHSV"
+        app:srcCompat="?attr/actionModeCopyDrawable"
+        app:tint="@color/Theme1_TextBlack" />
+
+    <ImageView
+        android:layout_width="@dimen/alertDialog_colorInfo_copy_drawable"
+        android:layout_height="@dimen/alertDialog_colorInfo_copy_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/MoreICIELAB"
+        app:layout_constraintEnd_toEndOf="@+id/imageView20"
+        app:layout_constraintTop_toTopOf="@+id/MoreICIELAB"
+        app:srcCompat="?attr/actionModeCopyDrawable"
+        app:tint="@color/Theme1_TextBlack" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

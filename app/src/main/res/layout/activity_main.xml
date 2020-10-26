@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- TODO support different screen size https://stackoverflow.com/questions/7663079/android-screen-resolutions/7665194#7665194 -->
+<!-- TODO support different screen size https://stackoverflow.com/questions/7663079/android-screen-resolutions/7665194#7665194 https://developer.android.com/training/multiscreen/screensizes -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

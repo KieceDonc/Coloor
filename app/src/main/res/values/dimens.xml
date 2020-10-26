@@ -2,4 +2,5 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="gradients_itemrecycle_generate">20dp</dimen>
     <dimen name="action_button">40dp</dimen>
+    <dimen name="alertDialog_colorInfo_copy_drawable">15dp</dimen>
 </resources>
