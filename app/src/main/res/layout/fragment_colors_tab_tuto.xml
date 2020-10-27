@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <View
@@ -39,7 +39,7 @@
 
     <View
         android:id="@+id/view8"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:background="@drawable/roundcorner_tuto_gray"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -73,51 +73,44 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         app:srcCompat="@drawable/ic_pipette_padding_0dp"
-        app:tint="@color/Theme1_TextBlack" />
+        app:tint="#DD0000" />
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
         android:text="@string/colors_tab_tuto_circlepicker"
         android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/imageView2" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
         android:text="@string/colors_tabs_tuto_import"
         android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
         android:text="@string/colors_tab_tuto_colors"
         android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
@@ -125,8 +118,9 @@
         android:id="@+id/imageView3"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:contentDescription="Import tab icon"
+        android:tint="#00CC00"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
@@ -136,8 +130,9 @@
         android:id="@+id/imageView4"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:contentDescription="Colors tab icon"
+        android:tint="#0000CC"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
@@ -146,17 +141,14 @@
 
     <TextView
         android:id="@+id/textView20"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="24dp"
         android:text="@string/colors_tab_tuto_gradients"
         android:textAlignment="textStart"
         android:textColor="@color/Theme1_TextBlack"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView17"
-        app:layout_constraintEnd_toEndOf="@+id/view3"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/imageView4"
         app:layout_constraintTop_toTopOf="@+id/imageView17" />
 
@@ -164,9 +156,10 @@
         android:id="@+id/imageView17"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="24dp"
         android:layout_marginBottom="32dp"
         android:contentDescription="Gradients tab icon"
+        android:tint="#CC00CC"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView4"
         app:layout_constraintStart_toStartOf="@+id/imageView4"

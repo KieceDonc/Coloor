@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -80,7 +83,7 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
         private CircleImageView colorPreview;
         private ImageView trash;
         private TextView colorName;
-        private TextView hsv;
+//        private TextView hsv;
         private TextView rgb;
         private TextView hexa;
         private TextView more;
@@ -105,7 +108,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
             colorPreview = binding.piColorPreview;
 
             colorName = binding.piColorName;
-            hsv = binding.piHSV;
             rgb = binding.piRGB;
             hexa = binding.piHex;
             more = binding.piMore;
@@ -135,8 +137,10 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
                 public void onClick(View view) {
                     if (piExtend.getVisibility() == View.VISIBLE) {
                         piExtend.setVisibility(View.GONE);
+                        more.setRotation(0);
                     } else {
                         piExtend.setVisibility(View.VISIBLE);
+                        more.setRotation(-90);
                     }
                 }
             });
@@ -202,7 +206,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
                 }
             });
 
-            addToClipBoardOnClick(hsv,5);
             addToClipBoardOnClick(rgb,5);
             addToClipBoardOnClick(hexa,5);
         }
@@ -212,7 +215,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
 
             // get hexa, hsv, rgb of color
             String hexaFromColorSpec = colorSpec.getHexa();
-            int[] hsvFromColorSpec = colorSpec.getHSV();
             int[] rgbFromColorSpec = colorSpec.getRGB();
 
             // setup preview of color
@@ -222,8 +224,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
 
             // setup text
             colorName.setText(ColorUtility.nearestColor(hexaFromColorSpec)[0]);
-            String toHSV = "HSV : " + hsvFromColorSpec[0] + ", " + hsvFromColorSpec[1] + ", " + hsvFromColorSpec[2];
-            hsv.setText(toHSV);
             String toRGB = "RGB : " + rgbFromColorSpec[0] + ", " + rgbFromColorSpec[1] + ", " + rgbFromColorSpec[2];
             rgb.setText(toRGB);
             String toHexa = "HEX : " + hexaFromColorSpec;
@@ -262,7 +262,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
             for (int x = number; x < extendInclude.size(); x++) {
                 extendInclude.get(x).getRoot().setVisibility(View.INVISIBLE);
             }
-            //piExtend.setLayoutParams(new ConstraintLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
         /**

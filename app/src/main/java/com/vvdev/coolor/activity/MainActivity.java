@@ -28,13 +28,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import static android.view.View.GONE;
-import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAnalytics mFirebaseAnalytics;
-    private PremiumHandler premiumHandler;
+    //private PremiumHandler premiumHandler;TODO to active premium version
 
     private ConstraintLayout actionBar;
 

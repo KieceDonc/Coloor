@@ -27,11 +27,11 @@
         android:layout_height="25dp"
         android:background="#FF2222"
         android:contentDescription="close button icon"
-        android:tint="#FFFFFF"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@id/CirclePicker"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_delete" />
+        app:srcCompat="@android:drawable/ic_delete"
+        app:tint="#FFFFFF" />
 
     <ImageView
         android:id="@+id/CirclePickerSave"
@@ -40,11 +40,11 @@
         android:background="#ff669900"
         android:contentDescription="save button icon"
         android:scaleType="fitCenter"
-        android:tint="#FFFFFF"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/CirclePicker"
-        app:srcCompat="@drawable/save" />
+        app:srcCompat="@drawable/save"
+        app:tint="#FFFFFF" />
 
     <ImageView
         android:id="@+id/CirclePickerZoomIn"
@@ -53,11 +53,11 @@
         android:background="@color/Theme1_Secondary"
         android:contentDescription="Zoom in button icon"
         android:scaleType="center"
-        android:tint="#FFFFFF"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        app:tint="#FFFFFF" />
 
     <ImageView
         android:id="@+id/CirclePickerZoomOut"
@@ -66,10 +66,10 @@
         android:background="@color/Theme1_Secondary"
         android:contentDescription="Zoom out button icon"
         android:scaleType="centerInside"
-        android:tint="#FFFFFF"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/moins" />
+        app:srcCompat="@drawable/moins"
+        app:tint="#FFFFFF" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

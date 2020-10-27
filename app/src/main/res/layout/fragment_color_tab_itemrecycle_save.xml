@@ -50,20 +50,19 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="24dp"
+            android:tint="@color/Theme1_Primary"
             app:layout_constraintBottom_toBottomOf="@+id/piSpinner"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/piSpinner"
-            app:srcCompat="@drawable/gradient_icon"
-            app:tint="@color/Theme1_Primary" />
+            app:srcCompat="@drawable/gradient_icon" />
 
         <include
             android:id="@+id/piExtendGenerate0"
             layout="@layout/fragment_colors_tab_itemrecycle_extend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toStartOf="@+id/piExtendGenerate1"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
 
@@ -73,9 +72,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toStartOf="@+id/piExtendGenerate2"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/piExtendGenerate0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
 
         <include
@@ -84,9 +82,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/piExtendGenerate1"
             app:layout_constraintTop_toBottomOf="@+id/piSpinner" />
 
         <include
@@ -94,9 +91,8 @@
             layout="@layout/fragment_colors_tab_itemrecycle_extend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/piExtendGenerate4"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate0" />
 
@@ -106,9 +102,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/piExtendGenerate5"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/piExtendGenerate3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate1" />
 
         <include
@@ -117,9 +112,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/piExtendGenerate4"
             app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate2" />
 
         <TextView
@@ -156,20 +150,6 @@
             app:layout_constraintEnd_toStartOf="@+id/piExtendMoreInformation"
             app:layout_constraintTop_toBottomOf="@+id/piExtendGenerate5" />
 
-        <ImageView
-            android:id="@+id/piTrash"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_marginEnd="24dp"
-            android:contentDescription="Trash icon"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView"
-            app:srcCompat="@drawable/trash_icon"
-            app:tint="@color/Theme1_Accent" />
-
         <!-- TODO implement this feature -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -181,7 +161,7 @@
         android:background="@drawable/palette_ir_background"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -189,7 +169,7 @@
             android:id="@+id/piColorPreview"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:src="@android:color/transparent"
@@ -213,6 +193,18 @@
             app:layout_constraintVertical_bias="0.05" />
 
         <TextView
+            android:id="@+id/piHSV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="135dp"
+            android:text="HSV : 255, 255, 255 "
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/piHex"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="@+id/piHex" />
+
+        <TextView
             android:id="@+id/piRGB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -220,9 +212,9 @@
             android:text="RGB : 255, 255, 255 "
             android:textColor="@android:color/black"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/piHex"
-            app:layout_constraintStart_toEndOf="@+id/piHex"
-            app:layout_constraintTop_toTopOf="@+id/piHex"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorPreview"
+            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
+            app:layout_constraintTop_toTopOf="@+id/piColorPreview"
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView
@@ -240,106 +232,87 @@
 
         <TextView
             android:id="@+id/piMore"
-            android:layout_width="0dp"
+            android:layout_width="35dp"
             android:layout_height="0dp"
             android:gravity="center"
             android:text="@string/colors_tab_item_more"
-            android:textColor="@color/Theme1_TextBlack"
-            android:textSize="36sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/piRGBSimulateMaxWidth"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:id="@+id/piGenerate0"
-            android:layout_width="0dp"
+            android:layout_width="16dp"
             android:layout_height="16dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="4dp"
             android:background="#000000"
-            app:layout_constraintEnd_toStartOf="@+id/piGenerate1"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/piColorPreview"
-            app:layout_constraintTop_toBottomOf="@+id/piHex" />
+            app:layout_constraintBottom_toBottomOf="@+id/piRGB"
+            app:layout_constraintStart_toStartOf="@+id/piHSV"
+            app:layout_constraintTop_toTopOf="@+id/piRGB" />
 
         <View
             android:id="@+id/piGenerate1"
-            android:layout_width="0dp"
+            android:layout_width="16dp"
             android:layout_height="16dp"
             android:background="#FF202020"
             app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-            app:layout_constraintEnd_toStartOf="@+id/piGenerate2"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/piGenerate0"
             app:layout_constraintTop_toTopOf="@+id/piGenerate0" />
 
         <View
             android:id="@+id/piGenerate2"
-            android:layout_width="0dp"
+            android:layout_width="16dp"
             android:layout_height="16dp"
             android:background="#FF808080"
             app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-            app:layout_constraintEnd_toStartOf="@+id/piGenerate3"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/piGenerate1"
             app:layout_constraintTop_toTopOf="@+id/piGenerate0"
             app:layout_constraintVertical_bias="0.0" />
 
         <View
             android:id="@+id/piGenerate3"
-            android:layout_width="0dp"
+            android:layout_width="16dp"
             android:layout_height="16dp"
             android:background="#FF606060"
             app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-            app:layout_constraintEnd_toStartOf="@+id/piGenerate4"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/piGenerate2"
             app:layout_constraintTop_toTopOf="@+id/piGenerate0"
             app:layout_constraintVertical_bias="0.0" />
 
         <View
             android:id="@+id/piGenerate4"
-            android:layout_width="0dp"
+            android:layout_width="16dp"
             android:layout_height="16dp"
             android:background="#FF404040"
             app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-            app:layout_constraintEnd_toStartOf="@+id/piGenerate5"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/piGenerate3"
             app:layout_constraintTop_toTopOf="@+id/piGenerate0"
             app:layout_constraintVertical_bias="0.0" />
 
         <View
             android:id="@+id/piGenerate5"
-            android:layout_width="0dp"
+            android:layout_width="16dp"
             android:layout_height="16dp"
             android:background="#FFA0A0A0"
             app:layout_constraintBottom_toBottomOf="@+id/piGenerate0"
-            app:layout_constraintEnd_toEndOf="@+id/piRGBSimulateMaxWidth"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/piGenerate4"
             app:layout_constraintTop_toTopOf="@+id/piGenerate0"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/piRGBSimulateMaxWidth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginBottom="32dp"
-            android:text="RGB : 255, 255, 255 "
-            android:textSize="12sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@+id/piHex"
-            app:layout_constraintStart_toEndOf="@+id/piHex" />
+        <ImageView
+            android:id="@+id/piTrash"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="Trash icon"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:tint="@color/Theme1_Accent"
+            app:layout_constraintBottom_toBottomOf="@+id/piColorName"
+            app:layout_constraintStart_toEndOf="@+id/piColorName"
+            app:layout_constraintTop_toTopOf="@+id/piColorName"
+            app:srcCompat="@drawable/trash_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

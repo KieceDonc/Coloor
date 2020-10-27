@@ -48,10 +48,10 @@
     <string name="ColorSpec_Analogous">Analogous</string>
 
     <string name="colors_tab_tuto_title">How to start</string>
-    <string name="colors_tab_tuto_circlepicker">This icon allow you to pick the color of any pixel</string>
-    <string name="colors_tabs_tuto_import">The import menu permit you to pick colors</string>
-    <string name="colors_tab_tuto_colors">"The color tabulation store your colors "</string>
-    <string name="colors_tab_tuto_gradients">This menu let you handle and create custom gradients</string>
+    <string name="colors_tab_tuto_circlepicker">Pick the color of any pixel</string>
+    <string name="colors_tabs_tuto_import">Import and detect colors</string>
+    <string name="colors_tab_tuto_colors">"Store your colors "</string>
+    <string name="colors_tab_tuto_gradients">Handle custom gradients</string>
     <string name="colors_tab_pick_from_pixel">Pick from pixels</string>
     <string name="colors_tab_pick_from_wheel">Pick from wheel</string>
     <string name="colors_tab_delete_all_color">Delete all colors</string>

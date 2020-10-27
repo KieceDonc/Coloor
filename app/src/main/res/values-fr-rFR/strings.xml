@@ -46,8 +46,8 @@
     <string name="colors_tab_more_information">Plus d\'informations</string>
     <string name="colors_tab_more_gradient">Dégradé -</string>
     <string name="colors_tab_tuto_title">Comment commencer</string>
-    <string name="colors_tab_tuto_circlepicker">Ce logo vous permet te détecter la couleur de n\'importe quel pixel</string>
-    <string name="colors_tab_tuto_gradients">Ce menu vous permet de gérer / créer les dégradés personnalisés</string>
+    <string name="colors_tab_tuto_circlepicker">Détecte la couleur de n\'importe quel pixel</string>
+    <string name="colors_tab_tuto_gradients">Gère des dégradés personnalisés</string>
     <string name="gradients_tuto1">Après avoir crée votre dégradé personnalisé, choissisez une couleur dans la tabulation couleur, et choissisez le dégradé</string>
     <string name="tab_colors">Couleur</string>
     <string name="tab_gradients">Dégradé</string>
@@ -58,8 +58,8 @@
     <string name="import_pdf_on">sur</string>
     <string name="import_pdf_select">Sélectionner un fichier pdf</string>
     <string name="import_files_select">Sélectionner une image / une vidéo</string>
-    <string name="colors_tabs_tuto_import">Le menu importer vous permet de détecter des couleurs</string>
-    <string name="colors_tab_tuto_colors">"Cette tabulation enregistre vos couleurs "</string>
+    <string name="colors_tabs_tuto_import">Importe et détecte des couleurs</string>
+    <string name="colors_tab_tuto_colors">"Conserve vos couleurs "</string>
     <string name="colors_tab_pick_from_wheel">Choisir depuis une roue</string>
     <string name="colors_tab_pick_from_pixel">Détecter à partir des pixels de l\'appareil</string>
     <string name="colors_tab_delete_all_color">Supprimer toutes les couleurs</string>
