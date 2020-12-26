@@ -133,7 +133,12 @@
     <string name="settings_gradients_tuto_howto">If you haven\'t created a gradient this is what you should do :</string>
 
     <string name="keep_circle_outside_app">You can keep the circle outside of the app by upgrading to pro version</string>
-    <string name="alertdialog_colorInfo_CopyToClipboard">Copied to clipboard</string><!-- Preference Titles -->
+    <string name="alertdialog_colorInfo_CopyToClipboard">Copied to clipboard</string>
+    <string name="rate_title">Rate this app</string>
+    <string name="rate_maintext">If you enjoy Coolor, would you mind taking a moment to rate it ? It won\'t take more than a minute. Thanks for your support !</string>
+    <string name="rate_no">No, thanks !</string>
+    <string name="rate_later">Remind me later</string>
+    <string name="rate_yes">Rate Coolor</string><!-- Preference Titles -->
 
     <!-- Messages Preferences -->
 

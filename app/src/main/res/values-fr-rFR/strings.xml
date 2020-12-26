@@ -100,4 +100,9 @@
     <string name="gradients_add">Ajouter un dégradé</string>
     <string name="gradients_native_custom_already_added">Tous les dégradés par défaut sont déjà sauvegardés</string>
     <string name="alertdialog_colorInfo_CopyToClipboard">Copié dans le presse-papier</string>
+    <string name="rate_title">Évaluer l\'application</string>
+    <string name="rate_maintext">Si vous aimez Coolor, pourriez-vous prendre un moment pour noter l\'application ? Cela ne prendra pas plus d\'une minute. Merci pour votre aide !</string>
+    <string name="rate_no">Non merci !</string>
+    <string name="rate_later">Plus tard</string>
+    <string name="rate_yes">Noter Coloor</string>
 </resources>
