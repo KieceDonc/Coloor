@@ -36,8 +36,8 @@ public class DownloadFile extends Dialog implements android.view.View.OnClickLis
         void onFileDownloaded(String filePath);
     }
 
-    private Context context;
-    private Activity activity;
+    private final Context context;
+    private final Activity activity;
 
     private EditText url;
     private TextView cancel;
@@ -46,7 +46,7 @@ public class DownloadFile extends Dialog implements android.view.View.OnClickLis
     private TextView resume;
     private ProgressBar progressBar;
 
-    private setOnListener listener;
+    private final setOnListener listener;
 
     private int currentDownload;
 
@@ -70,7 +70,9 @@ public class DownloadFile extends Dialog implements android.view.View.OnClickLis
         setContentView(R.layout.import_internet);
 
         Window window = getWindow(); // fix bug for match_parent width
-        window.setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+        if (window != null) {
+            window.setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+        }
 
         url = findViewById(R.id.internet_url);
         cancel = findViewById(R.id.internet_cancel);

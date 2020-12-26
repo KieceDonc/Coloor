@@ -29,7 +29,6 @@ import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.Gradients;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.alertdialog.ColorInfo;
-import com.vvdev.coolor.ui.alertdialog.CreateGradientDialog;
 
 import java.util.ArrayList;
 
@@ -80,21 +79,21 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
 
         private ColorSpec currentColor;
 
-        private CircleImageView colorPreview;
-        private ImageView trash;
-        private TextView colorName;
+        private final CircleImageView colorPreview;
+        private final ImageView trash;
+        private final TextView colorName;
 //        private TextView hsv;
-        private TextView rgb;
-        private TextView hexa;
-        private TextView more;
+        private final TextView rgb;
+        private final TextView hexa;
+        private final TextView more;
         private TextView createGradient;
-        private ConstraintLayout piExtend;
-        private TextView moreInformation;
+        private final ConstraintLayout piExtend;
+        private final TextView moreInformation;
 
-        private ArrayList<View> generate = new ArrayList<>();
+        private final ArrayList<View> generate = new ArrayList<>();
 
-        private Spinner extendSpinner;
-        private ArrayList<FragmentColorsTabItemrecycleExtendBinding> extendInclude = new ArrayList<com.vvdev.coolor.databinding.FragmentColorsTabItemrecycleExtendBinding>();
+        private final Spinner extendSpinner;
+        private final ArrayList<FragmentColorsTabItemrecycleExtendBinding> extendInclude = new ArrayList<com.vvdev.coolor.databinding.FragmentColorsTabItemrecycleExtendBinding>();
 
         private String  spinnerCurrentName="";
 
@@ -113,7 +112,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
             more = binding.piMore;
             trash = binding.piTrash;
             moreInformation = binding.piExtendMoreInformation;
-            createGradient = binding.piExtendMoreCreateGradient;
 
             generate.add(binding.piGenerate0);
             generate.add(binding.piGenerate1);
@@ -186,14 +184,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
                     Log.i(TAG,"TextView more information clicked");
                     ColorInfo cid = new ColorInfo(activity,currentColor);
                     cid.show();
-                }
-            });
-
-            createGradient.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CreateGradientDialog cgd = new CreateGradientDialog(activity,currentColor);
-                    cgd.show();
                 }
             });
 

@@ -11,7 +11,7 @@ import static java.lang.Integer.parseInt;
 
 public class ColorUtility {
 
-    private static String TAG = ColorUtility.class.getName();
+    private static final String TAG = ColorUtility.class.getName();
 
 
     /**
@@ -21,7 +21,7 @@ public class ColorUtility {
      */
 
     public static String[] nearestColor(String ColorToCompare){ // Delete automatically if #001122
-        if(ColorToCompare.substring(0,1).equals("#")){
+        if(ColorToCompare.startsWith("#")){
             ColorToCompare=ColorToCompare.substring(1);
         }
         int bestDistance=30000000;

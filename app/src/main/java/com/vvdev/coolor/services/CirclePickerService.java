@@ -328,7 +328,6 @@ public class CirclePickerService extends Service {
             instance=inst;
         }
 
-
         public static CirclePickerService get() {
             return instance;
         }
@@ -343,7 +342,6 @@ public class CirclePickerService extends Service {
             }else{
                 context.startService(CirclePickerServiceIntent);
             }
-
         }
     }
 

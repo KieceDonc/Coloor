@@ -100,13 +100,13 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:contentDescription="center of the camera"
-        android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/TextureViewBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/TextureViewBackground"
         app:layout_constraintTop_toTopOf="@+id/TextureViewBackground"
         app:layout_constraintVertical_bias="0.498"
-        app:srcCompat="@drawable/camera_plus_icon" />
+        app:srcCompat="@drawable/camera_plus_icon"
+        app:tint="#FFFFFF" />
 
     <ImageView
         android:id="@+id/SwitchCamera"
@@ -115,11 +115,11 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Switching camera icon"
         android:scaleType="centerInside"
-        android:tint="#ffffff"
         app:layout_constraintBottom_toBottomOf="@+id/getpicture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/getpicture"
-        app:srcCompat="@drawable/icon_camera_switching" />
+        app:srcCompat="@drawable/icon_camera_switching"
+        app:tint="#ffffff" />
 
     <Button
         android:id="@+id/getpicture"

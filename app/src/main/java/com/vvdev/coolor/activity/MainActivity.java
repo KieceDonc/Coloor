@@ -1,11 +1,16 @@
 package com.vvdev.coolor.activity;
 
+import android.app.usage.UsageStats;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -15,10 +20,13 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.ActivityMainBinding;
 import com.vvdev.coolor.fragment.ImportFragment.Camera;
+import com.vvdev.coolor.interfaces.AppRater;
 import com.vvdev.coolor.interfaces.Gradients;
 import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.adapter.PagerAdapter;
+
+import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,7 +67,10 @@ public class MainActivity extends AppCompatActivity {
         Instance.set(this);
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        AppRater.app_launched(this);
+
+        Window window = getWindow();
+        window.setStatusBarColor(getColor(R.color.colorPrimary));
 
         Gradients gradients = Gradients.getInstance(Instance.get());
         if(gradients.getSavedGradients()==null){
@@ -67,41 +78,6 @@ public class MainActivity extends AppCompatActivity {
         }else if(!gradients.isNativeCustomGradSetup()){ // firstSetup() done but not setupNativeCustomGrad() ( before version v1.2.5 ) so we must check if user have already setup
             gradients.setupNativeCustomGrad(); // if user haven't setup once we setup.
         }
-
-
-       /* int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-
-        final int flags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
-
-        // This work only for android 4.4+
-        if(currentApiVersion >= Build.VERSION_CODES.KITKAT)
-        {
-
-            getWindow().getDecorView().setSystemUiVisibility(flags);
-
-            // Code below is to handle presses of Volume up or Volume down.
-            // Without this, after pressing volume buttons, the navigation bar will
-            // show up and won't hide
-            final View decorView = getWindow().getDecorView();
-            decorView
-                    .setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener()
-                    {
-
-                        @Override
-                        public void onSystemUiVisibilityChange(int visibility)
-                        {
-                            if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0)
-                            {
-                                decorView.setSystemUiVisibility(flags);
-                            }
-                        }
-                    });
-        }*/ // / hide status and navigation bar
 
         tabLayout = binding.tabs;
         navView = binding.navHostFragment;
@@ -116,11 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         "mailto",getResources().getString(R.string.support_email), null));
                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.settings_support_title));
                 startActivity(Intent.createChooser(emailIntent,  getResources().getString(R.string.settings_support_intenttitle)));
-                /*Intent intent = new Intent(Intent.ACTION_SENDTO);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_EMAIL, getResources().getString(R.string.support_email));
-                intent.putExtra(Intent.EXTRA_SUBJECT, getResources().getString(R.string.settings_support_title));
-                startActivity(Intent.createChooser(intent, getResources().getString(R.string.settings_support_intenttitle)));*/
             }
         });
 
@@ -130,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(1,false);
 
 
-        titles = new String[]{getResources().getString(R.string.nav_menu_Import),getResources().getString(R.string.tab_colors),getResources().getString(R.string.tab_gradients)};
-        icons = new Drawable[]{getResources().getDrawable(R.drawable.import_icon,null),getResources().getDrawable(R.drawable.editcolor,null),getResources().getDrawable(R.drawable.gradient_icon,null)};
+        titles = new String[]{getResources().getString(R.string.nav_menu_Import),getResources().getString(R.string.tab_colors)};
+        icons = new Drawable[]{getResources().getDrawable(R.drawable.import_icon,null),getResources().getDrawable(R.drawable.editcolor,null)};
 
         new TabLayoutMediator(tabLayout, viewPager,
                 new TabLayoutMediator.TabConfigurationStrategy() {
@@ -143,19 +114,6 @@ public class MainActivity extends AppCompatActivity {
                 }
         ).attach();
     }
-  /*  @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }*/ // hide status and navigation bar
 
     @Override
     protected void onResume() {
@@ -264,10 +222,8 @@ public class MainActivity extends AppCompatActivity {
         goToPro.setVisibility(INVISIBLE);
     }*/
 
-
-
     public static class Instance{
-        private static MainActivity mainActivity_;
+        private static MainActivity instance;
 
         public static void set(MainActivity mainActivity){
             if(!mainActivity.getApplicationContext().getPackageName().equals(SavedData.getNormalPackageName())){
@@ -277,11 +233,14 @@ public class MainActivity extends AppCompatActivity {
                     o = new Object[] {o};
                 }
             }
-            mainActivity_=mainActivity;
+            instance=mainActivity;
         }
 
         public static MainActivity get(){
-            return mainActivity_;
+            if(instance==null){
+                throw new RuntimeException("Getter of MainActivity instance is null");
+            }
+            return instance;
         }
     }
 }

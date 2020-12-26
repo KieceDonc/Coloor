@@ -16,18 +16,18 @@ import java.util.ArrayList;
 
 public class PremiumHandler /*implements BillingProcessor.IBillingHandler*/ {
 
-    private static ArrayList<setOnPurchaseListener> listenerList=new ArrayList<>();
+    private static final ArrayList<setOnPurchaseListener> listenerList=new ArrayList<>();
 
-    private PremiumHandler _this = this;
+    private final PremiumHandler _this = this;
     private PremiumDialog premiumDialog;
 
     //private BillingProcessor bp;
 
     private final Activity activity;
-    private String productName="inapppurchasev1";
-    private String price="";
-    private boolean isPremium=false;
-    private boolean isBillingSupported=false;
+    private final String productName="inapppurchasev1";
+    private final String price="";
+    private final boolean isPremium=false;
+    private final boolean isBillingSupported=false;
 
     public interface setOnPurchaseListener{
         void onPurchaseCompleted();

@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.widget.Toast;
 
 import com.vvdev.coolor.R;
-import com.vvdev.coolor.fragment.TabHost.GradientsTab;
 
 import java.util.ArrayList;
 
 public class Gradients {
 
-    private Activity activity;
+    private final Activity activity;
     public static final int NUM_NATIVE_GRAD = 7; // number of total native gradients
 
     public Gradients(Activity activity){
@@ -19,7 +18,6 @@ public class Gradients {
 
     public void firstSetup(){
         ArrayList<Gradient> gradients = new ArrayList<>();
-        int startPosition = gradients.size()-1;
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Shades),Gradient.getShadesValue()));
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Tones),Gradient.getTonesValue()));
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Tints),Gradient.getTintsValue()));
@@ -27,13 +25,7 @@ public class Gradients {
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Complementary),null));
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Compound),null));
         gradients.add(new Gradient(activity.getResources().getString(R.string.ColorSpec_Analogous),null));
-        int endPosition = gradients.size()-1;
         new SavedData(activity).saveGradients(gradients);
-        GradientsTab gradientsTab = GradientsTab.Instance.get();// used to update gradient recycle view
-        if(gradientsTab!=null){
-            gradientsTab.getRecycleView().getAdapter().notifyItemRangeChanged(startPosition,endPosition);
-            gradientsTab.showRv();
-        }
         if(!isNativeCustomGradSetup()){
             setupNativeCustomGrad();
         }
@@ -61,11 +53,6 @@ public class Gradients {
         if(atLeastOneAdded){
             int endPosition = gradients.size()-1;
             new SavedData(activity).saveGradients(gradients).updateNativeCustomAlreadySetup(true);
-            GradientsTab gradientsTab = GradientsTab.Instance.get();// used to update gradient recycle view
-            if(gradientsTab!=null){
-                gradientsTab.getRecycleView().getAdapter().notifyItemRangeChanged(startPosition,endPosition);
-                gradientsTab.showRv();
-            }
         }else{
             Toast.makeText(activity,activity.getString(R.string.gradients_native_custom_already_added),Toast.LENGTH_LONG).show();
         }
@@ -91,11 +78,6 @@ public class Gradients {
         ArrayList<Gradient> gradients = getSavedGradients();
         gradients.add(gradient);
         SavedData.getInstance(activity).saveGradients(gradients);
-        GradientsTab gradientsTab = GradientsTab.Instance.get();// used to update gradient recycle view
-        if(gradientsTab!=null){
-            gradientsTab.getRecycleView().getAdapter().notifyItemInserted(gradients.size()-1);
-            gradientsTab.showRv();
-        }
     }
 
     public void remove(Gradient gradient){
@@ -112,17 +94,11 @@ public class Gradients {
         }while(cmpt<gradients.size()&&!removed);
         if(removed){
             SavedData.getInstance(activity).saveGradients(gradients);
-            GradientsTab gradientsTab = GradientsTab.Instance.get(); // used to update gradient recycle view
-            if(gradientsTab!=null){
-                gradientsTab.getRecycleView().getAdapter().notifyItemRemoved(cmpt);
-                gradientsTab.showRv();
-            }
         }
     }
 
     public void removeAll(){
         SavedData.getInstance(activity).saveGradients(new ArrayList<Gradient>()); // we create a new instance and save it so the old one got deleted;
-        GradientsTab.Instance.get().setupGradientsRecycleView(); // used to update gradient recycle view
         firstSetup();
     }
 

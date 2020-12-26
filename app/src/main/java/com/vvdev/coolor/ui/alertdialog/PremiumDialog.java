@@ -12,8 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class PremiumDialog extends Dialog {
 
-    private ConstraintLayout wantToPurchase;
-    private TextView priceTV;
+    private final ConstraintLayout wantToPurchase;
+    private final TextView priceTV;
 
     public PremiumDialog(@NonNull Context context, final PremiumHandler premiumHandler) {
         super(context);

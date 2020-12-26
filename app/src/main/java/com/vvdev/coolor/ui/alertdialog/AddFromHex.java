@@ -20,11 +20,11 @@ public class AddFromHex extends Dialog implements View.OnClickListener {
 
     private static final String TAG = AddFromHex.class.getName();
 
-    private Activity activity;
+    private final Activity activity;
 
     private View preview;
 
-    private ArrayList<View> allTv = new ArrayList<>();
+    private final ArrayList<View> allTv = new ArrayList<>();
 
     private String currentHexValue="#000000";
 

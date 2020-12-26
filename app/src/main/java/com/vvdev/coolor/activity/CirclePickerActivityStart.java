@@ -64,13 +64,11 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         super.onDestroy();
     }
 
-    @SuppressLint("NewApi")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_MEDIA_PROJECTION){
             if (resultCode == Activity.RESULT_OK) {
-                Log.i(TAG,"OnActivityResult REQUEST_CODE_MEDIA_PROJECTION == Activity.RESULT_OK");
                 ScreenCapture.setUpMediaProjection(resultCode,data);
                 startCirclePicker();
             }else if(resultCode == Activity.RESULT_CANCELED){

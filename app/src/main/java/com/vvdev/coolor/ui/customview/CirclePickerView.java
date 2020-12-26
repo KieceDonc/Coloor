@@ -39,19 +39,22 @@ public class CirclePickerView extends androidx.appcompat.widget.AppCompatImageVi
     private static final String TAG = CirclePickerView.class.getName();
 
     private ScreenCapture mScreenCapture;
-    private ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
+    private final ScreenCapture.OnCaptureListener mCaptureListener = new ScreenCapture.OnCaptureListener() {
         @Override
         public void onScreenCaptureSuccess(Bitmap bitmap) {
             mScreenBitmap = bitmap;
-            CirclePickerService.Instance.get().showCirclePicker();
-            inUpdateFinalBitmap=false;
+            CirclePickerService service = CirclePickerService.Instance.get();
+            if(service!=null){
+                service.showCirclePicker();
+                inUpdateFinalBitmap=false;
 
-            ((Activity) getContext()).runOnUiThread(new Runnable() { // use to solve a bug
-                @Override
-                public void run() {
-                    updateFinalBitmap();
-                }
-            });
+                ((Activity) getContext()).runOnUiThread(new Runnable() { // use to solve a bug
+                    @Override
+                    public void run() {
+                        updateFinalBitmap();
+                    }
+                });
+            }
         }
 
         @Override
@@ -91,8 +94,8 @@ public class CirclePickerView extends androidx.appcompat.widget.AppCompatImageVi
     private RectF mDrawableRect;
     private RectF mBorderRect;
 
-    private Rect mBorderColorNameRect = new Rect();
-    private Rect mBorderColorHexRect = new Rect();
+    private final Rect mBorderColorNameRect = new Rect();
+    private final Rect mBorderColorHexRect = new Rect();
 
 
     private String mColorName="";
@@ -109,11 +112,11 @@ public class CirclePickerView extends androidx.appcompat.widget.AppCompatImageVi
     private int mPhoneHeight;
     private int mBitmapHeight;
     private int mBitmapWidth;
-    private int mBorderWidthDp = 12;
-    private int mBorderWidthPx = convertDpToPx(mBorderWidthDp);
+    private final int mBorderWidthDp = 12;
+    private final int mBorderWidthPx = convertDpToPx(mBorderWidthDp);
     private int mBorderColor;
-    private int mMiddleLineStrokeWidth=3;
-    private int mMiddleLineSize=convertDpToPx(10);
+    private final int mMiddleLineStrokeWidth=3;
+    private final int mMiddleLineSize=convertDpToPx(10);
 
     private int numFinger = 0;  // use to decked circle picker teleports bug
     private int recViewLastX;
@@ -365,12 +368,10 @@ public class CirclePickerView extends androidx.appcompat.widget.AppCompatImageVi
      */
     private void updateNotificationHex(){
         CirclePickerService service = CirclePickerService.Instance.get();
-        if(service!=null){
-            try{
-                service.updateHexaValue(mColorHexa);
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
+        try{
+            service.updateHexaValue(mColorHexa);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
         }
     }
 

@@ -26,7 +26,9 @@ public class DownloadInfo extends Dialog {
         setContentView(R.layout.dialog_download_info);
 
         Window window = getWindow(); // fix bug for match_parent width
-        window.setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+        if (window != null) {
+            window.setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+        }
 
         ok = findViewById(R.id.download_info_ok);
         ok.setOnClickListener(new View.OnClickListener() {

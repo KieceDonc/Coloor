@@ -120,50 +120,25 @@
         android:layout_height="25dp"
         android:layout_marginTop="24dp"
         android:contentDescription="Import tab icon"
-        android:tint="#00CC00"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="@+id/imageView2"
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:srcCompat="@drawable/import_icon" />
+        app:srcCompat="@drawable/import_icon"
+        app:tint="#00CC00" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:contentDescription="Colors tab icon"
-        android:tint="#0000CC"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/imageView3"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/imageView3"
         app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:srcCompat="@drawable/editcolor" />
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/colors_tab_tuto_gradients"
-        android:textAlignment="textStart"
-        android:textColor="@color/Theme1_TextBlack"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView17"
-        app:layout_constraintStart_toEndOf="@+id/imageView4"
-        app:layout_constraintTop_toTopOf="@+id/imageView17" />
-
-    <ImageView
-        android:id="@+id/imageView17"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="32dp"
-        android:contentDescription="Gradients tab icon"
-        android:tint="#CC00CC"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageView4"
-        app:layout_constraintStart_toStartOf="@+id/imageView4"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
-        app:srcCompat="@drawable/gradient_icon" />
+        app:srcCompat="@drawable/editcolor"
+        app:tint="#0000CC" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

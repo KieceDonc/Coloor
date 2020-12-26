@@ -19,9 +19,9 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
 
     private static final String TAG = SavedData.class.getName();
 
-    private ArrayList<ColorSpec> colors;
-    private SharedPreferences mPrefs;
-    private Activity activity;
+    private final ArrayList<ColorSpec> colors;
+    private final SharedPreferences mPrefs;
+    private final Activity activity;
     private static final String PREFS_TAG = "SharedPrefs";
 
     public static SavedData getInstance(Activity activity){

@@ -15,11 +15,11 @@ import java.nio.ByteBuffer;
 
 public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details/96485285
 
-    private static String TAG = ScreenCapture.class.getName();
+    private static final String TAG = ScreenCapture.class.getName();
 
-    private int mWindowWidth;
-    private int mWindowHeight;
-    private int mScreenDensity;
+    private final int mWindowWidth;
+    private final int mWindowHeight;
+    private final int mScreenDensity;
 
     private VirtualDisplay mVirtualDisplay;
     private ImageReader mImageReader;

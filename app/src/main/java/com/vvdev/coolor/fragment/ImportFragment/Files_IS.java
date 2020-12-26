@@ -23,7 +23,7 @@ public class Files_IS extends Fragment {
 
     public static final String KEY_ARGUMENT_FILES_PATH ="PathToAFile";
 
-    private static String TAG = Files_IS.class.getName();
+    private static final String TAG = Files_IS.class.getName();
 
     private ConstraintLayout startCirclePicker;
 

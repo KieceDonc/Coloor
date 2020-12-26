@@ -41,7 +41,7 @@ public class PDF extends Fragment {
 
     public static final String KEY_ARGUMENT_PDF_PATH ="PathToPDF";
 
-    private static String TAG = PDF.class.getName();
+    private static final String TAG = PDF.class.getName();
 
 
     private ConstraintLayout startCirclePicker;

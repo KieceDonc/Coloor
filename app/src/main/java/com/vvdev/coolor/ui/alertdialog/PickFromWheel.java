@@ -21,7 +21,7 @@ import androidx.constraintlayout.widget.Constraints;
 
 public class PickFromWheel extends Dialog {
 
-    private Activity activity;
+    private final Activity activity;
 
     private setOnColorChoose listener;
 
@@ -55,7 +55,9 @@ public class PickFromWheel extends Dialog {
         setContentView(R.layout.dialog_pick_from_wheel);
 
         Window window = getWindow(); // fix bug for match_parent width
-        window.setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+        if (window != null) {
+            window.setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT); // fix bug for match_parent width plz refer to https://stackoverflow.com/questions/28513616/android-get-full-width-for-custom-dialog
+        }
 
         wheel = findViewById(R.id.PickFromWheelPickerView);
         brightnessSlideBar = findViewById(R.id.PickFromWheelBrightnessSlide);

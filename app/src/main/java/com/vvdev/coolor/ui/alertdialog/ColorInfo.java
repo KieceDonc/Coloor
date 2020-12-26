@@ -31,7 +31,7 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
 
     private static final String TAG = ColorInfo.class.getName();
 
-    private ColorSpec currentColor;
+    private final ColorSpec currentColor;
 
     private TextView TVColorName; // TV = TextView
     private TextView TVHexa;
@@ -49,10 +49,10 @@ public class ColorInfo extends Dialog implements android.view.View.OnClickListen
     private ImageView generate4;
     private ImageView generate5;
 
-    private ArrayList<ImageView> generate = new ArrayList<>();
+    private final ArrayList<ImageView> generate = new ArrayList<>();
 
     private String[] currentGenerateColor;
-    private Activity activity;
+    private final Activity activity;
 
     public ColorInfo(@NonNull Activity activity, ColorSpec toParse) {
         super(activity);

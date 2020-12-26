@@ -13,23 +13,22 @@
         android:layout_height="0dp"
         app:layout_anchor="@string/alertdialog_internet_download"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tabs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabs"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/actionBar" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:background="@color/Theme1_Primary"
         android:visibility="visible"
         app:layout_anchorGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actionBar"
         app:tabGravity="fill"
         app:tabIconTint="@color/Theme1_text"
         app:tabIndicatorColor="@color/Theme1_Secondary"
@@ -123,11 +122,11 @@
         android:layout_height="0dp"
         android:visibility="visible"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tabs"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tabs" />
+        app:layout_constraintTop_toBottomOf="@+id/actionBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     <!--TODO replace all icon because you don't have authors permissions-->
