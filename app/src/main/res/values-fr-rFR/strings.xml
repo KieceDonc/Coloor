@@ -105,4 +105,5 @@
     <string name="rate_no">Non merci !</string>
     <string name="rate_later">Plus tard</string>
     <string name="rate_yes">Noter Coloor</string>
+    <string name="camera_error_unvailable">La caméra est actuellement indisponible</string>
 </resources>

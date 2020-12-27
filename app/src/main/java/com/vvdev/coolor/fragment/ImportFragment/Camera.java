@@ -44,6 +44,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.ColorUtility;
@@ -1146,24 +1147,28 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
      */
     public void CameraTopRefresh() {
         Bitmap textureViewBitmap = mTextureView.getBitmap();
-        int middlePixel = textureViewBitmap.getPixel(textureViewBitmap.getWidth()/2,textureViewBitmap.getHeight()/2);
-        int[] RGBMiddlePixel = new int[]{Color.red(middlePixel),Color.green(middlePixel),Color.blue(middlePixel)};
+        if(textureViewBitmap!=null){
+            int middlePixel = textureViewBitmap.getPixel(textureViewBitmap.getWidth()/2,textureViewBitmap.getHeight()/2);
+            int[] RGBMiddlePixel = new int[]{Color.red(middlePixel),Color.green(middlePixel),Color.blue(middlePixel)};
 
-        String ToDisplayRGB = SRGB+" "+RGBMiddlePixel[0]+", "+RGBMiddlePixel[1]+", "+RGBMiddlePixel[2];
-        TVRGBValue.setText(ToDisplayRGB);
+            String ToDisplayRGB = SRGB+" "+RGBMiddlePixel[0]+", "+RGBMiddlePixel[1]+", "+RGBMiddlePixel[2];
+            TVRGBValue.setText(ToDisplayRGB);
 
-        String HexValue = ColorUtility.getHexFromRGB(RGBMiddlePixel);
-        String ToDisplayHex = SHex+" "+HexValue;
-        TVHexValue.setText(ToDisplayHex);
+            String HexValue = ColorUtility.getHexFromRGB(RGBMiddlePixel);
+            String ToDisplayHex = SHex+" "+HexValue;
+            TVHexValue.setText(ToDisplayHex);
 
-        String[] NearestColor = ColorUtility.nearestColor(HexValue);
-        TVColorName.setText(NearestColor[0]);
+            String[] NearestColor = ColorUtility.nearestColor(HexValue);
+            TVColorName.setText(NearestColor[0]);
 
-        int[] Hsv = ColorUtility.getHsvFromRGB(RGBMiddlePixel);
-        String ToDisplayHsv = SHsv+" "+Hsv[0]+"°, "+Hsv[1]+"%, "+Hsv[2]+"%";
-        TVHsvValue.setText(ToDisplayHsv);
+            int[] Hsv = ColorUtility.getHsvFromRGB(RGBMiddlePixel);
+            String ToDisplayHsv = SHsv+" "+Hsv[0]+"°, "+Hsv[1]+"%, "+Hsv[2]+"%";
+            TVHsvValue.setText(ToDisplayHsv);
 
-        ColorPreview.setBackgroundColor(Color.parseColor(HexValue));
+            ColorPreview.setBackgroundColor(Color.parseColor(HexValue));
+        }else{
+            FirebaseCrashlytics.getInstance().recordException(new RuntimeException("Camera textureViewBitmap is null"));
+        }
     }
 
     /**
@@ -1196,10 +1201,9 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     public float finger_spacing = 0;
     public double zoom_level = 1;
 
-
     public boolean onTouch(View v, MotionEvent event) {
+        Activity activity = getActivity();
         try {
-            Activity activity = getActivity();
             CameraManager manager = (CameraManager) Objects.requireNonNull(activity).getSystemService(Context.CAMERA_SERVICE);
             CameraCharacteristics characteristics = Objects.requireNonNull(manager).getCameraCharacteristics(mCameraId);
             float maxzoom = (characteristics.get(CameraCharacteristics.SCALER_AVAILABLE_MAX_DIGITAL_ZOOM))*10;
@@ -1238,24 +1242,26 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
             try {
                 mCaptureSession
                         .setRepeatingRequest(mPreviewRequestBuilder.build(), mCaptureCallback, null);
-            } catch (CameraAccessException e) {
+            } catch (CameraAccessException | NullPointerException e) {
                 e.printStackTrace();
-            } catch (NullPointerException ex) {
-                ex.printStackTrace();
             }
         } catch (CameraAccessException e) {
-            throw new RuntimeException("can not access camera.", e);
+            FirebaseCrashlytics.getInstance().recordException(new RuntimeException("can not access camera.", e));
+            if(activity!=null){
+                // closing camera fragment
+                Toast.makeText(activity,getString(R.string.camera_error_unvailable),Toast.LENGTH_LONG).show();
+                getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+            }
         }
+        v.performClick();
         return true;
     }
 
 
     //Determine the space between the first two fingers
-    @SuppressWarnings("deprecation")
     private float getFingerSpacing(MotionEvent event) {
         float x = event.getX(0) - event.getX(1);
         float y = event.getY(0) - event.getY(1);
         return (float) Math.sqrt(x * x + y * y);
     }
-
 }

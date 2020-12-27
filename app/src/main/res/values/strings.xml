@@ -138,7 +138,9 @@
     <string name="rate_maintext">If you enjoy Coolor, would you mind taking a moment to rate it ? It won\'t take more than a minute. Thanks for your support !</string>
     <string name="rate_no">No, thanks !</string>
     <string name="rate_later">Remind me later</string>
-    <string name="rate_yes">Rate Coolor</string><!-- Preference Titles -->
+    <string name="rate_yes">Rate Coolor</string>
+    <string name="camera_error_unvailable">Camera service is currently unavailable</string>
+    <!-- Preference Titles -->
 
     <!-- Messages Preferences -->
 

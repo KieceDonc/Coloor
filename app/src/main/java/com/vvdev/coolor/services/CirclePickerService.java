@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.CirclePickerActivityStart;
 import com.vvdev.coolor.interfaces.ScreenCapture;
@@ -342,6 +343,12 @@ public class CirclePickerService extends Service {
             }else{
                 context.startService(CirclePickerServiceIntent);
             }
+        }else if(wmCirclePickerView!=null && Instance.get() == null){
+            FirebaseCrashlytics.getInstance().recordException(new RuntimeException("start CirclePickerService : wmCirclePickerView not null, CirclePickerService null"));
+        }else if(wmCirclePickerView==null){
+            FirebaseCrashlytics.getInstance().recordException(new RuntimeException("start CirclePickerService : wmCirclePickerView is null, CirclePickerService not null"));
+        }else{
+            FirebaseCrashlytics.getInstance().recordException(new RuntimeException("start CirclePickerService : wmCirclePickerView not null, CirclePickerService not null"));
         }
     }
 

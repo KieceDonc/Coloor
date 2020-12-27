@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.ActivityMainBinding;
 import com.vvdev.coolor.fragment.ImportFragment.Camera;
@@ -238,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
 
         public static MainActivity get(){
             if(instance==null){
-                throw new RuntimeException("Getter of MainActivity instance is null");
+                FirebaseCrashlytics.getInstance().recordException(new RuntimeException("MainActivity instance is null"));
             }
             return instance;
         }

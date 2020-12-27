@@ -24,6 +24,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.interfaces.ColorUtility;
 import com.vvdev.coolor.interfaces.SavedData;
@@ -54,6 +55,8 @@ public class CirclePickerView extends androidx.appcompat.widget.AppCompatImageVi
                         updateFinalBitmap();
                     }
                 });
+            }else{
+                FirebaseCrashlytics.getInstance().recordException(new RuntimeException("CirclePickerService is null, it shouldn't"));
             }
         }
 
