@@ -23,3 +23,4 @@
 -keep class com.vvdev.coloor.services.CirclePickerService
 -keep class com.shockwave.**
 -keep class com.android.vending.billing.**
+-dontwarn java.lang.invoke.*

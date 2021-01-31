@@ -80,7 +80,6 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         this.complementary=complementary;
     }
 
-
     public String getHexa() {
         return hexa;
     }
@@ -182,8 +181,6 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
         }
         return toReturn;
     }
-
-    //TODO make toString() of ColorSpec
 
 
     /**

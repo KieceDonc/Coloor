@@ -17,7 +17,6 @@ import androidx.constraintlayout.widget.Constraints;
 public class AppRaterDialog extends Dialog implements View.OnClickListener {
 
     private static final String TAG = AppRaterDialog.class.getName();
-    private final static String APP_TITLE = "Coloor";// App Name
     private final static String APP_PNAME = SavedData.getNormalPackageName();// Package Name
 
     private Context mContext = null;
@@ -49,13 +48,11 @@ public class AppRaterDialog extends Dialog implements View.OnClickListener {
     public void onClick(View v){
         switch(v.getId()){
             case R.id.RateTitle:{
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
-                this.dismiss();
+                redirectToPlayStoreRate();
                 break;
             }
             case R.id.RateButton:{
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
-                this.dismiss();
+                redirectToPlayStoreRate();
                 break;
             }
             case R.id.RemindMe:{
@@ -63,13 +60,23 @@ public class AppRaterDialog extends Dialog implements View.OnClickListener {
                 break;
             }
             case R.id.No:{
-                if (editor != null) {
-                    editor.putBoolean("dontshowagain", true);
-                    editor.commit();
-                }
+                dontShowRaterAgain();
                 this.dismiss();
                 break;
             }
+        }
+    }
+
+    private void redirectToPlayStoreRate(){
+        dontShowRaterAgain();
+        mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + APP_PNAME)));
+        this.dismiss();
+    }
+
+    private void dontShowRaterAgain(){
+        if (editor != null) {
+            editor.putBoolean("dontshowagain", true);
+            editor.commit();
         }
     }
 

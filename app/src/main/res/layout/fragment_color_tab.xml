@@ -32,7 +32,18 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.github.clans.fab.FloatingActionMenu
+    <uk.co.markormesher.android_fab.FloatingActionButton
+        android:id="@+id/PaletteABMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:buttonBackgroundColour="#333333"
+        app:buttonIcon="@drawable/floating_actionbutton_add_blank"
+        app:buttonPosition="bottom|end"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pRecyclerView" />
+
+    <!--<com.github.clans.fab.FloatingActionMenu
+        app:behavior_autoHide="false"
         android:id="@+id/PaletteABMenu"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/action_button"
@@ -77,18 +88,6 @@
             app:fab_label="@string/colors_tab_add_hexa"
             app:fab_size="mini"
             fab:menu_colorNormal="#000000" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/ColorTabABButtonDeleteAll"
-            android:layout_width="@dimen/action_button"
-            android:layout_height="@dimen/action_button"
-            android:src="@drawable/icon_fab_delete"
-            app:fab_colorNormal="@color/Theme1_Secondary"
-            app:fab_colorPressed="#7f7f7f"
-            app:fab_label="@string/colors_tab_delete_all_color"
-            app:fab_size="mini"
-            fab:menu_colorNormal="#000000" />
-
-    </com.github.clans.fab.FloatingActionMenu>
+    </com.github.clans.fab.FloatingActionMenu>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

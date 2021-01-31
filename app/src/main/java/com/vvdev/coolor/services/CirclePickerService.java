@@ -127,15 +127,15 @@ public class CirclePickerService extends Service {
         startForeground(NOTIFICATION_ID,notification);
     }
 
-    private PendingIntent shareIntent(String hexaValue){ // get sharing intent to share the color name TODO need to fix share or check if it's work on other devices, on samsung it doesn't work
+    private PendingIntent shareIntent(String hexaValue){
+        Log.e("Test",hexaValue);
         String shareBody = "Hexadecimal: "+hexaValue+" "+getResources().getString(R.string.share_self_promo);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
 
         Intent chooserIntent = Intent.createChooser(sharingIntent, getApplicationContext().getResources().getString(R.string.service_share_title));
-        chooserIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-        return PendingIntent.getActivity(getApplicationContext(), 0, chooserIntent, 0);
+        return PendingIntent.getActivity(getApplicationContext(), 0, chooserIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     /**
@@ -287,23 +287,26 @@ public class CirclePickerService extends Service {
      */
     @SuppressLint("RestrictedApi")
     public void updateHexaValue(String Hexa){
-        oldHexValue=Hexa;
-        notificationBuilder.mActions.clear(); // clear all past action ( you need to do that cuz you call addAction and not setAction ) plz refer https://stackoverflow.com/questions/24465587/change-notifications-action-icon-dynamically
-        notificationBuilder
-                .setContentTitle(getApplicationContext().getString(R.string.service_current_hexa))
-                .setContentText(Hexa)
-                .addAction(0,getApplicationContext().getString(R.string.service_stop),stopIntent())
-                .addAction(0,getApplicationContext().getString(R.string.service_share),shareIntent(Hexa));
-        if(isHideOrShow==0){ // hide
+        if(Hexa!=null){
+            oldHexValue=Hexa;
+            notificationBuilder.mActions.clear(); // clear all past action ( you need to do that cuz you call addAction and not setAction ) plz refer https://stackoverflow.com/questions/24465587/change-notifications-action-icon-dynamically
             notificationBuilder
-                    .addAction(0,getApplicationContext().getString(R.string.service_hide),hideIntent());
-        }else{ // show
-            notificationBuilder
-                    .addAction(0,getApplicationContext().getString(R.string.service_show),showIntent());
+                    .setContentTitle(getApplicationContext().getString(R.string.service_current_hexa))
+                    .setContentText(Hexa)
+                    .addAction(0,getApplicationContext().getString(R.string.service_stop),stopIntent())
+                    .addAction(0,getApplicationContext().getString(R.string.service_share),shareIntent(Hexa));
+            if(isHideOrShow==0){ // hide
+                notificationBuilder
+                        .addAction(0,getApplicationContext().getString(R.string.service_hide),hideIntent());
+            }else{ // show
+                notificationBuilder
+                        .addAction(0,getApplicationContext().getString(R.string.service_show),showIntent());
+            }
+
+            Notification notification = notificationBuilder.build();
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(NOTIFICATION_ID, notification);
         }
-        Notification notification = notificationBuilder.build();
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
     public void stopService(){

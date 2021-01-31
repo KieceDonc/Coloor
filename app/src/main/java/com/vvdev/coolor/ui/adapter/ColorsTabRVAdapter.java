@@ -44,6 +44,7 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
 
     private final Activity activity;
 
+
     public ArrayList<MyViewHolderPalette> myViewHolderPaletteArrayList = new ArrayList<>();
 
     public ColorsTabRVAdapter(Activity activity) {
@@ -82,11 +83,9 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
         private final CircleImageView colorPreview;
         private final ImageView trash;
         private final TextView colorName;
-//        private TextView hsv;
         private final TextView rgb;
         private final TextView hexa;
         private final TextView more;
-        private TextView createGradient;
         private final ConstraintLayout piExtend;
         private final TextView moreInformation;
 
@@ -154,7 +153,6 @@ public class ColorsTabRVAdapter extends RecyclerView.Adapter<ColorsTabRVAdapter.
                         SavedData savedData = new SavedData(activity);
                         int position = getLayoutPosition();
                         savedData.removeColor(position);
-                        ColorsTab.Instance.get().getActionMenu().showMenuButton(true);
                         itemDeleted=false;
                     }
                 }

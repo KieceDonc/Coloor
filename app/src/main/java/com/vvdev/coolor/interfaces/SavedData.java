@@ -66,20 +66,6 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         }
     }
 
-    public void clearColors(){
-        colors.clear();
-        saveColors();
-        ColorsTab colorsTab = getColorsTabInstance();
-        if(colorsTab!=null){
-            ColorsTabRVAdapter ColorsTabRVAdapter = new ColorsTabRVAdapter(activity);
-            colorsTab.getRecycleView().setAdapter(ColorsTabRVAdapter);
-            colorsTab.getActionMenu().showMenuButton(true);
-            colorsTab.setColorsTabRVAdapter(ColorsTabRVAdapter);
-            colorsTab.showTutorial();
-        }
-        Log.i(TAG,"all colors deleted ( clearColors() ) ");
-    }
-
     public int getColorsSize(){
         return colors.size();
     }
@@ -94,7 +80,7 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
         copy.colorsSP = new ArrayList<>(colors);
         String json = gson.toJson(copy);
         prefsEditor.putString("colorsArrayList", json);
-        prefsEditor.commit();
+        prefsEditor.apply();
         Log.i(TAG,"New color list saved");
     }
 
@@ -111,6 +97,20 @@ public class SavedData { // https://stackoverflow.com/questions/7145606/how-andr
             return copy.colorsSP;
         }
     }
+
+    public void clearColors(){
+        colors.clear();
+        saveColors();
+        ColorsTab colorsTab = getColorsTabInstance();
+        if(colorsTab!=null){
+            ColorsTabRVAdapter ColorsTabRVAdapter = new ColorsTabRVAdapter(activity);
+            colorsTab.getRecycleView().setAdapter(ColorsTabRVAdapter);
+            colorsTab.getActionMenu().show();
+            colorsTab.showTutorial();
+        }
+        Log.i(TAG,"all colors deleted ( clearColors() ) ");
+    }
+
 
     public static String getNormalPackageName(){
         String toReturn ="";

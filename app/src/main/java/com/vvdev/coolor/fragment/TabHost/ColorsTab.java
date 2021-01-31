@@ -1,40 +1,45 @@
 package com.vvdev.coolor.fragment.TabHost;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.databinding.FragmentColorTabBinding;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.services.CirclePickerService;
+import com.vvdev.coolor.ui.adapter.ColorsTabRVAdapter;
 import com.vvdev.coolor.ui.alertdialog.AddFromHex;
 import com.vvdev.coolor.ui.alertdialog.PickFromWheel;
-import com.vvdev.coolor.ui.adapter.ColorsTabRVAdapter;
+
+import org.jetbrains.annotations.NotNull;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import uk.co.markormesher.android_fab.FloatingActionButton;
+import uk.co.markormesher.android_fab.SpeedDialMenuAdapter;
+import uk.co.markormesher.android_fab.SpeedDialMenuItem;
+import uk.co.markormesher.android_fab.SpeedDialMenuOpenListener;
 
 public class ColorsTab extends Fragment {
 
     private final static String TAG = ColorsTab.class.getName();
 
-    private FloatingActionMenu actionMenu;
-    private FloatingActionButton actionButtonCirclePicker;
-    private FloatingActionButton actionButtonPickFromWheel;
-    private FloatingActionButton actionButtonDeleteAll;
-    private FloatingActionButton actionButtonAddColor;
+    private FloatingActionButton actionMenu;
 
     private ConstraintLayout tutorial;
     private RecyclerView recyclerView;
@@ -52,21 +57,16 @@ public class ColorsTab extends Fragment {
         View view = binding.getRoot();
         //View view = inflater.inflate(R.layout.fragment_color_tab, container, false);
         actionMenu = binding.PaletteABMenu;
-        actionButtonPickFromWheel = binding.ColorTabABPickFromWheel;
-        actionButtonDeleteAll = binding.ColorTabABButtonDeleteAll;
-        actionButtonAddColor = binding.ColorTabABButtonAdd;
-        actionButtonCirclePicker = binding.ColorTabABCirclePicker;
         tutorial = binding.ColorTabTuto.getRoot().findViewById(R.id.ColorTabTuto);
         recyclerView = binding.pRecyclerView;
 
         setupPaletteRecycleView();
-        setupActionButtonListener();
+        setupActionButton();
 
         SavedData temp = SavedData.getInstance(getActivity());
         if(temp.getColorsSize()>0){
             showColors();
         }
-
         return view;
     }
 
@@ -86,57 +86,112 @@ public class ColorsTab extends Fragment {
         Instance.set(null);
     }
 
-    private void setupActionButtonListener(){
-        actionButtonCirclePicker.setOnClickListener(new View.OnClickListener() {
+    private void setupActionButton(){
+        actionMenu.setContentCoverEnabled(false);
+
+        actionMenu.setSpeedDialMenuAdapter(new SpeedDialMenuAdapter(){
             @Override
-            public void onClick(View v) {
-                CirclePickerService.start(getContext());
+            public int getCount() {
+                return 4;
+            }
+
+            @NotNull
+            @Override
+            public SpeedDialMenuItem getMenuItem(@NotNull Context context, int i) {
+                switch(i){
+                    case 3:{
+                        return new SpeedDialMenuItem(context, R.drawable.ic_pipette_padding_0dp,R.string.colors_tab_pick_from_pixel);
+                    }
+                    case 2:{
+                        return new SpeedDialMenuItem(context, R.drawable.icon_fab_fromwheel,R.string.colors_tab_pick_from_wheel);
+                    }
+                    case 1:{
+                        return new SpeedDialMenuItem(context, R.drawable.icon_fab_hexa,R.string.colors_tab_add_hexa);
+                    }
+                    case 0:{
+                        return new SpeedDialMenuItem(context, R.drawable.icon_fab_delete,R.string.colors_tab_delete_all_color);
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            public boolean onMenuItemClick(int position) {
+                switch(position){
+                    case 3:{
+                        CirclePickerService.start(getContext());
+                        break;
+                    }
+                    case 2:{
+                        Log.i(TAG,"Action button pick from wheel clicked");
+                        PickFromWheel cpfwd = new PickFromWheel(getActivity());
+                        cpfwd.show();
+                        break;
+                    }
+                    case 1:{
+                        Log.i(TAG,"Action button add color clicked");
+                        AddFromHex cad = new AddFromHex(getActivity());
+                        cad.show();
+                        break;
+                    }case 0: {
+                        SavedData.getInstance(getActivity()).clearColors();
+                        break;
+                    }
+                }
+                return super.onMenuItemClick(position);
+            }
+
+            @Override
+            public void onPrepareItemLabel(@NotNull Context context, int position, @NotNull TextView label) {
+                label.setTextColor(getResources().getColor(R.color.Theme1_text));
+
+                int padding = 15;
+                label.setPadding(padding,padding,padding,padding);
+
+                ShapeAppearanceModel shapeAppearanceModel = new ShapeAppearanceModel()
+                        .toBuilder()
+                        .setAllCorners(CornerFamily.ROUNDED,15)
+                        .build();
+                MaterialShapeDrawable shapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+                shapeDrawable.setFillColor(ContextCompat.getColorStateList(getContext(),R.color.Theme1_Third));
+                label.setBackground(shapeDrawable);
+            }
+
+            @Override
+            public int getBackgroundColour(int position) {
+                return getResources().getColor(R.color.Theme1_Secondary);
+            }
+
+            @Override
+            public float fabRotationDegrees() {
+                return 180+45;
             }
         });
 
-        actionButtonPickFromWheel.setOnClickListener(new View.OnClickListener() {
+        actionMenu.setOnSpeedDialMenuOpenListener(new SpeedDialMenuOpenListener() {
             @Override
-            public void onClick(View v) {
-                Log.i(TAG,"Action button pick from wheel clicked");
-                PickFromWheel cpfwd = new PickFromWheel(getActivity());
-                cpfwd.show();
-            }
-        });
-
-        actionButtonDeleteAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG,"delete all colors floating button have been clicked");
-                new SavedData(getActivity()).clearColors();
-            }
-        });
-
-        actionButtonAddColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG,"Action button add color clicked");
-                AddFromHex cad = new AddFromHex(getActivity());
-                cad.show();
+            public void onOpen(@NotNull FloatingActionButton floatingActionButton){
             }
         });
     }
 
     private void setupPaletteRecycleView(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        colorsTabRVAdapter = new ColorsTabRVAdapter(getActivity());
-
-        recyclerView.setAdapter(colorsTabRVAdapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    actionMenu.hideMenuButton(true);
-                } else if (dy < 0) {
-                    actionMenu.showMenuButton(true);
+                if(dy >= 0){
+                    // Scrolling up
+                    actionMenu.show();
+                }else{
+                    // Scrolling down
+                    actionMenu.hide(false);
                 }
             }
         });
+        colorsTabRVAdapter = new ColorsTabRVAdapter(getActivity());
+        recyclerView.setAdapter(colorsTabRVAdapter);
     }
 
     public void showTutorial(){
@@ -144,31 +199,21 @@ public class ColorsTab extends Fragment {
         recyclerView.setVisibility(View.GONE);
     }
 
-    public void showColors(){
+    public void showColors() {
         tutorial.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    public FloatingActionButton getActionMenu(){
+        return this.actionMenu;
     }
 
     public RecyclerView getRecycleView(){
         return this.recyclerView;
     }
 
-    public FloatingActionMenu getActionMenu(){
-        return actionMenu;
-    }
-
     public ColorsTabRVAdapter getColorsTabRVAdapter(){
         return this.colorsTabRVAdapter;
-    }
-
-    public void setColorsTabRVAdapter(ColorsTabRVAdapter rvAdapter) {
-        this.colorsTabRVAdapter = colorsTabRVAdapter;
-    }
-
-    private Drawable resizeToActionButton(Drawable image) {
-        Bitmap b = ((BitmapDrawable)image).getBitmap();
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, 50, 50, false);
-        return new BitmapDrawable(getResources(), bitmapResized);
     }
 
     public static class Instance{

@@ -237,7 +237,7 @@
             android:textSize="36sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/piRGB"
+            app:layout_constraintStart_toEndOf="@+id/piGenerate5"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
