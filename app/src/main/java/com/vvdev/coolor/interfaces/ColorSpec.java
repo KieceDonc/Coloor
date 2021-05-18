@@ -189,7 +189,7 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
      * @param longCheck if true, check all hexa value length to know if it's correct or not
      * @return
      */
-    public static boolean isCorrect(ColorSpec toVerify,boolean longCheck){
+    public static boolean isCorrect(ColorSpec toVerify,boolean longCheck) {
        /* if(toVerify.getHexa().length()<6){
             Log.e(TAG,"isCorrect() detect error.\nHexa color length of object is <6. Value ="+toVerify.getHexa()
             +"\nObject to verify toString()= "+toVerify.toString());

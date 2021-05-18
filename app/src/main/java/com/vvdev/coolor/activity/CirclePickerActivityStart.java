@@ -39,10 +39,11 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     public static View wmCirclePickerView;
     public static WindowManager.LayoutParams wmCirclePickerParams;
 
+    private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
+
+
 
     private static final String TAG = CirclePickerActivityStart.class.getName();
-    private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
-    private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,12 +52,7 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         WindowManager.LayoutParams wp = getWindow().getAttributes();
         wp.dimAmount = 0f;
 
-        if (!Settings.canDrawOverlays(this)) {
-            showAlertDialog();
-        } else {
-            startCapture();
-        }
-
+        startCapture();
     }
 
     @Override
@@ -72,23 +68,11 @@ public class CirclePickerActivityStart extends AppCompatActivity {
                 ScreenCapture.setUpMediaProjection(resultCode,data);
                 startCirclePicker();
             }else if(resultCode == Activity.RESULT_CANCELED){
-                permissionNotGiven(true);
-            }
-        }else if(requestCode == REQUEST_CODE_ACTION_MANAGE_OVERLAY){
-            if(resultCode == Activity.RESULT_OK){
-                startCapture();
-            }else{
-                permissionNotGiven(true);
+                CirclePickerService.Instance.get().onCirclePickerPermissionDenied();
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
-    }
-
-    private void permissionNotGiven(boolean showMsg){
-        CirclePickerService.Instance.get().onCirclePickerPermissionDenied();
-        if(showMsg){
-            Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
-        }
-        finish();
     }
 
     private void startCapture(){
@@ -133,44 +117,5 @@ public class CirclePickerActivityStart extends AppCompatActivity {
             }
         }, 300);
         finish();
-    }
-
-    private void showAlertDialog(){
-        //set icon
-        //set title
-        //set message
-        //set positive button
-        //set what would happen when positive button is clicked
-        //set negative button
-        //set what should happen when negative button is clicked
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                //set icon
-                .setIcon(android.R.drawable.ic_dialog_info)
-                //set title
-                .setTitle(getResources().getString(R.string.circle_picker_activity_title))
-                //set message
-                .setMessage(getResources().getString(R.string.circle_picker_activity_message))
-                //set positive button
-                .setPositiveButton(getResources().getString(R.string.circle_picker_activity_yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //set what would happen when positive button is clicked
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getPackageName())); // we only call the alert dialog if we are SDK > 23
-                        startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
-                        dialogInterface.dismiss();
-                        permissionNotGiven(false);
-                    }
-                })
-                //set negative button
-                .setNegativeButton(getResources().getString(R.string.circle_picker_activity_cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //set what should happen when negative button is clicked
-                        dialogInterface.dismiss();
-                        permissionNotGiven(true);
-                    }
-                })
-                .setCancelable(false);
-        builder.create().show();
     }
 }

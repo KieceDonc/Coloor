@@ -128,7 +128,6 @@ public class CirclePickerService extends Service {
     }
 
     private PendingIntent shareIntent(String hexaValue){
-        Log.e("Test",hexaValue);
         String shareBody = "Hexadecimal: "+hexaValue+" "+getResources().getString(R.string.share_self_promo);
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");

@@ -106,4 +106,10 @@
     <string name="rate_later">Plus tard</string>
     <string name="rate_yes">Noter Coloor</string>
     <string name="camera_error_unvailable">La caméra est actuellement indisponible</string>
+    <string name="no">Non</string>
+    <string name="yes">Oui</string>
+    <string name="alertdialog_confirmdelete_delete">Supprimer</string>
+    <string name="alertdialog_confirmdelete_mainText">Êtes-vous sur de vouloir supprimer ceci ?</string>
+    <string name="colors_tab_save_to_file">Sauvegarder les couleurs vers un fichier</string>
+    <string name="colors_tab_add_hexa">Ajouter depuis l\'hexadecimal</string>
 </resources>

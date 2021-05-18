@@ -55,7 +55,7 @@
     <string name="colors_tab_pick_from_pixel">Pick from pixels</string>
     <string name="colors_tab_pick_from_wheel">Pick from wheel</string>
     <string name="colors_tab_delete_all_color">Delete all colors</string>
-    <string name="colors_tab_add_hexa" translatable="false">Hexadecimal</string>
+    <string name="colors_tab_add_hexa">Add from Hexadecimal</string>
     <string name="colors_tab_more_gradient">Gradient -</string>
     <string name="colors_tab_more_information">More information</string>
     <string name="colors_tab_more_gradient_create">Create a gradient</string>
@@ -140,6 +140,11 @@
     <string name="rate_later">Remind me later</string>
     <string name="rate_yes">Rate Coolor</string>
     <string name="camera_error_unvailable">Camera service is currently unavailable</string>
+    <string name="alertdialog_confirmdelete_delete">Delete</string>
+    <string name="alertdialog_confirmdelete_mainText">Are you sure you want to delete this ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="colors_tab_save_to_file">Save colors to a file</string>
     <!-- Preference Titles -->
 
     <!-- Messages Preferences -->

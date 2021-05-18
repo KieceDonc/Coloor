@@ -10,15 +10,16 @@
         android:id="@+id/piExtendDesc"
         android:layout_width="75dp"
         android:layout_height="45dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="36dp"
         android:background="@drawable/palette_ir_extend_background"
         app:layout_constraintEnd_toEndOf="@+id/piExtendView"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/piExtendView"
         app:layout_constraintTop_toTopOf="@+id/piExtendView" />
 
     <View
         android:id="@+id/piExtendView"
-        android:layout_width="75dp"
+        android:layout_width="0dp"
         android:layout_height="45dp"
         android:background="#000000"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,4 +51,5 @@
         app:layout_constraintStart_toStartOf="@+id/piExtendDesc"
         app:layout_constraintTop_toBottomOf="@id/piExtendView"
         app:layout_constraintVertical_bias="0.85" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
