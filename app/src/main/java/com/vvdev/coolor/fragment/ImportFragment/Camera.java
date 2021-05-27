@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -31,6 +32,7 @@ import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -48,7 +50,9 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.vvdev.coolor.R;
 import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.interfaces.ColorUtility;
+import com.vvdev.coolor.interfaces.SaveColorsToFile;
 import com.vvdev.coolor.interfaces.SavedData;
+import com.vvdev.coolor.services.CirclePickerService;
 import com.vvdev.coolor.ui.customview.AutoFitTextureView;
 
 import java.io.File;
@@ -59,12 +63,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -358,7 +367,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
                             mState = STATE_PICTURE_TAKEN;
                             captureStillPicture();
                         } else {
-                            runPrecaptureSequence();
+                            runPreCaptureSequence();
                         }
                     }
                     break;
@@ -476,10 +485,17 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         }
     }
 
+    @Override
+    public void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainActivity.Instance.get().showFragmentHost();
         return inflater.inflate(R.layout.fragment_camera, container, false);
     }
+
 
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
@@ -495,17 +511,9 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
         view.findViewById(R.id.SwitchCamera).setOnClickListener(this);
 
         mTextureView.setOnClickListener(this);
-        mTextureView.setOnTouchListener(this);
 
         initCameraTop();
     }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
-    }
-
 
     @Override
     public void onResume() {
@@ -547,21 +555,8 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
     private void requestCameraPermission() {
         if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
             new ConfirmationDialog().show(getChildFragmentManager(), FRAGMENT_DIALOG);
-        } else {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CAMERA_PERMISSION) {
-            if (grantResults.length != 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                ErrorDialog.newInstance(getString(R.string.request_permission))
-                        .show(getChildFragmentManager(), FRAGMENT_DIALOG);
-            }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }else{
+            Toast.makeText(getContext(),R.string.permission_denied,Toast.LENGTH_LONG).show();
         }
     }
 
@@ -667,7 +662,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
 
                 // Check if the flash is supported.
                 Boolean available = characteristics.get(CameraCharacteristics.FLASH_INFO_AVAILABLE);
-                mFlashSupported = available == null ? false : available;
+                mFlashSupported = available != null && available;
                 return;
             }
         } catch (CameraAccessException e) {
@@ -844,8 +839,8 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
             matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
             // Scale the rectangle back so that it just covers the viewfinder.
-            float viewLongEdge = viewWidth > viewHeight ? viewWidth : viewHeight;
-            float viewShortEdge = viewWidth <= viewHeight ? viewWidth : viewHeight;
+            float viewLongEdge = Math.max(viewWidth, viewHeight);
+            float viewShortEdge = Math.min(viewWidth, viewHeight);
             float scale = Math.max(
                     viewShortEdge / mPreviewSize.getHeight(),
                     viewLongEdge / mPreviewSize.getWidth());
@@ -886,7 +881,7 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
      * Run the precapture sequence for capturing a still image. This method should be called when
      * we get a response in {@link #mCaptureCallback} from {@link #lockFocus()}.
      */
-    private void runPrecaptureSequence() {
+    private void runPreCaptureSequence() {
         try {
             // This is how to tell the camera to trigger.
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_PRECAPTURE_TRIGGER,
@@ -982,18 +977,15 @@ public class Camera extends Fragment implements View.OnClickListener, View.OnTou
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.getpicture: {
-                String rawHexValue = TVHexValue.getText().toString();
-                if(rawHexValue.length()>5){
-                    String hexValue = rawHexValue.substring(5);
-                    SavedData.getInstance(getActivity()).addColor(hexValue);
-                }
-                break;
+        int viewID = view.getId();
+        if(viewID == R.id.getpicture){
+            String rawHexValue = TVHexValue.getText().toString();
+            if(rawHexValue.length()>5){
+                String hexValue = rawHexValue.substring(5);
+                SavedData.getInstance(getActivity()).addColor(hexValue);
             }
-            case R.id.SwitchCamera:{
-                switchCamera();
-            }
+        }else if(viewID == R.id.SwitchCamera){
+            switchCamera();
         }
     }
 

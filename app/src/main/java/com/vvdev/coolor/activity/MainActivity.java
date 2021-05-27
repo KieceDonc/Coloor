@@ -1,17 +1,12 @@
 package com.vvdev.coolor.activity;
 
-import android.app.usage.UsageStats;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -23,11 +18,8 @@ import com.vvdev.coolor.databinding.ActivityMainBinding;
 import com.vvdev.coolor.fragment.ImportFragment.Camera;
 import com.vvdev.coolor.interfaces.AppRater;
 import com.vvdev.coolor.interfaces.Gradients;
-import com.vvdev.coolor.interfaces.PremiumHandler;
 import com.vvdev.coolor.interfaces.SavedData;
 import com.vvdev.coolor.ui.adapter.PagerAdapter;
-
-import java.io.File;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,14 +33,7 @@ import static android.view.View.VISIBLE;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAnalytics mFirebaseAnalytics;
-    //private PremiumHandler premiumHandler;TODO to active premium version
-
     private ConstraintLayout actionBar;
-
-    private ImageView startSettings;
-    private ImageView appIcon;
-    //private ImageView goToPro;TODO to active premium version
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
@@ -66,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Instance.set(this);
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseAnalytics.getInstance(this);
 
         AppRater.app_launched(this);
 
@@ -83,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = binding.tabs;
         navView = binding.navHostFragment;
         actionBar = binding.actionBar;
-        appIcon = binding.imageViewLogo;
         //goToPro = binding.pro;
 
         binding.mail.setOnClickListener(new View.OnClickListener() {
@@ -117,51 +101,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                /*if(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(Instance.get()) == ConnectionResult.SUCCESS) {
-                    premiumHandler = new PremiumHandler(MainActivity.Instance.get());
-                } else {
-                    premiumHandler.googlePlayServiceError();TODO to active premium version
-                }*/
-            }
-        });
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
-
-    @Override
-    protected void onUserLeaveHint() {
-        super.onUserLeaveHint();
-        //hideCirclePickerIfNotPremium();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //hideCirclePickerIfNotPremium();
-        //premiumHandler.releaseBp();
-    }
-
-    /*private void hideCirclePickerIfNotPremium(){TODO to active premium version
-        if(CirclePickerService.Instance.get()!=null&&!CirclePickerService.Instance.get().tryToStartCirclePicker){
-            if(premiumHandler!=null&&premiumHandler.isInitialized()){
-                if(!premiumHandler.isPremium()){
-                    CirclePickerService circlePickerService = CirclePickerService.Instance.get();
-                    if(circlePickerService!=null){
-                        circlePickerService.stopService();
-                    }
-                    Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.keep_circle_outside_app), Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-    }*/
 
     public Camera.setOnCameraLifeCycleListener getCameraListener(){
         return new Camera.setOnCameraLifeCycleListener() {
@@ -176,10 +118,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-
-    /*public PremiumHandler getPremiumHandler(){TODO to active premium version
-        return premiumHandler;
-    }*/
 
     public void hideActionBar(){
         if(isActionBarVisible()){
@@ -208,20 +146,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setVisibility(GONE);
         viewPager.setVisibility(GONE);
     }
-
-    /*public void showGoToPro(){TODO to active premium version
-        goToPro.setVisibility(VISIBLE);
-        goToPro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                premiumHandler.showPremiumDialog();
-            }
-        });
-    }
-
-    public void hideGoToPro(){
-        goToPro.setVisibility(INVISIBLE);
-    }*/
 
     public static class Instance{
         private static MainActivity instance;

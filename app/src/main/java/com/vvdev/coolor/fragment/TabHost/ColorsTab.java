@@ -1,15 +1,12 @@
 package com.vvdev.coolor.fragment.TabHost;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,12 +29,16 @@ import com.vvdev.coolor.ui.alertdialog.PickFromWheel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
+import java.util.Map;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,8 +50,33 @@ import uk.co.markormesher.android_fab.SpeedDialMenuOpenListener;
 public class ColorsTab extends Fragment {
 
     private final static String TAG = ColorsTab.class.getName();
-    private final static int REQUEST_CODE_SAVE_TO_FILE = 57464;
-    private static final int REQUEST_CODE_ACTION_MANAGE_OVERLAY = 1234;
+
+    private final ActivityResultLauncher<Intent> drawOverAllAppsPerm = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        (result) -> {
+            if (Settings.canDrawOverlays(getActivity())) {
+                CirclePickerService.start(getContext());
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+            }
+    });
+
+    private final ActivityResultLauncher<String[]> saveColorsToFilesPermission = registerForActivityResult(
+        new ActivityResultContracts.RequestMultiplePermissions(),
+        (Map<String, Boolean> result)->{
+            boolean allPermissionGranted = true;
+            Iterator<Boolean> iterator = result.values().iterator();
+
+            while(iterator.hasNext() && allPermissionGranted){
+                allPermissionGranted = iterator.next();
+            }
+
+            if (allPermissionGranted) {
+                new SaveColorsToFile(getActivity());
+            } else {
+                Toast.makeText(getActivity(), getResources().getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
+            }
+    });
 
     private FloatingActionButton actionMenu;
 
@@ -219,87 +245,38 @@ public class ColorsTab extends Fragment {
     }
 
     private void CirclePickerStart(){
-        if (!Settings.canDrawOverlays(getActivity())) {
-            //set icon
-            //set title
-            //set message
-            //set positive button
-            //set what would happen when positive button is clicked
-            //set negative button
-            //set what should happen when negative button is clicked
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                    //set icon
-                    .setIcon(android.R.drawable.ic_dialog_info)
-                    //set title
-                    .setTitle(getResources().getString(R.string.circle_picker_activity_title))
-                    //set message
-                    .setMessage(getResources().getString(R.string.circle_picker_activity_message))
-                    //set positive button
-                    .setPositiveButton(getResources().getString(R.string.circle_picker_activity_yes), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //set what would happen when positive button is clicked
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:"+getActivity().getPackageName())); // we only call the alert dialog if we are SDK > 23
-                            startActivityForResult(intent, REQUEST_CODE_ACTION_MANAGE_OVERLAY);
-                            dialogInterface.dismiss();
-                        }
-                    })
-                    //set negative button
-                    .setNegativeButton(getResources().getString(R.string.circle_picker_activity_cancel), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //set what should happen when negative button is clicked
-                            dialogInterface.dismiss();
-                            Toast.makeText(getActivity(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setCancelable(false);
-            builder.create().show();
-        } else {
-            CirclePickerService.start(getContext());
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+            .setIcon(android.R.drawable.ic_dialog_info)
+            .setTitle(getResources().getString(R.string.circle_picker_activity_title))
+            .setMessage(getResources().getString(R.string.circle_picker_activity_message))
+            .setPositiveButton(getResources().getString(R.string.circle_picker_activity_yes), (DialogInterface dialogInterface, int i)-> {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getActivity().getPackageName())); // we only call the alert dialog if we are SDK > 23
+                drawOverAllAppsPerm.launch(intent);
+                dialogInterface.dismiss();
+            })
+            .setNegativeButton(getResources().getString(R.string.circle_picker_activity_cancel), (DialogInterface dialogInterface, int i)-> {
+                dialogInterface.dismiss();
+                Toast.makeText(getActivity(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+            })
+            .setCancelable(false);
+        builder.create().show();
     }
 
-    /*
-    * Check permission if needed
-    */
     private void SaveAllColorsToFile(){
-        String[] EXTERNAL_PERMS = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        boolean resultWriteExternal = ContextCompat.checkSelfPermission(getActivity(),EXTERNAL_PERMS[0]) == PackageManager.PERMISSION_GRANTED;
-        boolean resultReadExternal = ContextCompat.checkSelfPermission(getActivity(),EXTERNAL_PERMS[1]) == PackageManager.PERMISSION_GRANTED;
-        if(resultReadExternal && resultWriteExternal){
-            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_SAVE_TO_FILE);
-        }else if(resultReadExternal){
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_SAVE_TO_FILE);
-        }else if(resultWriteExternal){
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_SAVE_TO_FILE);
+        boolean resultWriteExternal = ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+        boolean resultReadExternal = ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+
+        if(!resultReadExternal && !resultWriteExternal){
+            saveColorsToFilesPermission.launch(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE});
+        }else if(!resultReadExternal){
+            saveColorsToFilesPermission.launch(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE});
+        }else if(!resultWriteExternal){
+            saveColorsToFilesPermission.launch(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE});
         }else{
             new SaveColorsToFile(getActivity());
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode==REQUEST_CODE_SAVE_TO_FILE){
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                new SaveColorsToFile(getActivity());
-            } else {
-                Toast.makeText(getActivity(), getResources().getString(R.string.permission_denied), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_ACTION_MANAGE_OVERLAY){
-            if (Settings.canDrawOverlays(getActivity())) {
-                CirclePickerService.start(getContext());
-            }else{
-                Toast.makeText(getActivity(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
     private void setupPaletteRecycleView(){
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

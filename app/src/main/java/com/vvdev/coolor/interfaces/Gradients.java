@@ -41,7 +41,6 @@ public class Gradients {
         toAdd.add(new Gradient(activity.getString(R.string.gradients_to_purple),"#800080"));
 
         ArrayList<Gradient> gradients = getSavedGradients();
-        int startPosition = gradients.size()-1;
         boolean atLeastOneAdded = false; // boolean to say if one gradient have been added
         for(int x=0;x<toAdd.size();x++){
             if(canBeAdd(toAdd.get(x))){
@@ -51,7 +50,6 @@ public class Gradients {
         }
 
         if(atLeastOneAdded){
-            int endPosition = gradients.size()-1;
             new SavedData(activity).saveGradients(gradients).updateNativeCustomAlreadySetup(true);
         }else{
             Toast.makeText(activity,activity.getString(R.string.gradients_native_custom_already_added),Toast.LENGTH_LONG).show();

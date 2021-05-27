@@ -3,7 +3,6 @@ package com.vvdev.coolor.interfaces;
 import java.io.File;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
@@ -28,15 +27,20 @@ public class SaveColorsToFile{
     }
 
     private void mainWork(){
-        String[] fileExtension = {".json",".txt"};
+        String[] fileExtensions = {".json",".txt"};
         String fileName = getFileName();
-        File myDir = getDir();
-        File file = new File(myDir, fileName);
+        File file = new File(Environment.getExternalStorageDirectory()+"/save_colors", fileName);
+        try {
+            file.mkdirs();
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         FileOutputStream fos = null;
 
         try {
-            for(int x=0;x<fileExtension.length;x++){
-                fos = new FileOutputStream(file+fileExtension[x]);
+            for (String fileExtension : fileExtensions) {
+                fos = new FileOutputStream(file + fileExtension);
                 fos.write(getJsonObject().toString(1).getBytes());
             }
         } catch (Exception e) {
@@ -96,15 +100,5 @@ public class SaveColorsToFile{
 
     private String getFileName(){
         return  new SimpleDateFormat("yyyy-MM-dd___HH_mm_ss_SSS").format(new Date());
-    }
-
-    private File getDir(){
-        File myDir;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            myDir = new File (Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/save_colors");
-        } else {
-            myDir = new File(Environment.getExternalStorageDirectory()+"/save_colors");
-        }
-        return myDir;
     }
 }

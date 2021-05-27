@@ -60,9 +60,6 @@ public class PDF extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         MainActivity.Instance.get().showFragmentHost();
-        /*if(!MainActivity.Instance.get().getPremiumHandler().isPremium()){TODO to active premium version
-            hideCirclePicker();
-        }*/
         View view = inflater.inflate(R.layout.import_pdf, container, false);
 
         String toCheck = getArguments().getString(KEY_ARGUMENT_PDF_PATH); // get data send, plz refer to https://stackoverflow.com/questions/16036572/how-to-pass-values-between-fragments
@@ -73,13 +70,8 @@ public class PDF extends Fragment {
         startCirclePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*PremiumHandler premiumHandler = MainActivity.Instance.get().getPremiumHandler();TODO to active premium version
-                if(!premiumHandler.isPremium()){
-                    premiumHandler.showPremiumDialog();
-                }else{*/
                 shouldShowViewPager=false;
                 CirclePickerService.start(getContext());
-                //}
             }
         });
         pdfView = view.findViewById(R.id.pdfView);
@@ -270,12 +262,6 @@ public class PDF extends Fragment {
             }
         });
     }
-
-    /*private void hideCirclePicker(){TODO to active premium version
-        if(CirclePickerService.Instance.get()!=null){
-            CirclePickerService.Instance.get().hideCirclePicker();
-        }
-    }*/
 
     private void showIfShouldCirclePicker(){
         if(CirclePickerService.Instance.get()!=null){

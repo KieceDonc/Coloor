@@ -3,16 +3,12 @@ package com.vvdev.coolor.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.media.projection.MediaProjectionManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +20,9 @@ import com.vvdev.coolor.R;
 import com.vvdev.coolor.interfaces.ScreenCapture;
 import com.vvdev.coolor.services.CirclePickerService;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static android.view.WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED;
@@ -39,11 +36,20 @@ public class CirclePickerActivityStart extends AppCompatActivity {
     public static View wmCirclePickerView;
     public static WindowManager.LayoutParams wmCirclePickerParams;
 
-    private static final int REQUEST_CODE_MEDIA_PROJECTION = 5555;
-
-
-
     private static final String TAG = CirclePickerActivityStart.class.getName();
+
+    private final ActivityResultLauncher<Intent> drawOverAllAppsPerm = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            (result) -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    ScreenCapture.setUpMediaProjection(result.getResultCode(),result.getData());
+                    startCirclePicker();
+                }else{
+                    CirclePickerService.Instance.get().onCirclePickerPermissionDenied();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,24 +66,10 @@ public class CirclePickerActivityStart extends AppCompatActivity {
         super.onDestroy();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == REQUEST_CODE_MEDIA_PROJECTION){
-            if (resultCode == Activity.RESULT_OK) {
-                ScreenCapture.setUpMediaProjection(resultCode,data);
-                startCirclePicker();
-            }else if(resultCode == Activity.RESULT_CANCELED){
-                CirclePickerService.Instance.get().onCirclePickerPermissionDenied();
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        }
-    }
 
     private void startCapture(){
         mMediaProjectionManager = (MediaProjectionManager)getSystemService(MEDIA_PROJECTION_SERVICE);
-        startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), REQUEST_CODE_MEDIA_PROJECTION);
+        drawOverAllAppsPerm.launch(mMediaProjectionManager.createScreenCaptureIntent());
     }
 
     private void startCirclePicker(){

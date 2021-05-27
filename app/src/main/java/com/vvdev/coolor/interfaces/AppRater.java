@@ -1,23 +1,11 @@
 package com.vvdev.coolor.interfaces;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.vvdev.coolor.activity.MainActivity;
 import com.vvdev.coolor.ui.alertdialog.AppRaterDialog;
 
 public class AppRater {
-
-    private final static String APP_TITLE = "Coloor";// App Name
-    private final static String APP_PNAME = SavedData.getNormalPackageName();// Package Name
 
     private final static int DAYS_UNTIL_PROMPT = 3;//Min number of days
     private final static int LAUNCHES_UNTIL_PROMPT = 3;//Min number of launches

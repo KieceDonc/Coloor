@@ -441,8 +441,6 @@ public class ColorUtility {
         triadic[0]=getHexFromRGB(RGB);
         triadic[1]=ColorUtility.getHexFromRGB(triadic1);
         triadic[2]=ColorUtility.getHexFromRGB(triadic2);
-        //triadic[3]=getHexFromRGB(lighter(lessSaturation(RGB,20),30));
-        //triadic[4]=getHexFromRGB(darker(moreSaturation(triadic2,20),30));
 
         return new String[]{triadic[0],triadic[1],triadic[2]};
     }

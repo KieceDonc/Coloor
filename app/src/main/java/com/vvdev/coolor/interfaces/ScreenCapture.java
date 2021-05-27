@@ -135,8 +135,6 @@ public class ScreenCapture{ // https://blog.csdn.net/qq_36332133/article/details
         }catch (Exception e){
             e.printStackTrace();
         }
-
-
     }
 
     public static void setUpMediaProjection(int mResultCode,Intent mResultData) {

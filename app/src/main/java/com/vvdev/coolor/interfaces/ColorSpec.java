@@ -24,12 +24,6 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
     private String[] compound;
     private String[] analogous;
 
-    public ColorSpec(int[] rgb) {
-        setRGB(rgb);
-        setHexa(ColorUtility.getHexFromRGB(rgb));
-        setup();
-    }
-
     public ColorSpec(String hexa) {
         setHexa(hexa);
         setRGB(ColorUtility.getRGBFromHex(hexa));
@@ -180,48 +174,5 @@ public class ColorSpec { // https://htmlcolorcodes.com/fr/selecteur-de-couleur/
             }
         }
         return toReturn;
-    }
-
-
-    /**
-     * Used to check is the object is correct
-     * @param toVerify object to verify
-     * @param longCheck if true, check all hexa value length to know if it's correct or not
-     * @return
-     */
-    public static boolean isCorrect(ColorSpec toVerify,boolean longCheck) {
-       /* if(toVerify.getHexa().length()<6){
-            Log.e(TAG,"isCorrect() detect error.\nHexa color length of object is <6. Value ="+toVerify.getHexa()
-            +"\nObject to verify toString()= "+toVerify.toString());
-            return false;
-        }
-        if(toVerify.getRGB().length<3){
-            return false;
-        }
-        if(toVerify.getHSV().length<3){
-            return false;
-        }
-        if(toVerify.getHSL().length<3){
-            return false;
-        }
-
-        if(toVerify.getAllMethodName().size()!=toVerify.getAllGeneratedColors().size()){ // you might forgot to add new method in getGenerateMethod() or getAllGeneratedColors()
-            Log.e(TAG,"isCorrect() detect error.\nYou might forgot to add new method in getGenerateMethod() or getAllGeneratedColors().\nObject to verify to string = "+toVerify.toString());
-            return false;
-        }
-        if(longCheck){
-            for(int x=0;x<toVerify.getAllMethodName().size();x++){
-                for(int y=0;y<toVerify.getAllGeneratedColors().get(x).length;x++){
-                    if(toVerify.getAllGeneratedColors().get(x)[y].length()<6){
-                        Log.e(TAG,"isCorrect() detect error."
-                                + "\nMethod at position "+x+" and hexa value at "+y+" have a length <6"
-                        +"\nWrong string value ="+toVerify.getAllGeneratedColors().get(x)[y]
-                        +"\nObject to verify to string ="+toVerify.toString());
-                        return false;
-                    }
-                }
-            }
-        }*/
-        return true;
     }
 }
