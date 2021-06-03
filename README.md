@@ -1,6 +1,6 @@
 <img alt="Coloor  Icon" align="right" height="256" src="https://play-lh.googleusercontent.com/DfTKf6OTP4PST-4XXSXtABKb2q3nxKpcGcMmDHEz2XKK1eyriE43XnTA9z07aNsJxsM=s180">
 
-# Coloor <br/>[![License](https://img.shields.io/badge/license-GPL--3.0%2B-bd0000.svg)](COPYING "License: GPL-3.0-or-later") [![Installs](https://img.shields.io/endpoint?color=blue&logo=google-play&logoColor=none&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcom.vvdev.colorpicker%26l%3DInstalls%26m%3D%24installs)]
+# Coloor <br/>[![License](https://img.shields.io/badge/license-GPL--3.0%2B-bd0000.svg)](COPYING "License: GPL-3.0-or-later") [Installs](https://img.shields.io/endpoint?color=blue&logo=google-play&logoColor=none&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcom.vvdev.colorpicker%26l%3DInstalls%26m%3D%24installs)
 
 Coloor will allow you to pick colors from pdf, images, videos, url.
 From this you can generate your own palette and gradients. 
@@ -17,7 +17,7 @@ Main features :
 * Camera color scanner
 * Friendly behr match
 
-Code couleur supporté :
+Supported colors codes : 
 * RGB
 * Hexadecimal
 * HSV / HSB
@@ -26,8 +26,8 @@ Code couleur supporté :
 * CIE LAB
 * CIE XYZ 
 
-Extension de fichier supporté :
-png, jpeg, pdf, mp4. Par ailleurs, d'autres extension de fichier peuvent également fonctionner
+Supported files extension : 
+png, jpeg, pdf, mp4. Also other files extension may work.
 
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" 
       alt="Download from Google Play"
@@ -52,10 +52,7 @@ If you're interested in becoming a co-maintainer, I'm willing to spend time walk
 
 Screenshots are slightly out of date.
 
-<img src="https://play-lh.googleusercontent.com/BhIsQqAYVaizwO9_TK4pFC0E7xLkuMFdf4HBHrZSGuQrbrIRl0jBy6vi4WBx4k4o4cc=w2144-h1035" width="189" height="336" /> 
-<img src="https://play-lh.googleusercontent.com/HVtBlwqp8sbJTtj9Tf7nsfMjc91u0PkPXIIyDkr7dFj4JOtanIzFEEzuD_CDpuq74cJ4=w2144-h1035" width="189" height="336" /> 
-<img src="https://play-lh.googleusercontent.com/GcZxHU5YQVbKI3Mr3Dz0E7KHIOW1gWT53I2NX6xv4GpX9f0R4a9n_Q4tlLkRiTjuRs3r=w2144-h1035" width="189" height="336" />
-<img src="https://play-lh.googleusercontent.com/D_iMl-s6n9y3U6GcdWlev7XzF9FMaw2zorG4KRrEHfWoo9Xuz2AkYoDCSigSIR5xNxRp=w2144-h1035" width="189" height="336" />
+<img src="https://play-lh.googleusercontent.com/BhIsQqAYVaizwO9_TK4pFC0E7xLkuMFdf4HBHrZSGuQrbrIRl0jBy6vi4WBx4k4o4cc=w2144-h1035" width="189" height="336" /> <img src="https://play-lh.googleusercontent.com/HVtBlwqp8sbJTtj9Tf7nsfMjc91u0PkPXIIyDkr7dFj4JOtanIzFEEzuD_CDpuq74cJ4=w2144-h1035" width="189" height="336" /> <img src="https://play-lh.googleusercontent.com/GcZxHU5YQVbKI3Mr3Dz0E7KHIOW1gWT53I2NX6xv4GpX9f0R4a9n_Q4tlLkRiTjuRs3r=w2144-h1035" width="189" height="336" /><img src="https://play-lh.googleusercontent.com/D_iMl-s6n9y3U6GcdWlev7XzF9FMaw2zorG4KRrEHfWoo9Xuz2AkYoDCSigSIR5xNxRp=w2144-h1035" width="189" height="336" />
 
 ### Pull requests
 
