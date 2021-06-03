@@ -1,6 +1,6 @@
 <img alt="Coloor  Icon" align="right" height="256" src="https://play-lh.googleusercontent.com/DfTKf6OTP4PST-4XXSXtABKb2q3nxKpcGcMmDHEz2XKK1eyriE43XnTA9z07aNsJxsM=s180">
 
-# Coloor <br/>[![License](https://img.shields.io/badge/license-GPL--3.0%2B-bd0000.svg)](COPYING "License: GPL-3.0-or-later") [Installs](https://img.shields.io/endpoint?color=blue&logo=google-play&logoColor=none&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcom.vvdev.colorpicker%26l%3DInstalls%26m%3D%24installs)
+# Coloor <br/>[![License](https://img.shields.io/badge/license-GPL--3.0%2B-bd0000.svg)](COPYING "License: GPL-3.0-or-later") [![Installs](https://img.shields.io/endpoint?color=blue&logo=google-play&logoColor=none&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcom.vvdev.colorpicker%26l%3DInstalls%26m%3D%24installs)](https://play.google.com/store/apps/details?id=com.vvdev.colorpicker)
 
 Coloor will allow you to pick colors from pdf, images, videos, url.
 From this you can generate your own palette and gradients. 
